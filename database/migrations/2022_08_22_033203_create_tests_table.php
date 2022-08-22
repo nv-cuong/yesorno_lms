@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
+            $table->string('category');
+            $table->integer('amount');
+            $table->string('title');
+            $table->integer('time');
+            $table->text('description');
             $table->timestamps();
         });
     }

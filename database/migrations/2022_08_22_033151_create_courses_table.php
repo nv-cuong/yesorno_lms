@@ -15,6 +15,13 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
+            $table->integer('statistic_id');
+            $table->string('title');
+            $table->string('slug');
+            $table->text('description');
+            $table->date('begin_date');
+            $table->date('end_date');
+            $table->string('image');
             $table->timestamps();
         });
     }

@@ -15,6 +15,8 @@ return new class extends Migration
     {
         Schema::create('course_tests', function (Blueprint $table) {
             $table->id();
+            $table->integer('course_id');
+            $table->integer('test_id');
             $table->timestamps();
         });
     }

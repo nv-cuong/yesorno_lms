@@ -15,6 +15,11 @@ return new class extends Migration
     {
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
+            $table->integer('course_id');
+            $table->string('category');
+            $table->string('content');
+            $table->text('answer');
+            $table->float('score');
             $table->timestamps();
         });
     }
