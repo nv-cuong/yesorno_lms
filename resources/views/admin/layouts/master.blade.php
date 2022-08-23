@@ -57,7 +57,7 @@
         <!-- Control Sidebar -->
     </div>
     <!-- ./wrapper -->
-
+    <script src="https://kit.fontawesome.com/9c8d7f8914.js" crossorigin="anonymous"></script>
     <!-- jQuery -->
     <script src="{{ asset('/admin/plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
