@@ -1,8 +1,14 @@
 <?php
 
+use App\Http\Controllers\Admin\ClassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
+
 use App\Http\Controllers\Admin\QuestionController;
+
+use App\Http\Controllers\Auth\LoginController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -18,9 +24,16 @@ use App\Http\Controllers\Admin\QuestionController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login', [LoginController::class, 'login'])
+->name('login');
+Route::post('/login', [LoginController::class, 'postLogin'])
+->name('login.post');
+// Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
+
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
+
     
     Route::prefix('/questions')->name('question.')->group(function () {
         Route::get('index', [QuestionController::class, 'index'])->name('index');
@@ -29,4 +42,8 @@ Route::prefix('admin')->group(function () {
         Route::post('store', [QuestionController::class, 'store'])->name('store');
     });
 
+
+    Route::resource('class', ClassController::class);
+
 });
+

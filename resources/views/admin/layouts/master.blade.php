@@ -41,11 +41,11 @@
         </div>
 
         <!-- Navbar -->
-        @include('Admin.Layouts.header')
+        @include('admin.layouts.header')
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        @include('Admin.Layouts.sidebar')
+        @include('admin.layouts.sidebar')
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
@@ -55,7 +55,7 @@
         </div>
         <!-- /.content-wrapper -->
 
-        @include('Admin.Layouts.footer')
+        @include('admin.layouts.footer')
         <!-- Control Sidebar -->
     </div>
     <!-- ./wrapper -->
