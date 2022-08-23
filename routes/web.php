@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Admin\ClassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\Auth\LoginController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +20,15 @@ use App\Http\Controllers\Admin\IndexController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/login', [LoginController::class, 'login'])
+->name('login');
+Route::post('/login', [LoginController::class, 'postLogin'])
+->name('login.post');
+// Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
+
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
+    Route::resource('class', ClassController::class);
 });
+
