@@ -1,62 +1,60 @@
 @extends('admin.layouts.master')
-@section('title', 'Class Manager')
+@section('title', 'Quàn lí lớp học')
 
 @section('content')
-
-<div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Danh sách lớp học</h2>
-
-          <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <input type="text" name="table_search" class="form-control float-right" placeholder="Tìm kiếm...">
-
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-default">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
+    <section class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1>Danh sách lớp học</h1>
+                </div>
+                <div class="col-sm-6 ">
+                    <form action="" class="form-inline justify-content-end">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
-          </div>
+            @include('admin._alert')
+            <hr>
         </div>
-        <!-- /.card-header -->
-        <div class="card-body table-responsive p-0">
-          <table class="table table-hover text-nowrap">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tên lớp</th>
-                <th>Mô tả khóa học</th>
-                <th>Số lượng học viên</th>
-                <th>Ngày tao</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>183</td>
-                <td>PHP cơ bản</td>
-                <td>Khóa học php cho người bắt đầu</td>
-                <td><span class="tag tag-success">50</span></td>
-                <td>20-02-2022</td>
-              </tr>
+    </section>
+    <section class="content">
+        <div class="container-fluid">
 
-            </tbody>
-          </table>
-        </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
-    </div>
-  </div>
-    <div class="card-footer clearfix">
-        <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">«</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-        </ul>
-    </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="{{ route('class.create') }}" class="btn btn-success float-right">+ Tạo lớp học mới</a>
+                        </div>
+
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên lớp</th>
+                                    <th>Tên khóa học</th>
+                                    <th>Mô tả</th>
+                                    <th>Học viên</th>
+                                    <th>Ngày bắt đầu</th>
+                                    <th>Thao tác</th>
+                                </tr>
+                            </thead>
+                            <tbody id="load">
+
+                            </tbody>
+                        </table>
+
+                        <div class="card-footer clearfix">
+                            {{-- {!! $listAr->appends(Request::all())->links() !!} --}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </section>
 @endsection
