@@ -14,7 +14,7 @@ class ClassController extends Controller
      */
     public function index()
     {
-        return view('Admin.Modules.Classes.index');
+        return view('admin.modules.classes.index');
     }
 
     /**
@@ -24,7 +24,7 @@ class ClassController extends Controller
      */
     public function create()
     {
-        return view('Admin.Modules.Classes.create');
+        return view('admin.modules.classes.create');
 
     }
 
@@ -58,7 +58,7 @@ class ClassController extends Controller
      */
     public function edit($id)
     {
-        return view('Admin.Modules.Classes.edit');
+        return view('admin.modules.classes.edit');
     }
 
     /**
