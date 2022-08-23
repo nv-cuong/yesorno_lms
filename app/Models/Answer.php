@@ -12,4 +12,9 @@ class Answer extends Model
     protected $fillable = [
         'content',
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }    
 }
