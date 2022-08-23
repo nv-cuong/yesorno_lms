@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\Admin\StudentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,4 +21,10 @@ Route::get('/', function () {
 Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
+
+    Route::prefix('users')->group(function () {
+    Route::get('/', [StudentController::class, 'index'])
+    ->name('users');
+
+    });
 });

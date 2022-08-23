@@ -33,4 +33,5 @@ class Lesson extends Model
             'lession_id'
         );
     }
+    
 }
