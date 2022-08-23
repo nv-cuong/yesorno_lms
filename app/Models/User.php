@@ -28,6 +28,17 @@ class User extends EloquentUser
         'last_name',
         'last_login',
         'permissions',
+<<<<<<< HEAD
     ];
 
 }
+=======
+        'age',
+        'gender',
+    ];
+
+    public function findForPassport($username) {
+        return self::where('email', $username)->first(); // change column name whatever you use in credentials
+    }
+}
+>>>>>>> origin/develop

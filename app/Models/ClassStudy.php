@@ -5,9 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use Cartalyst\Sentinel\Roles\EloquentRole;
-
-class Role extends EloquentRole
+class ClassStudy extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'slug',
+        'amount',
+        'description',
+    ];
 }
