@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('title');
             $table->integer('time');
             $table->text('description');
+            $table->float('result');
             $table->timestamps();
         });
     }

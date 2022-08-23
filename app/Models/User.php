@@ -24,15 +24,41 @@ class User extends EloquentUser
         'phone',
         'birthday',
         'address',
+        'age',
+        'gender',
         'first_name',
         'last_name',
         'last_login',
         'permissions',
-        'age',
-        'gender',
     ];
 
-    public function findForPassport($username) {
-        return self::where('email', $username)->first(); // change column name whatever you use in credentials
+    public function tests()
+    {
+        return $this->belongsToMany(
+            Test::class,
+            'user_tests',
+            'user_id',
+            'test_id'
+        );
+    }
+
+    public function classStudies()
+    {
+        return $this->belongsToMany(
+            ClassStudy::class,
+            'class_study_users',
+            'user_id',
+            'class_study_id'
+        );
+    }
+
+    public function courses()
+    {
+        return $this->belongsToMany(
+            Course::class,
+            'user_courses',
+            'user_id',
+            'course_id'
+        );
     }
 }

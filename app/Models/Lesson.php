@@ -18,4 +18,19 @@ class Lesson extends Model
         'title',
         'published',
     ];
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function questions()
+    {
+        return $this->belongsToMany(
+            Question::class,
+            'question_lessions',
+            'question_id',
+            'lession_id'
+        );
+    }
 }
