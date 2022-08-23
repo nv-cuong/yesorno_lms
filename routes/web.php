@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Auth\LoginController;
@@ -33,6 +34,9 @@ Route::prefix('admin')
 {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
+
     Route::resource('class', ClassController::class)
     ->middleware('myweb.auth:admin');
+    
+    Route::resource('course', CourseController::class);
 });
