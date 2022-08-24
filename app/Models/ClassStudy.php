@@ -15,6 +15,7 @@ class ClassStudy extends Model
         'amount',
         'description',
     ];
+<<<<<<< HEAD
     public function courses()
     {
         return $this->belongsToMany(
@@ -24,5 +25,13 @@ class ClassStudy extends Model
             'course_id',
 
         );
+=======
+
+    public function scopeSearch($query){
+        if($key = request()->key){
+            $query = $query-> where('name', 'like', '%'.$key.'%');
+        }
+        return $query;
+>>>>>>> origin/develop
     }
 }
