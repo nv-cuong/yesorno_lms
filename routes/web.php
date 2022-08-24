@@ -33,6 +33,7 @@ Route::prefix('admin')
 {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
-    Route::resource('class', ClassController::class)
-    ->middleware('myweb.auth:admin');
+    Route::resource('class', ClassController::class);
+    Route::delete('/class/delete', [ProductController::class, 'destroy'])
+        ->name('class.delete');
 });
