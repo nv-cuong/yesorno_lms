@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
+                
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -28,7 +28,7 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Edit <small>question</small></h3>
+                <h3 class="card-title">Sửa câu hỏi</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -37,9 +37,9 @@
 
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Name</label>
+                    <label for="exampleInputEmail1">Tên</label>
                     <input type="text" name="content" class="form-control @error('content') is-invalid @enderror" 
-                    id="exampleInputEmail1" placeholder="content" value="{{ old('content') }}">
+                    id="exampleInputEmail1" placeholder="Tên" value="{{ old('content',$question->content) }}">
                     @error('content')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -47,7 +47,7 @@
                   
                   
                   <div class="form-group">
-                  <label>Course</label>
+                  <label>Khóa học</label>
                   <select class="form-control select2 @error('course_id') is-invalid @enderror"  style="width: 100%;" name="course_id" >
                     <option selected="selected" value="1">Alabama</option>
                     
@@ -58,7 +58,7 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Type</label>
+                  <label>Loại câu hỏi</label>
                   <select class="form-control select2 @error('category') is-invalid @enderror"  style="width: 100%;" name="category" id="category" disabled>
                  
                 
@@ -79,8 +79,8 @@
                     @forelse($answers as $key => $answer)
                     
                     <div class="col-md-6 form-group">
-                    <input type="text" name="{{ 'content_'. $key+1 }}" class="form-control " value="{{ old('content_', isset($answer) ? $answer->content : '') }}" id="exampleInputEmail1" placeholder="Đáp án {{$key+1}}">
-                    <input type="checkbox" name="{{ 'correct_'. $key+1  }}" {{ $answer->checked==1?'checked':'' }}
+                    <input type="text" name="{{ 'content_'. $key }}" class="form-control " value="{{ old('content_', isset($answer) ? $answer->content : '') }}" id="exampleInputEmail1" placeholder="Đáp án {{$key+1}}">
+                    <input type="checkbox" name="{{ 'correct_'. $key  }}" {{ $answer->checked==1?'checked':'' }}
                     
                     >
                     </div>
@@ -108,9 +108,9 @@
                       
                     </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">store</label>
+                    <label for="exampleInputEmail1">Điểm</label>
                     <input type="number" name="score" class="form-control @error('score') is-invalid @enderror" 
-                    id="exampleInputEmail1" placeholder="store" value="{{ old('store') }}">
+                    id="exampleInputEmail1" placeholder="Điểm" value="{{ old('store',$question->score) }}">
                     @error('score')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -120,7 +120,7 @@
                 
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Sửa</button>
                 </div>
               </form>
             </div>
@@ -161,9 +161,6 @@
          }
     
 
-
-    
-        
   
 </script>
 

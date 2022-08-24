@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0">Dashboard</h1>
+                
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -28,7 +28,7 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Create <small>question</small></h3>
+                <h3 class="card-title">Thêm mới câu hỏi</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -37,9 +37,9 @@
 
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Content</label>
+                    <label for="exampleInputEmail1">Tên câu hỏi</label>
                     <input type="text" name="content" class="form-control @error('content') is-invalid @enderror" 
-                    id="exampleInputEmail1" placeholder="content" value="{{ old('content') }}">
+                    id="exampleInputEmail1" placeholder="tên" value="{{ old('content') }}">
                     @error('content')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -47,7 +47,7 @@
                   
                   
                   <div class="form-group">
-                  <label>Course</label>
+                  <label>Khóa học</label>
                   <select class="form-control select2 @error('course_id') is-invalid @enderror"  style="width: 100%;" name="course_id" >
                     <option selected="selected" value="1">Alabama</option>
                     
@@ -58,11 +58,13 @@
                     @enderror
                 </div>
                 <div class="form-group">
-                  <label>Type</label>
-                  <select class="form-control select2 @error('category') is-invalid @enderror"  style="width: 100%;" name="category" id="category">
-                    <option selected="selected" value="0">Câu hỏi tự luận</option>
-                    <option value="1">Câu hỏi trắc nghiệm</option>
-                    <option value="2">Câu hỏi Đúng sai</option>
+                  <label>Loại câu hỏi</label>
+                  <select class="form-control select2 @error('category') is-invalid @enderror"  
+                  style="width: 100%;" name="category" id="category">
+                 
+                    <option selected="selected" value="0" >Câu hỏi tự luận</option>
+                    <option value="1" {{old('category')==1?'selected':''}}>Câu hỏi trắc nghiệm</option>
+                    <option value="2" {{old('category')==2?'selected':''}}>Câu hỏi Đúng sai</option>
                     
                   </select>
                   @error('category')
@@ -76,8 +78,14 @@
                     <div class="row">
                     @for ($question=1; $question<=4; $question++)
                     <div class="col-md-6 form-group">
-                    <input type="text" name="{{ 'content_'. $question }}" class="form-control " id="exampleInputEmail1" placeholder="Đáp án {{$question}}">
+                    <input type="text" name="{{ 'content_'. $question }}" 
+                    class="form-control @error('content_'.$question) is-invalid @enderror" 
+                    id="exampleInputEmail1" placeholder="Đáp án {{$question}}" value="{{ old('content_'.$question ) }}">
+                    @error('content_'.$question)
+                     <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                     <input type="checkbox" name="{{ 'correct_' . $question }}">
+                    
                     </div>
                     @endfor
                     </div>
@@ -87,13 +95,13 @@
                   </div>
                   <div class="form-group clearfix" id="check_true" style="display: none">
                       <div class="icheck-danger d-inline">
-                        <input type="radio" name="answer" checked id="radioDanger1" value="1">
+                        <input type="radio" name="answer" checked id="radioDanger1" value="1" {{ old('answer')==1?'checked':'' }}>
                         <label for="radioDanger1">
                           Đúng 
                         </label>
                       </div>
                       <div class="icheck-danger d-inline">
-                        <input type="radio" name="answer" id="radioDanger2" value="0">
+                        <input type="radio" name="answer" id="radioDanger2" value="0" {{ old('answer')==0?'checked':'' }}>
                         <label for="radioDanger2">
                             Sai
                         </label>
@@ -101,9 +109,9 @@
                       
                     </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">store</label>
+                    <label for="exampleInputEmail1">Điểm</label>
                     <input type="number" name="score" class="form-control @error('score') is-invalid @enderror" 
-                    id="exampleInputEmail1" placeholder="store" value="{{ old('score') }}">
+                    id="exampleInputEmail1" placeholder="Điểm" value="{{ old('score') }}">
                     @error('score')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -113,7 +121,7 @@
                 
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Thêm mới</button>
                 </div>
               </form>
             </div>
@@ -134,6 +142,24 @@
 
 @section('scripts')
 <script>
+  d = document.getElementById("category").value;
+         //alert(d);
+         if(d == 1)
+         {
+            document.getElementById("check_question").style.display = 'block';
+            document.getElementById("check_true").style.display = 'none';
+         }else{
+            if(d == 2)
+         {
+            document.getElementById("check_true").style.display = 'block';
+            document.getElementById("check_question").style.display = 'none';
+         }
+         else{
+            document.getElementById("check_true").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+         }
+         }
+    
  document.getElementById("category").onchange = function () {
          d = document.getElementById("category").value;
          //alert(d);

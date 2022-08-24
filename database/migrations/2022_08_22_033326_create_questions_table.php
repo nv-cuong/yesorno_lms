@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('course_id');
             $table->string('category');
             $table->string('content');
-            $table->text('answer');
+            $table->text('answer')->nullable();
             $table->float('score');
             $table->timestamps();
         });

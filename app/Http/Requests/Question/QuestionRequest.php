@@ -23,12 +23,37 @@ class QuestionRequest extends FormRequest
      */
     public function rules()
     {
+         
+        if($this->category == 1)
+        {
+            return [
+                'content' => ['required', 'max:255'],
+                'course_id' => ['required'],
+                'score' => ['required', 'integer' ,'min:1'],  
+                
+            ];
+        }
+        else{
+            return [
+                'content' => ['required', 'max:50'],
+                'course_id' => ['required'],      
+                'score' => ['required', 'integer' ,'min:1'],  
+            
+            ];
+        }
+       
+    }
+    public function messages()
+    {
         return [
-            'content' =>        ['required', 'max:255'],
-            'course_id' =>    ['required'],
-            'category' =>    ['required'],
-            'score' =>    ['required', 'integer' ,'min:1'],  
+         
+            'content.required'     => 'Bạn chưa nhập tên câu hỏi',
+            'content.max'     => 'Câu hỏi quá dài',
+            'score.required'     => 'Bạn chưa nhập điểm',
+            'score.integer'     => 'Điểm phải dạng số nguyên',
+            'score.min'     => 'Điểm phải lớn hơn 1',
         
         ];
     }
+
 }

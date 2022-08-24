@@ -16,31 +16,34 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="container">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-        <h2>Laravel DataTables Tutorial Example</h2>
-        <div class="card-header">
-        <a  href="{{ route('question.create') }}" class="btn btn-success justify-content-end " > <span>Thêm mới </span></a>
-        </div>
-  
-</a>
-        <div class="table-responsive">
-       
-            <table class="table table-bordered" id="DataList">
-               <thead>
-                  <tr>
-                     <th>Id</th>
-                     <th>Name</th>
-                     <th>Action</th>
-                  </tr>
-                 
-               </thead>
-            </table>
-        </div>
-        <!-- /.row -->
-    </div><!-- /.container-fluid -->
-</section>
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo lớp học mới</a>
+                        </div>
+
+                        <table class="table table-striped" id="DataList">
+                            <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Tên lớp</th>
+                                    <th>Tên khóa học</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody id="load">
+
+                            </tbody>
+                        </table>
+
+                        
+                    </div>
+                </div>
+            </div>
+    </section>
 @stop
 @section('modal')
 <!-- Modal -->
@@ -76,7 +79,7 @@ $(function() {
     $('#DataList').DataTable({
         processing: true,
         serverSide: true,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        
         ajax: "{!! route('question.getData') !!}",
         columns: [
             { data: 'id', name: 'id' },
@@ -87,7 +90,8 @@ $(function() {
                 orderable: true, 
                 searchable: true
             },
-        ]
+        ],
+        buttons: [ 'csv', 'excel', 'pdf', 'print' ]
     });
 });
 

@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
 use Ramsey\Collection\Queue;
-
+use App\Models\Test;
 class QuestionController extends Controller
 {
     public function getData()
@@ -116,35 +116,55 @@ class QuestionController extends Controller
         
     }
 
-    public function update(QuestionRequest $request, $id, Answer $answer)
+    public function update(QuestionRequest $request, $id)
     {
-        $msg = 'Product is not exitsting!';
+        $msg = 'Câu hỏi không tồn tại !';
         $question = Question::find($id);
         if ($question->category == 1) {
             $question->content = $request->input('content');
             $question->course_id = $request->input('course_id');
             $question->score = $request->input('score');
             $question->save();
-            //$question->answer()->attach($id);
-            for ($q=1; $q <= 4; $q++) {
+            
+            $answers = Answer::where('question_id',$id)->get();
+            foreach($answers  as $q => $ans){
+                
                 $option = $request->input('content_' . $q, '');
                 if ($option != '') {
-                    $answers = Answer::where('question_id',$id)->get();
-                    $data=[
-                      'content' => $option,
-                      'checked' => $request->input('correct_' . $q) ? 1 : 0,
-                    ];
-                    $answer->update($data);
-                    //dd($answer);
+                   
+                    $ans->content= $option;
+                    $ans->checked= $request->input('correct_' . $q) ? 1 : 0;
+                    $ans->save();
+                    
                 }
             }
-            $msg = 'Update question is success!';
+            //dd($answers);
+            $msg = 'Sửa thành công câu hỏi :' .$question->content;
+        }elseif($question->category == 2)
+        {
+            $question->content = $request->input('content');
+            $question->course_id = $request->input('course_id');
+            $question->score = $request->input('score');
+            $question->answer = $request->input('answer');
+            $question->save();
+            $msg = 'Sửa thành công câu hỏi :' .$question->content;
+        }else{
+            $question->content = $request->input('content');
+            $question->course_id = $request->input('course_id');
+            $question->score = $request->input('score');
+            
+            $question->save();
+            $msg = 'Sửa thành công câu hỏi :' .$question->content;
         }
+        return redirect(route('question.index'))->with('msg', $msg);
     }
     
     public function destroy(Request $request)
     {
+        
         $question_id = $request->input('question_id', 0);
+        $question = Question::find($question_id);
+        
         if ($question_id) {
             Question::destroy($question_id);
             return redirect(route('question.index'))
