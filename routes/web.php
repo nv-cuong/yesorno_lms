@@ -40,6 +40,12 @@ Route::prefix('admin')->group(function () {
         Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
         Route::get('create', [QuestionController::class, 'create'])->name('create');
         Route::post('store', [QuestionController::class, 'store'])->name('store');
+        Route::get('/edit/{id}', [QuestionController::class, 'edit'])
+        ->name('edit');
+        Route::post('/edit/{id}', [QuestionController::class, 'update'])
+        ->name('update');
+        Route::delete('/delete', [QuestionController::class, 'destroy'])
+        ->name('delete');
     });
 
 

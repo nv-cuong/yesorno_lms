@@ -28,16 +28,16 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Create <small>question</small></h3>
+                <h3 class="card-title">Edit <small>question</small></h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form method="post" action="{{ route('question.store') }}" >
+              <form method="post" action="{{ route('question.update', $question->id) }}" >
                 @csrf
 
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Content</label>
+                    <label for="exampleInputEmail1">Name</label>
                     <input type="text" name="content" class="form-control @error('content') is-invalid @enderror" 
                     id="exampleInputEmail1" placeholder="content" value="{{ old('content') }}">
                     @error('content')
@@ -52,34 +52,40 @@
                     <option selected="selected" value="1">Alabama</option>
                     
                     <option value="2">Washington</option>
-                  </select>
-                  @error('course_id')
+                    @error('course_id')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                  </select>
                 </div>
                 <div class="form-group">
                   <label>Type</label>
-                  <select class="form-control select2 @error('category') is-invalid @enderror"  style="width: 100%;" name="category" id="category">
-                    <option selected="selected" value="0">Câu hỏi tự luận</option>
-                    <option value="1">Câu hỏi trắc nghiệm</option>
-                    <option value="2">Câu hỏi Đúng sai</option>
-                    
-                  </select>
-                  @error('category')
+                  <select class="form-control select2 @error('category') is-invalid @enderror"  style="width: 100%;" name="category" id="category" disabled>
+                 
+                
+                    <option  value="0" {{ $question->category==0?'selected':'' }}
+                    >Câu hỏi tự luận</option>
+                    <option value="1" {{ $question->category==1?'selected':'' }}>Câu hỏi trắc nghiệm</option>
+                    <option value="2" {{ $question->category==2?'selected':'' }}>Câu hỏi Đúng sai</option>
+                    @error('category')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
+                  </select>
                 </div>
                 <div class="form-group" id="check_question" style="display: none">
                     <label for="exampleInputEmail1">Đáp án</label>
                    
                     
                     <div class="row">
-                    @for ($question=1; $question<=4; $question++)
+                    @forelse($answers as $key => $answer)
+                    
                     <div class="col-md-6 form-group">
-                    <input type="text" name="{{ 'content_'. $question }}" class="form-control " id="exampleInputEmail1" placeholder="Đáp án {{$question}}">
-                    <input type="checkbox" name="{{ 'correct_' . $question }}">
+                    <input type="text" name="{{ 'content_'. $key+1 }}" class="form-control " value="{{ old('content_', isset($answer) ? $answer->content : '') }}" id="exampleInputEmail1" placeholder="Đáp án {{$key+1}}">
+                    <input type="checkbox" name="{{ 'correct_'. $key+1  }}" {{ $answer->checked==1?'checked':'' }}
+                    
+                    >
                     </div>
-                    @endfor
+                    @empty
+                    @endforelse
                     </div>
                 
                   
@@ -87,13 +93,14 @@
                   </div>
                   <div class="form-group clearfix" id="check_true" style="display: none">
                       <div class="icheck-danger d-inline">
-                        <input type="radio" name="answer" checked id="radioDanger1" value="1">
+                        <input type="radio" name="answer" checked id="radioDanger1" 
+                        value="1" {{ $question->answer==1?'checked':'' }}>
                         <label for="radioDanger1">
                           Đúng 
                         </label>
                       </div>
                       <div class="icheck-danger d-inline">
-                        <input type="radio" name="answer" id="radioDanger2" value="0">
+                        <input type="radio" name="answer" id="radioDanger2" value="0" {{ $question->answer==0?'checked':'' }}>
                         <label for="radioDanger2">
                             Sai
                         </label>
@@ -103,7 +110,7 @@
                 <div class="form-group">
                     <label for="exampleInputEmail1">store</label>
                     <input type="number" name="score" class="form-control @error('score') is-invalid @enderror" 
-                    id="exampleInputEmail1" placeholder="store" value="{{ old('score') }}">
+                    id="exampleInputEmail1" placeholder="store" value="{{ old('store') }}">
                     @error('score')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
@@ -134,7 +141,7 @@
 
 @section('scripts')
 <script>
- document.getElementById("category").onchange = function () {
+ 
          d = document.getElementById("category").value;
          //alert(d);
          if(d == 1)
@@ -153,7 +160,7 @@
          }
          }
     
- };
+
 
     
         
