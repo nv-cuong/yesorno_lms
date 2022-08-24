@@ -1,10 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\ClassController;
+use App\Http\Controllers\Admin\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
+
+use App\Http\Controllers\Admin\QuestionController;
+
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
+
 
 
 /*
@@ -36,4 +41,12 @@ Route::prefix('admin')
     Route::resource('class', ClassController::class);
     Route::delete('/class/delete', [ProductController::class, 'destroy'])
         ->name('class.delete');
+
+    Route::prefix('/questions')->name('question.')->group(function () {
+        Route::get('index', [QuestionController::class, 'index'])->name('index');
+        Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
+        Route::get('create', [QuestionController::class, 'create'])->name('create');
+        Route::post('store', [QuestionController::class, 'store'])->name('store');
+    });
+    Route::resource('course', CourseController::class);
 });

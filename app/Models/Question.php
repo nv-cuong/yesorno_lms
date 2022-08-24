@@ -9,17 +9,18 @@ class Question extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'course_id','category','content','answer','score'
-    ];
 
+        'course_id',
+        'content',
+        'answer',
+        'category',
+        'score',
+    ];
+       
+   
     public function answer()
     {
-        return $this->belongsToMany(
-            Answer::class,
-            'question_answers',
-            'question_id',
-            'answer_id',
-        );
+        return $this->hasMany(Answer::class);
     }
 
     public function test()
