@@ -15,4 +15,9 @@ class Answer extends Model
         'checked'
 
     ];
+
+    public function question()
+    {
+        return $this->belongsTo(Question::class);
+    }    
 }
