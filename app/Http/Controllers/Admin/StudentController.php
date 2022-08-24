@@ -11,7 +11,7 @@ use App\Models\ClassStudy;
 class StudentController extends Controller
 {
     public function index(){
-        $users = User::select([
+        $students = User::select([
             'users.id',
             'phone',
             'birthday',
@@ -21,51 +21,64 @@ class StudentController extends Controller
             'first_name',
             'last_name'
         ])
+        ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+        ->where('ru.role_id', 5)
         ->with('roles', 'activations')
         ->orderBy('users.id', 'asc')
         ->paginate();
-        return view('admin.users.index', compact('users'));
+        return view('admin.students.index', compact('students'));
     }
     public function edit(Request $request, $id)
     {
         $student = User::find($id);
+        $classes = User::find($id)->classStudies()->where("user_id",$id)->get();
         if ($student) {
-            // foreach($student->classStudies()->get() as $class) {
-            //     dd($class->getOriginal('id'));
-            // }
-            return view('admin.users.edit', compact('student'));
+
+            return view('admin.students.edit', compact('student','classes'));
         }
 
-        return redirect(route('product.index'))
-        ->with('msg', 'Product is not exitsting!');
+        return redirect(route('students'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
-    // public function update(ProductRequest $request, $id)
-    // {
-    //     $msg = 'Product is not exitsting!';
-    //     $product = Product::find($id);
-    //     if ($product) {
-    //         $product->name = $request->input('name');
-    //         $product->slug = \Str::slug($product->name);
-    //         $product->category_id = $request->input('category_id');
-    //         $product->quantity = $request->input('quantity');
-    //         $product->price = $request->input('price');
-    //         $product->description = $request->input('description');
-    //         $product->save();
-    //         $msg = 'Update product is success!';
-    //     }
+    public function update(Request $request, $id)
+    {
+        $msg = 'Học sinh chưa tồn tại!';
+        $student = User::find($id);
+        if ($student) {
+            $student->phone= $request->input('phone');
+            $student->first_name = $request->input('first_name');
+            $student->gender = $request->input('gender');
+            $student->last_name = $request->input('last_name');
+            $student->age = $request->input('age');
+            $student->birthday = $request->input('birthday');
+            $student->save();
+            $msg = 'Thay đổi thành công!';
+        }
+        return redirect(route('students'))
+        ->with('msg', $msg);
+    }
 
-    //     try {
-    //         $photo = $request->file('photo');
-    //         $path = Storage::putFile('images', $photo);
+    public function destroy(Request $request)
+    {
+        $student_id = $request->input('student_id', 0);
+        if ($student_id) {
+            User::destroy($student_id);
+            return redirect(route('students'))
+            ->with('msg', "Xóa sinh viên {$student_id} thành công!");
+        } else {
+            throw new ModelNotFoundException();
+        }
+    }
 
-    //         $image = Image::create(['name'=>$path]);
-    //         $product->images()->attach($image->id);
-    //     } catch (\Throwable $t) {
-    //         dd($t);
-    //     }
-
-    //     return redirect(route('product.index'))
-    //     ->with('msg', $msg);
-    // }
+    public function showClass(Request $request, $id)
+    {
+        $student = User::find($id);
+        $classes = User::find($id)->classStudies()->where("user_id",$id)->get();
+        if ($student) {
+            return view('admin.students.class', compact('student','classes'));
+        }
+        return redirect(route('students'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
+    }
 }

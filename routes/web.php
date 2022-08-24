@@ -32,13 +32,17 @@ Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
 
-    Route::prefix('users')->group(function () {
+    Route::prefix('students')->group(function () {
     Route::get('/', [StudentController::class, 'index'])
-    ->name('users');
+    ->name('students');
     Route::get('/edit/{id}', [StudentController::class, 'edit'])
-        ->name('user.edit');
+        ->name('student.edit');
     Route::post('/edit/{id}', [StudentController::class, 'update'])
-        ->name('user.update');
+        ->name('student.update');
+    Route::delete('/delete', [StudentController::class, 'destroy'])
+        ->name('student.delete');
+    Route::get('/class/{id}', [StudentController::class, 'showClass'])
+        ->name('student.class');
     });
     Route::resource('class', ClassController::class);
 });

@@ -15,4 +15,14 @@ class ClassStudy extends Model
         'amount',
         'description',
     ];
+    public function courses()
+    {
+        return $this->belongsToMany(
+            Course::class,
+            'class_study_courses',
+            'class_study_id',
+            'course_id',
+
+        );
+    }
 }
