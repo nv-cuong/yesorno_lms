@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\Role;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class UserSeeder extends Seeder
 {
@@ -17,9 +18,20 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        // \App\Models\User::factory()->count(10)->create()->each(function($user) {
+        //     DB::table('activations')->insert([
+        //         'user_id' => $user->id,
+        //         'code' => fake()->password(),
+        //         'completed' => '1'
+        //     ]);
+        //     DB::table('role_users')->insert([
+        //         'user_id' => $user->id,
+        //         'role_id' => '5',
+        //     ]);
+        // });
         DB::table('role_users')->truncate();
-        DB::table('users')->truncate();
         DB::table('roles')->truncate();
+        DB::table('users')->truncate();
         $roles = [
             [
                 'name' => 'Admin',
@@ -54,7 +66,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'manager@example.com',
@@ -64,7 +76,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'teacher@example.com',
@@ -74,7 +86,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'student@example.com',
@@ -84,7 +96,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'classmanager@example.com',
@@ -94,7 +106,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
         ];
 
@@ -125,5 +137,6 @@ class UserSeeder extends Seeder
                     break;
             }
         }
-    }
+
+}
 }

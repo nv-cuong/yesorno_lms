@@ -48,13 +48,15 @@
                   
                   <div class="form-group">
                   <label>Khóa học</label>
-                  <select class="form-control select2 @error('course_id') is-invalid @enderror"  style="width: 100%;" name="course_id" >
-                    <option selected="selected" value="1">Alabama</option>
-                    
-                    <option value="2">Washington</option>
-                    @error('course_id')
-                     <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                  <select class="form-control select2 "  style="width: 100%;" name="course_id" >
+                  @forelse($course as $cr )
+                    @if( $cr->id == old('course_id', $question->course_id))
+                    <option selected="selected" value="{{ $cr->id }}">{{ $cr->title }}</option>
+                    @else
+                    <option  value="{{ $cr->id }}">{{ $cr->title }}</option>
+                   @endif
+                   @empty
+                  @endforelse
                   </select>
                 </div>
                 <div class="form-group">

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Team 5 | @yield('title')</title>
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css">
+    
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -28,7 +28,9 @@
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('/admin/plugins/summernote/summernote-bs4.min.css')}}">
     
-   
+    <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
+  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -64,7 +66,7 @@
     <script src="{{ asset('/admin/plugins/jquery/jquery.min.js') }}"></script>
     <!-- jQuery UI 1.11.4 -->
     <script src="{{ asset('/admin/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+   
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
@@ -95,7 +97,20 @@
     <script src="{{ asset('/admin/dist/js/demo.js') }}"></script>
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="{{ asset('/admin/dist/js/pages/dashboard.js') }}"></script>
-   
+   <!-- DataTables  & Plugins -->
+<script src="{{ asset('/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<!-- AdminLTE App -->
     @yield('scripts')
 </body>
 

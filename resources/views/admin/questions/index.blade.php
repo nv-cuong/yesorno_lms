@@ -22,21 +22,72 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo lớp học mới</a>
+                            <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo câu hỏi</a>
                         </div>
 
-                        <table class="table table-striped" id="DataList">
+                        <table class="table table-striped" id="example1">
                             <thead>
                                 <tr>
                                     <th>STT</th>
-                                    <th>Tên lớp</th>
+                                    <th>Tên câu hỏi</th>
                                     <th>Tên khóa học</th>
-                                    
+                                    <th>Loại câu hỏi</th>
+                                    <th>Câu trả lời</th>
+                                    <th>Điểm</th>
+                                   
+                                   
+                                    <th>Hành động</th>
                                 </tr>
                             </thead>
-                            <tbody id="load">
+                            <tbody>
+                              @foreach ($questions as $question)
+                                
+                              
+                            <tr>
+                                    <th>STT</th>
+                                    <th>{{$question->content}}</th>
+                                    <th>{{$question->course->title}}</th>
+                                    <th>
+                                     @if ($question->category==0)
+                                       Tự luận
+                                     @else
+                                    @if ($question->category==1)
+                                      Trắc nghiệm
+                                    @else
+                                      Đúng sai
+                                    @endif
+                                     @endif
+                                    </th>
+                                    <th>
+                                      @if ($question->category==1)
+                                      <a onclick="event.preventDefault();answer_qu('{{$question->id}}')" href="" 
+                                    class="btn btn-default btn-sm "><i class="fa fa-plus-circle"></i> Xem </a>
+                                      @else
+                                      @if($question->answer==1 && $question->category==2)
+                                      Đúng
+                                      @else
+                                      @if($question->answer==0 && $question->category==2)
+                                      Sai
+                                      @else
+                                      
+                                      @endif
+                                      @endif
+                                      @endif
+                                    
+                                    </th>
+                                    <th>{{$question->score}}</th>
+                                   
+                                    <th>
+                                    <a href="{{ route('question.edit',$question->id) }}) .'" class="edit btn btn-success btn-sm">Edit</a>
+                                    <a class="btn btn-sm btn-danger delete_question" data-toggle="modal" data-target="#deleteModalQuestion" value="{{$question->id}}" 
+                                    onclick="javascript:question_delete('{{$question->id}}')">Delete</a>
+                                    </th>
+                                </tr>
+                                @endforeach
+    
+    
 
-                            </tbody>
+                               </tbody>
                         </table>
 
                         
@@ -51,7 +102,7 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Xóa câu hỏi</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -61,22 +112,61 @@
         @method('DELETE')
         <input type="hidden" name="question_id" id="question_id" value="0">
       <div class="modal-body">
-        Are you Delete ?
+       Bạn có muốn xóa không ?
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-        <button type="submit" class="btn btn-primary">Yes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
+        <button type="submit" class="btn btn-primary">Có</button>
       </div>
       </form>
     </div>
   </div>
 </div>
+
+ <!-- xem câu trả lời -->
+ <div class="modal fade" id="modal_answer">
+         <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header text-center">
+                    <h2 class="modal-title ">Danh sách Câu trả lời</h2>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                   <div class="table-responsive">
+
+                        
+                        <table class="table table-striped" id="show_answer">
+                            <thead>
+                                <tr>
+                                    <th class="th-sortable text-center" data-toggle="class" >Câu trả lời
+                                    </th>
+                                    <th class="th-sortable text-center" data-toggle="class">Check
+                                    </th>
+                                     
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                 
+                            </tbody>
+                        </table>
+                        
+
+                    </div> 
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 @section('scripts')
 
 <script type="text/javascript">
 $(function() {
-    $('#DataList').DataTable({
+    $('#Datalist').DataTable({
         processing: true,
         serverSide: true,
         
@@ -98,11 +188,44 @@ $(function() {
     </script>
     
   <script type="text/javascript">
-    
+    $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
 function question_delete (id)
   {
       var question_id = document.getElementById('question_id');
       question_id.value = id;
   }
+
+  function answer_qu(an)
+ {
+  var url = "{{ route('question.answer', ':an') }}",
+        url = url.replace(':an', an);
+    $.ajax({
+
+        type: 'GET',
+        url : url,
+        success: function(data) { 
+            $('#show_answer tbody').html(data);
+            $('#modal_answer').modal('show');
+            
+        },
+        error: function(data) {
+            console.log(data);
+        }
+    });
+ }
 </script>
 @stop

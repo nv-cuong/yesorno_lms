@@ -1,25 +1,31 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Models\Question;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\QuestionRequest;
 use App\Http\Requests\Question\EditQuestionRequest;
 use App\Models\Answer;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Log;
+
 use Ramsey\Collection\Queue;
 use App\Models\Test;
+
+
 class QuestionController extends Controller
 {
     public function getData()
     {
         $questions = Question::query();
-     
+
         return DataTables::of($questions)
+
            ->addColumn('action', function($row){
              $actionBtn = '<a href="'. route('question.edit', $row->id) .'" class="edit btn btn-success btn-sm">Edit</a> 
              <a class="btn btn-sm btn-danger delete_question" data-toggle="modal" data-target="#deleteModalQuestion" value="' .$row->id. '" onclick="javascript:question_delete(' .$row->id. ')">Delete</a>';
@@ -27,24 +33,29 @@ class QuestionController extends Controller
     })
     ->rawColumns(['action'])
     ->make(true);
+
+            
+
     }
 
     public function index()
     {
-       
-        return view('Admin.questions.index');
+
+        $questions = Question::all();
+        return view('Admin.questions.index',compact('questions'));
     }
-    
+
     public function create()
     { 
-        return view('Admin.questions.create');
+        $course = Course::all();
+       // dd($course);
+        return view('Admin.questions.create',compact('course'));
     }
 
     public function store(QuestionRequest $request)
     {
         $question_item = $request->except('_token');
-         
-       
+
         try{
             if($question_item['category']==0)
             {
@@ -81,17 +92,12 @@ class QuestionController extends Controller
                     'answer'         => $question_item['answer'],
                 ]);
             }
-            
-        
-
         } catch (\Throwable $t) {
             
             throw new ModelNotFoundException();
         }
 
-        return redirect(route('question.index'))->with('msg', 'Product is not exitsting');
-
-        
+        return redirect(route('question.index'))->with('msg', 'Thêm câu hỏi thành công !');
     }
     public function edit(Request $request, $id)
     {
@@ -105,20 +111,11 @@ class QuestionController extends Controller
        }else{
         $question = Question::find($id);
         if ($question) {
-            // if($question->category == 1)
-            // {
-            //     $answers = Answer::where('question_id',$id)->get();
-                
             
-            // return view('Admin.questions.edit',compact(['question','answers']));
-            // }else{
-            //     $answers = 0;            
-            //     return view('Admin.questions.edit',compact(['question','answers']));
-            // }
             $answers = Answer::where('question_id',$id)->get();
-                
-           
-             return view('Admin.questions.edit',compact(['question','answers']));
+            $course = Course::all();
+         
+             return view('Admin.questions.edit',compact(['question','answers','course']));
         }
        }
        
@@ -196,6 +193,36 @@ class QuestionController extends Controller
        }
        
         
+    }
+
+    public function show_answser($id)
+    {
+        $output = '';
+        $answers=Answer::where('question_id',$id)->get();
+        //dd($id);
+        if ($answers) {
+            
+ 
+                 foreach ($answers as $an) {
+                    if($an->checked==1)
+                    {
+                        $checked='Đúng';
+                    }
+                    else
+                    {
+                        $checked='Sai';
+                    }
+                     
+                     $output .= '<tr>
+                   
+                     <td class="text-center">' . $an->content . '</td>
+                     <td class="text-center">' . $checked . '</td>
+                    
+                     
+                     </tr>';
+                 }
+             }
+           return Response($output);
     }
     
 }

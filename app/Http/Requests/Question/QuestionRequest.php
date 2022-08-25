@@ -27,7 +27,7 @@ class QuestionRequest extends FormRequest
         if($this->category == 1)
         {
             return [
-                'content' => ['required', 'max:50','unique'],
+                'content' => ['required', 'max:50','unique:questions'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer' ,'min:1'],  
                 'content_1' => ['required'],
@@ -39,7 +39,7 @@ class QuestionRequest extends FormRequest
         }
         else{
             return [
-                'content' => ['required', 'max:50'],
+                'content' => ['required', 'max:50','unique:questions'],
                 'course_id' => ['required'],      
                 'score' => ['required', 'integer' ,'min:1'],  
             
