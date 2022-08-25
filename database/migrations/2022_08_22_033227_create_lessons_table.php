@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('slug');
             $table->string('content');
             $table->string('config');
-            $table->string('path');
-            $table->date('published');
+            $table->string('path')->nullable();
+            $table->date('published')->nullable();
             $table->timestamps();
         });
     }
