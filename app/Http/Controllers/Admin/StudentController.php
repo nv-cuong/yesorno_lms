@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\ClassStudy;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StudentController extends Controller
 {
