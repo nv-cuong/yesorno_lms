@@ -82,7 +82,6 @@ class CourseController extends Controller
     {
         $msg = 'Khóa học không tồn tại';
         $course = Course::find($id);
-        dd($course);
         if ($course) {
             $course->title = $request->input('title');
             $course->statistic_id = $course->statistic_id;

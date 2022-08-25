@@ -45,8 +45,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-end">{{ $course->begin_date }}</td>
-                            <td class="text-end">{{ $course->end_date }}</td>
+                            <td >{{ $course->begin_date }}</td>
+                            <td >{{ $course->end_date }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -59,7 +59,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>STT</th>
                                 <th>Tên chương</th>
                                 <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
@@ -74,8 +74,8 @@
                                         {{ $unit->title }}
                                     </a>
                                 </td>
-                                <td class="text-end">{{ $unit->created_at->format('d-m-Y') }}</td>
-                                <td class="text-end">{{ $unit->updated_at->format('d-m-Y') }}</td>
+                                <td >{{ $unit->created_at->format('d-m-Y') }}</td>
+                                <td >{{ $unit->updated_at->format('d-m-Y') }}</td>
                                 <td style="white-space: nowrap ;">
                                     <a href="#" class="btn btn-success">
                                         <i class="bi bi-pencil-square"></i>

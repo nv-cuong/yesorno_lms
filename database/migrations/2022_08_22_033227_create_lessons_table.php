@@ -15,7 +15,6 @@ return new class extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->integer('unit_id');
             $table->foreignId('unit_id')
                 ->constrained()
                 ->onUpdate('cascade')

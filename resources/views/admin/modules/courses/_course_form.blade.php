@@ -24,7 +24,11 @@
     <label for="image" class="form-label">Ảnh</label>
     <br>
     <img src="{{ asset($course->image) }}" class="img-thumbnail">
-    <input type="file" name="image" id="image" class="form-control">
+    <br>
+    <input type="file" name="image" id="image" class="form-control @error('image') is-invalid @enderror" value="{{ old('image', $course->image) }}">
+    @error('image')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
 </div>
 <div class="mb-3">
     <label for="description" class="form-label">Description</label>
