@@ -52,12 +52,12 @@
                 <td class="text-end">{{ $course->created_at->format('d-m-Y') }}</td>
                 <td class="text-end">{{ $course->updated_at->format('d-m-Y') }}</td>
                 <td style="white-space: nowrap ;">
-                  <a href="{{ route('course.create') }}" class="btn btn-success">
+                  <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-success">
                     <i class="bi bi-pencil-square"></i>
                   </a>
-                  <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
+                  <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
                     <i class="bi bi-trash"></i>
-                  </button>
+                  </a>
                 </td>
               </tr>
               @empty

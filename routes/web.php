@@ -27,45 +27,44 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('/login', [LoginController::class, 'login'])
-->name('login');
+    ->name('login');
 Route::post('/login', [LoginController::class, 'postLogin'])
-->name('login.post');
+    ->name('login.post');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::prefix('admin')
-->middleware('myweb.auth')
-->group(function ()
-{
-    Route::get('/dashboard', [IndexController::class, 'index'])
-    ->name('dashboard');
+    ->middleware('myweb.auth')
+    ->group(function () {
+        Route::get('/dashboard', [IndexController::class, 'index'])
+            ->name('dashboard');
 
-    Route::prefix('/questions')->name('question.')->group(function () {
-        Route::get('index', [QuestionController::class, 'index'])->name('index');
-        Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
-        Route::get('create', [QuestionController::class, 'create'])->name('create');
-        Route::post('store', [QuestionController::class, 'store'])->name('store');
+        Route::prefix('/questions')->name('question.')->group(function () {
+            Route::get('index', [QuestionController::class, 'index'])->name('index');
+            Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
+            Route::get('create', [QuestionController::class, 'create'])->name('create');
+            Route::post('store', [QuestionController::class, 'store'])->name('store');
+        });
+
+        Route::resource('class', ClassController::class);
+
+        Route::resource('class', ClassController::class)
+            ->middleware('myweb.auth:admin');
+
+        Route::prefix('/courses')->name('course.')->group(function () {
+            Route::get('index', [CourseController::class, 'index'])->name('index');
+            Route::get('/showCourse/{slug}', [CourseController::class, 'showCourse'])->name('detail');
+            // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
+            Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
+            Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
+            Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
+            Route::post('/editCourse/{id}', [CourseController::class, 'updateCourse'])->name('update');
+            Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
+        });
+
+        Route::prefix('/units')->name('unit.')->group(function () {
+            Route::get('/showUnit/{slug}', [UnitController::class, 'showUnit'])->name('detail');
+            // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
+            // Route::get('create', [QuestionController::class, 'create'])->name('create');
+            // Route::post('store', [QuestionController::class, 'store'])->name('store');
+        });
     });
-
-    Route::resource('class', ClassController::class);
-    
-    Route::resource('class', ClassController::class)
-    ->middleware('myweb.auth:admin');
-    
-    Route::prefix('/courses')->name('course.')->group(function () {
-        Route::get('index', [CourseController::class, 'index'])->name('index');
-        Route::get('/showCourse/{slug}', [CourseController::class, 'showCourse'])->name('detail');
-        // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
-        Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
-        Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
-        Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
-    });
-
-    Route::prefix('/units')->name('unit.')->group(function () {
-        Route::get('/showUnit/{slug}', [UnitController::class, 'showUnit'])->name('detail');
-        // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
-        // Route::get('create', [QuestionController::class, 'create'])->name('create');
-        // Route::post('store', [QuestionController::class, 'store'])->name('store');
-    });
-
-
-});
