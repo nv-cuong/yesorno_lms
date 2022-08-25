@@ -31,7 +31,7 @@
                     <div class="card">
 
                         <div class="card-header">
-                            <a href="{{ route('class.create') }}" class="btn btn-success float-right">+ Tạo lớp học mới</a>
+                            <a href="{{ route('class.create') }}" class="btn btn-success float-right" title="Thêm một lớp học mới">Tạo lớp học mới</a>
                         </div>
 
                         <table class="table table-striped">
@@ -60,13 +60,26 @@
                                                 {{ $item->title }} <br>
                                             @endforeach
                                         </td>
-                                        <td class="text">{{ $class->amount }} (buổi)</td>
+                                        <td class="text">
+                                        @if ($class->amount == 0)
+                                            Sáng
+                                        @elseif ($class->amount == 1)
+                                            Chiều
+                                        @else
+                                            Cả ngày
+                                        @endif
+                                        </td>
                                         <td class="text-end">{{ $class->users->count() }}</td>
                                         <td>
-                                            <a href="#" class="btn btn-success"><i class="fas fa-edit"></i></a>
+                                            <a href="{{ route('class.edit', $class->id) }}" class="btn btn-success" title="Chỉnh sửa thông tin lớp học">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
                                             <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-sm"
-                                                onclick="javascript:class_delete({{ $class->id }})">
+                                                onclick="javascript:class_delete({{ $class->id }})" title="Xóa lớp học">
                                                 <i class="far fa-trash-alt"></i>
+                                            </a>
+                                            <a href="{{ route('class.show', $class->slug) }}" class="btn btn-primary" title="Xem chi tiết lớp học" >
+                                                <i class="far fa-eye"></i>
                                             </a>
                                         </td>
                                     </tr>
@@ -110,9 +123,7 @@
                     </div>
                 </form>
             </div>
-            <!-- /.modal-content -->
         </div>
-        <!-- /.modal-dialog -->
     </div>
 @endsection
 @push('custom-scripts')

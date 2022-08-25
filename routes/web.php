@@ -39,7 +39,7 @@ Route::prefix('admin')
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
     Route::resource('class', ClassController::class);
-    Route::delete('/class/delete', [ProductController::class, 'destroy'])
+    Route::delete('/class/delete', [ClassController::class, 'destroy'])
         ->name('class.delete');
 
     Route::prefix('/questions')->name('question.')->group(function () {

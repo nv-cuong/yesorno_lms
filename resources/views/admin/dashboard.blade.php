@@ -28,8 +28,7 @@
                 <!-- small box -->
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>150</h3>
-
+                        <h3>{{ $std->count() }}</h3>
                         <p>Học viên</p>
                     </div>
                     <div class="icon">
@@ -43,8 +42,7 @@
                 <!-- small box -->
                 <div class="small-box bg-success">
                     <div class="inner">
-                        <h3>53<sup style="font-size: 20px">%</sup></h3>
-
+                        <h3>{{ $course->count() }}</h3>
                         <p>Khóa học</p>
                     </div>
                     <div class="icon">
@@ -58,7 +56,7 @@
                 <!-- small box -->
                 <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>44</h3>
+                        <h3>{{ $class->count() }}</h3>
 
                         <p>Lớp học</p>
                     </div>
