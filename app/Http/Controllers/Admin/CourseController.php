@@ -22,7 +22,7 @@ class CourseController extends Controller
             'updated_at',
         ])
         ->paginate();
-        return view('admin.modules.courses.index', compact('course'));
+        return view('admin.modules.courses.index', compact('courses'));
     }
 
     public function show($slug)

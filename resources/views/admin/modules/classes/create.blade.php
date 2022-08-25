@@ -2,6 +2,7 @@
 @section('title', 'Quàn lí lớp học')
 
 @section('content')
+    <br>
     <section class="content">
         <div class="container-fluid">
             <div class="row">

@@ -27,16 +27,11 @@
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('/admin/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
-<<<<<<< HEAD
     <link rel="stylesheet" href="{{ asset('/admin/plugins/summernote/summernote-bs4.min.css') }}">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{ asset('admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
 
-=======
     <link rel="stylesheet" href="{{ asset('/admin/plugins/summernote/summernote-bs4.min.css')}}">
-
-
->>>>>>> a0f01f2ac639cfc3c1efdc3c7674b4883706d7d0
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -106,5 +101,4 @@
     <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
     @yield('scripts')
 </body>
-
 </html>
