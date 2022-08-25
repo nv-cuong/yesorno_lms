@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 
-
+use App\Http\Controllers\Admin\TestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -61,6 +61,13 @@ Route::prefix('admin')
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
         });
 
+            Route::get('/test', [TestController::class, 'index'])->name('test');
+            Route::get('/create', [TestController::class, 'create'])->name('test.create');
+            Route::post('/store', [TestController::class, 'store'])->name('test.store');
+            Route::DELETE('/delete', [TestController::class, 'delete'])->name('test.delete');
+            Route::get('/edit/{id}', [TestController::class, 'edit'])->name('test.edit');
+            Route::post('/update/{id}', [TestController::class, 'update'])->name('test.update');
+        
         Route::prefix('/units')->name('unit.')->group(function () {
             Route::get('/showUnit/{slug}', [UnitController::class, 'showUnit'])->name('detail');
             // Route::get('getData', [CourseController::class, 'getData'])->name('getData');

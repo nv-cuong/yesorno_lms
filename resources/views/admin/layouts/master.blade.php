@@ -26,8 +26,10 @@
     <link rel="stylesheet" href="{{ asset('/admin/plugins/daterangepicker/daterangepicker.css')}}">
     <!-- summernote -->
     <link rel="stylesheet" href="{{ asset('/admin/plugins/summernote/summernote-bs4.min.css')}}">
+
     <!-- Bootsrtap icon -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
