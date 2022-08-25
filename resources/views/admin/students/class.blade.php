@@ -11,10 +11,7 @@
         <div class="card">
 
             <div class="card-header">
-                <h3 class="page-title d-inline mb-0">Thông tin lớp học của sinh viên</h3>
-                <div class="float-right">
-                    <a href="" class="btn btn-success">Tạo sinh viên</a>
-                </div>
+                <h3 class="page-title d-inline mb-0">Thông tin lớp học của học viên</h3>
             </div>
             <div class="card-body">
                 <div class="row">
@@ -37,30 +34,39 @@
                                 <tr>
                                     <th>Lớp học</th>
                                     <td>
-                                        @foreach ($classes as $class)
+                                        @forelse ($classes as $class)
                                             <div class="d-flex justify-content-between align-items-center">
-
                                                 <ul class="list-group list-group-flush"style="width : 100%">
                                                     <li class="list-group-item">
-                                                        <i class="fa-solid fa-graduation-cap"></i>
+                                                        <i class="fa-solid fa-graduation-cap fa-lg"></i>
                                                         {{ $class['name'] }}
                                                     </li>
                                                     @foreach ($class->courses()->get() as $course)
                                                         <li class="list-group-item" style="margin-left : 40px">
-                                                            <i class="fa-solid fa-circle-arrow-right" style="color: rgb(235, 41, 41)"></i>
+                                                            <i class="bi bi-book-half fa-lg" style="color: rgb(53, 53, 253)"></i>
                                                             {{ $course->getOriginal('title') }}
                                                         </li>
                                                     @endforeach
                                                     <br>
                                                 </ul>
                                             </div>
-                                        @endforeach
-                                </tr>
-                            </tbody>
-                        </table>
+
+                                        @empty
+                                            <ul class="list-group list-group-flush"style="width : 100%">
+                                                <li class="list-group-item">
+                                                    <i class="fa-solid fa-graduation-cap"></i>
+                                                    Học viên chưa đăng kí lớp nào
+                                                </li>
+                                        @endforelse
+
+                                        </ul>
                     </div>
-                </div><!-- Nav tabs -->
-            </div>
+                    </tr>
+                    </tbody>
+                    </table>
+                </div>
+            </div><!-- Nav tabs -->
         </div>
+    </div>
     </div>
 @stop

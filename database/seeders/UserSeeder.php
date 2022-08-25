@@ -66,7 +66,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'manager@example.com',
@@ -76,7 +76,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'teacher@example.com',
@@ -86,7 +86,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'student@example.com',
@@ -96,7 +96,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
             [
                 'email' => 'classmanager@example.com',
@@ -106,7 +106,7 @@ class UserSeeder extends Seeder
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
-                'gender' => fake()->randomElement(['Male', 'Female']),
+                'gender' => fake()->randomElement(['male', 'female']),
             ],
         ];
 

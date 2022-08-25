@@ -49,6 +49,10 @@ Route::prefix('admin')
         ->name('student.delete');
     Route::get('/class/{id}', [StudentController::class, 'showClass'])
         ->name('student.class');
+    Route::get('/course/{id}', [StudentController::class, 'showCourse'])
+        ->name('student.course');
+    Route::get('/statistic/{id}', [StudentController::class, 'showStatistic'])
+        ->name('student.statistic');
     });
     Route::prefix('/questions')->name('question.')->group(function () {
         Route::get('index', [QuestionController::class, 'index'])->name('index');

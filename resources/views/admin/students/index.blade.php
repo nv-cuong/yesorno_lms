@@ -26,24 +26,24 @@
                     <table class="table table-hover text-nowrap">
                         <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Tên sinh viên</th>
-                                <th>Số điện thoại</th>
-                                <th>Địa chỉ</th>
-                                <th>Ngày sinh</th>
-                                <th>Tùy chọn</th>
+                                <th class = "text-center">ID</th>
+                                <th class = "text-center">Tên học viên</th>
+                                <th class = "text-center">Số điện thoại</th>
+                                <th class = "text-center">Địa chỉ</th>
+                                <th class = "text-center">Ngày sinh</th>
+                                <th class = "text-center">Tùy chọn</th>
                             </tr>
                         </thead>
                         <tbody>
                             @forelse($students as $student)
                                 <tr>
-                                    <td>{{ $student->id }}</td>
-                                    <td class="text-end col-1">{{ $student->first_name }} {{ $student->last_name }}</td>
-                                    <td class="text-end col-2">{{ $student->phone }}</td>
-                                    <td class="text-end col-5">{{ $student->address }}</td>
-                                    <td class="text-end col-2">{{ $student->birthday }}</td>
-                                    <td class="text-end col-2">
-                                        <a href="" class="btn btn-sm btn-primary mb-1">
+                                    <td> {{ $loop->iteration + ($students->currentPage() -1) * $students->perPage() }}</td>
+                                    <td class="text-center col-1" style="text-align: ">{{ $student->first_name }} {{ $student->last_name }}</td>
+                                    <td class="text-center col-2">{{ $student->phone }}</td>
+                                    <td class="text-center col-5">{{ $student->address }}</td>
+                                    <td class="text-center col-2">{{ $student->birthday }}</td>
+                                    <td class="text-center col-2">
+                                        <a href="{{ route('student.statistic', [$student->id]) }}" class="btn btn-sm btn-primary mb-1">
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <a href="{{ route('student.edit', [$student->id]) }}" class="btn btn-sm btn-primary mb-1">
@@ -53,7 +53,7 @@
                                             data-bs-target="#deleteModal"
                                             onclick="javascript:student_delete({{ $student->id }})">
                                             <i class="fa-solid fa-trash"></i></a>
-                                        <a href="" class="btn btn-sm btn-warning mb-1">
+                                        <a href="{{ route('student.course', [$student->id]) }}" class="btn btn-sm btn-warning mb-1">
                                             Khóa
                                         </a>
                                         <a href="{{ route('student.class', [$student->id]) }}" class="btn btn-sm btn-success mb-1">
@@ -62,7 +62,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td class="col-6">Không có học sinh nào</td>
+                                    <td class="col-6">Không có học viên nào</td>
                                 </tr>
                             @endforelse
 
@@ -92,7 +92,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalLabel">Xóa sinh viên!</h5>
+                    <h5 class="modal-title" id="deleteModalLabel">Xóa học viên!</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form method="post" action={{ route('student.delete') }}>
@@ -100,7 +100,7 @@
                     @method('DELETE')
                     <input type="hidden" name="student_id" id="student_id" value="0">
                     <div class="modal-body">
-                        Bạn có chắc là muốn xóa sinh viên này?
+                        Bạn có chắc là muốn xóa học viên này?
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>

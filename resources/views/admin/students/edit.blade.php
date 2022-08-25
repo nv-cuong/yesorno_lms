@@ -11,10 +11,7 @@
                 @csrf
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="page-title d-inline">Sửa thông tin sinh viên</h3>
-                        <div class="float-right">
-                            <a href="" class="btn btn-success">Tạo sinh viên</a>
-                        </div>
+                        <h3 class="page-title d-inline">Sửa thông tin học viên</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -68,12 +65,12 @@
                                     <label class="col-md-2 form-control-label" for="gender">Giới tính</label>
                                     <div class="col-md-10">
                                     </label >
-                                    <input type="radio" name="gender" value="Male"
+                                    <input type="radio" name="gender" value="male"
                                         {{ $student->gender == 'Male' ? 'checked' : '' }}> Nam
-                                        <input type="radio" name="gender" value="Female" style="margin-left:10px"
-                                            {{ $student->gender == 'Female' ? 'checked' : '' }}> Nữ
+                                        <input type="radio" name="gender" value="female" style="margin-left:10px"
+                                            {{ $student->gender == 'female' ? 'checked' : '' }}> Nữ
                                         <input type="radio" name="gender" value="Other" style="margin-left:10px"
-                                            {{ $student->gender == 'Other' ? 'checked' : '' }}> Khác
+                                            {{ $student->gender == 'other' ? 'checked' : '' }}> Khác
                                     </div>
                                 </div>
 

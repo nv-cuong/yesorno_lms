@@ -81,4 +81,36 @@ class StudentController extends Controller
         return redirect(route('students'))
         ->with('msg', 'Học sinh chưa tồn tại!');
     }
+
+    public function showCourse(Request $request, $id)
+    {
+        $student = User::find($id);
+        if ($student) {
+            $courses = Course::select([
+                'courses.id',
+                'uc.user_id',
+                'courses.slug',
+                'title',
+            ])
+            ->leftJoin('user_courses AS uc','uc.course_id', 'courses.id')
+            ->where('uc.user_id',$id)
+            ->get();
+
+            return view('admin.students.course', compact('student','courses'));
+        }
+        return redirect(route('students'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
+    }
+    public function showStatistic(Request $request, $id)
+    {
+        $student = User::find($id);
+        if ($student) {
+            $classStudiesNumber=User::find($id)->classStudies()->where("user_id",$id)->count();
+            $coursesNumber = User::find($id)->courses()->where("user_id",$id)->count();
+            $coursesNumber = ($coursesNumber*100)/Course::all()->count();
+            return view('admin.students.statistic', compact('student','coursesNumber','classStudiesNumber'));
+        }
+        return redirect(route('students'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
+    }
 }
