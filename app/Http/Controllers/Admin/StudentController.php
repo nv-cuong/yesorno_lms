@@ -25,6 +25,7 @@ class StudentController extends Controller
         ->where('ru.role_id', 5)
         ->with('roles', 'activations')
         ->orderBy('users.id', 'asc')
+        ->search()
         ->paginate();
         return view('admin.students.index', compact('students'));
     }

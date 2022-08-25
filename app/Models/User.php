@@ -61,4 +61,11 @@ class User extends EloquentUser
             'course_id'
         );
     }
+    public function scopeSearch($query){
+        if($key = request()->key){
+            $query = $query-> where('first_name', 'like', '%'.$key.'%')
+                            ->orWhere('last_name', 'like', '%'.$key.'%');
+        }
+        return $query;
+    }
 }

@@ -7,19 +7,20 @@
             <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Danh sách học viên</h2>
+                    <form action="">
+                        <div class="card-tools">
+                            <div class="input-group input-group-sm" style="width: 150px;">
+                                <input type="text" name="key" class="form-control float-right"
+                                    placeholder="Tìm kiếm...">
 
-                    <div class="card-tools">
-                        <div class="input-group input-group-sm" style="width: 150px;">
-                            <input type="text" name="table_search" class="form-control float-right"
-                                placeholder="Tìm kiếm...">
-
-                            <div class="input-group-append">
-                                <button type="submit" class="btn btn-default">
-                                    <i class="fas fa-search"></i>
-                                </button>
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-default">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
                 <!-- /.card-header -->
                 <div class="card-body table-responsive p-0">
