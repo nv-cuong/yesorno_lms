@@ -79,19 +79,19 @@
                     @for ($question=1; $question<=4; $question++)
                     <div class="col-md-6 form-group">
                     <input type="text" name="{{ 'content_'. $question }}" 
-                    class="form-control @error('content_'.$question) is-invalid @enderror" 
+                    class="form-control @error('content_'."$question") is-invalid @enderror" 
                     id="exampleInputEmail1" placeholder="Đáp án {{$question}}" value="{{ old('content_'.$question ) }}">
-                    @error('content_'.$question)
+                    @error('content_'."$question")
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                     <input type="checkbox" name="{{ 'correct_' . $question }}">
                     
                     </div>
                     @endfor
+                    
+  
                     </div>
                 
-                  
-                   
                   </div>
                   <div class="form-group clearfix" id="check_true" style="display: none">
                       <div class="icheck-danger d-inline">

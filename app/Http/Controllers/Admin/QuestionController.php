@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Question;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\QuestionRequest;
+use App\Http\Requests\Question\EditQuestionRequest;
 use App\Models\Answer;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -94,8 +95,15 @@ class QuestionController extends Controller
     }
     public function edit(Request $request, $id)
     {
-        $question = Question::find($id);
        
+        $question_test = Question::find($id);
+     
+        if($question_test->test()->count()>0)
+       {
+        return redirect(route('question.index'))
+        ->with('msg', "Câu hỏi có trong bài test không thể sửa !");
+       }else{
+        $question = Question::find($id);
         if ($question) {
             // if($question->category == 1)
             // {
@@ -112,13 +120,17 @@ class QuestionController extends Controller
            
              return view('Admin.questions.edit',compact(['question','answers']));
         }
+       }
+       
 
         
     }
 
-    public function update(QuestionRequest $request, $id)
+    public function update(EditQuestionRequest $request, $id)
     {
         $msg = 'Câu hỏi không tồn tại !';
+        
+       
         $question = Question::find($id);
         if ($question->category == 1) {
             $question->content = $request->input('content');
@@ -157,6 +169,8 @@ class QuestionController extends Controller
             $msg = 'Sửa thành công câu hỏi :' .$question->content;
         }
         return redirect(route('question.index'))->with('msg', $msg);
+       
+        
     }
     
     public function destroy(Request $request)
@@ -164,14 +178,24 @@ class QuestionController extends Controller
         
         $question_id = $request->input('question_id', 0);
         $question = Question::find($question_id);
-        
+     
+        if($question->test()->count()>0)
+       {
+        return redirect(route('question.index'))
+        ->with('msg', "Câu hỏi có trong bài test không thể xóa !");
+       }
+       else
+       {
         if ($question_id) {
             Question::destroy($question_id);
             return redirect(route('question.index'))
-            ->with('msg', "Delete product {$question_id} success!");
+            ->with('msg', "Xóa câu hỏi {$question_id} thành công !");
         } else {
             throw new ModelNotFoundException();
         }
+       }
+       
+        
     }
     
 }
