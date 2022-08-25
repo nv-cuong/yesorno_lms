@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('category');
-            $table->integer('amount');
-            $table->string('title');
-            $table->integer('time');
-            $table->text('description');
-            $table->float('result');
+            $table->string('category')->nullable();
+            $table->integer('amount')->nullable();
+            $table->string('title')->nullable();
+            $table->integer('time')->nullable();
+            $table->text('description')->nullable();
+            $table->float('result')->nullable();
             $table->timestamps();
         });
     }

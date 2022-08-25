@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
 
 use App\Http\Controllers\Admin\QuestionController;
-
+use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 
@@ -51,5 +51,21 @@ Route::prefix('admin')
     Route::resource('class', ClassController::class)
     ->middleware('myweb.auth:admin');
     
-    Route::resource('course', CourseController::class);
+    Route::prefix('/courses')->name('course.')->group(function () {
+        Route::get('index', [CourseController::class, 'index'])->name('index');
+        Route::get('/showCourse/{slug}', [CourseController::class, 'showCourse'])->name('detail');
+        // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
+        Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
+        Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
+        Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
+    });
+
+    Route::prefix('/units')->name('unit.')->group(function () {
+        Route::get('/showUnit/{slug}', [UnitController::class, 'showUnit'])->name('detail');
+        // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
+        // Route::get('create', [QuestionController::class, 'create'])->name('create');
+        // Route::post('store', [QuestionController::class, 'store'])->name('store');
+    });
+
+
 });
