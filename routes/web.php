@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ClassController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\TestController;
 
 
 /*
@@ -30,5 +31,18 @@ Route::prefix('admin')->group(function () {
     Route::get('/dashboard', [IndexController::class, 'index'])
     ->name('dashboard');
     Route::resource('class', ClassController::class);
+
+
+    Route::get('/test', [TestController::class,'index'])->name('test');
+    Route::get('/create', [TestController::class,'create'])->name('test.create');
+    Route::post('/store', [TestController::class,'store'])->name('test.store');
+    Route::DELETE('/delete', [TestController::class,'delete'])->name('test.delete');
+    Route::get('/edit/{id}', [TestController::class,'edit'])->name('test.edit');
+    Route::post('/update/{id}', [TestController::class,'update'])->name('test.update');
+    
+  
 });
 
+ Route::post('/getQuestion', [TestController::class,'getQuestion'])->name('getquestion');
+
+Route::get('/getQuestion', [TestController::class,'getQuestion'])->name('getQuestion1');

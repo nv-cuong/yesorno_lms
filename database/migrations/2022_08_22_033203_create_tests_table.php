@@ -19,8 +19,8 @@ return new class extends Migration
             $table->integer('amount');
             $table->string('title');
             $table->integer('time');
-            $table->text('description');
-            $table->float('result');
+            $table->text('description')->nullable();
+            $table->float('result')->nullable();
             $table->timestamps();
         });
     }
