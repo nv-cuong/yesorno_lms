@@ -38,7 +38,7 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th>STT</th>
                                 <th>Tên bài</th>
                                 <th>Loại</th>
                                 <th>Ngày tạo</th>
@@ -54,9 +54,9 @@
                                         {{ $lesson->title }}
                                     </a>
                                 </td>
-                                <td class="text-end">{{ $lesson->config }}</td>
-                                <td class="text-end">{{ $lesson->created_at->format('d-m-Y') }}</td>
-                                <td class="text-end">{{ $lesson->updated_at->format('d-m-Y') }}</td>
+                                <td >{{ $lesson->config }}</td>
+                                <td >{{ $lesson->created_at->format('d-m-Y') }}</td>
+                                <td >{{ $lesson->updated_at->format('d-m-Y') }}</td>
                                 <td style="white-space: nowrap ;">
                                     <a href="#" class="btn btn-success">
                                         <i class="bi bi-pencil-square"></i>

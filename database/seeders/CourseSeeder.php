@@ -19,6 +19,7 @@ class CourseSeeder extends Seeder
     {
         Course::factory()
         ->count(5)
+        ->hasQuestions(10)
         ->has(
             Unit::factory()
             ->count(10)

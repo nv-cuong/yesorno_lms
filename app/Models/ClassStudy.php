@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-// use App\Models\Course;
-// use App\Models\User;
 
 class ClassStudy extends Model
 {
@@ -35,8 +33,7 @@ class ClassStudy extends Model
             'class_study_users',
             'class_study_id',
             'user_id',
-        )
-        ;
+        );
     }
 
     public function scopeSearch($query){
@@ -45,5 +42,4 @@ class ClassStudy extends Model
         }
         return $query;
     }
-
 }
