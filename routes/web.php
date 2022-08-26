@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 
 use App\Http\Controllers\Admin\TestController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,16 +33,19 @@ Route::post('/login', [LoginController::class, 'postLogin'])
     ->name('login.post');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
+Route::get('/register', [RegisterController::class, 'register'])->name('register');
+Route::post('', [RegisterController::class, 'processRegistration'])->name('register.action');
+
 Route::prefix('admin')
     ->middleware('myweb.auth')
     ->group(function () {
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
-
+// Conflict thì để cái này lại nhé | Đức
         Route::resource('class', ClassController::class);
         Route::delete('/class/delete', [ClassController::class, 'destroy'])
             ->name('class.delete');
-
+// Đức
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
                 ->name('students');
