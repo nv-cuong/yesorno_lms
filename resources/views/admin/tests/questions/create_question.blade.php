@@ -1,9 +1,10 @@
 @extends('admin.layouts.master')
-@section('title', 'Create Test')
+@section('title', 'Create Question')
 @section('content')
+
 <meta name="csrf-token" content="{{csrf_token()}}">
-<h2>Create Test</h2>
-<form action="{{ route('test.store') }}" method = "post" >
+<h2>Add Question</h2>
+<form action="{{route('test.store_question',$id_test)}}" method = "post" >
 @csrf
 {{ csrf_field() }}
 <div class="form-group">
@@ -15,27 +16,13 @@
     </select>
 </div>
 <div class="form-group">
-<label for="exampleFormControlInput1">Tiều đề</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập tiêu đề" name ="title">
-    <label for="exampleFormControlInput1">Amount</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập số câu hỏi" name ="amount">
-    <label for="exampleFormControlInput1">Time</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập thời gian làm bài" name ="time">
-</div>
-<div class="form-group">
-        <label for="exampleFormControlTextarea1">Nhập Description:</label>
-        <textarea class="form-control"  name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
-    </div>
-    
-<div class="form-group">
-             <label for="confirmation_pwd">Chọn Course:</label>
+             <label for="confirmation_pwd">Course:</label>
             <select class="form-control course" id="id" name="course" data-dependent="question"
             >
-            <option value="">-</option>
-            @forelse($course as $id => $title)-
-            <option value="{{ $id }}">{{$id}}. {{ $title }}</option>
-            @empty
-            @endforelse
+           
+            <option value="">{{$courses->id}}. {{$courses->title }}</option>
+          
+           
             </select>
             
             </div>
@@ -47,11 +34,13 @@
     
     <select class="form-select question" id="multiple-select-clear-field" name="question[]" data-dependent="course"data-placeholder="Choose question" multiple>
       <option value="">Selete Course first</option> 
-       <!-- 
-        @forelse($question as $id => $content)
-            <option value="{{ $id }}">{{ $content }}</option>
-            @empty
-            @endforelse -->
+       <?php
+       $i=1;?>
+      @foreach($question as $row)
+            <option value="{{ $row->id }}"><?php echo "$i. "?>{{ $row->content }}</option>
+            <?php $i++;?>
+        @endforeach 
+        
     </select>
 </div>
 
@@ -82,7 +71,7 @@ $( '#multiple-select-clear-field' ).select2( {
 
 
 
-<button type="submit" class="btn btn-primary">Tạo bài Test</button>
+<button type="submit" class="btn btn-primary">Thêm câu hỏi</button>
 </form>
 <script>
 $('#multiple-select-field' ).select2( {
@@ -121,7 +110,7 @@ $('#multiple-select-field' ).select2( {
 
 //     })
 // });</script>
- <script src="/ajax/ajaxadd.js"type="text/javascript"></script>
+ 
 @endsection
 
 

@@ -22,7 +22,7 @@ $(document).ready(function() {
 
                     },
                     success: function(result) {
-                        $(".check").html(result);
+                        $(".question").html(result);
                     }
                 })
             }

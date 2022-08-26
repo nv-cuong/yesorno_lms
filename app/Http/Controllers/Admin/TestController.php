@@ -12,7 +12,7 @@ use DB;
 class TestController extends Controller
 {   
     public function index(){
-        $tests = Test::all();
+        $tests = DB::table('tests')->paginate(15);
         return view('admin.tests.index',compact('tests'));
     }
     public function create(){
@@ -22,43 +22,29 @@ class TestController extends Controller
     }
     public function store(Request $request){
         $test = new Test();
-        
         $test->category=$request->category_question;
         $test->amount=$request->amount;
         $test->title=$request->title;
         $test->time=$request->time;
         $test->description=$request->description;
         $course_id=$request->course;
-        $question_id=$request->question;
         $test->save();
-for ($q=1; $q <= 1000; $q++) {
-    $option = $request->input('question_' . $q, '');
-    if ($option != '') {
-        $question  = Question::find($q);
+        for ($q=0; $q < (count($request->question)); $q++) {
+        $question  = Question::find($request->question[$q]);
         $question->test()->attach($test->id);
-    }
-}
-
-        
+}       
         $course  = Course::find($course_id);
         $course ->test()->attach($test->id);
-        // $question  = Question::find($question_id);
-        // $question->test()->attach($test->id);
-        return redirect('/admin/test');
+        return redirect()->route('index');
 
     }
     public function delete(Request $request){
-        $id=$request->input('product_id','value');
+        $id=$request->input('test_id','value');
+        $test=Test::find($id);
+        $test->course()->detach();
+        $test->question()->detach();
         Test::destroy($id);
         return redirect()->action([TestController::class, 'index'])->with('success','Dữ liệu xóa thành công.');
-    }
-    public function showQuestionInCourse(Request $request){
-        if ($request->ajax()) {
-			$questions = Question::where('course_id', 'like', '%' . $request->course_id. '%')->get();
-            dd($questions);
-
-			return response()->json($questions);
-		}
     }
     
     public function getQuestion(Request $request)
@@ -66,45 +52,22 @@ for ($q=1; $q <= 1000; $q++) {
        
         $value =$request->get('value');
         $dependent =$request->get('dependent');
-        $questions = Question::where('course_id', 'like', '%' .$value. '%')->select('id', 'content')->get();
+        $questions = Question::where('course_id',$value)->select('id', 'content')->get();
          
-         //$output = '<option value="">Select '.ucfirst($dependent).'</option>';
-     
-        // foreach($questions as $row){
-        //     $output='<option value="'.$row->id.'">'.$row->content.'</option>';
-        //     echo $output;
-           
-        // }
-        // foreach($questions as $row){
-        //         $output='<option value="'.$row->id.'">'.$row->content.'</option>';
-        //         echo $output;
-               
-        //     }
+        //  $output = '<option value="">Select '.ucfirst($dependent).'</option>';
+        $k=1;
         foreach($questions as $row){
-            $output='<label for="'.$row->id.'">
-            <input type="checkbox" name ="question_'.$row->id.'" id="'.$row->id.'" />'.$row->content.'</label>';
-            echo $output;
-           
-        }
-         
+                $output='<option name ="question_'.$row->id.'"  value="'.$row->id.'">'.$k.'. '.$row->content.'</option>';
+                $k++;
+                echo $output;
+               
+            }  
     }
     public function edit($id){
-       // $course1 = new Course();
         $tests  = Test::find($id);
-        foreach($tests->course as $row)
-        {
-            $id1= $row->pivot->course_id;
-        }
-        foreach($tests->question as $row)
-        {
-            $id2 = $row->pivot->question_id;
-            
-        }
-        $question1 = Question::find($id2);
-        $course1 = Course::find($id1);
         $course = Course::pluck('title', 'id');
         $question = Question::pluck('content', 'id');
-        return view('admin.tests.edit',compact('course','question','tests','course1','question1'));
+        return view('admin.tests.edit',compact('course','question','tests'));
     }
     public function update(Request $request, $id){
         $test  = Test::find($id);
@@ -118,28 +81,80 @@ for ($q=1; $q <= 1000; $q++) {
         $question_id=$request->question;
         
         $test->save();
-        return redirect('/admin/test');
+        return redirect()->route('index');
     }
-    public function addQuestion(Request $request)
-    {   $select =$request->get('select');
-       
-        $value =$request->get('value');
-        $dependent =$request->get('dependent');
-        $questions = Question::where('course_id', 'like', '%' .$value. '%')->select('id', 'content')->get();
-         
-         //$output = '<option value="">Select '.ucfirst($dependent).'</option>';
-     
-        // foreach($questions as $row){
-        //     $output='<option value="'.$row->id.'">'.$row->content.'</option>';
-        //     echo $output;
-           
-        // }
-        // foreach($questions as $row){
-                $output='<label for="one">
-                <input type="checkbox" id="one" />First checkbox</label>';
-                echo $output;
-               
-            // }
-         
+    public function view(Request $request, $id){
+         $tests  = Test::find($id);
+        $question=$tests->question()->paginate(15);
+        foreach($question as $row){
+            $arr_question1[]=$row->id;
+        }
+        $arr_question=implode(',',  $arr_question1);
+        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+    }
+    public function createquestion($id,$id_test,$arr_quest)
+    {
+        $arr_quest1= explode (",", $arr_quest);
+        $courses = Course::find($id);
+  
+        $question = Question::where('course_id',$id)
+            
+        ->WhereNotIn('id',$arr_quest1)
+        ->select('id', 'content')->get();
+        return view('admin.tests.questions.create_question',compact('courses','question','id_test'));
+        
+        
+    }
+    public function store_question(Request $request, $id_test){
+        $tests = Test::find($id_test);
+    for ($q=0; $q < (count($request->question)); $q++) {
+        $question  = Question::find($request->question[$q]);
+        $question->test()->attach($tests->id);
+}
+$question=$tests->question()->paginate(15);
+foreach($question as $row){
+    $arr_question1[]=$row->id;
+}
+$arr_question=implode(',',  $arr_question1);
+        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+    }
+    public function delete_question(Request $request,$id_test){
+        $id=$request->input('question_id','value');
+        $question = Question::find($id);
+        $question->test()->detach($id_test);
+        $tests  = Test::find($id_test);
+        $question=$tests->question()->paginate(15);
+        foreach($question as $row){
+            $arr_question1[]=$row->id;
+        }
+        $arr_question=implode(',',  $arr_question1);
+        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+    }
+    public function question_edit($id_question,$id_test,$id_course){
+        $question = Question::find($id_question);
+        $tests  = Test::find($id_test);
+        $question1=$tests->question()->paginate(15);
+        foreach($question1 as $row){
+            $arr_question1[]=$row->id;
+        }
+        $question_old = Question::where('course_id',$id_course)
+            
+        ->WhereNotIn('id',$arr_question1)
+        ->select('id', 'content')->get();
+        return view('admin.tests.questions.edit_question',compact('tests','question','question_old'));
+    }
+    public function question_update(Request $request,$id_test, $id_question_old){
+        $question = Question::find($request->id_question_old);
+        $question->test()->detach($id_test);
+        $question = Question::find($request->question);
+        $question->test()->attach($id_test);
+        $tests  = Test::find($id_test);
+        $question=$tests->question()->paginate(15);
+        foreach($question as $row){
+            $arr_question1[]=$row->id;
+        }
+        $arr_question=implode(',',  $arr_question1);
+        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+
     }
 }

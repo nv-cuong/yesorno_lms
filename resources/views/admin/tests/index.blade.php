@@ -1,11 +1,12 @@
 @extends('admin.layouts.master')
 @section('title', 'Test Manager')
 @section('content')
-
+<link href='https://cdn.jsdelivr.net/gh/startinhit/font-awesome/css/all.css' rel='stylesheet'/>
     <div class="title d-flex justify-content-between">
         <h3 class="page-title">Test</h3>
         <p >
-            <a href="{{route('test.create')}}" class="btn btn-success">Add New</a>
+            <a href="{{route('test.create')}}" class="btn btn-success">
+            <i class="fa-solid fa-plus"></i>Add New</a>
             
         </p>
    </div>
@@ -80,7 +81,13 @@
                             @csrf
                                 <button type="submit" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#exampleModal" 
                     onclick="myFunction({{$test->id}})" >Delete</button>
-                        @endif
+                       
+                        <a class="btn btn-xs btn-success" href="{{route('test.view',[$test->id])}}">
+                            
+                                View
+                            </a>
+                            @csrf 
+                            @endif
                         </td>
                     </tr>
                     @empty
@@ -90,6 +97,7 @@
                     @endforelse
                 </tbody>
             </table>
+            {{ $tests->links() }}
         </div>
 
 
@@ -100,7 +108,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Delete Product</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Delete Test?</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -112,7 +120,7 @@
       <form method="post"  action="{{ route('test.delete') }}" onsubmit="return ConfirmDelete( this )">
         @method('DELETE')
                     @csrf
-                    <input type="hidden" name="product_id" id='product_id' value="0"><br>
+                    <input type="hidden" name="test_id" id='test_id' value="0"><br>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         
         <button  class="btn btn-danger" type="submit">Delete</button>
@@ -125,7 +133,7 @@
 <script>
 function myFunction(id) {
 
-   document.getElementById("product_id").value=id;
+   document.getElementById("test_id").value=id;
       
      
   
