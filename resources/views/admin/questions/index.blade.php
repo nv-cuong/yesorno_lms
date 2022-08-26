@@ -61,7 +61,7 @@
                                     <th>
                                       @if ($question->category==1)
                                       <a onclick="event.preventDefault();answer_qu('{{$question->id}}')" href="" 
-                                    class="btn btn-default btn-sm "><i class="fa fa-plus-circle"></i> Xem </a>
+                                    class="btn btn-primary btn-sm "><i class="fa fa-plus-circle"></i> Xem </a>
                                       @else
                                       @if($question->answer==1 && $question->category==2)
                                       Đúng
@@ -78,9 +78,9 @@
                                     <th>{{$question->score}}</th>
                                    
                                     <th>
-                                    <a href="{{ route('question.edit',$question->id) }}) .'" class="edit btn btn-success btn-sm">Edit</a>
+                                    <a href="{{ route('question.edit',$question->id) }}) .'" class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
                                     <a class="btn btn-sm btn-danger delete_question" data-toggle="modal" data-target="#deleteModalQuestion" value="{{$question->id}}" 
-                                    onclick="javascript:question_delete('{{$question->id}}')">Delete</a>
+                                    onclick="javascript:question_delete('{{$question->id}}')"><i class="fas fa-backspace"></i></a>
                                     </th>
                                 </tr>
                                 @endforeach

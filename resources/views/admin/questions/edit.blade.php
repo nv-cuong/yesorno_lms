@@ -37,7 +37,7 @@
 
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Tên</label>
+                    <label for="exampleInputEmail1">Tên <span style="color: red">*</span></label>
                     <input type="text" name="content" class="form-control @error('content') is-invalid @enderror" 
                     id="exampleInputEmail1" placeholder="Tên" value="{{ old('content',$question->content) }}">
                     @error('content')
@@ -47,7 +47,7 @@
                   
                   
                   <div class="form-group">
-                  <label>Khóa học</label>
+                  <label>Khóa học <span style="color: red">*</span></label>
                   <select class="form-control select2 "  style="width: 100%;" name="course_id" >
                   @forelse($course as $cr )
                     @if( $cr->id == old('course_id', $question->course_id))
@@ -60,7 +60,7 @@
                   </select>
                 </div>
                 <div class="form-group">
-                  <label>Loại câu hỏi</label>
+                  <label>Loại câu hỏi <span style="color: red">*</span></label>
                   <select class="form-control select2 @error('category') is-invalid @enderror"  style="width: 100%;" name="category" id="category" disabled>
                  
                 
@@ -74,7 +74,7 @@
                   </select>
                 </div>
                 <div class="form-group" id="check_question" style="display: none">
-                    <label for="exampleInputEmail1">Đáp án</label>
+                    <label for="exampleInputEmail1">Đáp án <span style="color: red">*</span></label>
                    
                     
                     <div class="row">
@@ -110,7 +110,7 @@
                       
                     </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Điểm</label>
+                    <label for="exampleInputEmail1">Điểm <span style="color: red">*</span></label>
                     <input type="number" name="score" class="form-control @error('score') is-invalid @enderror" 
                     id="exampleInputEmail1" placeholder="Điểm" value="{{ old('store',$question->score) }}">
                     @error('score')
