@@ -46,6 +46,7 @@ class CourseController extends Controller
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
+
     }
 
     public function createCourse()
@@ -110,4 +111,6 @@ class CourseController extends Controller
             return redirect(route('course.index'))
                 ->with('msg', 'Khóa học không tồn tại');
     }
+
 }
+

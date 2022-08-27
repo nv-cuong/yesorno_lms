@@ -34,7 +34,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}" class="nav-link active">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{  url()->current() == route('dashboard')  ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Trang chủ
@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('class.index') }}" class="nav-link">
+                    <a href="{{ route('class.index') }}" class="nav-link {{  url()->current() == route('class.index')  ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Lớp học
