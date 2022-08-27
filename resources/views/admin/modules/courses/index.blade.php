@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Danh sách khóa học</h1>
+        <h1>Quản lý khóa học</h1>
       </div>
       <div class="col-sm-6 ">
         <form action="" class="form-inline justify-content-end">
@@ -38,25 +38,28 @@
                 <th>Tên khóa học</th>
                 <th>Ngày tạo</th>
                 <th>Ngày cập nhật</th>
+                <th>Tùy chọn</th>
               </tr>
             </thead>
             <tbody>
               @forelse($courses as $course)
               <tr>
                 <td>{{ $loop->iteration + ($courses->currentPage() -1) * $courses->perPage() }}</td>
-                <td>
-                  <a href="{{ route('course.detail', ['slug'=>$course->slug]) }}">
-                    {{ $course->title }}
-                  </a>
-                </td>
-                <td >{{ $course->created_at->format('d-m-Y') }}</td>
-                <td >{{ $course->updated_at->format('d-m-Y') }}</td>
+                <td>{{ $course->title }}</td>
+                <td>{{ $course->created_at->format('d-m-Y') }}</td>
+                <td>{{ $course->updated_at->format('d-m-Y') }}</td>
                 <td style="white-space: nowrap ;">
-                  <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-success">
-                    <i class="bi bi-pencil-square"></i>
+                  <a href="{{ route('course.detail', ['id'=>$course->id]) }}" class="btn btn-sm btn-primary mb-1">
+                    <i class="fa fa-eye"></i>
                   </a>
-                  <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
-                    <i class="bi bi-trash"></i>
+                  <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-sm btn-primary mb-1">
+                    <i class="fa-solid fa-pencil"></i>
+                  </a>
+                  <a class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
+                    <i class="fa-solid fa-trash"></i>
+                  </a>
+                  <a href="#" class="btn btn-sm btn-success mb-1">
+                    + Test
                   </a>
                 </td>
               </tr>

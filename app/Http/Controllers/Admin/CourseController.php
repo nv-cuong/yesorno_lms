@@ -28,9 +28,9 @@ class CourseController extends Controller
         return view('admin.modules.courses.index', compact('courses'));
     }
 
-    public function showCourse($slug)
+    public function showCourse($id)
     {
-        $course = Course::where('slug', $slug)
+        $course = Course::where('id', $id)
             ->first();
 
         $units = Unit::select([
@@ -41,8 +41,8 @@ class CourseController extends Controller
             'units.updated_at',
         ])
             ->join('courses', 'units.course_id', 'courses.id')
-            ->where('courses.slug', $slug)
-            ->orderBy('id', 'asc')
+            ->where('courses.id', $id)
+            ->orderBy('id', 'desc')
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
@@ -50,7 +50,8 @@ class CourseController extends Controller
 
     public function createCourse()
     {
-        return view('admin.modules.courses.create');
+        $course = new Course();
+        return view('admin.modules.courses.create', compact('course'));
     }
 
     public function storeCourse(CourseRequest $request)
@@ -105,7 +106,7 @@ class CourseController extends Controller
         if ($course_id) {
             Course::destroy($course_id);
             return redirect(route('course.index'))
-                ->with('msg', 'Khóa học ' . $course_id . ' đã được xóa');
+                ->with('msg', 'Khóa học đã được xóa');
         } else
             return redirect(route('course.index'))
                 ->with('msg', 'Khóa học không tồn tại');

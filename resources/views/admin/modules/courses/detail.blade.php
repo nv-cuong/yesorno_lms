@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1>Danh sách khóa học</h1>
+                <h1>Quản lí khóa học</h1>
             </div>
             <div class="col-sm-6 ">
                 <form action="" class="form-inline justify-content-end">
@@ -45,8 +45,8 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td >{{ $course->begin_date }}</td>
-                            <td >{{ $course->end_date }}</td>
+                            <td>{{ $course->begin_date }}</td>
+                            <td>{{ $course->end_date }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -54,7 +54,7 @@
                 <h4>Danh sách chương</h4>
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('course.create') }}" class="btn btn-success float-right">+ Thêm chương mới</a>
+                        <a href="{{ route('unit.create', ['course_id'=>$course->id]) }}" class="btn btn-success float-right">+ Thêm chương mới</a>
                     </div>
                     <table class="table table-striped">
                         <thead>
@@ -70,17 +70,17 @@
                             <tr>
                                 <td>{{ $loop->iteration + ($units->currentPage() -1) * $units->perPage() }}</td>
                                 <td>
-                                    <a href="{{ route('unit.detail', ['slug'=>$unit->slug]) }}">
+                                    <a href="{{ route('unit.detail', ['id'=>$unit->id]) }}">
                                         {{ $unit->title }}
                                     </a>
                                 </td>
-                                <td >{{ $unit->created_at->format('d-m-Y') }}</td>
-                                <td >{{ $unit->updated_at->format('d-m-Y') }}</td>
+                                <td>{{ $unit->created_at->format('d-m-Y') }}</td>
+                                <td>{{ $unit->updated_at->format('d-m-Y') }}</td>
                                 <td style="white-space: nowrap ;">
-                                    <a href="#" class="btn btn-success">
+                                    <a href="{{ route('unit.edit', [$unit->id]) }}" class="btn btn-success">
                                         <i class="bi bi-pencil-square"></i>
                                     </a>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:course_delete('{{ $unit->id }}')">
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:unit_delete('{{ $unit->id }}')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </td>
@@ -100,3 +100,38 @@
         </div>
 </section>
 @endsection
+
+@section('modal')
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Xóa chương!</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post" action="{{ route('unit.delete', ['course_id'=>$course->id]) }}">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="unit_id" id="unit_id" value="0">
+                <div class="modal-body">
+                    Bạn có chắc muốn xóa chương này?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                    <button type="submit" class="btn btn-danger">Yes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@stop
+
+@section('js')
+<script>
+    function unit_delete(id) {
+        var unit_id = document.getElementById('unit_id');
+        unit_id.value = id;
+    }
+</script>
+@stop
