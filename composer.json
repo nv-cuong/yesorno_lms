@@ -11,11 +11,8 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
-<<<<<<< HEAD
         "yajra/laravel-datatables-buttons": "^9.0",
-=======
         "twbs/bootstrap-icons": "^1.9",
->>>>>>> d1d52a7b69c2d13b04880af5365e0f18382ec140
         "yajra/laravel-datatables-oracle": "^10.1"
     },
     "require-dev": {
