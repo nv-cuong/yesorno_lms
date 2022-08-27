@@ -85,11 +85,12 @@ class TestController extends Controller
     }
     public function view(Request $request, $id){
          $tests  = Test::find($id);
-        $question=$tests->question()->paginate(15);
-        foreach($question as $row){
-            $arr_question1[]=$row->id;
+        $question1=$tests->question;
+        $question=$tests->question()->paginate(4);
+        foreach($question1 as $row){
+            $arr_question[]=$row->pivot->question_id;
         }
-        $arr_question=implode(',',  $arr_question1);
+        $arr_question=implode(',',  $arr_question);
         return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
     }
     public function createquestion($id,$id_test,$arr_quest)
@@ -111,31 +112,20 @@ class TestController extends Controller
         $question  = Question::find($request->question[$q]);
         $question->test()->attach($tests->id);
 }
-$question=$tests->question()->paginate(15);
-foreach($question as $row){
-    $arr_question1[]=$row->id;
-}
-$arr_question=implode(',',  $arr_question1);
-        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+return redirect()->route('test.view',$id_test);
     }
     public function delete_question(Request $request,$id_test){
         $id=$request->input('question_id','value');
         $question = Question::find($id);
         $question->test()->detach($id_test);
-        $tests  = Test::find($id_test);
-        $question=$tests->question()->paginate(15);
-        foreach($question as $row){
-            $arr_question1[]=$row->id;
-        }
-        $arr_question=implode(',',  $arr_question1);
-        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+        return redirect()->route('test.view',$id_test);
     }
     public function question_edit($id_question,$id_test,$id_course){
         $question = Question::find($id_question);
         $tests  = Test::find($id_test);
-        $question1=$tests->question()->paginate(15);
+        $question1=$tests->question;
         foreach($question1 as $row){
-            $arr_question1[]=$row->id;
+            $arr_question1[]=$row->pivot->question_id;
         }
         $question_old = Question::where('course_id',$id_course)
             
@@ -148,13 +138,8 @@ $arr_question=implode(',',  $arr_question1);
         $question->test()->detach($id_test);
         $question = Question::find($request->question);
         $question->test()->attach($id_test);
-        $tests  = Test::find($id_test);
-        $question=$tests->question()->paginate(15);
-        foreach($question as $row){
-            $arr_question1[]=$row->id;
-        }
-        $arr_question=implode(',',  $arr_question1);
-        return view('admin.tests.questions.view_question',compact('tests','question','arr_question'));
+        
+        return redirect()->route('test.view',$id_test);
 
     }
 }
