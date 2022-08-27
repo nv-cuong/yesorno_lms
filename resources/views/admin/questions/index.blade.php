@@ -8,7 +8,7 @@
             <div class="col-sm-12">
             @include('Admin/_alert')
             </div><!-- /.col -->
-            
+
         </div><!-- /.row -->
     </div><!-- /.container-fluid -->
 </div>
@@ -34,15 +34,15 @@
                                     <th>Loại câu hỏi</th>
                                     <th>Câu trả lời</th>
                                     <th>Điểm</th>
-                                   
-                                   
+
+
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                               @foreach ($questions as $question)
-                                
-                              
+
+
                             <tr>
                                     <th>STT</th>
                                     <th>{{$question->content}}</th>
@@ -60,7 +60,7 @@
                                     </th>
                                     <th>
                                       @if ($question->category==1)
-                                      <a onclick="event.preventDefault();answer_qu('{{$question->id}}')" href="" 
+                                      <a onclick="event.preventDefault();answer_qu('{{$question->id}}')" href=""
                                     class="btn btn-primary btn-sm "><i class="fa fa-plus-circle"></i> Xem </a>
                                       @else
                                       @if($question->answer==1 && $question->category==2)
@@ -69,28 +69,28 @@
                                       @if($question->answer==0 && $question->category==2)
                                       Sai
                                       @else
-                                      
+
                                       @endif
                                       @endif
                                       @endif
-                                    
+
                                     </th>
                                     <th>{{$question->score}}</th>
-                                   
+
                                     <th>
                                     <a href="{{ route('question.edit',$question->id) }}) .'" class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                                    <a class="btn btn-sm btn-danger delete_question" data-toggle="modal" data-target="#deleteModalQuestion" value="{{$question->id}}" 
+                                    <a class="btn btn-sm btn-danger delete_question" data-toggle="modal" data-target="#deleteModalQuestion" value="{{$question->id}}"
                                     onclick="javascript:question_delete('{{$question->id}}')"><i class="fas fa-backspace"></i></a>
                                     </th>
                                 </tr>
                                 @endforeach
-    
-    
+
+
 
                                </tbody>
                         </table>
 
-                        
+
                     </div>
                 </div>
             </div>
@@ -138,7 +138,7 @@
                 <div class="modal-body">
                    <div class="table-responsive">
 
-                        
+
                         <table class="table table-striped" id="show_answer">
                             <thead>
                                 <tr>
@@ -146,17 +146,17 @@
                                     </th>
                                     <th class="th-sortable text-center" data-toggle="class">Check
                                     </th>
-                                     
+
                                 </tr>
                             </thead>
                             <tbody>
-                                
-                                 
+
+
                             </tbody>
                         </table>
-                        
 
-                    </div> 
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -169,15 +169,15 @@ $(function() {
     $('#Datalist').DataTable({
         processing: true,
         serverSide: true,
-        
+
         ajax: "{!! route('question.getData') !!}",
         columns: [
             { data: 'id', name: 'id' },
             { data: 'content', name: 'content' },
             {
-                data: 'action', 
-                name: 'action', 
-                orderable: true, 
+                data: 'action',
+                name: 'action',
+                orderable: true,
                 searchable: true
             },
         ],
@@ -186,7 +186,7 @@ $(function() {
 });
 
     </script>
-    
+
   <script type="text/javascript">
     $(function () {
     $("#example1").DataTable({
@@ -217,10 +217,10 @@ function question_delete (id)
 
         type: 'GET',
         url : url,
-        success: function(data) { 
+        success: function(data) {
             $('#show_answer tbody').html(data);
             $('#modal_answer').modal('show');
-            
+
         },
         error: function(data) {
             console.log(data);

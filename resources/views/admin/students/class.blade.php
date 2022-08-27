@@ -38,12 +38,11 @@
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <ul class="list-group list-group-flush"style="width : 100%">
                                                     <li class="list-group-item">
-                                                        <i class="fa-solid fa-graduation-cap fa-lg"></i>
-                                                        {{ $class['name'] }}
+                                                        <i class="fas fa-chalkboard-teacher fa-2x"> {{ $class['name'] }}</i>
                                                     </li>
                                                     @foreach ($class->courses()->get() as $course)
                                                         <li class="list-group-item" style="margin-left : 40px">
-                                                            <i class="bi bi-book-half fa-lg" style="color: rgb(53, 53, 253)"></i>
+                                                            <i class="fas fa-book fa-lg" style="color: rgb(35, 35, 248)"></i>
                                                             {{ $course->getOriginal('title') }}
                                                         </li>
                                                     @endforeach
