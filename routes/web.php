@@ -109,4 +109,4 @@ require 'roles.php';
 
 });
 
-
+require 'auth.php';
