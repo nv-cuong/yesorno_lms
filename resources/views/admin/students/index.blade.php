@@ -38,7 +38,7 @@
                         @forelse($students as $student)
                         <tr>
                             <td> {{ $loop->iteration + ($students->currentPage() -1) * $students->perPage() }}</td>
-                            <td class="text-center col-1" >{{ $student->first_name }} {{ $student->last_name }}</td>
+                            <td class="text-center col-1">{{ $student->first_name }} {{ $student->last_name }}</td>
                             <td class="text-center col-2">{{ $student->phone }}</td>
                             <td class="text-center col-5">{{ $student->address }}</td>
                             <td class="text-center col-2">{{ $student->birthday }}</td>
@@ -49,7 +49,7 @@
                                 <a href="{{ route('student.edit', [$student->id]) }}" class="btn btn-sm btn-primary mb-1">
                                     <i class="fa-solid fa-pencil"></i>
                                 </a>
-                                <a class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:student_delete('{{ $student->id }}')">
+                                <a class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:student_delete({{ $student->id }})">
                                     <i class="fa-solid fa-trash"></i></a>
                                 <a href="{{ route('student.course', [$student->id]) }}" class="btn btn-sm btn-warning mb-1">
                                     Khóa
@@ -92,7 +92,7 @@
                 <h5 class="modal-title" id="deleteModalLabel">Xóa học viên!</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form method="post" action={{ route('student.delete') }}>
+            <form method="post" action="{{ route('student.delete') }}">
                 @csrf
                 @method('DELETE')
                 <input type="hidden" name="student_id" id="student_id" value="0">

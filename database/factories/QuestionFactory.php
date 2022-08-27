@@ -17,11 +17,11 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            'category'=> $this->faker->text(100),
-            'content'=>$this->faker->text(100),
+            'category'=> $this->faker->numberBetween(0, 2),
+            'content'=>$this->faker->text(10),
             'course_id' =>$this -> faker->numberBetween(1, 1000),
             //'category_id'=>$this->faker->numberBetween(1,1000),
-            'answer'=> $this->faker->text(100),
+            'answer'=> $this->faker->numberBetween(0, 1),
             'score'=>$this -> faker->numberBetween(1, 1000),
         ];
     }
