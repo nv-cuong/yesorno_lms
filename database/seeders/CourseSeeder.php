@@ -2,12 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Models\Course;
+use App\Models\Lesson;
+use App\Models\Unit;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Course;
-use App\Models\Unit;
-use App\Models\Lesson;
-use Illuminate\Support\Facades\DB;
 
 class CourseSeeder extends Seeder
 {
@@ -18,27 +17,17 @@ class CourseSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('courses')->truncate();
-        DB::table('units')->truncate();
-        DB::table('lessons')->truncate();
-        \App\Models\Course::factory()
+        Course::factory()
         ->count(5)
+        ->hasQuestions(10)
         ->has(
             Unit::factory()
             ->count(10)
             ->has(
                 Lesson::factory()
                 ->count(20)
-                )
             )
+        )
         ->create();
-
-        $courses = Course::all();
-
-        foreach ($courses as $course)
-        {
-            $course->slug = \Str::slug($course->title);
-            $course->save();
-        }
     }
 }

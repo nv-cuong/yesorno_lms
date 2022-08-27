@@ -2,64 +2,24 @@
 @section('title', 'Quàn lí lớp học')
 
 @section('content')
-    <section class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1>Danh sách lớp học</h1>
-                </div>
-                <div class="col-sm-6 ">
-                    <form action="" class="form-inline justify-content-end">
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
-                        </div>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-            </div>
-            @include('admin._alert')
-            <hr>
-        </div>
-    </section>
+    <br>
     <section class="content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('class.create') }}" class="btn btn-success float-right">+ Tạo lớp học mới</a>
+                            <h3 class="card-title" style="font-weight:bold">Tạo lớp học mới</h3>
                         </div>
-
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th>STT</th>
-                                    <th>Tên lớp</th>
-                                    <th>Tên khóa học</th>
-                                    <th>Mô tả</th>
-                                    <th>Học viên</th>
-                                    <th>Ngày bắt đầu</th>
-                                    <th>Thao tác</th>
-                                </tr>
-                            </thead>
-                            <tbody id="load">
-
-                            </tbody>
-                        </table>
-
-                        <form action="" method="POST" id="form-delete">
-                            @csrf
-                            @method('DELETE')
+                        <form action="{{ route('class.store') }}" method="POST" enctype="multipart/form-data">
+                            <div class="card-body">
+                                @include('admin.modules.classes._form')
+                                <button type="submit" class="btn btn-primary">Tạo lớp</button>
+                            </div>
                         </form>
-
-                        <div class="card-footer clearfix">
-                            {{-- {!! $listAr->appends(Request::all())->links() !!} --}}
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 @endsection

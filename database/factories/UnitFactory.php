@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Unit>
@@ -16,10 +17,12 @@ class UnitFactory extends Factory
      */
     public function definition()
     {
+        $title = fake()->text(10);
+        $slug = Str::slug($title, '-');
+        
         return [
-            'course_id' =>fake()->numberBetween(1, 5),
-            'title' => fake()->name(),
-            'slug'	=>fake()->url(),
+            'title' => $title,
+            'slug' => $slug,
         ];
     }
 }

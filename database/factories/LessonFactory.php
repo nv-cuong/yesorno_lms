@@ -3,9 +3,10 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Lesson>
  */
 class LessonFactory extends Factory
 {
@@ -16,14 +17,16 @@ class LessonFactory extends Factory
      */
     public function definition()
     {
+        $title = fake()->text(10);
+        $slug = Str::slug($title, '-');
+
         return [
-            'unit_id'=>	fake()->numberBetween(1, 10),
-            'title'	=> fake()->name(),
-            'slug'	=>fake()->url(),
-            'content'	=>fake()->text(100),
-            'config'	=> fake()->randomElement(['must', 'option']),
-            'path'    =>fake()->url(),
-            'published'=>fake()->date(),
+            'title' => $title,
+            'slug' => $slug,
+            'content' => fake()->text(200),
+            'config' => fake()->randomElement(['must', 'optional']),
+            'path' => fake()->url(),
+            'published' => fake()->date(),
         ];
     }
 }
