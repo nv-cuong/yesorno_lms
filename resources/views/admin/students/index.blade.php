@@ -1,47 +1,44 @@
 @extends('admin.layouts.master')
 @section('title', 'Class Manager')
 @section('content')
-    @include('admin/_alert');
+    @include('admin/_alert')
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <h2 class="card-title">Danh sách học viên</h2>
-                    <form action="">
-                        <div class="card-tools">
-                            <div class="input-group input-group-sm" style="width: 150px;">
-                                <input type="text" name="key" class="form-control float-right"
-                                    placeholder="Tìm kiếm...">
+                    <div class="card-title">
+                        <h2>Danh sách học viên</h2>
+                    </div>
 
-                                <div class="input-group-append">
-                                    <button type="submit" class="btn btn-default">
-                                        <i class="fas fa-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+
                 </div>
                 <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <table class="table table-hover text-nowrap">
-                        <thead>
-                            <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Tên học viên</th>
-                                <th class="text-center">Số điện thoại</th>
-                                <th class="text-center">Địa chỉ</th>
-                                <th class="text-center">Ngày sinh</th>
-                                <th class="text-center">Tùy chọn</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @forelse($students as $student)
+                <section class="content">
+                    <div class="container-fluid">
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+
+                                    <table class="table table-striped" id="example1">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">ID</th>
+                                                <th class="text-center">Tên học viên</th>
+                                                <th class="text-center">Số điện thoại</th>
+                                                <th class="text-center">Địa chỉ</th>
+                                                <th class="text-center">Ngày sinh</th>
+                                                <th class="text-center">Tùy chọn</th>
+                                            </tr>
+
+                                        </thead>
+                                        <tbody id="load">
+                                            @forelse($students as $student)
                                 <tr>
-                                    <td> {{ $loop->iteration + ($students->currentPage() - 1) * $students->perPage() }}</td>
-                                    <td class="text-center col-1">{{ $student->first_name }} {{ $student->last_name }}</td>
+                                    <td class="text-center col-1"> {{ $loop->iteration + ($students->currentPage() - 1) * $students->perPage() }}</td>
+                                    <td class="text-center col-2">{{ $student->first_name }} {{ $student->last_name }}</td>
                                     <td class="text-center col-2">{{ $student->phone }}</td>
-                                    <td class="text-center col-5">{{ $student->address }}</td>
+                                    <td class="text-center col-3">{{ $student->address }}</td>
                                     <td class="text-center col-2">{{ $student->birthday }}</td>
                                     <td class="text-center col-2">
                                         <a href="{{ route('student.statistic', [$student->id]) }}"
@@ -70,24 +67,36 @@
                                     <td class="col-6">Không có học viên nào</td>
                                 </tr>
                             @endforelse
+                                        </tbody>
+                                    </table>
+                                    <div class="card-footer clearfix">
+                                        {!! $students->appends(Request::all())->links() !!}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            @endsection
 
-                        </tbody>
-                    </table>
-                </div>
-                <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-        </div>
-    </div>
-    <div class="card-footer clearfix">
-        <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">«</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-        </ul>
-    </div>
+@section('scripts')
+<script>
+    $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
+
 @endsection
 
 @section('modal')
@@ -120,7 +129,6 @@
 @stop
 
 @section('js')
-
     <script>
         function student_delete(id) {
             var student_id = document.getElementById('student_id');
@@ -128,3 +136,4 @@
         }
     </script>
 @stop
+

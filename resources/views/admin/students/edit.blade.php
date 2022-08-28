@@ -21,7 +21,7 @@
 
                                     <div class="col-md-10">
                                         <input class="form-control @error('first_name') is-invalid @enderror" type="text"
-                                            name="first_name" id="first_name" value="{{ $student->first_name }}"
+                                            name="first_name" id="first_name" value="{{ old('first_name')  ?:  $student->first_name }}"
                                             placeholder="Họ" maxlength="191" autofocus="">
                                             @error('first_name')
                                         <div class="text-danger">{{ $message }}</div>
@@ -36,8 +36,8 @@
                                     <label class="col-md-2 form-control-label" for="last_name">Tên</label>
 
                                     <div class="col-md-10">
-                                        <input class="form-control @error('last_name') is-invalid @enderror"" type="text" name="last_name" id="last_name"
-                                            value="{{ $student->last_name }}" placeholder="Tên" maxlength="191">
+                                        <input class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name" id="last_name"
+                                            value="{{ old('last_name')  ?:  $student->last_name }}" placeholder="Tên" maxlength="191">
                                         @error('last_name')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
@@ -61,11 +61,11 @@
                                     <div class="col-md-10">
                                         </label>
                                         <input type="radio" name="gender" value="male"
-                                            {{ $student->gender == 'male' ? 'checked' : '' }}> Nam
+                                            {{ (old('gender')  ?:  $student->gender) == 'male' ? 'checked' : '' }}> Nam
                                         <input type="radio" name="gender" value="female" style="margin-left:10px"
-                                            {{ $student->gender == 'female' ? 'checked' : '' }}> Nữ
+                                            {{ (old('gender')  ?:  $student->gender) == 'female' ? 'checked' : '' }}> Nữ
                                         <input type="radio" name="gender" value="Other" style="margin-left:10px"
-                                            {{ $student->gender == 'other' ? 'checked' : '' }}> Khác
+                                            {{ (old('gender')  ?:  $student->gender) == 'other' ? 'checked' : '' }}> Khác
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -73,23 +73,9 @@
 
                                     <div class="col-md-10">
                                         <input class="form-control @error('phone') is-invalid @enderror" type="text"
-                                            name="phone" id="phone" value="{{ $student->phone }}"
+                                            name="phone" id="phone" value="{{ old('phone')  ?:  $student->phone }}"
                                             placeholder="Số điện thoại" maxlength="12">
                                         @error('phone')
-                                            <div class="text-danger">{{ $message }}</div>
-                                        @enderror
-                                    </div>
-                                    <!--col-->
-                                </div>
-                                <!--form-group-->
-                                <div class="form-group row">
-                                    <label class="col-md-2 form-control-label" for="age">Tuổi</label>
-
-                                    <div class="col-md-10">
-                                        <input class="form-control @error('age') is-invalid @enderror" type="text"
-                                            name="age" id="age" value="{{ $student->age }}" placeholder="Tuổi"
-                                            maxlength="3">
-                                        @error('age')
                                             <div class="text-danger">{{ $message }}</div>
                                         @enderror
                                     </div>
@@ -101,7 +87,7 @@
 
                                     <div class="col-md-10">
                                         <input class="form-control @error('birthday') is-invalid @enderror" type="date"
-                                            name="birthday" id="birthday" value="{{ $student->birthday }}"
+                                            name="birthday" id="birthday" value="{{ old('birthday')  ?:  $student->birthday }}"
                                             placeholder="Ngày sinh" maxlength="191">
                                             @error('birthday')
                                             <div class="text-danger">{{ $message }}</div>
@@ -109,6 +95,15 @@
                                     </div>
                                     <!--col-->
                                 </div>
+                                <div class="form-group row">
+                                    <label class="col-md-2 form-control-label" for="age">Tuổi</label>
+                                    <div class="col-md-10">
+                                        <p class="form-control" type="age"
+                                            name="age" id="age" placeholder="Tuổi" maxlength="3" readonly="1">{{ old('age')  ?: $student->age }}</p>
+                                    </div>
+                                    <!--col-->
+                                </div>
+                                <!--form-group-->
                                 <div class="form-group row justify-content-center">
                                     <div class="col-4">
                                         <a class="btn btn-danger" href="">Cancel</a>
@@ -124,5 +119,7 @@
             </form>
         </div>
         <!--animated-->
+        <script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+        <script src="/ajax/ajax.student.js"type="text/javascript"></script>
     </div>
 @stop

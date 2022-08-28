@@ -37,8 +37,9 @@
                                         @forelse ($classes as $class)
                                             <div class="d-flex justify-content-between align-items-center">
                                                 <ul class="list-group list-group-flush"style="width : 100%">
-                                                    <li class="list-group-item">
-                                                        <i class="fas fa-chalkboard-teacher fa-2x"> {{ $class['name'] }}</i>
+                                                    <li class="list-group-item fa-2x">
+                                                        <i class="fas fa-chalkboard-teacher"></i>
+                                                        {{ $class['name'] }}
                                                     </li>
                                                     @foreach ($class->courses()->get() as $course)
                                                         <li class="list-group-item" style="margin-left : 40px">
