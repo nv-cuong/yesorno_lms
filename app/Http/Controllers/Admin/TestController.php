@@ -7,11 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Course;
 use App\Models\Question;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use RealRashid\SweetAlert\Facades\Alert;
 class TestController extends Controller
 {   
     public function index(){
@@ -129,8 +127,11 @@ if ($row->category=="Trắc nhiệm nhiều lựa chọn" && $b[1]!=1) {
         
         return view('admin.tests.edit',compact('course','question','tests'));
     }
-    public function update(TestRequest $request, $id){
+    public function update(TestRequest $request1, $id){
+        $request = $request1->except('_token');
+        dd(123);
         $test  = Test::find($id);
+        DB::beginTransaction();
         try {
             $test->category=$request->category_question;
             $test->title=$request->title;
@@ -141,8 +142,8 @@ if ($row->category=="Trắc nhiệm nhiều lựa chọn" && $b[1]!=1) {
         }
         catch (\Throwable $t) {
             DB::rollback();
-                Log::info($t->getMessage());
-                throw new ModelNotFoundException();
+            Log::info($t->getMessage());
+            throw new ModelNotFoundException();
         }
         
         return redirect()->route('index');
