@@ -117,7 +117,7 @@ Route::prefix('admin')
             Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
         });
 
-        Route::prefix('test')->group(function () {
+        Route::prefix('/test')->group(function () {
             Route::get('/index', [TestController::class, 'index'])->name('index');
             Route::get('/create', [TestController::class, 'create'])->name('test.create');
             Route::post('/store', [TestController::class, 'store'])->name('test.store');
@@ -132,10 +132,11 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('test.search');
         });
-        Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
+       
 
         require 'users.php';
         require 'roles.php';
     });
 
 require 'auth.php';
+Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
