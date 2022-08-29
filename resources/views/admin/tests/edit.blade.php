@@ -5,10 +5,10 @@
 <div class="card-body">
 <h2>Update Test</h2>
 <form action="{{ route('test.update',[$tests->id]) }}" method = "post" >
-{{ csrf_field() }}
+@csrf
 <div class="form-group">
-    <label for="exampleFormControlSelect1">Select Category</label>
-    <select class="form-control" id="exampleFormControlSelect1" name ="category_question" >
+    <label for="exampleFormControlSelect1">Category:</label>
+     <select class="form-control course" id="id" name="course" data-dependent="question"  disabled="disabled">
         <option>{{$tests->category}}</option>
        
     </select>
