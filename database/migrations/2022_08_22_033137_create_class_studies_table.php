@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('class_studies', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug');
-            $table->text('description');
-            $table->integer('amount');
+            $table->string('name')->nullable();
+            $table->string('slug')->nullable();
+            $table->text('description')->nullable();
+            $table->integer('amount')->nullable();
             $table->timestamps();
         });
     }

@@ -41,7 +41,7 @@
                <td>{{$row->course->id}}. {{$row->course->title}}</td>
                 <td>
                  
-                  <a href ="{{route('question.edit',[$row->id,$tests->id,$row->course->id])}}" class="btn btn-xs btn-info" name="Edit">
+                  <a href ="{{route('test.question.edit',[$row->id,$tests->id,$row->course->id])}}" class="btn btn-xs btn-info" name="Edit">
                     <i class="nav-icon fas fa-solid fa-pen"></i>    
                             Edit</a>
                     <button type="button"  class="btn btn-xs btn-danger"  data-toggle="modal" data-target="#exampleModal" 
@@ -74,7 +74,7 @@
         Bạn có muốn xóa không?
       </div>
       <div class="modal-footer">
-      <form method="post"  action="{{ route('question.delete',$tests->id) }}" onsubmit="return ConfirmDelete( this )">
+      <form method="post"  action="{{ route('test.question.delete',$tests->id) }}" onsubmit="return ConfirmDelete( this )">
         @method('DELETE')
                     @csrf
                     <input type="hidden" name="question_id" id='question_id' value="0"><br>

@@ -1,62 +1,146 @@
 @extends('admin.layouts.master')
-@section('title', 'Class Manager')
+@section('title', 'Quản lí lớp học')
 
 @section('content')
-
-<div class="row">
-    <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <h2 class="card-title">Danh sách lớp học</h2>
-
-          <div class="card-tools">
-            <div class="input-group input-group-sm" style="width: 150px;">
-              <input type="text" name="table_search" class="form-control float-right" placeholder="Tìm kiếm...">
-
-              <div class="input-group-append">
-                <button type="submit" class="btn btn-default">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Danh sách lớp học</h1>
             </div>
-          </div>
+            <div class="col-sm-6 ">
+                <form action="" class="form-inline justify-content-end">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tên ...">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </div>
         </div>
-        <!-- /.card-header -->
-        <div class="card-body table-responsive p-0">
-          <table class="table table-hover text-nowrap">
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Tên lớp</th>
-                <th>Mô tả khóa học</th>
-                <th>Số lượng học viên</th>
-                <th>Ngày tao</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>183</td>
-                <td>PHP cơ bản</td>
-                <td>Khóa học php cho người bắt đầu</td>
-                <td><span class="tag tag-success">50</span></td>
-                <td>20-02-2022</td>
-              </tr>
+        @include('admin._alert')
+        <hr>
+    </div>
+</section>
+<section class="content">
+    <div class="container-fluid">
 
-            </tbody>
-          </table>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+
+                    <div class="card-header">
+                        <a href="{{ route('class.create') }}" class="btn btn-success float-right" title="Thêm một lớp học mới">Tạo lớp học mới</a>
+                    </div>
+
+                    <table class="table table-striped" id="example1">
+                        <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Tên lớp</th>
+                                <th>Tên khóa học</th>
+                                <th>Thời gian học</th>
+                                <th>Học viên</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="load">
+                            @forelse ($classes as $class)
+                            <tr>
+                                <td>
+                                    {{ $loop->iteration + ($classes->currentPage() - 1) * $classes->perPage() }}
+                                </td>
+                                <td>{{ $class->name }}</td>
+                                <td>
+                                    @php
+                                    $course = $class->courses()->get();
+                                    @endphp
+                                    @foreach ($course as $item)
+                                    {{ $item->title }} <br>
+                                    @endforeach
+                                </td>
+                                <td class="text">
+                                    @if ($class->amount == 0)
+                                    Sáng
+                                    @elseif ($class->amount == 1)
+                                    Chiều
+                                    @else
+                                    Cả ngày
+                                    @endif
+                                </td>
+                                <td class="text-end">{{ $class->users->count() }}</td>
+                                <td>
+                                    <a href="{{ route('class.edit', $class->id) }}" class="btn btn-success" title="Chỉnh sửa thông tin lớp học">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-sm" onclick="javascript:class_delete({{ $class->id }})" title="Xóa lớp học">
+                                        <i class="far fa-trash-alt"></i>
+                                    </a>
+                                    <a href="{{ route('class.show', $class->slug) }}" class="btn btn-primary" title="Xem chi tiết lớp học">
+                                        <i class="far fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="6">Không có dữ liệu</td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                    <div class="card-footer clearfix">
+                        {!! $classes->appends(Request::all())->links() !!}
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- /.card-body -->
-      </div>
-      <!-- /.card -->
+</section>
+@endsection
+
+@section('scripts')
+<script>
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
+<script>
+    function class_delete(id) {
+        var class_id = document.getElementById('class_id');
+        class_id.value = id;
+    }
+</script>
+@endsection
+
+@section('modal')
+<div class="modal fade show" id="modal-sm" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" style="color: red">Xóa</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="{{ route('class.delete') }}" method="post">
+                @csrf
+                @method('DELETE')
+                <input type="hidden" name="class_id" id="class_id" value="0">
+                <div class="modal-body">
+                    <p>Bạn chắc chắn xóa lớp học này ?</p>
+                </div>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-primary">Đồng ý</button>
+                </div>
+            </form>
+        </div>
     </div>
-  </div>
-    <div class="card-footer clearfix">
-        <ul class="pagination pagination-sm m-0 float-right">
-            <li class="page-item"><a class="page-link" href="#">«</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">»</a></li>
-        </ul>
-    </div>
+</div>
 @endsection

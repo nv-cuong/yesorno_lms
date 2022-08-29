@@ -15,13 +15,16 @@ return new class extends Migration
     {
         Schema::create('lessons', function (Blueprint $table) {
             $table->id();
-            $table->integer('unit_id');
+            $table->foreignId('unit_id')
+                ->constrained()
+                ->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
             $table->string('content');
             $table->string('config');
-            $table->string('path');
-            $table->date('published');
+            $table->string('path')->nullable();
+            $table->date('published')->nullable();
             $table->timestamps();
         });
     }

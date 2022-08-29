@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Course>
@@ -16,14 +17,17 @@ class CourseFactory extends Factory
      */
     public function definition()
     {
+        $title = fake()->text(10);
+        $slug = Str::slug($title, '-');
+
         return [
-            'title'=> $this->faker->text(100),
-            'slug'=>$this->faker->text(100),
-            'statistic_id' =>$this -> faker->numberBetween(1, 1000),
-            //'category_id'=>$this->faker->numberBetween(1,1000),
-            'description'=> $this->faker->text(2000),
-            'image'=>$this->faker->text(100),
-            
+            'title' => $title,
+            'slug' => $slug,
+            'statistic_id' => fake()->numberBetween(1, 1000),
+            'description' => fake()->text(1000),
+            'begin_date' => fake()->date(),
+            'end_date' => fake()->date(),
+            'image' => fake()->imageUrl(),
         ];
     }
 }

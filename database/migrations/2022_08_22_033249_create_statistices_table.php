@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('statistices', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->float('progress');
+            $table->integer('user_id')->nullable();
+            $table->float('progress')->nullable();
             $table->timestamps();
         });
     }
