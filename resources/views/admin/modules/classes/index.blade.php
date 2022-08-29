@@ -116,7 +116,6 @@
         class_id.value = id;
     }
 </script>
-
 @endsection
 
 @section('modal')
