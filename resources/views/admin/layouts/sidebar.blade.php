@@ -84,16 +84,15 @@
                 </li>
                 <li class="nav-item">
                     <a href="{{route('users.index')}}" class="nav-link">
-                    <i class="fas fa-user"></i>
+                        <i class="fas fa-user"></i>
                         <p>
                             User
                         </p>
                     </a>
-
                 </li>
                 <li class="nav-item">
                     <a href="{{route('roles.index')}}" class="nav-link">
-                    <i class="fas fa-user-tag"></i>
+                        <i class="fas fa-user-tag"></i>
                         <p>
                             Role
                         </p>
