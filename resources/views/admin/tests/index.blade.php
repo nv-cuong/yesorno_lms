@@ -1,22 +1,35 @@
 @extends('admin.layouts.master')
 @section('title', 'Test Manager')
 @section('content')
-<link href='https://cdn.jsdelivr.net/gh/startinhit/font-awesome/css/all.css' rel='stylesheet'/>
-    <div class="title d-flex justify-content-between">
-        <h3 class="page-title">Test</h3>
-        <p >
-            <a href="{{route('test.create')}}" class="btn btn-success">
-            <i class="fa-solid fa-plus"></i>Add New</a>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1 class="m-0">Test</h1>
+            </div>
             
-        </p>
+            <div class="col-sm-6">
+            <form method="post" action="{{route('test.search')}}">
+            @csrf
+            <div class="input-group">
+  <div class="form-outline">
+    <input type="search" id="form1" name ="search"class="form-control"placeholder="Search...." />
+  </div>
+  <button type="submit" class="btn btn-primary">
+    <i class="fas fa-search"></i>
+  </button>
+</div>
+            </form>
+             <ol class="breadcrumb float-sm-right">
+            <a href="{{route('test.create')}}" class="btn btn-success">
+            <i class="nav-icon fas fa-solid fa-plus"></i>
+             Add New</a>
+</ol>
+</div>
    </div>
-
-    <p class="m-0">
-        <ul class="d-flex list-unstyled" style="column-gap: 1rem">
-            <li><a href="" style="font-weight: 700">All</a></li> |
-            <li><a href="" style="font-weight: 700">Trash</a></li>
-        </ul>
-    </p>
+</div>
+</div>
 
 <div class="card">
     <div class="card-header">
@@ -34,7 +47,7 @@
                         Category
                         </th>
                         <th>
-                        Amount
+                        Số câu hỏi
                         </th>
                         <th>
                         Title
@@ -46,7 +59,7 @@
                         Description
                         </th>
                         <th>
-                        Result
+                        
                         </th>
                     </tr>
                 </thead>
@@ -58,7 +71,7 @@
                         {{ $test->id}} 
                         </td>
                         <td>{{ $test->category}}</td>
-                        <td>{{ $test->amount}}</td>
+                        <td>{{ $test->question()->get()->count()}}</td>
                         <td>{{ $test->title }}</td>
                         <td>{{$test->time}}</td>
                         <td>{{ $test->description }}</td>
@@ -71,19 +84,23 @@
                         <form action="" method="POST" onsubmit="return confirm('Are you sure ?');" style="display: inline-block;">
                             @csrf
                             @method('delete')
-                            <button type="submit" class="btn btn-xs btn-danger" >Delete</button>
+                            <button type="submit" class="btn btn-xs btn-danger" >  
+                            Delete</button>
                         </form>
                         @else
                             <a class="btn btn-xs btn-info" href="{{route('test.edit',[$test->id])}}">
-                            
-                                Edit
+                            <i class="nav-icon fas fa-solid fa-pen"></i>    
+                            Edit
                             </a>
                             @csrf
                                 <button type="submit" class="btn btn-xs btn-danger" data-toggle="modal" data-target="#exampleModal" 
-                    onclick="myFunction({{$test->id}})" >Delete</button>
+                    onclick="myFunction({{$test->id}})" >
+                    <i class="nav-icon fas fa-solid fa-trash"></i>  
+                    Delete
+                </button>
                        
                         <a class="btn btn-xs btn-success" href="{{route('test.view',[$test->id])}}">
-                            
+                        <i class=" nav-icon fas fa-solid fa-eye"></i>
                                 View
                             </a>
                             @csrf 
@@ -97,7 +114,6 @@
                     @endforelse
                 </tbody>
             </table>
-            {{ $tests->links() }}
         </div>
 
 
@@ -133,12 +149,10 @@
 <script>
 function myFunction(id) {
 
-   document.getElementById("test_id").value=id;
-      
-     
-  
+   document.getElementById("test_id").value=id;  
 }
 </script>
+
 @endsection
 
 

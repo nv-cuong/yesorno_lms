@@ -2,6 +2,7 @@
 @section('title', 'Update Test')
 @section('content')
 <meta name="csrf-token" content="{{csrf_token()}}">
+<div class="card-body">
 <h2>Update Test</h2>
 <form action="{{ route('test.update',[$tests->id]) }}" method = "post" >
 {{ csrf_field() }}
@@ -9,27 +10,35 @@
     <label for="exampleFormControlSelect1">Select Category</label>
     <select class="form-control" id="exampleFormControlSelect1" name ="category_question" >
         <option>{{$tests->category}}</option>
-        <option>Trắc nhiệm nhiều lựa chọn</option>
-        <option>Trắc nhiệm đúng sai</option>
-        <option>Tự luận</option>
+       
     </select>
 </div>
 <div class="form-group">
 <label for="exampleFormControlInput1">Tiều đề</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập tiêu đề" name ="title" value="{{$tests->title}}">
-    <label for="exampleFormControlInput1">Amount</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập số câu hỏi" name ="amount" value="{{$tests->amount}}">
+    <input type="text" class="form-control @error('title') is-invalid @enderror" id="exampleFormControlInput1" placeholder="nhập tiêu đề" name ="title" value="{{old('title')?:$tests->title}}">
+    @error('title')
+
+ <div class="text-danger">{{ $message }}</div>
+ @enderror
     <label for="exampleFormControlInput1">Time</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập thời gian làm bài" name ="time" value="{{$tests->time}}">
+    <input type="" class="form-control @error('time') is-invalid @enderror" id="exampleFormControlInput1" placeholder="nhập thời gian làm bài" name ="time" value="{{old('time')?:$tests->time}}">
+    @error('time')
+
+<div class="text-danger">{{ $message }}</div>
+@enderror
 </div>
 <div class="form-group">
         <label for="exampleFormControlTextarea1" >Description:</label>
-        <textarea class="form-control"  name="description" id="exampleFormControlTextarea1" rows="3" >{{$tests->description}}</textarea>
+        <textarea class="form-control @error('description') is-invalid @enderror"  name="description" id="exampleFormControlTextarea1" rows="3" >{{$tests->description}}</textarea>
+        @error('description')
+
+<div class="text-danger">{{ $message }}</div>
+@enderror
     </div>
     
 <button type="submit" class="btn btn-primary">Cập nhật bài Test</button>
 </form>
-
+</div>
 
 @endsection
 

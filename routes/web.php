@@ -40,10 +40,11 @@ Route::prefix('test')->group(function () {
     Route::get('/edit/{id}', [TestController::class,'edit'])->name('test.edit');
     Route::post('/update/{id}', [TestController::class,'update'])->name('test.update');
     Route::get('/view/{id}', [TestController::class,'view'])->name('test.view');
-    Route::post('/create/{id}/{id1}/{arr_quest}', [TestController::class,'createquestion'])->name('test.create_question');
+    Route::get('/create/{id_course}/{id_test}/{arr_quest}', [TestController::class,'createquestion'])->name('test.create_question');
     Route::post('/store/question/{id_test}', [TestController::class,'store_question'])->name('test.store_question');
     Route::DELETE('/delete_question/{id_test}', [TestController::class,'delete_question'])->name('question.delete');
-    Route::post('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class,'question_edit'])->name('question.edit');
+    Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class,'question_edit'])->name('question.edit');
     Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class,'question_update'])->name('question.update');
+    Route::post('/search', [TestController::class,'search'])->name('test.search');
 });
 Route::post('/getQuestion', [TestController::class,'getQuestion'])->name('getquestion');

@@ -1,40 +1,99 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
+use App\Http\Requests\Admin\TestRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Course;
 use App\Models\Question;
-use Sentinel;
-use DB;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert;
 class TestController extends Controller
 {   
     public function index(){
-        $tests = DB::table('tests')->paginate(15);
+        // $tests = DB::table('tests')->paginate(15);
+        $tests=Test::all();
         return view('admin.tests.index',compact('tests'));
+        
     }
     public function create(){
         $course = Course::pluck('title', 'id');
         $question = Question::pluck('content', 'id');
         return view('admin.tests.create',compact('course','question'));
     }
-    public function store(Request $request){
+    public function store(TestRequest $request){
+        $k=0;
+        $b=[0,0,0,0];
+        DB::beginTransaction();
         $test = new Test();
-        $test->category=$request->category_question;
-        $test->amount=$request->amount;
+        $amount=$request->input('count_question_id','value');
+        $category_question="";
+    try {
+        for ($q=0; $q < (count($request->question)); $q++) {
+            $question  = Question::where('id',$request->question[$q])->select('id', 'content','category')->get();
+           
+            foreach($question as $row){ 
+if ($row->category=="Trắc nhiệm nhiều lựa chọn" && $b[1]!=1) {
+    if($k>0){
+    $category_question .=" + Trắc nhiệm nhiều lựa chọn";
+}
+    else {
+    $category_question .="Trắc nhiệm nhiều lựa chọn";
+}
+    $k=1;
+    $b[$k]=1;
+}
+            else if($row->category =="Trắc nhiệm đúng sai" && $b[2]==0){
+                if($k>0){
+    $category_question .=" + Trắc nhiệm đúng sai";
+}
+                else {
+    $category_question .="Trắc nhiệm đúng sai";
+}
+                $k=2;
+                $b[$k]=1;
+            }
+            else if($row->category=="Tự luận"  && $b[3]==0){
+                if($k>0){$category_question .=" + Tự luận";}
+                else {
+    $category_question .="Tự luận";
+}
+                $k=3;
+                $b[$k]=1;
+                }
+            }
+            if($q==(count($request->question)-1)){
+                    $category_question .=" .";
+                    }
+            }   
+             
+     
+        $test->category=$category_question;
+        $test->amount=$amount;
         $test->title=$request->title;
         $test->time=$request->time;
         $test->description=$request->description;
         $course_id=$request->course;
         $test->save();
         for ($q=0; $q < (count($request->question)); $q++) {
-        $question  = Question::find($request->question[$q]);
-        $question->test()->attach($test->id);
-}       
-        $course  = Course::find($course_id);
-        $course ->test()->attach($test->id);
+            $question  = Question::find($request->question[$q]);
+            $question->test()->attach($test->id);
+    }       
+            $course  = Course::find($course_id);
+            $course ->test()->attach($test->id);
+     DB::commit();
+    }
+   
+    catch (\Throwable $t) {
+        DB::rollback();
+            Log::info($t->getMessage());
+            throw new ModelNotFoundException();
+    }
+
         return redirect()->route('index');
 
     }
@@ -52,12 +111,12 @@ class TestController extends Controller
        
         $value =$request->get('value');
         $dependent =$request->get('dependent');
-        $questions = Question::where('course_id',$value)->select('id', 'content')->get();
+        $questions = Question::where('course_id',$value)->select('id', 'content','category')->get();
          
         //  $output = '<option value="">Select '.ucfirst($dependent).'</option>';
         $k=1;
         foreach($questions as $row){
-                $output='<option name ="question_'.$row->id.'"  value="'.$row->id.'">'.$k.'. '.$row->content.'</option>';
+                $output='<option name ="question_'.$row->id.'"  value="'.$row->id.'">'.$k.'. '.$row->content.' ['.$row->category.']</option>';
                 $k++;
                 echo $output;
                
@@ -67,20 +126,25 @@ class TestController extends Controller
         $tests  = Test::find($id);
         $course = Course::pluck('title', 'id');
         $question = Question::pluck('content', 'id');
+        
         return view('admin.tests.edit',compact('course','question','tests'));
     }
-    public function update(Request $request, $id){
+    public function update(TestRequest $request, $id){
         $test  = Test::find($id);
+        try {
+            $test->category=$request->category_question;
+            $test->title=$request->title;
+            $test->time=$request->time;
+            $test->description=$request->description;
+            $test->amount=1;
+            $test->save();
+        }
+        catch (\Throwable $t) {
+            DB::rollback();
+                Log::info($t->getMessage());
+                throw new ModelNotFoundException();
+        }
         
-        $test->category=$request->category_question;
-        $test->amount=$request->amount;
-        $test->title=$request->title;
-        $test->time=$request->time;
-        $test->description=$request->description;
-        $course_id=$request->course;
-        $question_id=$request->question;
-        
-        $test->save();
         return redirect()->route('index');
     }
     public function view(Request $request, $id){
@@ -107,13 +171,25 @@ class TestController extends Controller
         
     }
     public function store_question(Request $request, $id_test){
-        $tests = Test::find($id_test);
-    for ($q=0; $q < (count($request->question)); $q++) {
-        $question  = Question::find($request->question[$q]);
-        $question->test()->attach($tests->id);
-}
-return redirect()->route('test.view',$id_test);
+        $validated = $request->validate([
+            'question' => 'required',
+        ]);
+    $tests = Test::find($id_test);
+    $amount=$request->input('count_question_id', 'value');
+    try{
+        for ($q=0; $q < (count($request->question)); $q++) {
+            $question  = Question::find($request->question[$q]);
+            $question->test()->attach($tests->id);
+            
+        }        
     }
+    catch (\Throwable $t) {
+        DB::rollback();
+            Log::info($t->getMessage());
+            throw new ModelNotFoundException();
+    }
+    return redirect()->route('test.view', $id_test);
+}
     public function delete_question(Request $request,$id_test){
         $id=$request->input('question_id','value');
         $question = Question::find($id);
@@ -141,5 +217,11 @@ return redirect()->route('test.view',$id_test);
         
         return redirect()->route('test.view',$id_test);
 
+    }
+    public function search(Request $request){
+        if($request->search==null)$tests=DB::table('tests')->paginate(15);
+        else 
+        $tests= Test::where('title','like','%'.$request->search.'%')->paginate(15);
+        return view('admin.tests.index',compact('tests'));
     }
 }

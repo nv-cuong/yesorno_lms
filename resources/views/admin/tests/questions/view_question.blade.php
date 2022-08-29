@@ -8,10 +8,12 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Danh sách câu hỏi</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
-    <form method="POST" action="{{ route('test.create_question',[$row1->course->id,$tests->id,$arr_question])}}">
+    
     @csrf
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Thêm câu hỏi</button>
-    </form>
+    <a href ="{{ route('test.create_question',[$row1->course->id,$tests->id,$arr_question])}}" class="btn btn-success">
+      <i class="nav-icon fas fa-solid fa-plus"></i>
+    Thêm câu hỏi</a>
+    
     </div>
     </div>
 <div class="card-body">
@@ -19,13 +21,11 @@
             <table class="table table-bordered table-striped table-hover datatable datatable-Location">
   <thead>
     <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Test</th>
-       <th scope="col">Chương</th> 
-      <th scope="col">Nội dung câu hỏi</th>
-     
-      
-      <th scope="col">edit or delete</th>
+      <th >ID</th>
+      <th>Test</th>
+       <th>Chương</th> 
+      <th >Nội dung câu hỏi</th>
+      <th >edit or delete</th>
     </tr>
   </thead>
   <tbody>
@@ -34,19 +34,22 @@
             <tr>
                 <td>{{$row->id}}</td> 
                 <td>{{$tests->id}}</td>
-                <td>{{$row->course->id}}. {{$row->course->title}}</td>
+                
                 <td><?php echo"$k. "?>{{$row->content}}</td>
                 <?php $k++;
                 ?>
-               
+               <td>{{$row->course->id}}. {{$row->course->title}}</td>
                 <td>
-                  <form action="{{route('question.edit',[$row->id,$tests->id,$row->course->id])}}", method="post" > 
-                  @csrf
-                    <button class="w-100 btn btn-primary" type="submit" name="Edit">Edit</button>
-                    </form> 
-                
-                    <button type="button"  class="w-100 btn btn-danger"  data-toggle="modal" data-target="#exampleModal" 
-                    onclick="myFunction({{$row->id}})">Delete</button></td>
+                 
+                  <a href ="{{route('question.edit',[$row->id,$tests->id,$row->course->id])}}" class="btn btn-xs btn-info" name="Edit">
+                    <i class="nav-icon fas fa-solid fa-pen"></i>    
+                            Edit</a>
+                    <button type="button"  class="btn btn-xs btn-danger"  data-toggle="modal" data-target="#exampleModal" 
+                    onclick="myFunction({{$row->id}})">
+                    <i class="nav-icon fas fa-solid fa-trash"></i> 
+                    Delete</button>
+                  </td>
+                  
             </tr>
             @endforeach
          

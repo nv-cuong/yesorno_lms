@@ -5,15 +5,7 @@
 <h2>Edit Question</h2>
 <form action="{{ route('question.update',[$tests->id,$question->id]) }}" method = "post" >
 {{ csrf_field() }}
-<div class="form-group">
-    <label for="exampleFormControlSelect1">Select Category</label>
-    <select class="form-control" id="exampleFormControlSelect1" name ="category_question" >
-        <option>{{$tests->category}}</option>
-        <option>Trắc nhiệm nhiều lựa chọn</option>
-        <option>Trắc nhiệm đúng sai</option>
-        <option>Tự luận</option>
-    </select>
-</div>
+
 <div class="form-group">
              <label for="confirmation_pwd">Question:</label>
             <select class="form-control course" id="id" name="question" data-dependent="question"
