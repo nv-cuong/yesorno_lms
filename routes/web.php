@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\ClassController;
 use App\Http\Controllers\Admin\CourseController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\IndexController;
+use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\UnitController;
@@ -78,33 +79,64 @@ Route::prefix('admin')
                 ->name('student.statistic');
         });
 
-
+        Route::prefix('/questions')->name('question.')->group(function () {
+            Route::get('index', [QuestionController::class, 'index'])->name('index');
+            Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
+            Route::get('create', [QuestionController::class, 'create'])->name('create');
+            Route::post('store', [QuestionController::class, 'store'])->name('store');
+        });
 
         Route::prefix('/courses')->name('course.')->group(function () {
             Route::get('index', [CourseController::class, 'index'])->name('index');
-            Route::get('/showCourse/{slug}', [CourseController::class, 'showCourse'])->name('detail');
+            Route::get('/showCourse/{id}', [CourseController::class, 'showCourse'])->name('detail');
             // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
             Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
             Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
             Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
-            Route::post('/editCourse/{id}', [CourseController::class, 'updateCourse'])->name('update');
+            Route::post('/editCourse{id}', [CourseController::class, 'updateCourse'])->name('update');
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
         });
-        
+
         Route::prefix('/units')->name('unit.')->group(function () {
-            Route::get('/showUnit/{slug}', [UnitController::class, 'showUnit'])->name('detail');
-            // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
-            // Route::get('create', [QuestionController::class, 'create'])->name('create');
-            // Route::post('store', [QuestionController::class, 'store'])->name('store');
+            Route::get('/showUnit/{id}', [UnitController::class, 'showUnit'])->name('detail');
+            // Route::get('getData', [UnitController::class, 'getData'])->name('getData');
+            Route::get('createUnit/{course_id}', [UnitController::class, 'createUnit'])->name('create');
+            Route::post('storeUnit', [UnitController::class, 'storeUnit'])->name('store');
+            Route::get('/editUnit/{id}', [UnitController::class, 'editUnit'])->name('edit');
+            Route::post('/editUnit{id}', [UnitController::class, 'updateUnit'])->name('update');
+            Route::delete('/destroyUnit/{course_id}', [UnitController::class, 'destroyUnit'])->name('delete');
         });
 
-        Route::get('/test', [TestController::class, 'index'])->name('test');
-        Route::get('/create', [TestController::class, 'create'])->name('test.create');
-        Route::post('/store', [TestController::class, 'store'])->name('test.store');
-        Route::DELETE('/delete', [TestController::class, 'delete'])->name('test.delete');
-        Route::get('/edit/{id}', [TestController::class, 'edit'])->name('test.edit');
-        Route::post('/update/{id}', [TestController::class, 'update'])->name('test.update');
+        Route::prefix('/lessons')->name('lesson.')->group(function () {
+            Route::get('/showLesson/{slug}', [LessonController::class, 'showLesson'])->name('detail');
+            // Route::get('getData', [UnitController::class, 'getData'])->name('getData');
+            Route::get('createLesson/{unit_id}', [LessonController::class, 'createLesson'])->name('create');
+            Route::post('storeLesson', [LessonController::class, 'storeLesson'])->name('store');
+            Route::get('/editLesson/{id}', [LessonController::class, 'editLesson'])->name('edit');
+            Route::post('/editLesson{id}', [LessonController::class, 'updateLesson'])->name('update');
+            Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
+        });
+
+        Route::prefix('/test')->name('test.')->group(function () {
+            Route::get('/index', [TestController::class, 'index'])->name('index');
+            Route::get('/create', [TestController::class, 'create'])->name('create');
+            Route::post('/store', [TestController::class, 'store'])->name('store');
+            Route::DELETE('/delete', [TestController::class, 'delete'])->name('delete');
+            Route::get('/edit/{id}', [TestController::class, 'edit'])->name('edit');
+            Route::post('/update/{id}', [TestController::class, 'update'])->name('update');
+            Route::get('/view/{id}', [TestController::class, 'view'])->name('view');
+            Route::get('/create/{id_course}/{id_test}/{arr_quest}', [TestController::class, 'createquestion'])->name('create_question');
+            Route::post('/store/question/{id_test}', [TestController::class, 'store_question'])->name('store_question');
+            Route::DELETE('/delete_question/{id_test}', [TestController::class, 'delete_question'])->name('question.delete');
+            Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class, 'question_edit'])->name('question.edit');
+            Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
+            Route::post('/search', [TestController::class, 'search'])->name('search');
+        });
+       
 
         require 'users.php';
         require 'roles.php';
     });
+
+require 'auth.php';
+Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');

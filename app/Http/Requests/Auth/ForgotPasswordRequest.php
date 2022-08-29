@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UnitRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class UnitRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' =>          ['required', 'max:255'],
-            'course_id' =>      ['required'],
+            'email'            => 'required|email',
         ];
     }
 }

@@ -25,12 +25,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>Sửa khóa học</h2>
-                <div>
-                    <form method="post" action="{{ route('course.update', [$course->id]) }}" enctype="multipart/form-data">
-                        @include('admin.modules.courses._course_form')
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
-                    </form>
+                <!-- /.card-header -->
+                <div class="card-body table-responsive p-0">
+                    <h2>Tạo bài học mới</h2>
+                    <div>
+                        <form method="post" action="{{ route('lesson.store') }}">
+                            @include('admin.modules.courses.units.lessons._lesson_form')
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
