@@ -103,18 +103,18 @@
     <script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-    <script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
-    <script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
-    <script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <!-- AdminLTE App -->
 
     <!-- SweetAlert2 -->
     <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
-    @yield('scripts')
+     @yield('scripts')
 </body>
 
 </html>

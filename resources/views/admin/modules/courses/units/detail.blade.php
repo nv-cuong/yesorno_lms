@@ -19,6 +19,8 @@
                 </form>
             </div>
         </div>
+        @include('admin._alert')
+        <hr>
     </div>
 </section>
 <section class="content">
@@ -44,37 +46,36 @@
                                 <th>Ngày cập nhật</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="load">
                             @forelse($lessons as $lesson)
                             <tr>
                                 <td>{{ $loop->iteration + ($lessons->currentPage() -1) * $lessons->perPage() }}</td>
-                                <td>
-                                    <a href="{{ route('lesson.detail', ['slug'=>$lesson->slug]) }}">
-                                        {{ $lesson->title }}
-                                    </a>
-                                </td>
+                                <td>{{ $lesson->title }}</td>
                                 <td>{{ $lesson->config }}</td>
                                 <td>{{ $lesson->published }}</td>
                                 <td>{{ $lesson->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $lesson->updated_at->format('d-m-Y') }}</td>
-                                <td style="white-space: nowrap ;">
-                                    <a href="{{ route('lesson.edit', [$lesson->id]) }}" class="btn btn-success">
-                                        <i class="bi bi-pencil-square"></i>
+                                <td>
+                                    <a href="{{ route('lesson.detail', ['slug'=>$lesson->slug]) }}" class="btn btn-primary">
+                                        <i class="far fa-eye"></i>
                                     </a>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:lesson_delete('{{ $lesson->id }}')">
-                                        <i class="bi bi-trash"></i>
+                                    <a href="{{ route('lesson.edit', [$lesson->id]) }}" class="btn btn-success">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="javascript:lesson_delete('{{ $lesson->id }}')">
+                                        <i class="far fa-trash-alt"></i>
                                     </button>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">No Lessons</td>
+                                <td colspan="6">Chương chưa có bài!</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                     <div class="card-footer clearfix">
-                        {{-- {!! $listAr->appends(Request::all())->links() !!} --}}
+                        {{-- {!! $lessons->appends(Request::all())->links() !!} --}}
                     </div>
                 </div>
             </div>
@@ -84,12 +85,14 @@
 
 @section('modal')
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade show" id="deleteModal" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Xóa bài học!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
             <form method="post" action="{{ route('lesson.delete', ['unit_id'=>$unit->id]) }}">
                 @csrf
@@ -98,9 +101,9 @@
                 <div class="modal-body">
                     Bạn có chắc muốn xóa bài học này?
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger">Yes</button>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-danger">Đồng ý</button>
                 </div>
             </form>
         </div>
@@ -108,11 +111,11 @@
 </div>
 @stop
 
-@section('js')
+@push('custom-scripts')
 <script>
     function lesson_delete(id) {
         var lesson_id = document.getElementById('lesson_id');
         lesson_id.value = id;
     }
 </script>
-@stop
+@endpush

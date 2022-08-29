@@ -65,35 +65,34 @@
                                 <th>Ngày cập nhật</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="load">
                             @forelse($units as $unit)
                             <tr>
                                 <td>{{ $loop->iteration + ($units->currentPage() -1) * $units->perPage() }}</td>
-                                <td>
-                                    <a href="{{ route('unit.detail', ['id'=>$unit->id]) }}">
-                                        {{ $unit->title }}
-                                    </a>
-                                </td>
+                                <td>{{ $unit->title }}</td>
                                 <td>{{ $unit->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $unit->updated_at->format('d-m-Y') }}</td>
-                                <td style="white-space: nowrap ;">
-                                    <a href="{{ route('unit.edit', [$unit->id]) }}" class="btn btn-success">
-                                        <i class="bi bi-pencil-square"></i>
+                                <td>
+                                    <a href="{{ route('unit.detail', ['id'=>$unit->id]) }}" class="btn btn-primary">
+                                        <i class="far fa-eye"></i>
                                     </a>
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:unit_delete('{{ $unit->id }}')">
-                                        <i class="bi bi-trash"></i>
+                                    <a href="{{ route('unit.edit', [$unit->id]) }}" class="btn btn-success">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="javascript:unit_delete('{{ $unit->id }}')">
+                                        <i class="far fa-trash-alt"></i>
                                     </button>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">No Units</td>
+                                <td colspan="6">Khóa học chưa có chương!</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                     <div class="card-footer clearfix">
-                        {{-- {!! $listAr->appends(Request::all())->links() !!} --}}
+                        {{-- {!! $units->appends(Request::all())->links() !!} --}}
                     </div>
                 </div>
             </div>
@@ -103,12 +102,14 @@
 
 @section('modal')
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade show" id="deleteModal" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Xóa chương!</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
             </div>
             <form method="post" action="{{ route('unit.delete', ['course_id'=>$course->id]) }}">
                 @csrf
@@ -117,9 +118,9 @@
                 <div class="modal-body">
                     Bạn có chắc muốn xóa chương này?
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-danger">Yes</button>
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="submit" class="btn btn-danger">Đồng ý</button>
                 </div>
             </form>
         </div>
@@ -127,11 +128,11 @@
 </div>
 @stop
 
-@section('js')
+@push('custom-scripts')
 <script>
     function unit_delete(id) {
         var unit_id = document.getElementById('unit_id');
         unit_id.value = id;
     }
 </script>
-@stop
+@endpush

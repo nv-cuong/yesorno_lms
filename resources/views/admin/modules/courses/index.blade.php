@@ -41,37 +41,37 @@
                 <th>Tùy chọn</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="load">
               @forelse($courses as $course)
               <tr>
                 <td>{{ $loop->iteration + ($courses->currentPage() -1) * $courses->perPage() }}</td>
                 <td>{{ $course->title }}</td>
                 <td>{{ $course->created_at->format('d-m-Y') }}</td>
                 <td>{{ $course->updated_at->format('d-m-Y') }}</td>
-                <td style="white-space: nowrap ;">
-                  <a href="{{ route('course.detail', ['id'=>$course->id]) }}" class="btn btn-sm btn-primary mb-1">
-                    <i class="fa fa-eye"></i>
+                <td>
+                  <a href="{{ route('course.detail', ['id'=>$course->id]) }}" class="btn btn-primary">
+                    <i class="far fa-eye"></i>
                   </a>
-                  <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-sm btn-primary mb-1">
-                    <i class="fa-solid fa-pencil"></i>
+                  <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-success">
+                    <i class="fas fa-edit"></i>
                   </a>
-                  <a class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
-                    <i class="fa-solid fa-trash"></i>
+                  <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
+                    <i class="far fa-trash-alt"></i>
                   </a>
-                  <a href="#" class="btn btn-sm btn-success mb-1">
+                  <a href="#" class="btn btn-warning">
                     + Test
                   </a>
                 </td>
               </tr>
               @empty
               <tr>
-                <td colspan="6">No Courses</td>
+                <td colspan="6">Không có khóa học</td>
               </tr>
               @endforelse
             </tbody>
           </table>
           <div class="card-footer clearfix">
-            {{-- {!! $listAr->appends(Request::all())->links() !!} --}}
+            {{-- {!! $courses->appends(Request::all())->links() !!} --}}
           </div>
         </div>
       </div>
@@ -81,23 +81,25 @@
 
 @section('modal')
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+<div class="modal fade show" id="modal-sm" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deleteModalLabel">Xóa khóa học!</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
       </div>
       <form method="post" action="{{ route('course.delete') }}">
         @csrf
         @method('DELETE')
         <input type="hidden" name="course_id" id="course_id" value="0">
         <div class="modal-body">
-          Bạn có chắc muốn xóa khóa học này?
+          <p>Bạn có chắc muốn xóa khóa học này?</p>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-          <button type="submit" class="btn btn-danger">Yes</button>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+          <button type="submit" class="btn btn-danger">Đồng ý</button>
         </div>
       </form>
     </div>
@@ -105,11 +107,11 @@
 </div>
 @stop
 
-@section('js')
+@push('custom-scripts')
 <script>
   function course_delete(id) {
     var course_id = document.getElementById('course_id');
     course_id.value = id;
   }
 </script>
-@stop
+@endpush

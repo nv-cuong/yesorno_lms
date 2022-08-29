@@ -66,7 +66,9 @@ class CourseController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return redirect(route('course.index'));
+        return redirect(route('course.index'))
+        ->with('message', 'Khóa học đã được thêm mới')
+        ->with('type_alert', "success");;
     }
 
     public function editCourse(Request $request, $id)
@@ -77,12 +79,13 @@ class CourseController extends Controller
             return view('admin.modules.courses.edit', compact('course'));
         }
         return redirect(route('course.index'))
-            ->with('msg', 'Khóa học không tồn tại');
+            ->with('message', 'Khóa học không tồn tại')
+            ->with('type_alert', "danger");;
     }
 
     public function updateCourse(CourseRequest $request, $id)
     {
-        $msg = 'Khóa học không tồn tại';
+        $message = 'Khóa học không tồn tại';
         $course = Course::find($id);
         if ($course) {
             $course->title = $request->input('title');
@@ -95,10 +98,10 @@ class CourseController extends Controller
             $course->image = $path;
             $course->description = $request->input('description');
             $course->save();
-            $msg = 'Cập nhật khóa học thành công';
+            $message = 'Cập nhật khóa học thành công';
         }
 
-        return redirect(route('course.index'))->with('msg', $msg);
+        return redirect(route('course.index'))->with('message', $message);
     }
 
     public function destroyCourse(Request $request)
@@ -107,10 +110,12 @@ class CourseController extends Controller
         if ($course_id) {
             Course::destroy($course_id);
             return redirect(route('course.index'))
-                ->with('msg', 'Khóa học đã được xóa');
+                ->with('message', 'Khóa học đã được xóa')
+                ->with('type_alert', "success");
         } else
             return redirect(route('course.index'))
-                ->with('msg', 'Khóa học không tồn tại');
+                ->with('message', 'Khóa học không tồn tại')
+                ->with('type_alert', "danger");
     }
 
 }
