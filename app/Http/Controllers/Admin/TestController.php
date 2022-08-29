@@ -91,7 +91,7 @@ class TestController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return redirect()->route('index');
+        return redirect()->route('test.index');
     }
     public function delete(Request $request)
     {
@@ -143,7 +143,7 @@ class TestController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return redirect()->route('index');
+        return redirect()->route('test.index');
     }
     public function view(Request $request, $id)
     {
