@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Quàn lí lớp học')
+@section('title', 'Quản lí lớp học')
 
 @section('content')
 <section class="content-header">

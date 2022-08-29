@@ -28,9 +28,9 @@ class CourseController extends Controller
         return view('admin.modules.courses.index', compact('courses'));
     }
 
-    public function showCourse($slug)
+    public function showCourse($id)
     {
-        $course = Course::where('slug', $slug)
+        $course = Course::where('id', $id)
             ->first();
 
         $units = Unit::select([
@@ -41,8 +41,8 @@ class CourseController extends Controller
             'units.updated_at',
         ])
             ->join('courses', 'units.course_id', 'courses.id')
-            ->where('courses.slug', $slug)
-            ->orderBy('id', 'asc')
+            ->where('courses.id', $id)
+            ->orderBy('id', 'desc')
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
@@ -51,7 +51,8 @@ class CourseController extends Controller
 
     public function createCourse()
     {
-        return view('admin.modules.courses.create');
+        $course = new Course();
+        return view('admin.modules.courses.create', compact('course'));
     }
 
     public function storeCourse(CourseRequest $request)
@@ -65,7 +66,9 @@ class CourseController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return redirect(route('course.index'));
+        return redirect(route('course.index'))
+        ->with('message', 'Khóa học đã được thêm mới')
+        ->with('type_alert', "success");;
     }
 
     public function editCourse(Request $request, $id)
@@ -76,12 +79,13 @@ class CourseController extends Controller
             return view('admin.modules.courses.edit', compact('course'));
         }
         return redirect(route('course.index'))
-            ->with('msg', 'Khóa học không tồn tại');
+            ->with('message', 'Khóa học không tồn tại')
+            ->with('type_alert', "danger");;
     }
 
     public function updateCourse(CourseRequest $request, $id)
     {
-        $msg = 'Khóa học không tồn tại';
+        $message = 'Khóa học không tồn tại';
         $course = Course::find($id);
         if ($course) {
             $course->title = $request->input('title');
@@ -90,14 +94,14 @@ class CourseController extends Controller
             $course->begin_date = $request->input('begin_date');
             $course->end_date = $request->input('end_date');
             $photo = $request->file('image');
-            $path = Storage::putFile('image', $photo);
+            $path = Storage::putFile('images', $photo);
             $course->image = $path;
             $course->description = $request->input('description');
             $course->save();
-            $msg = 'Cập nhật khóa học thành công';
+            $message = 'Cập nhật khóa học thành công';
         }
 
-        return redirect(route('course.index'))->with('msg', $msg);
+        return redirect(route('course.index'))->with('message', $message);
     }
 
     public function destroyCourse(Request $request)
@@ -106,10 +110,12 @@ class CourseController extends Controller
         if ($course_id) {
             Course::destroy($course_id);
             return redirect(route('course.index'))
-                ->with('msg', 'Khóa học ' . $course_id . ' đã được xóa');
+                ->with('message', 'Khóa học đã được xóa')
+                ->with('type_alert', "success");
         } else
             return redirect(route('course.index'))
-                ->with('msg', 'Khóa học không tồn tại');
+                ->with('message', 'Khóa học không tồn tại')
+                ->with('type_alert', "danger");
     }
 
 }
