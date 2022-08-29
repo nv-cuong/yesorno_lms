@@ -107,4 +107,5 @@ Route::prefix('admin')
 
         require 'users.php';
         require 'roles.php';
+        require 'auth.php';
     });
