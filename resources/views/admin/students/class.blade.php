@@ -54,7 +54,6 @@
                                         @empty
                                             <ul class="list-group list-group-flush"style="width : 100%">
                                                 <li class="list-group-item">
-                                                    <i class="fa-solid fa-graduation-cap"></i>
                                                     Học viên chưa đăng kí lớp nào
                                                 </li>
                                         @endforelse
