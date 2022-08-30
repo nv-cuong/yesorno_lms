@@ -101,7 +101,9 @@ class CourseController extends Controller
             $message = 'Cập nhật khóa học thành công';
         }
 
-        return redirect(route('course.index'))->with('message', $message);
+        return redirect(route('course.index'))
+        ->with('message', $message)
+        ->with('type_alert', "success");;
     }
 
     public function destroyCourse(Request $request)

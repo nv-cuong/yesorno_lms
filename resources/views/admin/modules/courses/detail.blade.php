@@ -56,7 +56,7 @@
                     <div class="card-header">
                         <a href="{{ route('unit.create', ['course_id'=>$course->id]) }}" class="btn btn-success float-right">+ Thêm chương mới</a>
                     </div>
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="example1">
                         <thead>
                             <tr>
                                 <th>STT</th>
@@ -128,11 +128,23 @@
 </div>
 @stop
 
-@push('custom-scripts')
+@section('scripts')
+<script>
+  $(function() {
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    console.log($("#example1"));
+  });
+</script>
+
 <script>
     function unit_delete(id) {
         var unit_id = document.getElementById('unit_id');
         unit_id.value = id;
     }
 </script>
-@endpush
+@endsection

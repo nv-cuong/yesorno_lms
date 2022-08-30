@@ -31,7 +31,7 @@
           <div class="card-header">
             <a href="{{ route('course.create') }}" class="btn btn-success float-right">+ Tạo khóa học mới</a>
           </div>
-          <table class="table table-striped">
+          <table class="table table-striped" id="example1">
             <thead>
               <tr>
                 <th>STT</th>
@@ -59,7 +59,10 @@
                     <i class="far fa-trash-alt"></i>
                   </a>
                   <a href="#" class="btn btn-warning">
-                    + Test
+                    Test
+                  </a>
+                  <a href="#" class="btn btn-success">
+                    Học viên
                   </a>
                 </td>
               </tr>
@@ -107,11 +110,22 @@
 </div>
 @stop
 
-@push('custom-scripts')
+@section('scripts')
+<script>
+  $(function() {
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+
 <script>
   function course_delete(id) {
     var course_id = document.getElementById('course_id');
     course_id.value = id;
   }
 </script>
-@endpush
+@endsection

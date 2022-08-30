@@ -35,7 +35,7 @@
                     <div class="card-header">
                         <a href="{{ route('lesson.create', ['unit_id'=>$unit->id]) }}" class="btn btn-success float-right">+ Thêm bài học mới</a>
                     </div>
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="example1">
                         <thead>
                             <tr>
                                 <th>STT</th>
@@ -111,11 +111,22 @@
 </div>
 @stop
 
-@push('custom-scripts')
+@section('scripts')
+<script>
+  $(function() {
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+
 <script>
     function lesson_delete(id) {
         var lesson_id = document.getElementById('lesson_id');
         lesson_id.value = id;
     }
 </script>
-@endpush
+@endsection
