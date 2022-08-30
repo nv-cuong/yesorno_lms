@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\LogoutController;
 
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\User\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,9 +25,17 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+
+Route::get('/courses', [HomeController::class, 'courses'])
+    ->name('courses');
+Route::get('/courses/detail/{slug}', [HomeController::class, 'courseDetail'])
+    ->name('detail');
+Route::get('/personal/{id}', [HomeController::class, 'personal'])
+    ->name('personal');
+
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
 Route::post('/login', [LoginController::class, 'postLogin'])
@@ -41,11 +50,11 @@ Route::prefix('admin')
     ->group(function () {
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
-// Conflict thì để cái này lại nhé | Đức
+        // Conflict thì để cái này lại nhé | Đức
         Route::resource('class', ClassController::class);
         Route::delete('/class/delete', [ClassController::class, 'destroy'])
             ->name('class.delete');
-// Đức
+        // Đức
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
                 ->name('students');
