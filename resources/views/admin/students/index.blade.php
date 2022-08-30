@@ -79,7 +79,11 @@
             "responsive": true,
             "lengthChange": false,
             "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            "paging": true,
+            "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ học viên",// text you want show for info section
+            },
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     });
 </script>
