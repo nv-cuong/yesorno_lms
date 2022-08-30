@@ -119,6 +119,7 @@
     <!-- SweetAlert2 -->
     <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
+
      @yield('scripts')
 </body>
 
