@@ -48,7 +48,7 @@
               Description
             </th>
             <th>
-
+            Tùy chọn
             </th>
           </tr>
         </thead>
@@ -102,6 +102,7 @@
           @endforelse
         </tbody>
       </table>
+      {{$tests->links()}}
     </div>
 
 
