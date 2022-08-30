@@ -116,6 +116,9 @@
     <script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
     <!-- AdminLTE App -->
 
+    <script src="{{ asset('admin/plugins/jqvmap/jquery.vmap.min.js')}}"></script>
+    <script src="{{ asset('admin/plugins/jqvmap/maps/jquery.vmap.usa.js')}}"></script>
+
     <!-- SweetAlert2 -->
     <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>

@@ -23,5 +23,13 @@ class Unit extends Model
         return $this->belongsTo(Course::class);
     }
 
-
+    public function tests()
+    {
+        return $this->belongsToMany(
+            Test::class,
+            'unit_tests',
+            'test_id',
+            'unit_id'
+        );
+    }
 }
