@@ -5,6 +5,7 @@
     @endforeach
  
 <?php static $k=1?>
+<div class="card-body">
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
     <h1 class="h2">Danh sách câu hỏi</h1>
     <div class="btn-toolbar mb-2 mb-md-0">
@@ -25,6 +26,7 @@
       <th>Test</th>
        <th>Chương</th> 
       <th >Nội dung câu hỏi</th>
+      <th >Loại câu hỏi</th>
       <th >edit or delete</th>
     </tr>
   </thead>
@@ -34,13 +36,11 @@
             <tr>
                 <td>{{$row->id}}</td> 
                 <td>{{$tests->id}}</td>
-                
+                 <td>{{$row->course->id}}. {{$row->course->title}}</td>
                 <td><?php echo"$k. "?>{{$row->content}}</td>
-                <?php $k++;
-                ?>
-               <td>{{$row->course->id}}. {{$row->course->title}}</td>
+                <?php $k++;?>
+              <td><?php echo $a[$row->category]?></td>
                 <td>
-                 
                   <a href ="{{route('test.question.edit',[$row->id,$tests->id,$row->course->id])}}" class="btn btn-xs btn-info" name="Edit">
                     <i class="nav-icon fas fa-solid fa-pen"></i>    
                             Edit</a>
@@ -54,7 +54,7 @@
             @endforeach
          
                     
-            
+</div>           
   </tbody>
   
 </table>

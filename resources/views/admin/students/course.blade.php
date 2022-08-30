@@ -9,28 +9,59 @@
             <div class="card">
 
                 <div class="card-header">
-                    <h3 class="page-title d-inline mb-0" style="font-weight:bold; font-size :200%">Khóa học của {{$student->first_name}} {{$student->last_name}}</h3>
+                    <h3 class="page-title d-inline mb-0" style="font-size :200%">Khóa học của
+                        {{ $student->first_name }} {{ $student->last_name }}</h3>
                 </div>
                 <div class="card-body">
                     @forelse ($courses as $course)
-                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="card collapsed-card">
+                            <div class="card-header" style="font-size:1.8em">
+                                <i class="bi bi-journal-bookmark-fill"></i>
+                                {{ $course['title'] }}
+                                <div class="card-tools">
+                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body ">
+                                <ul class="nav nav-pills flex-column">
+                                    <li class="nav-item">
+                                        @foreach ($course->units()->get() as $unit)
+                                            <div class="card collapsed-card">
+                                                <div class="card-header">
+                                                    <i class="bi bi-bookmark-check" style="font-size:1.5em"> {{ $unit->getOriginal('title') }}</i>
+                                                    <div class="card-tools">
+                                                        <button type="button" class="btn btn-tool"
+                                                            data-card-widget="collapse">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body ">
+                                                    <ul class="nav nav-pills flex-column">
+                                                        <li class="nav-item">
+                                                            @foreach ($unit->lessons()->get() as $lesson)
+                                                                <div class="p-3">
+                                                                    <i class="fas fa-arrow-circle-right"
+                                                                        style="color: rgb(37, 236, 37)"> {{ $lesson->getOriginal('title') }}</i>
 
-                        <ul class="list-group list-group-flush"style="width : 100%">
-                            <li class="list-group-item">
-                                <i class="fas fa-book fa-2x"> {{ $course['title'] }}</i>
-                            </li>
-                                <li class="list-group-item" style="margin-left : 40px">
-                                    @foreach ($course->units()->get() as $unit)
-                                    <i class="fas fa-arrow-circle-right fa-lg" style="color: rgb(37, 236, 37)"></i>
-                                    {{$unit->getOriginal('title')}}
-                                    <br>
-                                    @endforeach
-                                </li>
-                            <br>
-                        </ul>
-                    </div>
+                                                                    <br>
+                                                                </div>
+                                                            @endforeach
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
                     @empty
-                    <ul class="list-group list-group-flush"style="width : 100%">Chưa có khóa học nào</ul>
+                        <ul class="list-group list-group-flush"style="width : 100%">Chưa có khóa học nào</ul>
                     @endforelse
 
 

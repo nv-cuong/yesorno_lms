@@ -70,11 +70,24 @@ class User extends EloquentUser
             'course_id'
         );
     }
-    
-    public function scopeSearch($query){
-        if($key = request()->key){
-            $query = $query-> where('first_name', 'like', '%'.$key.'%')
-                            ->orWhere('last_name', 'like', '%'.$key.'%');
+
+
+    public function lessons()
+    {
+        return $this->belongsToMany(
+            Lesson::class,
+            'user_lessons',
+            'user_id',
+            'lesson_id'
+        );
+    }
+
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+            $query = $query->where('first_name', 'like', '%' . $key . '%')
+                ->orWhere('last_name', 'like', '%' . $key . '%');
+
         }
         return $query;
     }

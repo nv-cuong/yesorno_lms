@@ -13,15 +13,16 @@ use Illuminate\Http\Request;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-
 class QuestionController extends Controller
 {
+
 
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
+
         $questions = Question::select([
             'id',
             'course_id',
@@ -32,6 +33,8 @@ class QuestionController extends Controller
         ])->paginate();
 
         return view('admin.questions.index', compact('questions'));
+
+       
     }
 
     /**
@@ -41,7 +44,11 @@ class QuestionController extends Controller
     {
         $course = Course::all();
 
+
         return view('admin.questions.create', compact('course'));
+
+        
+       
     }
 
     /**
@@ -53,15 +60,21 @@ class QuestionController extends Controller
     {
         $question_item = $request->except('_token');
 
+
         try {
             if ($question_item['category'] == 0) {
+
+      
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
                     'category' => $question_item['category'],
                     'score' => $question_item['score']
                 ]);
+
             } elseif ($question_item['category'] == 1) {
+
+           
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
@@ -106,6 +119,7 @@ class QuestionController extends Controller
     {
         $question_test = Question::find($id);
 
+
         if ($question_test->test()->count() > 0) {
             return redirect(route('question.index'))->with('message', "Câu hỏi có trong bài test không thể sửa !")->with('type_alert', "danger");
         } else {
@@ -120,6 +134,7 @@ class QuestionController extends Controller
                     'answers',
                     'course'
                 ]));
+
             }
         }
     }
@@ -131,6 +146,9 @@ class QuestionController extends Controller
      */
     public function update(EditQuestionRequest $request, $id)
     {
+
+        $msg = 'Câu hỏi không tồn tại !';
+
         $question = Question::find($id);
         if ($question->category == 1) {
             $question->content = $request->input('content');
@@ -139,6 +157,7 @@ class QuestionController extends Controller
             $question->save();
 
             $answers = Answer::where('question_id', $id)->get();
+
             foreach ($answers as $q => $ans) {
 
                 $option = $request->input('content_' . $q, '');
@@ -151,13 +170,16 @@ class QuestionController extends Controller
             }
 
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
+
         } elseif ($question->category == 2) {
             $question->content = $request->input('content');
             $question->course_id = $request->input('course_id');
             $question->score = $request->input('score');
             $question->answer = $request->input('answer');
             $question->save();
+
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
+
         } else {
             $question->content = $request->input('content');
             $question->course_id = $request->input('course_id');
@@ -166,9 +188,12 @@ class QuestionController extends Controller
             $question->save();
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
         }
+
         return redirect(route('question.index'))->with('message', $msg)->with('type_alert', "success");;
+
     }
 
+   
     /**
      * @param Request $request
      * @throws ModelNotFoundException
@@ -208,6 +233,7 @@ class QuestionController extends Controller
                     $checked = 'Đúng';
                 } else {
                     $checked = 'Sai';
+
                 }
 
                 $output .= '<tr>
@@ -221,5 +247,4 @@ class QuestionController extends Controller
         return Response($output);
     }
 
-    
 }
