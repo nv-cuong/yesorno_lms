@@ -104,6 +104,7 @@ class StudentController extends Controller
         return redirect(route('students'))
         ->with('msg', 'Học sinh chưa tồn tại!');
     }
+
     public function showStatistic(Request $request, $id)
     {
         $student = User::find($id);

@@ -32,6 +32,12 @@ class CreateRequest extends FormRequest
             'password'   => 'required|confirmed|min:8',
         ];
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
     public function messages()
     {
         return [

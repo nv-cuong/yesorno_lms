@@ -79,12 +79,7 @@ Route::prefix('admin')
                 ->name('student.statistic');
         });
 
-        Route::prefix('/questions')->name('question.')->group(function () {
-            Route::get('index', [QuestionController::class, 'index'])->name('index');
-            Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
-            Route::get('create', [QuestionController::class, 'create'])->name('create');
-            Route::post('store', [QuestionController::class, 'store'])->name('store');
-        });
+        
 
         Route::prefix('/courses')->name('course.')->group(function () {
             Route::get('index', [CourseController::class, 'index'])->name('index');

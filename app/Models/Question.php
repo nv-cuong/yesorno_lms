@@ -18,11 +18,17 @@ class Question extends Model
     ];
        
    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function answer()
     {
         return $this->hasMany(Answer::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function test()
     {
         return $this->belongsToMany(
@@ -33,6 +39,9 @@ class Question extends Model
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function course()
     {
         return $this->belongsTo(Course::class);
