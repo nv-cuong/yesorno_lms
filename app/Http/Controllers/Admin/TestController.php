@@ -113,7 +113,7 @@ class TestController extends Controller
             if ($row->category == 0) {
                 $category = "Tự luận";
             } elseif ($row->category==1) {
-                $category="Câu hỏi trắc nhiệm";
+                $category="Trắc nhiệm nhiều lựa chọn";
             } elseif ($row->category==2) {
                 $category="Câu hỏi đúng sai";
             }

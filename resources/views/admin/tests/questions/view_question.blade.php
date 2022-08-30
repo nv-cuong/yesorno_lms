@@ -88,50 +88,7 @@ $(function() {
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
 </script>
-<script type="text/javascript">
-$(function() {
-    $('#Datalist').DataTable({
-        processing: true,
-        serverSide: true,
 
-        ajax: "{!! route('question.getData') !!}",
-        columns: [{
-                data: 'id',
-                name: 'id'
-            },
-            {
-                data: 'content',
-                name: 'content'
-            },
-            {
-                data: 'action',
-                name: 'action',
-                orderable: true,
-                searchable: true
-            },
-        ],
-        buttons: ['csv', 'excel', 'pdf', 'print']
-    });
-});
-
-function answer_qu(an) {
-    var url = "{{ route('question.answer', ':an') }}",
-        url = url.replace(':an', an);
-    $.ajax({
-
-        type: 'GET',
-        url: url,
-        success: function(data) {
-            $('#show_answer tbody').html(data);
-            $('#modal_answer').modal('show');
-
-        },
-        error: function(data) {
-            console.log(data);
-        }
-    });
-}
-</script>
 @yield('modal')
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
