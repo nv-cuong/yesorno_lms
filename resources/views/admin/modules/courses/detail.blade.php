@@ -34,7 +34,7 @@
                 </div>
                 <h4>Mô tả khóa học</h4>
                 <div class="table-responsive">
-                    {{ $course->description }}
+                    {!! $course->description !!}
                 </div>
                 <table class="table table-striped">
                     <thead>
@@ -63,6 +63,7 @@
                                 <th>Tên chương</th>
                                 <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
+                                <th>Tùy chọn</th>
                             </tr>
                         </thead>
                         <tbody id="load">
@@ -137,7 +138,6 @@
             "autoWidth": false,
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
         }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        console.log($("#example1"));
     });
 </script>
 

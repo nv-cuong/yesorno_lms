@@ -44,6 +44,7 @@
                                 <th>Ngày xuất</th>
                                 <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
+                                <th>Tùy chọn</th>
                             </tr>
                         </thead>
                         <tbody id="load">

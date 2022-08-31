@@ -21,6 +21,7 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
+            $table->integer('test_id');
             $table->timestamps();
         });
     }

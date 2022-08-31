@@ -36,6 +36,7 @@
               <tr>
                 <th>STT</th>
                 <th>Tên khóa học</th>
+                <th>Loại</th>
                 <th>Ngày tạo</th>
                 <th>Ngày cập nhật</th>
                 <th>Tùy chọn</th>
@@ -46,6 +47,11 @@
               <tr>
                 <td>{{ $loop->iteration + ($courses->currentPage() -1) * $courses->perPage() }}</td>
                 <td>{{ $course->title }}</td>
+                @if($course->status == 0)
+                <td>Miễn phí</td>
+                @else
+                <td>Tính phí</td>
+                @endif
                 <td>{{ $course->created_at->format('d-m-Y') }}</td>
                 <td>{{ $course->updated_at->format('d-m-Y') }}</td>
                 <td>

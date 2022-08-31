@@ -52,7 +52,7 @@ class UnitController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return redirect(route('course.detail', ['id' => $unit_item['course_id']]))
+        return redirect(route('course.detail', [$unit_item['course_id']]))
             ->with('msg', 'Thêm chương mới thành công');;
     }
 
@@ -64,7 +64,7 @@ class UnitController extends Controller
             $course = Course::pluck('title', 'id');
             return view('admin.modules.courses.units.edit', compact('unit', 'course'));
         }
-        return redirect(route('course.index'))
+        return redirect(route('course.detail', [$unit->course_id]))
             ->with('msg', 'Chương không tồn tại');
     }
 
@@ -80,7 +80,8 @@ class UnitController extends Controller
             $msg = 'Cập nhật khóa học thành công';
         }
 
-        return redirect(route('course.index'))->with('msg', $msg);
+        return redirect(route('course.detail', [$unit->course_id]))
+        ->with('msg', $msg);
     }
 
     public function destroyUnit(Request $request, $course_id)
@@ -88,10 +89,10 @@ class UnitController extends Controller
         $unit_id = $request->input('unit_id', 0);
         if ($unit_id) {
             Unit::destroy($unit_id);
-            return redirect(route('course.detail', ['id' => $course_id]))
+            return redirect(route('course.detail', [$course_id]))
                 ->with('msg', 'Chương đã được xóa');
         } else
-            return redirect(route('course.detail', ['id' => $course_id]))
+            return redirect(route('course.detail', [$course_id]))
                 ->with('msg', 'Chương không tồn tại');
     }
 }
