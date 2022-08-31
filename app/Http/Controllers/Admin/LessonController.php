@@ -18,13 +18,8 @@ class LessonController extends Controller
     {
         $lesson = Lesson::where('slug', $slug)
             ->first();
-        $files = File::select(
-            'id',
-            'type',
-            'path'
-        )
+        $files = File::all()
             ->where('lesson_id', $lesson->id);
-
         return view('admin.modules.courses.units.lessons.detail', compact('lesson', 'files'));
     }
 
@@ -42,12 +37,12 @@ class LessonController extends Controller
         $lesson_item = $request->except('_token');
         try {
             $lesson = Lesson::create([
-                'unit_id',
-                'title',
-                'slug',
-                'config',
-                'published',
-                'content',
+                'unit_id' => $lesson_item['unit_id'],
+                'title' => $lesson_item['title'],
+                'slug' => Str::slug($lesson_item['title']),
+                'config' => $lesson_item['config'],
+                'published' => $lesson_item['published'],
+                'content' => $lesson_item['content'],
             ]);
             File::create([
                 'lesson_id' => $lesson->id,

@@ -32,7 +32,7 @@
                     {!! $lesson->content !!}
                 </div>
                 <div class="table-responsive">
-                    @foreach ($files as $file)
+                    @forelse ($files as $file)
                     @if ($file->type == 'link')
                         @php
                             $vid = explode('=', $file->path, 3);
@@ -42,7 +42,11 @@
                     <iframe src="@php echo'https://youtube.com/embed/'. $vid_id .'' @endphp" width="560" height="315" allowfullscreen></iframe>
                     @else
                         {{$file->path}}
+                        
                     @endif
+                    @empty
+                    <p>Không có file nào</p>
+                    @endforelse
                 </div>
                 @endif
             </div>

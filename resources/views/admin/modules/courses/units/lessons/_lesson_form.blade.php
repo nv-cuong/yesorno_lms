@@ -27,14 +27,16 @@
     <label for="config" class="form-label">Loại bài học</label>
     <div class="form-group" style="display: flex; justify-content: space-around">
         <div class="form-check ">
-            <input class="form-check-input @error('config') is-invalid @enderror" type="radio" name="amount" value="must"
+            <input class="form-check-input @error('config') is-invalid @enderror" type="radio" 
+            name="amount" value="must"
             @if ($lesson->config == 'must')
                 checked
             @endif >
             <label class="form-check-label">Tính tiến độ</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input @error('config') is-invalid @enderror" type="radio" name="amount" value="optional"
+            <input class="form-check-input @error('config') is-invalid @enderror" type="radio" 
+            name="amount" value="optional"
             @if ($lesson->config == 'optional')
                 checked
             @endif >
@@ -42,7 +44,7 @@
         </div>
     </div>
     @error('config')
-    <div class="invalid-feedback">{{ $message }}</div>
+    <div class="text-danger">{{ $message }}</div>
     @enderror
 </div>
 <div class="form-group">
@@ -52,17 +54,21 @@
     <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>
+@php 
+$path_link = 'Chọn đường link youtube'
+@endphp
 @if($lesson->has('files'))
 @php
     $files = $lesson->files()->get()
 @endphp
-@foreach($files as file)
+@forelse($files as $file)
     @if($file->type == 'link')
     @php
         $path_link = $file->path
     @endphp
     @endif
-@endforeach
+    @empty
+@endforelse
 @endif
 <div class="form-group">
     <label class="form-label">Link video</label>
