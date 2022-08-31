@@ -16,6 +16,30 @@
         </div>
     </div>
 
+    <!-- Start Cate-3
+                    ============================================= -->
+    <div class="cate-3-area bg-2 de-padding">
+        <div class="container">
+            <div class="cate-3-title">
+                <div class="row align-items-center">
+                    <div class="col-xl-8">
+                        <span class="sub-2">Find Perfect one</span>
+                        <h2>Check all categories and enroll </h2>
+                    </div>
+                    <div class="col-xl-4">
+                        <a href="#" class="theme-btn">View All Categories <i class="ti ti-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+            <span> Tiến độ các khóa học</span>
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
+                    aria-valuemax="100">25%</div>
+            </div>
+            <br>
+        </div>
+    </div>
+
     <div class="author-info posi-rel de-padding">
         <div class="author-shape">
             <img src="{{ asset('user/img/details-page/author-bg.png') }}" alt="thumb">
@@ -82,7 +106,8 @@
                                 <div class="pf-item video photography" style="position: absolute; left: 0%; top: 0px;">
                                     <div class="course-2-box">
                                         <div class="course-2-pic">
-                                            <img src="{{ asset('user/img/course/course-1.jpg') }}" class="course-img" alt="thumb">
+                                            <img src="{{ asset('user/img/course/course-1.jpg') }}" class="course-img"
+                                                alt="thumb">
                                             <div class="course-2-pic-content">
                                                 <p><span>356</span> Enrolled</p>
                                             </div>

@@ -34,7 +34,7 @@
             display: inline-flex;
         }
 
-        .course-2-text p {
+        .desciption_course{
             display: -webkit-box;
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;

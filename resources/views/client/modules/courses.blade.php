@@ -68,14 +68,10 @@
                                                 </div>
                                             </div>
                                             <div class="course-2-content">
-                                                <div class="course-author">
-                                                    <img src="{{ asset('/user/img/course/user-1.jpg') }}" alt="thumb">
-                                                    <h6>Samrun Whatson</h6>
-                                                </div>
+
                                                 <div class="course-2-text">
                                                     <h5>{{ $course->title }}</h5>
-                                                    <p
-                                                        style="">
+                                                    <p class="desciption_course">
                                                         {!! $course->description !!}
                                                     </p>
                                                 </div>
@@ -84,13 +80,11 @@
                                                         <i class="fas fa-book-open"></i>
                                                         <p class="mb-0">26 lesson</p>
                                                     </div>
-                                                    <div class="course-2-price">
-                                                        Price:<span>$15.00</span>
-                                                    </div>
+                                                    
                                                 </div>
                                                 <div class="course-2-btn">
                                                     <a href="{{ route('detail', $course->slug) }}"
-                                                        class="theme-btn btn-2">Ghi danh ngay</a>
+                                                        class="theme-btn btn-2">Ghi danh</a>
                                                 </div>
                                             </div>
                                         </div>

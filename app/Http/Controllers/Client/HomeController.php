@@ -55,4 +55,8 @@ class HomeController extends Controller
         $student = User::where('id', $id)->first();;
         return view('client.modules.personal', compact('student'));
     }
+
+    public function contact(){
+        return view('client.modules.contact');
+    }
 }
