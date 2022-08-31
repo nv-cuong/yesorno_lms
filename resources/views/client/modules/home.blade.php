@@ -13,7 +13,7 @@
                                 <div class="hero-content">
                                     <h5 class="hero-p1"> nơi cung cấp những khóa học chất lượng và hoàn toàn miễn phí</h5>
                                     <div class="hro-btn">
-                                        <a href="#" class="theme-btn">Start <i class="ti ti-arrow-right"></i></a>
+                                        <a href="{{ route('courses') }}" class="theme-btn">Bắt đầu học <i class="ti ti-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -90,35 +90,9 @@
                 </div>
             </div>
         </div>
-        <!-- Start Cate-3
-                ============================================= -->
-        <div class="cate-3-area bg-2 de-padding">
-            <div class="container">
-                <div class="cate-3-title">
-                    <div class="row align-items-center">
-                        <div class="col-xl-8">
-                            <span class="sub-2">Find Perfect one</span>
-                            <h2>Check all categories and enroll </h2>
-                        </div>
-                        <div class="col-xl-4">
-                            <a href="#" class="theme-btn">View All Categories <i class="ti ti-arrow-right"></i></a>
-                        </div>
-                    </div>
-                </div>
-                <span> Tiến độ các khóa học</span>
-                <div class="progress">
-                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
-                        aria-valuemax="100">25%</div>
-                </div>
-                <br>
-            </div>
-        </div>
 
-        <!-- Start Counter
-                ============================================= -->
-        <div class="counter-area counter-3 de-padding">
 
-        </div>
+
 
         <!-- Start Event
                 ============================================= -->
@@ -144,16 +118,12 @@
                             <div class="event-content">
                                 <div class="event-meta">
                                     <p> Speaker: <span>Caron Simon</span></p>
-                                    <p>8:00 - 16:00 California, NY 70240</p>
+                                    <p>{{ date('d-m-Y', strtotime($item->begin_date)); }} - {{ date('d-m-Y', strtotime($item->end_date)); }}</p>
                                 </div>
                                 <div class="event-desc">
-                                    <h4>Build your dream Engineering career-2020</h4>
-                                    <p>
-                                        Inceptos habitant excepturi do rerum dignissim consequuntur assumenda aliqua
-                                        tristique
-                                        unde cursus aute torquent eros quis! Fames aliquip! Eius aspernatur, debitis error
-                                        omnis
-                                        iste ultrices massa
+                                    <h4>{{ $item->title }}</h4>
+                                    <p class="desciption_course">
+                                        {!! $item->description !!}
                                     </p>
                                     <div class="event-bottom">
                                         <a href="{{ route('detail', $item->slug) }}" class="event-btn">Vào khóa học</a>
@@ -172,89 +142,9 @@
                 </div>
             </div>
         </div>
-        <!-- End Event -->
 
 
-        <!-- Start Blog
-                ============================================= -->
-        <div class="wh-area blog-area de-padding" >
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-8 offset-xl-2">
-                        <div data-text="" class="site-title text-center">
-                            <span class="sub-2">What's update now</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="wh-wrapper owl-carousel owl-theme">
-                    <div class="wh-box">
-                        <div class="wh-pic blog-img">
-                            <img src="{{ asset('/user/img/choose/ch-1.jpg') }}" alt="thumb">
-                            <div class="blog-date">
-                                <div class="blog-date-info">
-                                    <p>23 <span>sep</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wh-content">
-                            <div class="wh-cate">
-                                <span>Categories:Education,Certificate</span>
-                            </div>
-                            <h6>Admit us here. You know the world, you know the society</h6>
-                        </div>
-                    </div>
-                    <div class="wh-box">
-                        <div class="wh-pic blog-img">
-                            <img src="{{ asset('/user/img/choose/ch-2.jpg') }}" alt="thumb">
-                            <div class="blog-date">
-                                <div class="blog-date-info">
-                                    <p>23 <span>sep</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wh-content">
-                            <div class="wh-cate">
-                                <span>Categories:Education,Certificate</span>
-                            </div>
-                            <h6>Admit us here. You know the world, you know the society</h6>
-                        </div>
-                    </div>
-                    <div class="wh-box">
-                        <div class="wh-pic blog-img">
-                            <img src="{{ asset('/user/img/choose/ch-3.jpg') }}" alt="thumb">
-                            <div class="blog-date">
-                                <div class="blog-date-info">
-                                    <p>23 <span>sep</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wh-content">
-                            <div class="wh-cate">
-                                <span>Categories:Education,Certificate</span>
-                            </div>
-                            <h6>Admit us here. You know the world, you know the society</h6>
-                        </div>
-                    </div>
-                    <div class="wh-box">
-                        <div class="wh-pic blog-img">
-                            <img src="{{ asset('/user/img/choose/ch-1.jpg') }}" alt="thumb">
-                            <div class="blog-date">
-                                <div class="blog-date-info">
-                                    <p>23 <span>sep</span></p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="wh-content">
-                            <div class="wh-cate">
-                                <span>Categories:Education,Certificate</span>
-                            </div>
-                            <h6>Admit us here. You know the world, you know the society</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Blog-->
+
 
         <!-- Start Partner
                 ============================================= -->
@@ -266,90 +156,12 @@
                     <img src="{{ asset('/user/img/partner/brand-3.png') }}" alt="thumb">
                     <img src="{{ asset('/user/img/partner/brand-4.png') }}" alt="thumb">
                     <img src="{{ asset('/user/img/partner/brand-5.png') }}" alt="thumb">
-                    <img src="{{ asset('/user/img/partner/brand-2.png') }}" alt="thumb">
-                    <img src="{{ asset('/user/img/partner/brand-1.png') }}" alt="thumb">
                 </div>
             </div>
         </div>
         <!-- End Partner-->
 
-        <!-- Start Contact
-                ============================================= -->
-        <div class="cta-area cta-3  de-padding" id="contact">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-8 offset-xl-2">
-                        <div data-text="" class="site-title text-center">
-                            <span class="sub-2">What's update now?</span>
-                            <h2>Have any questions? Get in touch</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="cta-wrapper grid-2">
-                    <div class="cta-left" style="background: url({{ asset('/user/img/footer/contact-left-bg.png') }})">
-                        <h2>Get in touch for any questions?</h2>
-                        <div class="cta-left-wrap">
-                            <div class="cta-left-single">
-                                <i class="fas fa-map-marker-alt"></i>
-                                <div class="cta-left-single-txt">
-                                    <h5>Head office</h5>
-                                    <span>454 read, 36 Floor New York, USA</span>
-                                </div>
-                            </div>
-                            <div class="cta-left-single">
-                                <i class="fas fa-phone-volume"></i>
-                                <div class="cta-left-single-txt">
-                                    <h5>Call Us Direct</h5>
-                                    <span>+190-96963369</span>
-                                </div>
-                            </div>
-                            <div class="cta-left-single">
-                                <i class="fas fa-envelope"></i>
-                                <div class="cta-left-single-txt">
-                                    <h5>Email Us</h5>
-                                    <span>info@support.com</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cta-right">
-                        <div class="contact-inputs">
-                            <form class="contact-form" method="post"
-                                action="https://siteforest.tech/templatebucket/lasson/assets/mail/contact.php">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="name">Full Name</label>
-                                            <input type="text" class="form-control" name="name" id="name">
-                                            <span class="alert alert-error"></span>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Email Address</label>
-                                            <input type="email" class="form-control" name="email" id="email">
-                                            <span class="alert alert-error"></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label for="comments">Write Something</label>
-                                            <textarea class="form-control" id="comments" name="comments" rows="5"></textarea>
-                                        </div>
-                                        <button type="submit" name="submit" id="submit">
-                                            Send your Message
-                                        </button>
-                                        <!-- Alert Message -->
-                                        <div class="alert-notification">
-                                            <div id="message" class="alert-msg"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Contact -->
+
 
     </main>
 @endsection
