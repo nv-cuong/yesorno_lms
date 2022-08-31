@@ -25,7 +25,7 @@ class LoginController extends Controller
             if ($user) {
                 if ($user-> inRole ('student')){
                     $request->session()->regenerate();
-                    return redirect()->intended(route('trang-chu'));
+                    return redirect()->intended(route('home'));
                 }
                 else{
                     $request->session()->regenerate();

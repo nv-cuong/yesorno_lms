@@ -30,8 +30,8 @@
                             <li class="nav-item {{  url()->current() == route('courses')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('courses') }}">Khóa học</i></a>
                             </li>
-                            <li class="nav-item"> <a class="nav-link" href="contact.html">Liên hệ</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="contact.html"><i class="far fa-bell"></i>
+                            <li class="nav-item"> <a class="nav-link" href="#contact">Liên hệ</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="#"><i class="far fa-bell"></i>
                                     Thông báo(0) </a></li>
 
                             <form class="form-inline" style="padding-left: 100px">

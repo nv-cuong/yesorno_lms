@@ -1,4 +1,4 @@
-@extends('user.layouts.master')
+@extends('client.layouts.master')
 @section('title', 'Trang chủ')
 
 @section('content')
@@ -177,7 +177,7 @@
 
         <!-- Start Blog
                 ============================================= -->
-        <div class="wh-area blog-area de-padding">
+        <div class="wh-area blog-area de-padding" >
             <div class="container">
                 <div class="row">
                     <div class="col-xl-8 offset-xl-2">
@@ -275,7 +275,7 @@
 
         <!-- Start Contact
                 ============================================= -->
-        <div class="cta-area cta-3  de-padding">
+        <div class="cta-area cta-3  de-padding" id="contact">
             <div class="container">
                 <div class="row">
                     <div class="col-xl-8 offset-xl-2">

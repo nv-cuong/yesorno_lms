@@ -1,4 +1,4 @@
-@extends('user.layouts.master')
+@extends('client.layouts.master')
 @section('title', 'Chi tiết khóa học')
 
 @section('content')

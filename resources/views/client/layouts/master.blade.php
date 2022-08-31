@@ -50,14 +50,14 @@
     <div class="se-pre-con"></div>
 
 
-    @include('user.layouts.header')
+    @include('client.layouts.header')
     <div class="clearfix"></div>
 
 
     @yield('content')
     <div class="clearfix"></div>
 
-    @include('user.layouts.footer')
+    @include('client.layouts.footer')
 
     <script src="{{ asset('/user/js/jquery-1.12.4.min.js') }}"></script>
     <script src="{{ asset('/user/js/popper.min.js') }}"></script>

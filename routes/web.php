@@ -12,7 +12,7 @@ use App\Http\Controllers\Auth\LogoutController;
 
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\Client\HomeController;
 
 /*
 |--------------------------------------------------------------------------
