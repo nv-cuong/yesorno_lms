@@ -39,7 +39,8 @@
                             $vid_code = explode('&', $vid[1]);
                             $vid_id = $vid_code[0];
                         @endphp
-                    <iframe src="@php echo'https://youtube.com/embed/'. $vid_id .'' @endphp" width="560" height="315" allowfullscreen></iframe>
+                    <iframe src="@php echo'https://youtube.com/embed/'. $vid_id .'' @endphp" 
+                        width="560" height="315" allowfullscreen></iframe>
                     @else
                         {{$file->path}}
                         

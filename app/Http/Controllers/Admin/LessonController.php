@@ -71,11 +71,7 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
         if ($lesson) {
             $unit = Unit::pluck('title', 'id');
-            $files = File::select(
-                'id',
-                'type',
-                'path'
-            )
+            $files = File::all()
                 ->where('lesson_id', $lesson->id);
             return view('admin.modules.courses.units.lessons.edit', compact('lesson', 'files', 'unit'));
         }
@@ -95,6 +91,24 @@ class LessonController extends Controller
             $lesson->content = $request->input('content');
             $lesson->published = $request->input('published');
             $lesson->save();
+
+            $files = File::all()
+                ->where('lesson_id', $lesson->id);
+            foreach ($files as $file) {
+                if ($file->type == 'link') {
+                    $file->path = $request->input('path_link');
+                    $file->save();
+                } else {
+                    $zip = $request->file('path_zip');
+                    if ($zip) {
+                        $path = Storage::putFile('images', $zip);
+                        File::create([
+                            'type' => 'zip',
+                            'path' => $path
+                        ]);
+                    }
+                }
+            }
             $msg = 'Cập nhật bài học thành công';
         }
 

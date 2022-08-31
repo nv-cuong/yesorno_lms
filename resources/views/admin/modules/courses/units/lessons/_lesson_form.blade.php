@@ -28,7 +28,7 @@
     <div class="form-group" style="display: flex; justify-content: space-around">
         <div class="form-check ">
             <input class="form-check-input @error('config') is-invalid @enderror" type="radio" 
-            name="amount" value="must"
+            name="config" value="must"
             @if ($lesson->config == 'must')
                 checked
             @endif >
@@ -36,7 +36,7 @@
         </div>
         <div class="form-check">
             <input class="form-check-input @error('config') is-invalid @enderror" type="radio" 
-            name="amount" value="optional"
+            name="config" value="optional"
             @if ($lesson->config == 'optional')
                 checked
             @endif >
@@ -55,7 +55,7 @@
     @enderror
 </div>
 @php 
-$path_link = 'Chọn đường link youtube'
+$path_link = ''
 @endphp
 @if($lesson->has('files'))
 @php
