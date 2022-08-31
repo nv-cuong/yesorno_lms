@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-
+use App\Http\Controllers\Client\LessonProgress;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
 
@@ -36,6 +36,12 @@ Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('', [RegisterController::class, 'processRegistration'])->name('register.action');
+
+
+Route::get('/course', function () {
+    return view('course');
+});
+Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
     ->middleware('myweb.auth')
@@ -132,7 +138,7 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
         });
-       
+
 
         require 'users.php';
         require 'roles.php';

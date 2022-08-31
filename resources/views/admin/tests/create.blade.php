@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 @section('title', 'Create Test')
 @section('content')
-@include('admin.tests.bootstrap5')                           
+@include('admin.tests.bootstrap5')
 <meta name="csrf-token" content="{{csrf_token()}}">
 <div class="content-header">
     <div class="container-fluid">
@@ -61,8 +61,8 @@
 
                                 <button type="submit" class="btn btn-primary">Tạo bài Test</button>
                 </form>
-        
-                
+
+
 <script type="text/javascript">
     $('#multiple-select-clear-field').select2({
         theme: "bootstrap-5",
@@ -79,7 +79,7 @@
         $('.select2-selection__rendered').after('<div style="line-height: 28px; padding: 5px;" class="counter"> Số câu hỏi đã chọn : ' + counter + '</div>');
         document.getElementById("count_question_id").value = counter;
     });
-    
+
 </script>
 <script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 <script type="text/javascript">

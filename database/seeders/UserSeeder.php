@@ -18,125 +18,125 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory()->count(10)->create()->each(function($user) {
-            DB::table('activations')->insert([
-                'user_id' => $user->id,
-                'code' => fake()->password(),
-                'completed' => '1'
-            ]);
-            DB::table('role_users')->insert([
-                'user_id' => $user->id,
-                'role_id' => '5',
-            ]);
-        });
-        // DB::table('role_users')->truncate();
-        // DB::table('roles')->truncate();
-        // DB::table('users')->truncate();
-        // $roles = [
-        //     [
-        //         'name' => 'Admin',
-        //         'slug' => 'admin',
-        //     ],
-        //     [
-        //         'name' => 'Manager',
-        //         'slug' => 'manager',
-        //     ],
-        //     [
-        //         'name' => 'Teacher',
-        //         'slug' => 'teacher',
-        //     ],
-        //     [
-        //         'name' => 'Class Manager',
-        //         'slug' => 'class-manager',
-        //     ],
-        //     [
-        //         'name' => 'Student',
-        //         'slug' => 'student',
-        //     ],
-        // ];
+        // \App\Models\User::factory()->count(10)->create()->each(function($user) {
+        //     DB::table('activations')->insert([
+        //         'user_id' => $user->id,
+        //         'code' => fake()->password(),
+        //         'completed' => '1'
+        //     ]);
+        //     DB::table('role_users')->insert([
+        //         'user_id' => $user->id,
+        //         'role_id' => '5',
+        //     ]);
+        // });
+        DB::table('role_users')->truncate();
+        DB::table('roles')->truncate();
+        DB::table('users')->truncate();
+        $roles = [
+            [
+                'name' => 'Admin',
+                'slug' => 'admin',
+            ],
+            [
+                'name' => 'Manager',
+                'slug' => 'manager',
+            ],
+            [
+                'name' => 'Teacher',
+                'slug' => 'teacher',
+            ],
+            [
+                'name' => 'Class Manager',
+                'slug' => 'class-manager',
+            ],
+            [
+                'name' => 'Student',
+                'slug' => 'student',
+            ],
+        ];
 
-        // Role::insert($roles);
+        Role::insert($roles);
 
-        // $users = [
-        //     [
-        //         'email' => 'admin@example.com',
-        //         'first_name' => fake()->name(),
-        //         'last_name' => fake()->name(),
-        //         'phone' => fake()->phoneNumber(),
-        //         'birthday' => fake()->date(),
-        //         'address' => fake()->address(),
-        //         'age' => fake()->numberBetween(1, 100),
-        //         'gender' => fake()->randomElement(['male', 'female']),
-        //     ],
-        //     [
-        //         'email' => 'manager@example.com',
-        //         'first_name' => fake()->name(),
-        //         'last_name' => fake()->name(),
-        //         'phone' => fake()->phoneNumber(),
-        //         'birthday' => fake()->date(),
-        //         'address' => fake()->address(),
-        //         'age' => fake()->numberBetween(1, 100),
-        //         'gender' => fake()->randomElement(['male', 'female']),
-        //     ],
-        //     [
-        //         'email' => 'teacher@example.com',
-        //         'first_name' => fake()->name(),
-        //         'last_name' => fake()->name(),
-        //         'phone' => fake()->phoneNumber(),
-        //         'birthday' => fake()->date(),
-        //         'address' => fake()->address(),
-        //         'age' => fake()->numberBetween(1, 100),
-        //         'gender' => fake()->randomElement(['male', 'female']),
-        //     ],
-        //     [
-        //         'email' => 'student@example.com',
-        //         'first_name' => fake()->name(),
-        //         'last_name' => fake()->name(),
-        //         'phone' => fake()->phoneNumber(),
-        //         'birthday' => fake()->date(),
-        //         'address' => fake()->address(),
-        //         'age' => fake()->numberBetween(1, 100),
-        //         'gender' => fake()->randomElement(['male', 'female']),
-        //     ],
-        //     [
-        //         'email' => 'classmanager@example.com',
-        //         'first_name' => fake()->name(),
-        //         'last_name' => fake()->name(),
-        //         'phone' => fake()->phoneNumber(),
-        //         'birthday' => fake()->date(),
-        //         'address' => fake()->address(),
-        //         'age' => fake()->numberBetween(1, 100),
-        //         'gender' => fake()->randomElement(['male', 'female']),
-        //     ],
-        // ];
+        $users = [
+            [
+                'email' => 'admin@example.com',
+                'first_name' => fake()->name(),
+                'last_name' => fake()->name(),
+                'phone' => fake()->phoneNumber(),
+                'birthday' => fake()->date(),
+                'address' => fake()->address(),
+                'age' => fake()->numberBetween(1, 100),
+                'gender' => fake()->randomElement(['male', 'female']),
+            ],
+            [
+                'email' => 'manager@example.com',
+                'first_name' => fake()->name(),
+                'last_name' => fake()->name(),
+                'phone' => fake()->phoneNumber(),
+                'birthday' => fake()->date(),
+                'address' => fake()->address(),
+                'age' => fake()->numberBetween(1, 100),
+                'gender' => fake()->randomElement(['male', 'female']),
+            ],
+            [
+                'email' => 'teacher@example.com',
+                'first_name' => fake()->name(),
+                'last_name' => fake()->name(),
+                'phone' => fake()->phoneNumber(),
+                'birthday' => fake()->date(),
+                'address' => fake()->address(),
+                'age' => fake()->numberBetween(1, 100),
+                'gender' => fake()->randomElement(['male', 'female']),
+            ],
+            [
+                'email' => 'student@example.com',
+                'first_name' => fake()->name(),
+                'last_name' => fake()->name(),
+                'phone' => fake()->phoneNumber(),
+                'birthday' => fake()->date(),
+                'address' => fake()->address(),
+                'age' => fake()->numberBetween(1, 100),
+                'gender' => fake()->randomElement(['male', 'female']),
+            ],
+            [
+                'email' => 'classmanager@example.com',
+                'first_name' => fake()->name(),
+                'last_name' => fake()->name(),
+                'phone' => fake()->phoneNumber(),
+                'birthday' => fake()->date(),
+                'address' => fake()->address(),
+                'age' => fake()->numberBetween(1, 100),
+                'gender' => fake()->randomElement(['male', 'female']),
+            ],
+        ];
 
-        // foreach ($users as $userItem) {
-        //     //$user  =  \App\Models\User::factory()->create($userItem);
-        //     $userItem['password'] = '1234567@';
-        //     $user = Sentinel::registerAndActivate($userItem);
-        //     switch ($userItem['email']) {
-        //         case 'admin@example.com':
-        //             $role = Sentinel::findRoleBySlug('admin');
-        //             $role->users()->attach($user);
-        //             break;
-        //         case 'manager@example.com':
-        //             $role = Sentinel::findRoleBySlug('manager');
-        //             $role->users()->attach($user);
-        //             break;
-        //         case 'classmanager@example.com':
-        //             $role = Sentinel::findRoleBySlug('class-manager');
-        //             $role->users()->attach($user);
-        //             break;
-        //         case 'teacher@example.com':
-        //             $role = Sentinel::findRoleBySlug('teacher');
-        //             $role->users()->attach($user);
-        //             break;
-        //         case 'student@example.com':
-        //             $role = Sentinel::findRoleBySlug('student');
-        //             $role->users()->attach($user);
-        //             break;
-        //     }
-        // }
+        foreach ($users as $userItem) {
+            //$user  =  \App\Models\User::factory()->create($userItem);
+            $userItem['password'] = '1234567@';
+            $user = Sentinel::registerAndActivate($userItem);
+            switch ($userItem['email']) {
+                case 'admin@example.com':
+                    $role = Sentinel::findRoleBySlug('admin');
+                    $role->users()->attach($user);
+                    break;
+                case 'manager@example.com':
+                    $role = Sentinel::findRoleBySlug('manager');
+                    $role->users()->attach($user);
+                    break;
+                case 'classmanager@example.com':
+                    $role = Sentinel::findRoleBySlug('class-manager');
+                    $role->users()->attach($user);
+                    break;
+                case 'teacher@example.com':
+                    $role = Sentinel::findRoleBySlug('teacher');
+                    $role->users()->attach($user);
+                    break;
+                case 'student@example.com':
+                    $role = Sentinel::findRoleBySlug('student');
+                    $role->users()->attach($user);
+                    break;
+            }
+        }
 
     }
 }
