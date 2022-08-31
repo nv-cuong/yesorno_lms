@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
             'name' =>           ['required', 'max:255'],
             'course_id' =>      ['required'],
             'description' =>    ['required', 'min:20'],
-            'amount' =>         ['required'],
+            'time_study' =>         ['required'],
         ];
     }
 }

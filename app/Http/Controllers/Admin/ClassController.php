@@ -27,7 +27,7 @@ class ClassController extends Controller
             'id',
             'slug',
             'name',
-            'amount'
+            'time_study'
         ])
             ->with('courses', 'users')
             ->search()
@@ -67,7 +67,7 @@ class ClassController extends Controller
                 'name'          => $class_item['name'],
                 'slug'          => Str::slug($class_item['name']),
                 'description'   => $class_item['description'],
-                'amount'        => $class_item['amount'],
+                'time_study'    => $class_item['time_study'],
             ]);
             if (isset($_POST['course_id'])) {
                 foreach ($_POST['course_id'] as $value) {
@@ -138,7 +138,7 @@ class ClassController extends Controller
             $class->name        = $request->input('name');
             $class->slug        = Str::slug($class->name);
             $class->description = $request->input('description');
-            $class->amount      = $request->input('amount');
+            $class->time_study  = $request->input('time_study');
             $class->save();
             $message            = 'Cập nhật lớp học thành công';
             $type               = 'success';
