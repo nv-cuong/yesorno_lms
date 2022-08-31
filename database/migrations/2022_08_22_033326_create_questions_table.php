@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->integer('course_id');
-            $table->string('category');
+            $table->integer('category');
             $table->string('content');
-            $table->text('answer')->nullable();
-            $table->float('score')->nullable();
+            $table->integer('answer')->nullable();
+            $table->float('score');
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StudentRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\ClassStudy;
@@ -43,7 +44,7 @@ class StudentController extends Controller
         ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
-    public function update(Request $request, $id)
+    public function update(StudentRequest $request, $id)
     {
         $msg = 'Học sinh chưa tồn tại!';
         $student = User::find($id);
@@ -52,8 +53,8 @@ class StudentController extends Controller
             $student->first_name = $request->input('first_name');
             $student->gender = $request->input('gender');
             $student->last_name = $request->input('last_name');
-            $student->age = $request->input('age');
             $student->birthday = $request->input('birthday');
+            $student->age = \Carbon\Carbon::parse($request->input('birthday'))->age;
             $student->save();
             $msg = 'Thay đổi thành công!';
         }

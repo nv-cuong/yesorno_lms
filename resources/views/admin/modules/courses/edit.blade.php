@@ -19,8 +19,6 @@
                 </form>
             </div>
         </div>
-        @include('admin/_alert')
-        <hr>
     </div>
 </section>
 <section class="content">

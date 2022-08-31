@@ -25,9 +25,11 @@ class LessonRequest extends FormRequest
     {
         return [
             'title' =>      ['required', 'max:255'],
+            'unit_id' =>    ['required'],
+            'config' =>     ['required'],
+            'path' =>       ['required'],
             'content' =>    ['required', 'min:20'],
             'published' =>  ['required', 'date'],
-            'path' =>       ['required'],
         ];
     }
 }

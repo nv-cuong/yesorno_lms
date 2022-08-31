@@ -25,6 +25,7 @@ class UnitRequest extends FormRequest
     {
         return [
             'title' =>          ['required', 'max:255'],
+            'course_id' =>      ['required'],
         ];
     }
 }

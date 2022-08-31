@@ -10,7 +10,10 @@ class Answer extends Model
     use HasFactory;
 
     protected $fillable = [
+        'question_id',
         'content',
+        'checked'
+
     ];
 
     public function question()

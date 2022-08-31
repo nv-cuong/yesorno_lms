@@ -1,147 +1,100 @@
 @extends('admin.layouts.master')
 @section('title', 'Create Test')
 @section('content')
-<style>
-  .multiselect {
-  width: 200px;
-}
- 
-.selectBox {
-  position: relative;
-}
- 
-.selectBox select {
-  width: 100%;
-  font-weight: bold;
-}
- 
-.overSelect {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-}
- 
-#checkboxes {
-  display: none;
-  border: 1px #dadada solid;
-}
- 
-#checkboxes label {
-  display: block;
-}
- 
-#checkboxes label:hover {
-  background-color: #1e90ff;
-}
-</style>
+@include('admin.tests.bootstrap5')
 <meta name="csrf-token" content="{{csrf_token()}}">
-<h2>Create Test</h2>
-<form action="{{ route('test.store') }}" method = "post" >
-{{ csrf_field() }}
-<div class="form-group">
-    <label for="exampleFormControlSelect1">Select Category</label>
-    <select class="form-control" id="exampleFormControlSelect1" name ="category_question">
-        <option>Trắc nhiệm nhiều lựa chọn</option>
-        <option>Trắc nhiệm đúng sai</option>
-        <option>Tự luận</option>
-    </select>
-</div>
-<div class="form-group">
-<label for="exampleFormControlInput1">Tiều đề</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập tiêu đề" name ="title">
-    <label for="exampleFormControlInput1">Amount</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập số câu hỏi" name ="amount">
-    <label for="exampleFormControlInput1">Time</label>
-    <input type="" class="form-control" id="exampleFormControlInput1" placeholder="nhập thời gian làm bài" name ="time">
-</div>
-<div class="form-group">
-        <label for="exampleFormControlTextarea1">Nhập Description:</label>
-        <textarea class="form-control"  name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
-    </div>
-    
-<div class="form-group">
-             <label for="confirmation_pwd">Chọn Course:</label>
-            <select class="form-control course" id="id" name="course" data-dependent="question"
-            >
-            <option value="">-</option>
-            @forelse($course as $id => $title)
-            <option value="{{ $id }}">{{ $title }}</option>
-            @empty
-            @endforelse
-            </select>
-            
+<div class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-12">
+                <h2>Create Test</h2>
+                <form action="{{ route('test.store') }}" method="post">
+                    @csrf
+                    {{ csrf_field() }}
+                    <div class="form-group">
+                        <label for="exampleFormControlInput1">Tiều đề</label>
+                        <input type="" name="title" class="form-control @error('title') is-invalid @enderror"
+                            value="{{ old('title') }}" placeholder="nhập tiêu đề">
+                        @error('title')
+
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                        <label for="exampleFormControlInput1">Time</label>
+                        <input type="" class="form-control @error('time') is-invalid @enderror"
+                            value="{{ old('time') }}" id="" placeholder="nhập thời gian làm bài" name="time">
+                        @error('time')
+
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleFormControlTextarea1">Nhập Description:</label>
+                        <textarea class="form-control @error('description') is-invalid @enderror"
+                            value="{{ old('description') }}" name="description" id="exampleFormControlTextarea1"
+                            rows="3"></textarea>
+                        @error('description')
+
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmation_pwd">Chọn Course:</label>
+                        <select class="form-control @error('course') is-invalid @enderror course" id="id" name="course"
+                            data-dependent="question">
+                            <option value="">-</option>
+                            @forelse($course as $id => $title)-
+                            <option value="{{ $id }}">{{$id}}. {{ $title }}</option>
+                            @empty
+                            @endforelse
+                        </select>
+                        @error('course')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmation_pwd">Select Question</label>
+
+                        <select class="form-select  @error('question') is-invalid @enderror question"
+                            id="multiple-select-clear-field" name="question[]" data-dependent="course"
+                            data-placeholder="Choose question" multiple>
+                            <option value="">Selete Course first</option>
+                        </select>
+                        @error('question')
+                        <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <input type="hidden" name="count_question_id" id='count_question_id' value="0"><br>
+
+                    <button type="submit" class="btn btn-primary">Tạo bài Test</button>
+                </form>
+
             </div>
-
-<div class="form-group">
-    <label for="exampleFormControlSelect1">Select Question</label>
-    <div class="selectBox" onclick="showCheckboxes()">
-    <select class="form-control question" id="id" name="question" data-dependent="course">
-      <option value="">Selete Question</option>  <!-- 
-        @forelse($question as $id => $content)
-            <option value="{{ $id }}">{{ $content }}</option>
-            @empty
-            @endforelse -->
-    </select>
-    <div class="overSelect"></div>
+        </div>
     </div>
-    <div class="check" id="checkboxes">
-      <label for="one">
-        <p>Selete Course first</p></label>
-    </div>
-
 </div>
+<script type="text/javascript">
+$('#multiple-select-clear-field').select2({
+    theme: "bootstrap-5",
+    width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+    placeholder: $(this).data('placeholder'),
+    closeOnSelect: false,
+    allowClear: true,
+}).on("change", function(e) {
 
-
-
-<button type="submit" class="btn btn-primary">Tạo bài Test</button>
-</form>
-
-<script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
-<script>
-var expanded = false;
- 
-function showCheckboxes() {
-  var checkboxes = document.getElementById("checkboxes");
-  if (!expanded) {
-    checkboxes.style.display = "block";
-    expanded = true;
-  } else {
-    checkboxes.style.display = "none";
-    expanded = false;
-  }
-}
+    $('.multiple-select-clear-field li:not(.select2-search--inline)').hide();
+    $('.counter').remove();
+    var counter = $(".select2-selection__choice").length;
+    $('.select2-selection__rendered').after(
+        '<div style="line-height: 28px; padding: 5px;" class="counter"> Nhập nội dung tìm kiếm:</div>');
+    $('.select2-selection__rendered').after(
+        '<div style="line-height: 28px; padding: 5px;" class="counter"> Số câu hỏi đã chọn : ' + counter +
+        '</div>');
+    document.getElementById("count_question_id").value = counter;
+});
 </script>
- <script type="text/javascript">
+<script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script type="text/javascript">
+</script>
 
-// $("select[name='course_id']").change(function() {
-//     var url = "{{ url('/showQuestionInCourse') }}";
-//     var id = $(".course").val();
-//     var token = $("input[name='_token']").val();
-//     alert(url);
-//     // $.post("data.php", { id: id }, function(data) {
-//     //     $(".question").html(data);
-//     $.ajax({
-//         url: url,
-//         method: 'POST',
-//         data: {
-//             id: id,
-//             _token: token
-//         },
-
-//         success: function(data) {
-//             $("select[name='question']").html('');
-//             $.each(data, function(key, value) {
-//                 $("select[name='question']").append(
-//                     "<option value=" + value.id + ">" + value.title + "</option>"
-//                 );
-//             });
-//         }
-
-//     })
-// });</script>
- <script src="/ajax/ajaxadd.js"type="text/javascript"></script>
 @endsection
-
-

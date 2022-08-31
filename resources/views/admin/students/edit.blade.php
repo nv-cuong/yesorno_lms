@@ -21,12 +21,13 @@
 
                                     <div class="col-md-10">
                                         <input class="form-control @error('first_name') is-invalid @enderror" type="text"
-                                            name="first_name" id="first_name" value="{{ $student->first_name }}"
-                                            placeholder="Họ" maxlength="191" required="" autofocus="">
-                                    </div>
-                                    @error('first_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
+                                            name="first_name" id="first_name" value="{{ old('first_name')  ?:  $student->first_name }}"
+                                            placeholder="Họ" maxlength="191" autofocus="">
+                                            @error('first_name')
+                                        <div class="text-danger">{{ $message }}</div>
                                     @enderror
+                                    </div>
+
                                     <!--col-->
                                 </div>
                                 <!--form-group-->
@@ -35,115 +36,74 @@
                                     <label class="col-md-2 form-control-label" for="last_name">Tên</label>
 
                                     <div class="col-md-10">
-                                        <input class="form-control" type="text" name="last_name" id="last_name"
-                                            value="{{ $student->last_name }}" placeholder="Tên" maxlength="191"
-                                            required="">
+                                        <input class="form-control @error('last_name') is-invalid @enderror" type="text" name="last_name" id="last_name"
+                                            value="{{ old('last_name')  ?:  $student->last_name }}" placeholder="Tên" maxlength="191">
+                                        @error('last_name')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    @error('last_name')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                     <!--col-->
                                 </div>
                                 <!--form-group-->
-
                                 <div class="form-group row">
                                     <label class="col-md-2 form-control-label" for="email">Địa chỉ email</label>
 
                                     <div class="col-md-10">
                                         <input class="form-control @error('email') is-invalid @enderror" type="email"
                                             name="email" id="email" value="{{ $student->email }}"
-                                            placeholder="Địa chỉ email" maxlength="191" readonly="1" required="">
+                                            placeholder="Địa chỉ email" maxlength="191" readonly="1">
                                     </div>
-                                    @error('email')
-                                        <div class="invalid-feedback">{{ $message }}</div>
-                                    @enderror
                                     <!--col-->
                                 </div>
                                 <!--form-group-->
-
                                 <div class="form-group row">
                                     <label class="col-md-2 form-control-label" for="gender">Giới tính</label>
                                     <div class="col-md-10">
-                                    </label >
-                                    <input type="radio" name="gender" value="male"
-                                        {{ $student->gender == 'Male' ? 'checked' : '' }}> Nam
+                                        </label>
+                                        <input type="radio" name="gender" value="male"
+                                            {{ (old('gender')  ?:  $student->gender) == 'male' ? 'checked' : '' }}> Nam
                                         <input type="radio" name="gender" value="female" style="margin-left:10px"
-                                            {{ $student->gender == 'female' ? 'checked' : '' }}> Nữ
+                                            {{ (old('gender')  ?:  $student->gender) == 'female' ? 'checked' : '' }}> Nữ
                                         <input type="radio" name="gender" value="Other" style="margin-left:10px"
-                                            {{ $student->gender == 'other' ? 'checked' : '' }}> Khác
+                                            {{ (old('gender')  ?:  $student->gender) == 'other' ? 'checked' : '' }}> Khác
                                     </div>
                                 </div>
-
                                 <div class="form-group row">
                                     <label class="col-md-2 form-control-label" for="phone">Số điện thoại</label>
 
                                     <div class="col-md-10">
                                         <input class="form-control @error('phone') is-invalid @enderror" type="text"
-                                            name="phone" id="phone" value="{{ $student->phone }}"
-                                            placeholder="Số điện thoại" maxlength="12" required="">
+                                            name="phone" id="phone" value="{{ old('phone')  ?:  $student->phone }}"
+                                            placeholder="Số điện thoại" maxlength="12">
+                                        @error('phone')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <!--col-->
                                 </div>
-                                @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <!--form-group-->
-                                <div class="form-group row">
-                                    <label class="col-md-2 form-control-label" for="age">Tuổi</label>
-
-                                    <div class="col-md-10">
-                                        <input class="form-control @error('age') is-invalid @enderror" type="text"
-                                            name="age" id="age" value="{{ $student->age }}" placeholder="Tuổi"
-                                            maxlength="3" required="">
-                                    </div>
-                                    <!--col-->
-                                </div>
-                                @error('age')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                                 <!--form-group-->
                                 <div class="form-group row">
                                     <label class="col-md-2 form-control-label" for="birthday">Ngày sinh</label>
 
                                     <div class="col-md-10">
-                                        <input class="form-control @error('age') is-invalid @enderror" type="date"
-                                            name="birthday" id="birthday" value="{{ $student->birthday }}"
-                                            placeholder="Ngày sinh" maxlength="191" required="">
+                                        <input class="form-control @error('birthday') is-invalid @enderror" type="date"
+                                            name="birthday" id="birthday" value="{{ old('birthday')  ?:  $student->birthday }}"
+                                            placeholder="Ngày sinh" maxlength="191">
+                                            @error('birthday')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                     <!--col-->
                                 </div>
-                                @error('birthday')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                @error('birthday')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                                <!--form-group-->
-
-                                {{-- <div class="form-group row">
-                                    <label class="col-md-2 form-control-label" for="class">Lớp</label>
-
+                                <div class="form-group row">
+                                    <label class="col-md-2 form-control-label" for="age">Tuổi</label>
                                     <div class="col-md-10">
-                                        @foreach ($classes as $class)
-                                            <ul class="list-group" style = "margin-top:15px">
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    {{ $class['name'] }}
-                                                </div>
-
-                                                @foreach ($class->courses()->get() as $course)
-                                                @php
-                                                @endphp
-                                                    <li class="list-group-item d-flex justify-content align-items-center" style = "margin-top:15px">
-                                                        <i class="fa-solid fa-book-open" style = "margin-right:10px"></i>
-                                                        {{ $course->getOriginal('title') }}
-                                                    </li>
-                                                @endforeach
-                                        @endforeach
-
-                                        </ul>
-                                    </div> --}}
+                                        <p class="form-control" type="age"
+                                            name="age" id="age" placeholder="Tuổi" maxlength="3" readonly="1">{{ old('age')  ?: $student->age }}</p>
+                                    </div>
                                     <!--col-->
-                                {{-- </div> --}}
+                                </div>
+                                <!--form-group-->
                                 <div class="form-group row justify-content-center">
                                     <div class="col-4">
                                         <a class="btn btn-danger" href="">Cancel</a>
@@ -159,5 +119,7 @@
             </form>
         </div>
         <!--animated-->
+        <script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+        <script src="/ajax/ajax.student.js"type="text/javascript"></script>
     </div>
 @stop
