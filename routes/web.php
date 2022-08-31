@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\LogoutController;
 
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +26,17 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+
+Route::get('/courses', [HomeController::class, 'courses'])
+    ->name('courses');
+Route::get('/courses/detail/{slug}', [HomeController::class, 'courseDetail'])
+    ->name('detail');
+Route::get('/personal/{id}', [HomeController::class, 'personal'])
+    ->name('personal');
+
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
 Route::post('/login', [LoginController::class, 'postLogin'])

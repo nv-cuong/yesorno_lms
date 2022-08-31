@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Class\CreateRequest;
+use App\Http\Requests\Admin\Class\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
@@ -10,7 +12,6 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
-use App\Http\Requests\Admin\ClassRequest;
 
 class ClassController extends Controller
 {
@@ -30,7 +31,7 @@ class ClassController extends Controller
         ])
             ->with('courses', 'users')
             ->search()
-            ->paginate(5);
+            ->paginate(2);
         return view('admin.modules.classes.index', compact('classes'));
     }
 
@@ -56,7 +57,7 @@ class ClassController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(ClassRequest $request)
+    public function store(CreateRequest $request)
     {
 
         $class_item = $request->except('_token');
@@ -128,7 +129,7 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(ClassRequest $request, $id)
+    public function update(UpdateRequest $request, $id)
     {
         //
         $message = 'Lớp học không tồn tại!';
@@ -140,6 +141,7 @@ class ClassController extends Controller
             $class->amount      = $request->input('amount');
             $class->save();
             $message            = 'Cập nhật lớp học thành công';
+            $type               = 'success';
         }
 
         try {
@@ -157,7 +159,8 @@ class ClassController extends Controller
             dd($t);
         }
         return redirect(route('class.index'))
-        ->with('message', $message);
+        ->with('message', $message)
+        ->with('type_alert', $type);
     }
 
     /**

@@ -5,7 +5,11 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Team 5 | @yield('title')</title>
+<<<<<<< HEAD
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+=======
+
+>>>>>>> b3934304045c4770715af860bed33a3cdf78b075
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -27,11 +31,18 @@
     <!-- Daterange picker -->
     <link rel="stylesheet" href="{{ asset('/admin/plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
+<<<<<<< HEAD
     <link rel="stylesheet" href="{{ asset('/admin/plugins/summernote/summernote-bs4.min.css') }}">
     <!-- datatables -->
     <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
+=======
+    <link rel="stylesheet" href="{{ asset('/admin/plugins/summernote/summernote-bs4.min.css')}}">
+    <!-- datatables -->
+    <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
+>>>>>>> b3934304045c4770715af860bed33a3cdf78b075
     <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{ asset('admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
@@ -108,6 +119,7 @@
     <script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<<<<<<< HEAD
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
     <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
@@ -124,6 +136,20 @@
     <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
 
      @yield('scripts')
+=======
+    <script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+    <!-- AdminLTE App -->
+
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
+    @yield('scripts')
+>>>>>>> b3934304045c4770715af860bed33a3cdf78b075
 </body>
 
 </html>
