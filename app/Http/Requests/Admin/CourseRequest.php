@@ -28,7 +28,6 @@ class CourseRequest extends FormRequest
             'description' =>    ['required', 'min:20'],
             'begin_date' =>     ['required', 'date'],
             'end_date' =>       ['required', 'date'],
-            'image' =>          ['required'],
         ];
     }
 }

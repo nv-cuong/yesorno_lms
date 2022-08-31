@@ -25,11 +25,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>Sửa khóa học</h2>
-                <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="font-weight:bold">Chỉnh sửa khóa học</h2>
+                    </div>
                     <form method="post" action="{{ route('course.update', [$course->id]) }}" enctype="multipart/form-data">
-                        @include('admin.modules.courses._course_form')
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <div class="card-body">
+                            @include('admin.modules.courses._course_form')
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </div>
                     </form>
                 </div>
             </div>

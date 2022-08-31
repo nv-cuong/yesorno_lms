@@ -25,17 +25,19 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <!-- /.card-header -->
-                <div class="card-body table-responsive p-0">
-                    <h2>Tạo chương mới</h2>
-                    <div>
-                        <form method="post" action="{{ route('unit.store') }}">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="font-weight:bold">Thêm chương mới</h2>
+                    </div>
+                    <form method="post" action="{{ route('unit.store') }}">
+                        <div class="card-body">
                             @include('admin.modules.courses.units._unit_form')
                             <button type="submit" class="btn btn-primary">Submit</button>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 </section>
 @endsection

@@ -29,10 +29,24 @@
                 <h2>{{ $lesson->title }}</h2>
                 <h4>Nội dung bài học</h4>
                 <div class="table-responsive">
-                    {{ $lesson->content }}
+                    {!! $lesson->content !!}
                 </div>
                 <div class="table-responsive">
-                    <a href="{{ $lesson->path}}" target="_blank">{{ $lesson->path }}</a>
+                    @forelse ($files as $file)
+                    @if ($file->type == 'link')
+                        @php
+                            $vid = explode('=', $file->path, 3);
+                            $vid_code = explode('&', $vid[1]);
+                            $vid_id = $vid_code[0];
+                        @endphp
+                    <iframe src="@php echo'https://youtube.com/embed/'. $vid_id .'' @endphp" width="560" height="315" allowfullscreen></iframe>
+                    @else
+                        {{$file->path}}
+                        
+                    @endif
+                    @empty
+                    <p>Không có file nào</p>
+                    @endforelse
                 </div>
                 @endif
             </div>

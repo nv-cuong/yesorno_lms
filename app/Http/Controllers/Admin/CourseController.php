@@ -20,6 +20,7 @@ class CourseController extends Controller
             'statistic_id',
             'title',
             'slug',
+            'status',
             'created_at',
             'updated_at',
         ])
@@ -46,7 +47,6 @@ class CourseController extends Controller
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
-
     }
 
     public function createCourse()
@@ -67,8 +67,8 @@ class CourseController extends Controller
         }
 
         return redirect(route('course.index'))
-        ->with('message', 'Khóa học đã được thêm mới')
-        ->with('type_alert', "success");;
+            ->with('message', 'Khóa học đã được thêm mới')
+            ->with('type_alert', "success");;
     }
 
     public function editCourse(Request $request, $id)
@@ -94,14 +94,19 @@ class CourseController extends Controller
             $course->begin_date = $request->input('begin_date');
             $course->end_date = $request->input('end_date');
             $photo = $request->file('image');
-            $path = Storage::putFile('images', $photo);
-            $course->image = $path;
+            if ($photo) {
+                $path = Storage::putFile('images', $photo);
+                $course->image = $path;
+            }
+            else $course->image = $course->image;
             $course->description = $request->input('description');
             $course->save();
             $message = 'Cập nhật khóa học thành công';
         }
 
-        return redirect(route('course.index'))->with('message', $message);
+        return redirect(route('course.index'))
+            ->with('message', $message)
+            ->with('type_alert', "success");;
     }
 
     public function destroyCourse(Request $request)
@@ -117,6 +122,4 @@ class CourseController extends Controller
                 ->with('message', 'Khóa học không tồn tại')
                 ->with('type_alert', "danger");
     }
-
 }
-
