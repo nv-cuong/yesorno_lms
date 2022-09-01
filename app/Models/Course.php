@@ -53,4 +53,14 @@ class Course extends Model
             'class_study_id'
         );
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_courses',
+            'course_id',
+            'user_id'
+        );
+    }
 }

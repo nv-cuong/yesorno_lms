@@ -61,9 +61,9 @@
                                     @endforeach
                                 </td>
                                 <td class="text">
-                                    @if ($class->time_study == 0)
+                                    @if ($class->schedule == 0)
                                     Sáng
-                                    @elseif ($class->time_study == 1)
+                                    @elseif ($class->schedule == 1)
                                     Chiều
                                     @else
                                     Cả ngày

@@ -80,11 +80,11 @@
                                                         <i class="fas fa-book-open"></i>
                                                         <p class="mb-0">26 lesson</p>
                                                     </div>
-                                                    
+
                                                 </div>
                                                 <div class="course-2-btn">
                                                     <a href="{{ route('detail', $course->slug) }}"
-                                                        class="theme-btn btn-2">Ghi danh</a>
+                                                        class="theme-btn btn-2">vào khóa học</a>
                                                 </div>
                                             </div>
                                         </div>

@@ -46,7 +46,7 @@ class HomeController extends Controller
     }
 
     public function courseDetail($slug){
-        $course = Course::where('slug', $slug)->first();
+        $course = Course::where('slug', $slug)->with('classStudies', 'users')->first();
         return view('client.modules.course_detail',compact('course'));
 
     }

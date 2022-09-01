@@ -13,7 +13,7 @@
                                 <div class="hero-content">
                                     <h5 class="hero-p1"> nơi cung cấp những khóa học chất lượng và hoàn toàn miễn phí</h5>
                                     <div class="hro-btn">
-                                        <a href="{{ route('courses') }}" class="theme-btn">Bắt đầu học <i class="ti ti-arrow-right"></i></a>
+                                        <a href="{{ route('courses') }}" class="theme-btn">Bắt đầu học<i class="ti ti-arrow-right"></i></a>
                                     </div>
                                 </div>
                             </div>
@@ -26,8 +26,7 @@
                 </div>
             </div>
         </div>
-        <!-- Start Feature
-                ============================================= -->
+
         <div class="feature-area header-3 de-pb">
             <div class="container">
                 <div class="feature-wrapper grid-4">
@@ -91,11 +90,6 @@
             </div>
         </div>
 
-
-
-
-        <!-- Start Event
-                ============================================= -->
         <div class="event-area de-pb">
             <div class="container">
                 <div class="row">
@@ -118,7 +112,7 @@
                             <div class="event-content">
                                 <div class="event-meta">
                                     <p> Speaker: <span>Caron Simon</span></p>
-                                    <p>{{ date('d-m-Y', strtotime($item->begin_date)); }} - {{ date('d-m-Y', strtotime($item->end_date)); }}</p>
+                                    <p>{{ date('d-m-Y', strtotime($item->begin_date)) }} - {{ date('d-m-Y', strtotime($item->end_date)) }}</p>
                                 </div>
                                 <div class="event-desc">
                                     <h4>{{ $item->title }}</h4>
@@ -142,26 +136,5 @@
                 </div>
             </div>
         </div>
-
-
-
-
-        <!-- Start Partner
-                ============================================= -->
-        <div class="partner-area bg-2 de-padding">
-            <div class="container">
-                <div class="partner-wrapper owl-carousel owl-theme">
-                    <img src="{{ asset('/user/img/partner/brand-1.png') }}" alt="thumb">
-                    <img src="{{ asset('/user/img/partner/brand-2.png') }}" alt="thumb">
-                    <img src="{{ asset('/user/img/partner/brand-3.png') }}" alt="thumb">
-                    <img src="{{ asset('/user/img/partner/brand-4.png') }}" alt="thumb">
-                    <img src="{{ asset('/user/img/partner/brand-5.png') }}" alt="thumb">
-                </div>
-            </div>
-        </div>
-        <!-- End Partner-->
-
-
-
     </main>
 @endsection
