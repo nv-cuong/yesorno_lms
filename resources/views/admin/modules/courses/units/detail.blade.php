@@ -57,7 +57,7 @@
                                 <td>{{ $lesson->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $lesson->updated_at->format('d-m-Y') }}</td>
                                 <td>
-                                    <a href="{{ route('lesson.detail', ['slug'=>$lesson->slug]) }}" class="btn btn-primary">
+                                    <a href="{{ route('lesson.detail', ['id'=>$lesson->id]) }}" class="btn btn-primary">
                                         <i class="far fa-eye"></i>
                                     </a>
                                     <a href="{{ route('lesson.edit', [$lesson->id]) }}" class="btn btn-success">

@@ -61,14 +61,13 @@ $path_link = ''
 @php
     $files = $lesson->files()->get()
 @endphp
-@forelse($files as $file)
+@foreach($files as $file)
     @if($file->type == 'link')
     @php
         $path_link = $file->path
     @endphp
     @endif
-    @empty
-@endforelse
+@endforeach
 @endif
 <div class="form-group">
     <label class="form-label">Link video</label>
@@ -79,7 +78,7 @@ $path_link = ''
     @enderror
 </div>
 <div class="form-group">
-    <label for="path" class="form-label">Tệp bài học</label>
+    <label class="form-label">Tệp bài học (Định dạng .zip)</label>
     <input type="file" name="path_zip" id="path_zip" class="form-control">
 </div>
 <div class="form-group">

@@ -90,7 +90,7 @@
 
 @section('modal')
 <!-- Modal -->
-<div class="modal fade show" id="modal-sm" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
+<div class="modal fade show" id="deleteModal" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">

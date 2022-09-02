@@ -14,9 +14,9 @@ use Illuminate\Support\Str;
 
 class LessonController extends Controller
 {
-    public function showLesson($slug)
+    public function showLesson($id)
     {
-        $lesson = Lesson::where('slug', $slug)
+        $lesson = Lesson::where('id', $id)
             ->first();
         $files = File::all()
             ->where('lesson_id', $lesson->id);
@@ -51,7 +51,7 @@ class LessonController extends Controller
             ]);
             $zip = $request->file('path_zip');
             if ($zip) {
-                $path = Storage::putFile('images', $zip);
+                $path = Storage::putFile('files', $zip);
                 File::create([
                     'lesson_id' => $lesson->id,
                     'type' => 'zip',
@@ -82,6 +82,7 @@ class LessonController extends Controller
     public function updateLesson(LessonRequest $request, $id)
     {
         $msg = 'Bài học không tồn tại';
+
         $lesson = Lesson::find($id);
         if ($lesson) {
             $lesson->title = $request->input('title');
@@ -92,22 +93,32 @@ class LessonController extends Controller
             $lesson->published = $request->input('published');
             $lesson->save();
 
-            $files = File::all()
-                ->where('lesson_id', $lesson->id);
-            foreach ($files as $file) {
-                if ($file->type == 'link') {
-                    $file->path = $request->input('path_link');
-                    $file->save();
-                } else {
-                    $zip = $request->file('path_zip');
-                    if ($zip) {
-                        $path = Storage::putFile('images', $zip);
-                        File::create([
-                            'type' => 'zip',
-                            'path' => $path
-                        ]);
+            $hasFiles = File::where('lesson_id', $lesson->id)->first();
+
+            if ($hasFiles != null) {
+                $files = File::all()->where('lesson_id', $lesson->id);
+
+                foreach ($files as $file) {
+                    if ($file->type == 'link') {
+                        $file->path = $request->input('path_link');
+                        $file->save();
                     }
                 }
+            } else {
+                File::create([
+                    'lesson_id' => $lesson->id,
+                    'type' => 'link',
+                    'path' => $request->input('path_link'),
+                ]);
+            }
+            $zip = $request->file('path_zip');
+            if ($zip) {
+                $path = Storage::putFile('files', $zip);
+                File::create([
+                    'lesson_id' => $lesson->id,
+                    'type' => 'zip',
+                    'path' => $path
+                ]);
             }
             $msg = 'Cập nhật bài học thành công';
         }
@@ -125,5 +136,9 @@ class LessonController extends Controller
         } else
             return redirect(route('unit.detail', [$unit_id]))
                 ->with('msg', 'Bài học không tồn tại');
+    }
+
+    public function downloadFile($file_name) {
+        return Storage::download(public_path($file_name));
     }
 }

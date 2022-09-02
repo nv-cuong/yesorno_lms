@@ -8,6 +8,30 @@
     @enderror
 </div>
 <div class="form-group">
+    <label class="form-label">Loại khóa học</label>
+    <div class="form-group" style="display: flex; justify-content: space-around">
+        <div class="form-check ">
+            <input class="form-check-input @error('status') is-invalid @enderror" type="radio" 
+            name="status" value="1"
+            @if ($course->status == 1)
+                checked
+            @endif >
+            <label class="form-check-label">Tính phí</label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input @error('status') is-invalid @enderror" type="radio" 
+            name="status" value="0"
+            @if ($course->status == 0)
+                checked
+            @endif >
+            <label class="form-check-label">Miễn phí</label>
+        </div>
+    </div>
+    @error('config')
+    <div class="text-danger">{{ $message }}</div>
+    @enderror
+</div>
+<div class="form-group">
     <label for="begin_date" class="form-label">Ngày bắt đầu</label>
     <input type="date" name="begin_date" class="form-control @error('begin_date') is-invalid @enderror" 
     value="{{ old('begin_date' , $course->begin_date) }}" id="begin_date">

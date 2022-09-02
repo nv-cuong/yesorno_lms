@@ -29,7 +29,7 @@
                     <div class="card-header">
                         <h2 class="card-title" style="font-weight:bold">Tạo khóa học mới</h2>
                     </div>
-                    <form method="post" action="{{ route('course.store') }}">
+                    <form method="post" action="{{ route('course.store') }}" enctype="multipart/form-data">
                         <div class="card-body">
                             @include('admin.modules.courses._course_form')
                             <button type="submit" class="btn btn-primary">Submit</button>

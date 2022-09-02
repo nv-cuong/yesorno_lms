@@ -17,7 +17,6 @@ class CourseController extends Controller
     {
         $courses = Course::select([
             'id',
-            'statistic_id',
             'title',
             'slug',
             'status',
@@ -60,6 +59,11 @@ class CourseController extends Controller
         $course_item = $request->except('_token');
 
         $course_item['slug'] = Str::slug($course_item['title']);
+        $photo = $request->file('image');
+            if ($photo) {
+                $path = Storage::putFile('images', $photo);
+                $course_item['image'] = $path;
+            }
         try {
             Course::create($course_item);
         } catch (\Throwable $th) {
@@ -91,9 +95,11 @@ class CourseController extends Controller
             $course->title = $request->input('title');
             $course->statistic_id = $course->statistic_id;
             $course->slug = Str::slug($course->title);
+            $course->status = $request->input('status');
             $course->begin_date = $request->input('begin_date');
             $course->end_date = $request->input('end_date');
             $photo = $request->file('image');
+            dd($photo);
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
@@ -121,5 +127,9 @@ class CourseController extends Controller
             return redirect(route('course.index'))
                 ->with('message', 'Khóa học không tồn tại')
                 ->with('type_alert', "danger");
+    }
+
+    public function showTest($id){
+
     }
 }

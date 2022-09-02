@@ -51,6 +51,8 @@ Route::post('', [RegisterController::class, 'processRegistration'])->name('regis
 Route::prefix('admin')
     ->middleware('myweb.auth')
     ->group(function () {
+        
+        Route::get('/downloadFile', [LessonController::class, 'downloadFile']);
 
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
@@ -113,13 +115,14 @@ Route::prefix('admin')
         });
 
         Route::prefix('/lessons')->name('lesson.')->group(function () {
-            Route::get('/showLesson/{slug}', [LessonController::class, 'showLesson'])->name('detail');
+            Route::get('/showLesson/{id}', [LessonController::class, 'showLesson'])->name('detail');
             // Route::get('getData', [UnitController::class, 'getData'])->name('getData');
             Route::get('createLesson/{unit_id}', [LessonController::class, 'createLesson'])->name('create');
             Route::post('storeLesson', [LessonController::class, 'storeLesson'])->name('store');
             Route::get('/editLesson/{id}', [LessonController::class, 'editLesson'])->name('edit');
             Route::post('/editLesson{id}', [LessonController::class, 'updateLesson'])->name('update');
             Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
+            Route::get('/downloadFile{file_name}', [LessonController::class, 'downloadFile'])->name('download');
         });
 
         Route::prefix('/test')->name('test.')->group(function () {
