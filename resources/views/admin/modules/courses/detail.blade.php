@@ -8,16 +8,6 @@
             <div class="col-sm-6">
                 <h1>Quản lí khóa học</h1>
             </div>
-            <div class="col-sm-6 ">
-                <form action="" class="form-inline justify-content-end">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
         </div>
         @include('admin._alert')
         <hr>

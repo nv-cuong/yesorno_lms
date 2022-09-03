@@ -19,52 +19,35 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
-                        <a href="{{ route('course.create') }}" class="btn btn-success float-right">+ Tạo khóa học mới</a>
+                        <a href="{{ route('course.create') }}" class="btn btn-success float-right">+ Thêm bài kiểm tra</a>
                     </div>
                     <table class="table table-striped" id="example1">
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Tên khóa học</th>
-                                <th>Loại</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
+                                <th>Loại bài kiểm tra</th>
+                                <th>Tên bài kiểm tra</th>
                                 <th>Tùy chọn</th>
                             </tr>
                         </thead>
                         <tbody id="load">
-                            @forelse($courses as $course)
+                            @forelse($tests as $test)
                             <tr>
-                                <td>{{ $loop->iteration + ($courses->currentPage() -1) * $courses->perPage() }}</td>
-                                <td>{{ $course->title }}</td>
-                                @if($course->status == 0)
-                                <td>Miễn phí</td>
-                                @else
-                                <td>Tính phí</td>
-                                @endif
-                                <td>{{ $course->created_at->format('d-m-Y') }}</td>
-                                <td>{{ $course->updated_at->format('d-m-Y') }}</td>
+                                <td>id</td>
+                                <td>{{ $test->category }}</td>
+                                <td>{{ $test->title}}</td>
                                 <td>
-                                    <a href="{{ route('course.detail', ['id'=>$course->id]) }}" class="btn btn-primary">
-                                        <i class="far fa-eye"></i>
-                                    </a>
                                     <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-success">
-                                        <i class="fas fa-edit"></i>
+                                        <i class="fas fa-plus"></i>
                                     </a>
-                                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="javascript:course_delete('{{ $course->id }}')">
+                                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="javascript:test_delete('{{ $test->id }}')">
                                         <i class="far fa-trash-alt"></i>
-                                    </a>
-                                    <a href="{{ route('course.test', [$course->id]) }}" class="btn btn-warning">
-                                        Test
-                                    </a>
-                                    <a href="#" class="btn btn-success">
-                                        Học viên
                                     </a>
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">Không có khóa học</td>
+                                <td colspan="6">Không có bài test!</td>
                             </tr>
                             @endforelse
                         </tbody>

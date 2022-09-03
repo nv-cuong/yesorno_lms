@@ -102,6 +102,7 @@ Route::prefix('admin')
             Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
             Route::post('/editCourse{id}', [CourseController::class, 'updateCourse'])->name('update');
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
+            Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
         });
 
         Route::prefix('/units')->name('unit.')->group(function () {

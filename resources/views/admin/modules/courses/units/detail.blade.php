@@ -8,16 +8,6 @@
             <div class="col-sm-6">
                 <h1>Quản lí khóa học</h1>
             </div>
-            <div class="col-sm-6 ">
-                <form action="" class="form-inline justify-content-end">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
         </div>
         @include('admin._alert')
         <hr>
@@ -52,6 +42,11 @@
                             <tr>
                                 <td>{{ $loop->iteration + ($lessons->currentPage() -1) * $lessons->perPage() }}</td>
                                 <td>{{ $lesson->title }}</td>
+                                @if($lesson->config == 'must')
+                                <td>Tính tiến độ</td>
+                                @else
+                                <td>Không tính tiến độ</td>
+                                @endif
                                 <td>{{ $lesson->config }}</td>
                                 <td>{{ $lesson->published }}</td>
                                 <td>{{ $lesson->created_at->format('d-m-Y') }}</td>

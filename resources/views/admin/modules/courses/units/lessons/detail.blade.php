@@ -15,16 +15,6 @@
                     </ol>
                 </nav>
             </div>
-            <div class="col-sm-6 ">
-                <form action="" class="form-inline justify-content-end">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
 </section>
@@ -48,8 +38,9 @@
                                 <iframe src="@php echo'https://youtube.com/embed/'. $vid_id .'' @endphp" width="700" height="415" allowfullscreen></iframe>
                             </div>
                             @else
-                            <br>
-                            <a href="{{ route('lesson.download', [$file->path]) }}" download="{{ $file->path}}">Tải tài liệu</a>
+                            <div class="d-inline-flex p-2 bd-highlight">
+                                <a href="{{ route('lesson.download', [$file->path]) }}" download="{{ $file->path}}">Tải tài liệu</a>
+                            </div>
                             @endif
                             @empty
                             <p>Không có file nào</p>

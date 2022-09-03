@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
+use App\Models\Test;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -130,6 +131,21 @@ class CourseController extends Controller
     }
 
     public function showTest($id){
+        $course = Course::find($id);
+        if ($course) {
+            $tests = Test::select([
+                'tests.id',
+                'ct.course_id',
+                'category',
+                'title',
+            ])
+            ->leftJoin('course_tests AS ct','ct.test_id', 'tests.id')
+            ->where('ct.course_id',$id)
+            ->get();
 
+            return view('admin.modules.courses.test', compact('course','tests'));
+        }
+        return redirect(route('course'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
     }
 }
