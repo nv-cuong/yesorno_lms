@@ -21,7 +21,7 @@ class Question extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function answer()
+    public function answers()
     {
         return $this->hasMany(Answer::class);
     }

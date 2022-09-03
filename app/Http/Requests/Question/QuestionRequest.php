@@ -23,19 +23,38 @@ class QuestionRequest extends FormRequest
      */
     public function rules()
     {
+      
          
         if($this->category == 1)
         {
-            return [
-                'content' => ['required', 'max:50','unique:questions'],
-                'course_id' => ['required'],
-                'score' => ['required', 'integer' ,'min:1'],  
-                'content_1' => ['required'],
-                'content_2' => ['required'],
-                'content_3' => ['required'],
-                'content_4' => ['required'],
-
-            ];
+            if($this->correct_1 == '' && $this->correct_2 == '' && $this->correct_3 == '' && $this->correct_4 == '')
+            {
+                return [
+                    'content' => ['required', 'max:50','unique:questions'],
+                    'course_id' => ['required'],
+                    'score' => ['required', 'integer' ,'min:1'],  
+                    'content_1' => ['required'],
+                    'content_2' => ['required'],
+                    'content_3' => ['required'],
+                    'content_4' => ['required'],
+                    'content_4' => ['required'],
+                    'check_question' => ['required'],
+                ];
+            }
+            else
+            {
+                return [
+                    'content' => ['required', 'max:50','unique:questions'],
+                    'course_id' => ['required'],
+                    'score' => ['required', 'integer' ,'min:1'],  
+                    'content_1' => ['required'],
+                    'content_2' => ['required'],
+                    'content_3' => ['required'],
+                    'content_4' => ['required'],
+                    
+                ];
+            }
+            
         }
         else{
             return [
@@ -66,6 +85,7 @@ class QuestionRequest extends FormRequest
             'content_2.required'     => 'Bạn chưa nhập câu trả lời',
             'content_3.required'     => 'Bạn chưa nhập câu trả lời',
             'content_4.required'     => 'Bạn chưa nhập câu trả lời',
+            'check_question.required' => 'Bạn chưa chọn đáp án đúng',
         ];
     }
 

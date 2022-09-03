@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\ScoreController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -126,6 +127,25 @@ Route::prefix('admin')
             Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class, 'question_edit'])->name('question.edit');
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
+        });
+
+        // quản lý điểm test
+
+        Route::prefix('/score')->name('score.')->group(function () {
+            Route::get('index', [ScoreController::class, 'index'])->name('index');
+            Route::get('create', [ScoreController::class, 'create'])->name('create');
+            Route::post('store', [ScoreController::class, 'store'])->name('store');
+            Route::get('/edit/{id}', [ScoreController::class, 'edit'])
+                ->name('edit');
+            Route::post('/edit/{id}', [ScoreController::class, 'update'])
+                ->name('update');
+            Route::get('/dots/{id}', [ScoreController::class, 'dots'])
+                ->name('dots');
+            Route::post('/point', [ScoreController::class, 'point'])
+                ->name('point');
+            Route::get('/ajax/student/{id}', [ScoreController::class, 'ajax_student'])
+                ->name('ajaxstudent');
+            
         });
        
 

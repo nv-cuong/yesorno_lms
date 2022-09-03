@@ -79,15 +79,17 @@
               </div>
               <div class="form-group" id="check_question" style="display: none">
                 <label for="exampleInputEmail1">Đáp án <span style="color: red">*</span></label>
-
-
+                <input type="hidden" name="check_question">
+                @error('check_question')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 <div class="row">
                   @for ($question=1; $question<=4; $question++) <div class="col-md-6 form-group">
                     <input type="text" name="{{ 'content_'. $question }}" class="form-control @error('content_'." $question") is-invalid @enderror" id="exampleInputEmail1" placeholder="Đáp án {{$question}}" value="{{ old('content_'.$question ) }}">
                     @error('content_'."$question")
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <input type="checkbox" name="{{ 'correct_' . $question }}">
+                    <input type="checkbox" name="{{ 'correct_' . $question }}" {{old('correct_'. $question )?'checked':''}}  >
 
                 </div>
                 @endfor

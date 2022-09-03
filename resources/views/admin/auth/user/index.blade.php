@@ -76,7 +76,10 @@
                                         <a href="{{ route('users.edit', [$user->id]) }}" class="btn btn-sm btn-success">
                                         <i class="fas fa-edit"></i>
                                         </a>
+                                        
+                                        @if($user->roles[0]->name != "admin")
                                         <a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModalUser" onclick="javascript:user_delete('{{ $user->id }}')"><i class="fas fa-backspace"></i></a>
+                                        @endif
                                     </td>
                                 </tr>
                                 @empty

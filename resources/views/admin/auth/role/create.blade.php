@@ -39,7 +39,7 @@
                         <div class="form-group">
                             <label for="name">@lang('global.name') <span style="color: red">*</span></label>
                             <input type="text" name="name" class="form-control input-sm " placeholder="@lang('global.name')" value="{{ old('name') }}">
-                            {!! $errors->first('name', '<em for="name" class="help-block">:message</em>') !!}
+                            {!! $errors->first('name', '<em for="name" class="help-block" style="color: red">:message</em>') !!}
                         </div>
 
                         <div class="tab-block mb25">

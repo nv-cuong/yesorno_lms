@@ -6,7 +6,7 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Quản lý Câu hỏi</h1>
+        <h1>Quản lý điểm bài test</h1>
       </div>
       <div class="col-sm-12">
         @include('Admin/_alert')
@@ -25,70 +25,50 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-            <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo câu hỏi</a>
+            <a href="{{ route('score.create') }}" class="btn btn-success float-right">+ Tạo bài test đầu vào</a>
           </div>
 
           <table class="table table-striped" id="example1">
             <thead>
               <tr>
                 <th>STT</th>
-                <th>Tên câu hỏi</th>
-                <th>Tên khóa học</th>
-                <th>Loại câu hỏi</th>
-                <th>Câu trả lời</th>
+                <th>User</th>
+                <th>Tên bài test</th>
                 <th>Điểm</th>
-
-
+                <th>Trạng thái</th>
                 <th>Hành động</th>
               </tr>
             </thead>
             <tbody>
-              @foreach ($questions as $question)
+              @foreach ($test_users as $test_user)
 
 
               <tr>
                 <th>
-                  {{ $loop->iteration + ($questions->currentPage() - 1) * $questions->perPage() }}
+                  
                 </th>
-                <th>{{$question->content}}</th>
-                <th>{{$question->course->title}}</th>
+                <th>{{$test_user->first_name}}</th>
+                <th>{{$test_user->title}}</th>
                 <th>
-                  @if ($question->category==0)
-                  Tự luận
-                  @else
-                  @if ($question->category==1)
-                  Trắc nghiệm
-                  @else
-                  Đúng sai
-                  @endif
-                  @endif
+                   {{$test_user->score}}
                 </th>
                 <th>
-                  @if ($question->category==1)
-                  <a onclick="event.preventDefault();answer_qu('{{$question->id}}')" href="" class="btn btn-primary btn-sm "><i class="fa fa-plus-circle"></i> Xem </a>
-                  @else
-                  @if($question->answer==1 && $question->category==2)
-                  Đúng
-                  @else
-                  @if($question->answer==0 && $question->category==2)
-                  Sai
-                  @else
-
-                  @endif
-                  @endif
-                  @endif
-
+                  @if($test_user->status == 1)
+                   Đã làm
+                   @else
+                   Chưa làm
+                   @endif
                 </th>
-                <th>{{$question->score}}</th>
+               
 
                 <th>
-                  <a href="{{ route('question.edit',$question->id) }} " class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
-                  <a class="btn btn-sm btn-danger delete_question" data-toggle="modal" data-target="#deleteModalQuestion" value="{{$question->id}}" onclick="javascript:question_delete('{{$question->id}}')"><i class="fas fa-backspace"></i></a>
+                <a href="{{ route('score.edit',$test_user->test_id) }} " class="edit btn btn-success btn-sm">Làm bài test</a>
+                @if($test_user->score == '' && $test_user->status == 1)
+                <a href="{{ route('score.dots',$test_user->id) }} " class="edit btn btn primary btn-sm">Chấm điểm</a>
+                @endif
                 </th>
               </tr>
               @endforeach
-
-
 
             </tbody>
           </table>
@@ -163,32 +143,7 @@
 @stop
 @section('scripts')
 
-<script type="text/javascript">
-  $(function() {
-    $('#Datalist').DataTable({
-      processing: true,
-      serverSide: true,
 
-      ajax: "{!! route('question.getData') !!}",
-      columns: [{
-          data: 'id',
-          name: 'id'
-        },
-        {
-          data: 'content',
-          name: 'content'
-        },
-        {
-          data: 'action',
-          name: 'action',
-          orderable: true,
-          searchable: true
-        },
-      ],
-      buttons: ['csv', 'excel', 'pdf', 'print']
-    });
-  });
-</script>
 
 <script type="text/javascript">
   $(function() {

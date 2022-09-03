@@ -35,6 +35,7 @@ class UserController extends Controller
         ])
         ->with('roles', 'activations')
         ->paginate();
+       
         return view('admin.auth.user.index', compact('users'));
     }
 
