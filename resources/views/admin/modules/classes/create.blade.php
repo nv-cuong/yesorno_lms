@@ -11,7 +11,7 @@
                         <div class="card-header">
                             <h3 class="card-title" style="font-weight:bold">Tạo lớp học mới</h3>
                         </div>
-                        <form action="{{ route('class.store') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('class.store') }}" method="POST">
                             <div class="card-body">
                                 @include('admin.modules.classes._form')
                                 <button type="submit" class="btn btn-primary">Tạo lớp</button>

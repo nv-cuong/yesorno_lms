@@ -41,14 +41,25 @@
                                                 <div class="card-body ">
                                                     <ul class="nav nav-pills flex-column">
                                                         <li class="nav-item">
-                                                            @foreach ($unit->lessons()->get() as $lesson)
-                                                                <div class="p-3">
-                                                                    <i class="fas fa-arrow-circle-right"
-                                                                        style="color: rgb(37, 236, 37)"> {{ $lesson->getOriginal('title') }}</i>
+                                                            @foreach ($lessons as $lessonItem)
+                                                                @if($lessonItem['unit_id']==$unit->getOriginal('id'))
+                                                                    @if ($lessonItem['status']==1)
+                                                                    <div class="p-3">
+                                                                        <i class="fas fa-arrow-circle-right text-success"
+                                                                            > {{ $lessonItem['title'] }}</i>
+                                                                        <br>
+                                                                    </div>
+                                                                    @else
+                                                                    <div class="p-3">
+                                                                        <i class="fas fa-arrow-circle-right text-muted"
+                                                                            > {{ $lessonItem['title'] }}</i>
+                                                                        <br>
+                                                                    </div>
+                                                                    @endif
 
-                                                                    <br>
-                                                                </div>
-                                                            @endforeach
+                                                                    @endif
+
+                                                             @endforeach
 
                                                         </li>
                                                     </ul>

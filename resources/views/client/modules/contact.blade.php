@@ -8,15 +8,13 @@
             <img src="{{ asset('/user/img/header/header-shape-2.png') }}" class="hero-circle-1" alt="thumb">
         </div>
         <div class="container">
-            <h2 class="breadcrumb-title">Trang cá nhân</h2>
+            <h2 class="breadcrumb-title">Liên hệ</h2>
             <ul class="breadcrumb-menu clearfix">
                 <li><a href="{{ route('home') }}">Trang chủ</a></li>
                 <li class="active">Tôi</li>
             </ul>
         </div>
     </div>
-     <!-- Start Contact
-                ============================================= -->
                 <div class="cta-area cta-3  de-padding" id="contact">
                     <div class="container">
                         <div class="row">
@@ -79,7 +77,6 @@
                                                 <button type="submit" name="submit" id="submit">
                                                     Send your Message
                                                 </button>
-                                                <!-- Alert Message -->
                                                 <div class="alert-notification">
                                                     <div id="message" class="alert-msg"></div>
                                                 </div>
@@ -91,6 +88,4 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Contact -->
-
 @endsection

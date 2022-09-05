@@ -12,8 +12,8 @@ class ClassStudy extends Model
     protected $fillable = [
         'name',
         'slug',
-        'amount',
         'description',
+        'schedule',
     ];
 
     public function courses()

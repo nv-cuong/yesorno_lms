@@ -27,7 +27,7 @@
                         <tbody id="load">
                             @forelse($tests as $test)
                             <tr>
-                                <td>id</td>
+                                <td>{{ $test->id }}</td>
                                 <td>{{ $test->category }}</td>
                                 <td>{{ $test->title}}</td>
                             </tr>
@@ -39,7 +39,7 @@
                         </tbody>
                     </table>
                     <div class="card-footer clearfix">
-                        {{-- {!! $courses->appends(Request::all())->links() !!} --}}
+                        {{-- {!! $tests->appends(Request::all())->links() !!} --}}
                     </div>
                 </div>
             </div>

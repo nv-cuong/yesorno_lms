@@ -7,4 +7,4 @@
 <script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
 <script src="https://apalfrey.github.io/select2-bootstrap-5-theme/assets/js/docs.js"></script>
-<script src="/ajax/ajaxadd.js" type="text/javascript"></script> 
+<script src="/ajax/ajaxadd.js" type="text/javascript"></script>

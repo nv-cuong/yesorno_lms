@@ -10,10 +10,13 @@ use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-
+use App\Http\Controllers\Client\LessonProgress;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\CourseDetailController;
+use App\Http\Controllers\Client\SearchController;
+use App\Http\Controllers\Client\StudentCoursesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,12 +35,24 @@ Route::get('/', [HomeController::class, 'index'])
 
 Route::get('/courses', [HomeController::class, 'courses'])
     ->name('courses');
-Route::get('/courses/detail/{slug}', [HomeController::class, 'courseDetail'])
+Route::get('/search', [SearchController::class, 'search'])
+    ->name('search');
+Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
 Route::get('/personal/{id}', [HomeController::class, 'personal'])
     ->name('personal');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
+Route::get('/attach', [CourseDetailController::class, 'attach'])
+    ->name('post.attach');
+Route::get('/detach', [CourseDetailController::class, 'detach'])
+    ->name('post.detach');
+Route::get('/personal/courses/{id}/{slug}', [StudentCoursesController::class, 'personalCourse'])
+    ->name('personal.course');
+Route::get('/personal/lesson/{id}/{slug}', [StudentCoursesController::class, 'personalLesson'])
+    ->name('personal.lesson');
+Route::post('/personal/lessonprogress/{id}/{slug}', [StudentCoursesController::class, 'lessonProgress'])
+    ->name('lessonProgress');
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
@@ -48,15 +63,19 @@ Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('', [RegisterController::class, 'processRegistration'])->name('register.action');
 
+
+Route::get('/course', function () {
+    return view('course');
+});
+Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
+
 Route::prefix('admin')
     ->middleware('myweb.auth')
     ->group(function () {
-        
-        Route::get('/downloadFile', [LessonController::class, 'downloadFile']);
 
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
-            
+
         Route::prefix('/questions')->name('question.')->group(function () {
             Route::get('index', [QuestionController::class, 'index'])->name('index');
             Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
@@ -103,6 +122,7 @@ Route::prefix('admin')
             Route::post('/editCourse{id}', [CourseController::class, 'updateCourse'])->name('update');
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
             Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
+            Route::get('/showStudent/{id}', [CourseController::class, 'showStudent'])->name('student');
         });
 
         Route::prefix('/units')->name('unit.')->group(function () {
@@ -141,7 +161,7 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
         });
-       
+
 
         require 'users.php';
         require 'roles.php';

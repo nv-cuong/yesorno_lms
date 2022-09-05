@@ -57,7 +57,7 @@
                                     <a href="{{ route('course.test', [$course->id]) }}" class="btn btn-warning">
                                         Test
                                     </a>
-                                    <a href="#" class="btn btn-success">
+                                    <a href="{{ route('course.student', [$course->id]) }}" class="btn btn-success">
                                         Học viên
                                     </a>
                                 </td>
