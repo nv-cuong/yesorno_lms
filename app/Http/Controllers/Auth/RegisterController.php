@@ -9,7 +9,8 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    public function register(){
+    public function register()
+    {
         return view('admin.register');
     }
 
@@ -17,7 +18,8 @@ class RegisterController extends Controller
     {
         $student = Sentinel::register($request->all());
         $role = Sentinel::findRoleBySlug('student');
-                $role->users()
-                ->attach($student);
+        $role->users()
+            ->attach($student);
+        return redirect(route('home'));
     }
 }

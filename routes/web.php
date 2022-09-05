@@ -14,6 +14,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\CourseDetailController;
+use App\Http\Controllers\Client\SearchController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,12 +34,18 @@ Route::get('/', [HomeController::class, 'index'])
 
 Route::get('/courses', [HomeController::class, 'courses'])
     ->name('courses');
-Route::get('/courses/detail/{slug}', [HomeController::class, 'courseDetail'])
+Route::get('/search', [SearchController::class, 'search'])
+    ->name('search');
+Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
 Route::get('/personal/{id}', [HomeController::class, 'personal'])
     ->name('personal');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
+Route::get('/attach', [CourseDetailController::class, 'attach'])
+    ->name('post.attach');
+Route::get('/detach', [CourseDetailController::class, 'detach'])
+    ->name('post.detach');
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
@@ -51,12 +59,10 @@ Route::post('', [RegisterController::class, 'processRegistration'])->name('regis
 Route::prefix('admin')
     ->middleware('myweb.auth')
     ->group(function () {
-        
-        Route::get('/downloadFile', [LessonController::class, 'downloadFile']);
 
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
-            
+
         Route::prefix('/questions')->name('question.')->group(function () {
             Route::get('index', [QuestionController::class, 'index'])->name('index');
             Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
@@ -141,7 +147,7 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
         });
-       
+
 
         require 'users.php';
         require 'roles.php';

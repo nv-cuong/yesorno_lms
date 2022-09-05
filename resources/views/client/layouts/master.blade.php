@@ -40,6 +40,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            min-height: 90px;
         }
     </style>
 
@@ -82,6 +83,7 @@
     <script src="{{ asset('/user/js/bsnav.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery.easypiechart.js') }}"></script>
     <script src="{{ asset('/user/js/main.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

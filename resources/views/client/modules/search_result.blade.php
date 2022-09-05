@@ -1,5 +1,5 @@
 @extends('client.layouts.master')
-@section('title', 'Danh sách khóa học')
+@section('title', 'Kết quả tìm kiếm')
 
 @section('content')
 
@@ -24,7 +24,7 @@
             <div class="row csf align-items-center">
                 <div class="col-xl-8">
                     <div class="site-title-left">
-                        <h2>Các khóa học tuyệt vời của chúng tôi</h2>
+                        <h2>Kết quả tìm kiếm</h2>
                     </div>
                 </div>
                 <div class="col-xl-4">
@@ -37,19 +37,17 @@
                 <div class="row">
                     <div class="col-xl-12 portfolio-content">
                         <div class="row align-items-center">
-                            <div class="col-xl-8">
-                               
-                            </div>
+                            
                             <div class="col-xl-4">
                                 <div class="course-view-more">
-                                    <h6>Tổng khóa học: {{$courseTotal->count()}} - <a>View All</a></h6>
+                                    <h6>Tìm thấy {{$data->count()}} khóa học phù hợp</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="magnific-mix-gallery masonary">
                             <div id="portfolio-grid" class="portfolio-items" style="position: relative; height: 1285.32px;">
 
-                                @foreach ($courses as $course)
+                                @foreach ($data as $course)
                                     <div class="pf-item video photography" style="position: absolute; left: 0%; top: 0px;">
                                         <div class="course-2-box">
                                             <div class="course-2-pic">
@@ -91,7 +89,7 @@
             </div>
         </div>
         <div class="text-center">
-            {{ $courses->links() }}
+            {{ $data->links() }}
         </div>
     </div>
 @endsection
