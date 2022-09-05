@@ -26,7 +26,7 @@ class UserFactory extends Factory
             'birthday' => fake()->date(),
             'address' => fake()->address(),
             'age' => fake()->numberBetween(1, 100),
-            'gender' => fake()->randomElement(['male', 'female']),
+            'gender' => fake()->randomElement(['male', 'female','other']),
         ];
     }
 

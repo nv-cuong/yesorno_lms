@@ -33,7 +33,6 @@
                     <div class="card-header">
                         <a href="{{ route('class.create') }}" class="btn btn-success float-right" title="Thêm một lớp học mới">Tạo lớp học mới</a>
                     </div>
-
                     <table class="table table-striped" id="example1">
                         <thead>
                             <tr>

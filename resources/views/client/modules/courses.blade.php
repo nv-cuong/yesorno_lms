@@ -1,6 +1,5 @@
 @extends('client.layouts.master')
 @section('title', 'Danh sách khóa học')
-
 @section('content')
 
     <div class="site-breadcrumb" style="background: url({{ asset('/user/img/breadcrumb/breadcrumb.jpg') }})">
@@ -79,7 +78,7 @@
                                                 </div>
                                                 <div class="course-2-btn">
                                                     <a href="{{ route('detail', $course->slug) }}"
-                                                        class="theme-btn btn-2">vào khóa học</a>
+                                                        class="theme-btn btn-2">Vào khóa học</a>
                                                 </div>
 
                                             </div>
