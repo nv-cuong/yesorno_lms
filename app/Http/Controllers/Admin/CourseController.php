@@ -100,7 +100,6 @@ class CourseController extends Controller
             $course->begin_date = $request->input('begin_date');
             $course->end_date = $request->input('end_date');
             $photo = $request->file('image');
-            dd($photo);
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
@@ -146,6 +145,7 @@ class CourseController extends Controller
             return view('admin.modules.courses.test', compact('course','tests'));
         }
         return redirect(route('course'))
-        ->with('msg', 'Học sinh chưa tồn tại!');
+        ->with('msg', 'Bài test không tồn tại!');
     }
+    
 }
