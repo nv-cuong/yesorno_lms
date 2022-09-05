@@ -37,7 +37,10 @@
                     <div class="col-xl-12 portfolio-content">
                         <div class="row align-items-center">
                             <div class="col-xl-8">
-                               
+                               Sắp xếp theo:
+                               <a href="" class="btn btn-primary">Mới nhất</a>
+                               <a href="" class="btn btn-primary">Cũ nhất</a>
+                               <a href="" class="btn btn-primary">Số lượng học viên</a>
                             </div>
                             <div class="col-xl-4">
                                 <div class="course-view-more">
