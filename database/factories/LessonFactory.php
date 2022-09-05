@@ -25,7 +25,6 @@ class LessonFactory extends Factory
             'slug' => $slug,
             'content' => fake()->text(200),
             'config' => fake()->randomElement(['must', 'optional']),
-            'path' => fake()->url(),
             'published' => fake()->date(),
         ];
     }

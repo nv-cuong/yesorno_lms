@@ -13,6 +13,7 @@
         "laravel/helpers": "^1.5",
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
+        "syrian-open-source/laravel-youtube-iframe-generator": "^1.1",
         "twbs/bootstrap-icons": "^1.9",
         "yajra/laravel-datatables-buttons": "^9.0",
         "yajra/laravel-datatables-oracle": "~10.0"

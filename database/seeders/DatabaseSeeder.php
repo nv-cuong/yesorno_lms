@@ -24,16 +24,17 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Course::factory()
-        ->count(5)
-        ->has(
-            Unit::factory()
-            ->count(10)
-            ->has(
-                Lesson::factory()
-                ->count(20)
-            )
-        )
-        ->create();
+        $this->call(UserSeeder::class);
+        // Course::factory()
+        // ->count(5)
+        // ->has(
+        //     Unit::factory()
+        //     ->count(10)
+        //     ->has(
+        //         Lesson::factory()
+        //         ->count(20)
+        //     )
+        // )
+        // ->create();
     }
 }

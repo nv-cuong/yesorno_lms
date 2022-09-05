@@ -24,6 +24,12 @@ class Lesson extends Model
         return $this->belongsTo(Unit::class);
     }
 
+    
+    public function files()
+    {
+        return $this->hasMany(File::class);
+    }
+
     public function questions()
     {
         return $this->belongsToMany(

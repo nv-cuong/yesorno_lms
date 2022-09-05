@@ -1,7 +1,7 @@
 @csrf
 <div class="mb-3">
     <label for="course_id" class="form-label">Tên khóa học</label>
-    <select id="course_id" name="course_id" class="form-select @error('course_id') is-invalid @enderror">
+    <select id="course_id" name="course_id" class="form-control @error('course_id') is-invalid @enderror">
         <option value="">-</option>
         @forelse($course as $id => $title)
         @if ($id == old('course_id', $unit->course_id))

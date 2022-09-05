@@ -31,11 +31,12 @@
           <div class="card-header">
             <a href="{{ route('course.create') }}" class="btn btn-success float-right">+ Tạo khóa học mới</a>
           </div>
-          <table class="table table-striped">
+          <table class="table table-striped" id="example1">
             <thead>
               <tr>
                 <th>STT</th>
                 <th>Tên khóa học</th>
+                <th>Loại</th>
                 <th>Ngày tạo</th>
                 <th>Ngày cập nhật</th>
                 <th>Tùy chọn</th>
@@ -46,6 +47,11 @@
               <tr>
                 <td>{{ $loop->iteration + ($courses->currentPage() -1) * $courses->perPage() }}</td>
                 <td>{{ $course->title }}</td>
+                @if($course->status == 0)
+                <td>Miễn phí</td>
+                @else
+                <td>Tính phí</td>
+                @endif
                 <td>{{ $course->created_at->format('d-m-Y') }}</td>
                 <td>{{ $course->updated_at->format('d-m-Y') }}</td>
                 <td>
@@ -59,7 +65,10 @@
                     <i class="far fa-trash-alt"></i>
                   </a>
                   <a href="#" class="btn btn-warning">
-                    + Test
+                    Test
+                  </a>
+                  <a href="#" class="btn btn-success">
+                    Học viên
                   </a>
                 </td>
               </tr>
@@ -107,11 +116,22 @@
 </div>
 @stop
 
-@push('custom-scripts')
+@section('scripts')
+<script>
+  $(function() {
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+
 <script>
   function course_delete(id) {
     var course_id = document.getElementById('course_id');
     course_id.value = id;
   }
 </script>
-@endpush
+@endsection

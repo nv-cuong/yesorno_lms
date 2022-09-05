@@ -13,6 +13,8 @@ use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Client\LessonProgress;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Client\StudentCoursesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,9 +27,25 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+
+Route::get('/courses', [HomeController::class, 'courses'])
+    ->name('courses');
+Route::get('/courses/detail/{slug}', [HomeController::class, 'courseDetail'])
+    ->name('detail');
+Route::get('/personal/{id}', [HomeController::class, 'personal'])
+    ->name('personal');
+Route::get('/contact', [HomeController::class, 'contact'])
+    ->name('contact');
+Route::get('/personal/courses/{id}/{slug}', [StudentCoursesController::class, 'personalCourse'])
+    ->name('personal.course');
+Route::get('/personal/lesson/{id}/{slug}', [StudentCoursesController::class, 'personalLesson'])
+    ->name('personal.lesson');
+Route::post('/personal/lessonprogress/{id}/{slug}', [StudentCoursesController::class, 'lessonProgress'])
+    ->name('lessonProgress');
+
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
 Route::post('/login', [LoginController::class, 'postLogin'])
@@ -49,6 +67,7 @@ Route::prefix('admin')
 
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
+
         Route::prefix('/questions')->name('question.')->group(function () {
             Route::get('index', [QuestionController::class, 'index'])->name('index');
             Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
@@ -83,13 +102,6 @@ Route::prefix('admin')
                 ->name('student.course');
             Route::get('/statistic/{id}', [StudentController::class, 'showStatistic'])
                 ->name('student.statistic');
-        });
-
-        Route::prefix('/questions')->name('question.')->group(function () {
-            Route::get('index', [QuestionController::class, 'index'])->name('index');
-            Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
-            Route::get('create', [QuestionController::class, 'create'])->name('create');
-            Route::post('store', [QuestionController::class, 'store'])->name('store');
         });
 
         Route::prefix('/courses')->name('course.')->group(function () {

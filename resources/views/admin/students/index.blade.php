@@ -43,7 +43,7 @@
                                                 <a href="{{ route('student.edit', [$student->id]) }}" class="btn btn-sm btn-primary mb-1">
                                                     <i class="fas fa-edit"></i>
                                                 </a>
-                                                <a class="btn btn-sm btn-danger mb-1" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="javascript:student_delete({{ $student->id }})">
+                                                <a class="btn btn-sm btn-danger mb-1" data-toggle="modal" data-target="#deleteModalStudent" onclick="javascript:student_delete({{ $student->id }})">
                                                     <i class="far fa-trash-alt"></i></a>
                                                 <a href="{{ route('student.course', [$student->id]) }}" class="btn btn-sm btn-warning mb-1">
                                                     Khóa
@@ -102,12 +102,12 @@
 
 @section('modal')
 <!-- Modal -->
-<div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteModalStudent" data-bs-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalLabel">Xóa học viên!</h5>
-                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
@@ -119,7 +119,7 @@
                     Bạn có chắc là muốn xóa học viên này?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Không</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
                     <button type="submit" class="btn btn-danger">Có</button>
                 </div>
             </form>

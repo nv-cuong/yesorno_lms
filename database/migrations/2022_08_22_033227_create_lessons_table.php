@@ -21,9 +21,8 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
-            $table->string('content');
-            $table->string('config');
-            $table->string('path')->nullable();
+            $table->string('content')->nullable();
+            $table->string('config')->nullable();
             $table->date('published')->nullable();
             $table->timestamps();
         });

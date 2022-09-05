@@ -121,7 +121,7 @@ class StudentController extends Controller
         if ($student) {
             $classStudiesNumber=User::find($id)->classStudies()->where("user_id",$id)->count();
             $coursesNumber = User::find($id)->courses()->where("user_id",$id)->count();
-            $coursesNumber = ($coursesNumber*100)/Course::all()->count();
+            $coursesNumber = ceil($coursesNumber*100)/Course::all()->count();
             return view('admin.students.statistic', compact('student','coursesNumber','classStudiesNumber'));
         }
         return redirect(route('students'))

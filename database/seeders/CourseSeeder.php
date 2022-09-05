@@ -22,10 +22,10 @@ class CourseSeeder extends Seeder
         ->hasQuestions(10)
         ->has(
             Unit::factory()
-            ->count(10)
+            ->count(2)
             ->has(
                 Lesson::factory()
-                ->count(20)
+                ->count(3)
             )
         )
         ->create();
