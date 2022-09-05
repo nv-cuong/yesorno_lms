@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
 use App\Models\Test;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -146,6 +147,27 @@ class CourseController extends Controller
             return view('admin.modules.courses.test', compact('course','tests'));
         }
         return redirect(route('course'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
+    }
+
+    public function showStudent(Request $request, $id)
+    {
+        $course = Course::find($id);
+        if ($course) {
+            $users = User::select([
+                'users.id',
+                'uc.course_id',
+                'first_name',
+                'last_name',
+                'email',
+                'uc.status as status'
+            ])
+            ->leftJoin('user_courses AS uc','uc.user_id', 'users.id')
+            ->where('uc.course_id',$id)
+            ->get();
+            return view('admin.modules.courses.student', compact('users','course'));
+        }
+        return redirect(route('course.index'))
         ->with('msg', 'Học sinh chưa tồn tại!');
     }
 }

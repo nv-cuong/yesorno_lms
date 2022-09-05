@@ -18,42 +18,36 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">
-                        <a href="{{ route('course.create') }}" class="btn btn-success float-right">+ Thêm bài kiểm tra</a>
-                    </div>
                     <table class="table table-striped" id="example1">
                         <thead>
                             <tr>
                                 <th>STT</th>
-                                <th>Loại bài kiểm tra</th>
-                                <th>Tên bài kiểm tra</th>
-                                <th>Tùy chọn</th>
+                                <th>Tên học viên</th>
+                                <th>Email</th>
+                                <th>Trạng thái</th>
                             </tr>
                         </thead>
                         <tbody id="load">
-                            @forelse($tests as $test)
+                            @forelse($users as $user)
                             <tr>
-                                <td>{{ $test->id }}</td>
-                                <td>{{ $test->category }}</td>
-                                <td>{{ $test->title}}</td>
-                                <td>
-                                    <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-success">
-                                        <i class="fas fa-plus"></i>
-                                    </a>
-                                    <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="javascript:test_delete('{{ $test->id }}')">
-                                        <i class="far fa-trash-alt"></i>
-                                    </a>
-                                </td>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->first_name }} {{ $user->last_name }}</td>
+                                <td>{{ $user->email}}</td>
+                                @if($user->status == 0)
+                                <td><a href="" data-toggle="modal" data-target="#deleteModal" onclick="javascript:user_active('{{ $user->id }}')">Chấp nhận</a></td>
+                                @else
+                                <td><a href="" data-toggle="modal" data-target="#deleteModal" onclick="javascript:user_active('{{ $user->id }}')">Hủy chấp nhận</a></td>
+                                @endif
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="6">Không có bài test!</td>
+                                <td colspan="6">Không có học viên!</td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
                     <div class="card-footer clearfix">
-                        {{-- {!! $tests->appends(Request::all())->links() !!} --}}
+                        {{-- {!! $users->appends(Request::all())->links() !!} --}}
                     </div>
                 </div>
             </div>
@@ -67,7 +61,7 @@
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Xóa khóa học!</h5>
+                <h5 class="modal-title" id="deleteModalLabel">Chấp nhận học viên!</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
@@ -75,9 +69,9 @@
             <form method="post" action="{{ route('course.delete') }}">
                 @csrf
                 @method('DELETE')
-                <input type="hidden" name="course_id" id="course_id" value="0">
+                <input type="hidden" name="user_id" id="user_id" value="0">
                 <div class="modal-body">
-                    <p>Bạn có chắc muốn xóa khóa học này?</p>
+                    <p>Bạn có đồng ý thêm học viên vào khóa học?</p>
                 </div>
                 <div class="modal-footer justify-content-between">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
@@ -102,9 +96,9 @@
 </script>
 
 <script>
-    function course_delete(id) {
-        var course_id = document.getElementById('course_id');
-        course_id.value = id;
+    function user_active(id) {
+        var user_id = document.getElementById('user_id');
+        user_id.value = id;
     }
 </script>
 @endsection
