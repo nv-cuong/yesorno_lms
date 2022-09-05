@@ -10,12 +10,13 @@ use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
-
+use App\Http\Controllers\Client\LessonProgress;
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\CourseDetailController;
 use App\Http\Controllers\Client\SearchController;
+use App\Http\Controllers\Client\StudentCoursesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,12 @@ Route::get('/attach', [CourseDetailController::class, 'attach'])
     ->name('post.attach');
 Route::get('/detach', [CourseDetailController::class, 'detach'])
     ->name('post.detach');
+Route::get('/personal/courses/{id}/{slug}', [StudentCoursesController::class, 'personalCourse'])
+    ->name('personal.course');
+Route::get('/personal/lesson/{id}/{slug}', [StudentCoursesController::class, 'personalLesson'])
+    ->name('personal.lesson');
+Route::post('/personal/lessonprogress/{id}/{slug}', [StudentCoursesController::class, 'lessonProgress'])
+    ->name('lessonProgress');
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
@@ -55,6 +62,12 @@ Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 
 Route::get('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('', [RegisterController::class, 'processRegistration'])->name('register.action');
+
+
+Route::get('/course', function () {
+    return view('course');
+});
+Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
     ->middleware('myweb.auth')

@@ -26,6 +26,7 @@ class CourseFactory extends Factory
             'statistic_id' => fake()->numberBetween(1, 1000),
             'status' => fake()->randomElement([0,1]),
             'description' => fake()->text(1000),
+            'status'=> fake()->boolean(),
             'begin_date' => fake()->date(),
             'end_date' => fake()->date(),
             'image' => fake()->imageUrl(),

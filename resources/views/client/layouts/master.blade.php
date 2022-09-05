@@ -57,9 +57,9 @@
 
     @yield('content')
     <div class="clearfix"></div>
-
+    @yield('js')
     @include('client.layouts.footer')
-
+    <script src="{{ asset('/user/js/jquery-2.0.0.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery-1.12.4.min.js') }}"></script>
     <script src="{{ asset('/user/js/popper.min.js') }}"></script>
     <script src="{{ asset('/user/js/bootstrap.min.js') }}"></script>

@@ -11,7 +11,7 @@
                         <div class="row">
                             <div class="col-xl-6">
                                 <div class="hero-content">
-                                    <h5 class="hero-p1"> nơi cung cấp những khóa học chất lượng và hoàn toàn miễn phí</h5>
+                                    <h5 class="hero-p1"> nơi cung cấp những hất lượng vkhóa học cà hoàn toàn miễn phí</h5>
                                     <div class="hro-btn">
                                         <a href="{{ route('courses') }}" class="theme-btn">Bắt đầu học<i class="ti ti-arrow-right"></i></a>
                                     </div>

@@ -28,6 +28,7 @@ class StudentRequest extends FormRequest
             'first_name'=>['required','max:255'],
             'last_name'=>['required','max:255'],
             'birthday' =>['required','date_format:Y-m-d','before:-13 years'], // default > 13
+            'gender'=>['required']
         ];
     }
 
@@ -44,6 +45,7 @@ class StudentRequest extends FormRequest
         'birthday.required'=>'Ngày sinh không được bỏ trống',
         'birthday.date-format'=>'Ngày tháng năm sinh sai',
         'birthday.before'=>'Tuổi phải lớn hơn 13',
+        'gender.required'=>'Giới tính không được bỏ trống',
         ];
     }
 }

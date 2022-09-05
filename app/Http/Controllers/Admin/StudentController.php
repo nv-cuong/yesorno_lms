@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StudentRequest;
 use App\Models\User;
 use App\Models\Course;
+use App\Models\Lesson;
 use App\Models\ClassStudy;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -99,7 +100,17 @@ class StudentController extends Controller
             ->where('uc.user_id',$id)
             ->get();
 
-            return view('admin.students.course', compact('student','courses'));
+            $lessons = Lesson::select([
+                'lessons.id',
+                'ul.user_id',
+                'title',
+                'unit_id',
+                'status',
+            ])
+            ->leftJoin('user_lessons AS ul','ul.lesson_id', 'lessons.id')
+            ->where('ul.user_id',$id)
+            ->get();
+            return view('admin.students.course', compact('student','courses','lessons'));
         }
         return redirect(route('students'))
         ->with('msg', 'Học sinh chưa tồn tại!');
@@ -110,7 +121,7 @@ class StudentController extends Controller
         if ($student) {
             $classStudiesNumber=User::find($id)->classStudies()->where("user_id",$id)->count();
             $coursesNumber = User::find($id)->courses()->where("user_id",$id)->count();
-            $coursesNumber = ($coursesNumber*100)/Course::all()->count();
+            $coursesNumber = ceil($coursesNumber*100)/Course::all()->count();
             return view('admin.students.statistic', compact('student','coursesNumber','classStudiesNumber'));
         }
         return redirect(route('students'))

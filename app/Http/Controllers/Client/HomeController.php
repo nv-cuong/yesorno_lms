@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\Unit;
+use App\Models\Lesson;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
@@ -52,7 +53,10 @@ class HomeController extends Controller
     public function personal($id)
     {
         $student = User::where('id', $id)->first();;
-        return view('client.modules.personal', compact('student'));
+        $courses = User::find($id)->courses()->where("user_id",$id)->paginate(3);
+        $lessons = User::find($id)->lessons()->where([["user_id",$id],['status',1]])->count();
+        $progress= ceil( ($lessons*100)/(Lesson::all()->count()));
+        return view('client.modules.personal', compact('student','progress','courses'));
     }
 
     public function contact()
