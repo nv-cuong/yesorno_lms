@@ -63,4 +63,11 @@ class Course extends Model
             'user_id'
         );
     }
+
+    public function scopeSearch($query){
+        if($key = request()->key){
+            $query = $query-> where('title', 'like', '%'.$key.'%');
+        }
+        return $query;
+    }
 }
