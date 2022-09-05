@@ -179,7 +179,7 @@
                                                                     <div class="course-time-preview">
                                                                         <div class="course-item-info">
                                                                             <span>Duration: 5 min</span>
-                                                                            <a href="#">Xem</a>
+                                                                            <a href="{{route('home')}}">Xem</a>
                                                                         </div>
                                                                     </div>
                                                                 </div>
