@@ -24,6 +24,7 @@
     <link href="{{ asset('/user/css/swiper.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/user/style.css') }}" rel="stylesheet">
     <link href="{{ asset('/user/css/responsive.css') }}" rel="stylesheet" />
+    @yield('css')
     <style>
         .pagination {
             height: auto;
@@ -84,6 +85,7 @@
     <script src="{{ asset('/user/js/jquery.easypiechart.js') }}"></script>
     <script src="{{ asset('/user/js/main.js') }}"></script>
     @stack('scripts')
+    @yield('scripts')
 </body>
 
 </html>

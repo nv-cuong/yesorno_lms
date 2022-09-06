@@ -27,4 +27,18 @@ class ForgotPasswordRequest extends FormRequest
             'email'            => 'required|email',
         ];
     }
+
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
+    public function messages()
+    {
+        return [
+         
+            'email.required'     => 'Bạn chưa nhập email',
+            'email.email'     => 'Bạn nhập email sai định dạng',
+            
+        ];
+    }
 }

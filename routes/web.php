@@ -17,7 +17,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\CourseDetailController;
 use App\Http\Controllers\Client\SearchController;
 use App\Http\Controllers\Client\StudentCoursesController;
-
+use App\Http\Controllers\Admin\ScoreController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -59,6 +59,14 @@ Route::post('/personal/lessonprogress/{slug}', [StudentCoursesController::class,
     ->name('lessonProgress');
 Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
     ->name('post.personal.detach');
+Route::get('/doTest/{id}', [HomeController::class, 'doTest'])
+    ->name('doTest');
+
+Route::post('/sendTest/{id}', [HomeController::class, 'sendTest'])
+    ->name('send.test');
+Route::get('/test_users', [HomeController::class, 'test_user'])
+    ->name('test_users');
+
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
@@ -168,7 +176,17 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
         });
-
+        Route::prefix('/score')->name('score.')->group(function () {
+            Route::get('index', [ScoreController::class, 'index'])->name('index');
+            Route::get('create', [ScoreController::class, 'create'])->name('create');
+            Route::post('store', [ScoreController::class, 'store'])->name('store');
+            Route::get('/dots/{id}', [ScoreController::class, 'dots'])
+                ->name('dots');
+            Route::post('/point', [ScoreController::class, 'point'])
+                ->name('point');
+            Route::get('/ajax/student/{id}', [ScoreController::class, 'ajaxstudent'])
+                ->name('ajaxstudent');
+        });
 
         require 'users.php';
         require 'roles.php';
@@ -176,3 +194,4 @@ Route::prefix('admin')
 
 require 'auth.php';
 Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
+Route::post('/getStudent', [ScoreController::class, 'getStudent'])->name('getStudent');

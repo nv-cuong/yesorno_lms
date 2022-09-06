@@ -12,10 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 class RoleController extends Controller
 {
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -29,10 +28,9 @@ class RoleController extends Controller
         return view('admin.auth.role.index', compact('roles'));
     }
 
+    
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
@@ -54,9 +52,7 @@ class RoleController extends Controller
         $role->name = $request->name;
         $role->slug = Str::slug($request->name);
 
-        /**
-         *  Permission Here
-         */
+        
         $permissions = collect(json_decode($this->permissions($request)))->toArray();
         $role->permissions = $permissions;
 
@@ -67,24 +63,12 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
+    
+   
+    
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return void
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
@@ -104,14 +88,11 @@ class RoleController extends Controller
         ));
     }
 
+    
     /**
-     * Update the specified resource in storage.
-     *
-     * @param updateRequest $request
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
-     * @throws \Exception
+     * @param UpdateRequest $request
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, $id)
     {
@@ -137,12 +118,10 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
+    
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
@@ -165,14 +144,12 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
+    
     /**
-     * For Add Permission
-     *
-     * @param $request
-     *
+     * @param Request $request
      * @return string
      */
-    private function permissions($request)
+    private function permissions(Request $request)
     {
 
         //Dashboard
@@ -187,12 +164,10 @@ class RoleController extends Controller
         return json_encode($permissions);
     }
 
+    
     /**
-     * Duplicate Form
-     *
-     * @param $id
-     *
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function duplicate($id)
     {

@@ -93,7 +93,6 @@
             <div class="navbar"></div>
         </div>
     </div>
-</header>
 @push('scripts')
 <script>
     $('.input_search').keyup(function() {

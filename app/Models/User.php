@@ -32,6 +32,9 @@ class User extends EloquentUser
         'permissions',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tests()
     {
         return $this->belongsToMany(
@@ -42,6 +45,9 @@ class User extends EloquentUser
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function classStudies()
     {
         return $this->belongsToMany(
@@ -52,6 +58,9 @@ class User extends EloquentUser
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function courses()
     {
         return $this->belongsToMany(
@@ -61,6 +70,7 @@ class User extends EloquentUser
             'course_id'
         );
     }
+
 
     public function lessons()
     {
@@ -86,6 +96,7 @@ class User extends EloquentUser
         if ($key = request()->key) {
             $query = $query->where('first_name', 'like', '%' . $key . '%')
                 ->orWhere('last_name', 'like', '%' . $key . '%');
+
         }
         return $query;
     }
