@@ -34,9 +34,9 @@
                                 <td>{{ $user->first_name }} {{ $user->last_name }}</td>
                                 <td>{{ $user->email}}</td>
                                 @if($user->status == 0)
-                                <td><a href="" data-toggle="modal" data-target="#deleteModal" onclick="javascript:user_active('{{ $user->id }}')">Chấp nhận</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#activeModal" onclick="javascript:user_active('{{ $user->id }}')">Chấp nhận</a></td>
                                 @else
-                                <td><a href="" data-toggle="modal" data-target="#deleteModal" onclick="javascript:user_active('{{ $user->id }}')">Hủy chấp nhận</a></td>
+                                <td><a href="" data-toggle="modal" data-target="#activeModal" onclick="javascript:user_active('{{ $user->id }}')">Hủy chấp nhận</a></td>
                                 @endif
                             </tr>
                             @empty
@@ -57,18 +57,17 @@
 
 @section('modal')
 <!-- Modal -->
-<div class="modal fade show" id="deleteModal" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
+<div class="modal fade show" id="activeModal" style="display: hidden; padding-right: 12px;" aria-modal="true" role="dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Chấp nhận học viên!</h5>
+                <h5 class="modal-title" id="activeModalLabel">Chấp nhận học viên!</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">×</span>
                 </button>
             </div>
-            <form method="post" action="{{ route('course.delete') }}">
+            <form method="post" action="{{ route('course.active', $course->id) }}">
                 @csrf
-                @method('DELETE')
                 <input type="hidden" name="user_id" id="user_id" value="0">
                 <div class="modal-body">
                     <p>Bạn có đồng ý thêm học viên vào khóa học?</p>

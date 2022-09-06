@@ -31,10 +31,40 @@
                                 <a class="nav-link" href="{{ route('courses') }}">Khóa học</i></a>
                             </li>
                             <li class="nav-item {{  url()->current() == route('contact')  ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#"><i class="far fa-bell"></i>
-                                    Thông báo(0) </a></li>
-
+                                <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
+                            </li>
+                            @php
+                            use App\Models\Notification;
+                            if($user = Sentinel::getUser()){
+                            $notifications = Notification::select(
+                                'notifications.id',
+                                'content'
+                            )
+                            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
+                            ->where('un.user_id', $user->id)
+                            ->get();
+                            @endphp
+                            <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo({{ $notifications->count() }}) </a>
+                                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                    @forelse($notifications as $notification)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
+                                        <span class="float-right text-muted text-sm">3 mins</span>
+                                    </a>
+                                    @empty
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="far fa-bell mr-2"></i>Không có thông báo nào
+                                    </a>
+                                    @endforelse
+                                </div>
+                            </li>
+                            @php
+                            }
+                            @endphp
                             <form class="form-inline" style="padding-left: 100px" action="{{ route('search')}}" method="GET">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <input type="text" class="form-control input_search" name="keyword" style="width: 200px; font-size: 13px" placeholder="Tên khóa học">

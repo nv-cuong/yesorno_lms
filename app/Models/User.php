@@ -72,6 +72,15 @@ class User extends EloquentUser
         );
     }
 
+    public function notifications()
+    {
+        return $this->belongsToMany(
+            Notification::class,
+            'user_notifications',
+            'user_id',
+            'notification_id'
+        );
+    }
     public function scopeSearch($query)
     {
         if ($key = request()->key) {
