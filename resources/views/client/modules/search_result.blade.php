@@ -37,7 +37,7 @@
                 <div class="row">
                     <div class="col-xl-12 portfolio-content">
                         <div class="row align-items-center">
-                            
+
                             <div class="col-xl-4">
                                 <div class="course-view-more">
                                     <h6>Tìm thấy {{$data->count()}} khóa học phù hợp</h6>
