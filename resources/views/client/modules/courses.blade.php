@@ -48,7 +48,7 @@
                                 <select name="" onchange="location = this.value;" class="form-control-lg">
                                     <option value="{{ route('courses') }}">Loại khóa học</option>
                                     <option value="{{ route('courses') }}"> Tất cả</option>
-                                    <option value="{{ route('courses.filter') }}?filter=free" >Miễn phí</option>
+                                    <option value="{{ route('courses.filter') }}?filter=free&" >Miễn phí</option>
                                     <option value="{{ route('courses.filter') }}?filter=pro" >Trả phi</option>
                                 </select>
 
@@ -103,7 +103,7 @@
             </div>
         </div>
         <div class="text-center">
-            {{ $courses->links() }}
+            {{ $courses->appends(request()->query())->links() }}
         </div>
     </div>
 @endsection
