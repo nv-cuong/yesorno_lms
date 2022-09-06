@@ -27,8 +27,8 @@
                                 <th>STT</th>
                                 <th>Tên khóa học</th>
                                 <th>Loại</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
                                 <th>Tùy chọn</th>
                             </tr>
                         </thead>
@@ -42,8 +42,8 @@
                                 @else
                                 <td>Tính phí</td>
                                 @endif
-                                <td>{{ $course->created_at->format('d-m-Y') }}</td>
-                                <td>{{ $course->updated_at->format('d-m-Y') }}</td>
+                                <td>{{ $course->begin_date }}</td>
+                                <td>{{ $course->end_date }}</td>
                                 <td>
                                     <a href="{{ route('course.detail', ['id'=>$course->id]) }}" class="btn btn-primary">
                                         <i class="far fa-eye"></i>

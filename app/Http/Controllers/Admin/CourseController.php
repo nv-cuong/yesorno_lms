@@ -24,10 +24,9 @@ class CourseController extends Controller
             'title',
             'slug',
             'status',
-            'created_at',
-            'updated_at',
+            'begin_date',
+            'end_date',
         ])
-            ->orderBy('id', 'desc')
             ->paginate();
         return view('admin.modules.courses.index', compact('courses'));
     }
@@ -46,7 +45,6 @@ class CourseController extends Controller
         ])
             ->join('courses', 'units.course_id', 'courses.id')
             ->where('courses.id', $id)
-            ->orderBy('id', 'desc')
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
@@ -76,7 +74,7 @@ class CourseController extends Controller
 
         return redirect(route('course.index'))
             ->with('message', 'Khóa học đã được thêm mới')
-            ->with('type_alert', "success");;
+            ->with('type_alert', "success");
     }
 
     public function editCourse(Request $request, $id)
@@ -88,12 +86,13 @@ class CourseController extends Controller
         }
         return redirect(route('course.index'))
             ->with('message', 'Khóa học không tồn tại')
-            ->with('type_alert', "danger");;
+            ->with('type_alert', "danger");
     }
 
     public function updateCourse(CourseRequest $request, $id)
     {
         $message = 'Khóa học không tồn tại';
+        $type = 'danger';
         $course = Course::find($id);
         if ($course) {
             $course->title = $request->input('title');
@@ -110,11 +109,12 @@ class CourseController extends Controller
             $course->description = $request->input('description');
             $course->save();
             $message = 'Cập nhật khóa học thành công';
+            $type = 'success';
         }
 
         return redirect(route('course.index'))
             ->with('message', $message)
-            ->with('type_alert', "success");;
+            ->with('type_alert', $type);
     }
 
     public function destroyCourse(Request $request)

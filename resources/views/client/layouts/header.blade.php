@@ -63,6 +63,13 @@
                                 </div>
                             </li>
                             @php
+                            } else {
+                            @endphp
+                            <li class="nav-item"> <a class="nav-link" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo </a>
+                            </li>
+                            @php
                             }
                             @endphp
                             <form class="form-inline" style="padding-left: 100px" action="{{ route('search')}}" method="GET">
