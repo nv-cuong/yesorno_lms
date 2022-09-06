@@ -62,9 +62,9 @@
                
 
                 <th>
-                <a href="{{ route('score.edit',$test_user->test_id) }} " class="edit btn btn-success btn-sm">Làm bài test</a>
+                
                 @if($test_user->score == '' && $test_user->status == 1)
-                <a href="{{ route('score.dots',$test_user->id) }} " class="edit btn btn primary btn-sm">Chấm điểm</a>
+                <a href="{{ route('score.dots',$test_user->id) }} " class=" btn btn-primary btn-sm">Chấm điểm</a>
                 @endif
                 </th>
               </tr>
@@ -79,68 +79,7 @@
     </div>
 </section>
 @stop
-@section('modal')
-<!-- Modal -->
-<div class="modal fade" id="deleteModalQuestion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Xóa câu hỏi</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <form method="post" action="{{ route('question.delete') }}">
-        @csrf
-        @method('DELETE')
-        <input type="hidden" name="question_id" id="question_id" value="0">
-        <div class="modal-body">
-          Bạn có muốn xóa không ?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-          <button type="submit" class="btn btn-primary">Có</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
-<!-- xem câu trả lời -->
-<div class="modal fade" id="modal_answer">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-
-      <!-- Modal Header -->
-      <div class="modal-header text-center">
-        <h2 class="modal-title ">Danh sách Câu trả lời</h2>
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-      </div>
-
-      <!-- Modal body -->
-      <div class="modal-body">
-        <div class="table-responsive">
-          <table class="table table-striped" id="show_answer">
-            <thead>
-              <tr>
-                <th class="th-sortable text-center" data-toggle="class">Câu trả lời
-                </th>
-                <th class="th-sortable text-center" data-toggle="class">Check
-                </th>
-
-              </tr>
-            </thead>
-            <tbody>
-            </tbody>
-          </table>
-
-
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-@stop
 @section('scripts')
 
 

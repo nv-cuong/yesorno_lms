@@ -9,5 +9,5 @@ class UserTestAnswer extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_test_id', 'question_id', 'answer','answer_essay','correct'];
+    protected $fillable = ['user_test_id', 'question_id', 'answer','correct'];
 }

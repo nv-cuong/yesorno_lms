@@ -2,6 +2,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
+
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
@@ -31,13 +32,14 @@
           </div>
           <!-- /.card-header -->
           <!-- form start -->
-          <form method="post" action="{{ route('score.store') }}">
+          <form method="post" action="{{ route('score.store') }}" id="gg">
             @csrf
-
+            {!! csrf_field() !!}
             <div class="card-body">
               <div class="form-group">
                 <label>Bài test <span style="color: red">*</span></label>
-                <select class="form-control select2 " style="width: 100%;" name="test_id">
+                <select class="form-control select2 " style="width: 100%;" name="test_id" id="test_id">
+                <option value="">---</option>
                   @forelse($tests as $test )
                   @if( $test->id == old('test_id'))
                   <option selected="selected" value="{{ $test->id }}">{{ $test->title }}</option>
@@ -53,8 +55,10 @@
               </div>
               <div class="form-group">
                 <label>Lớp học <span style="color: red">*</span></label>
-                <select class="form-control select2 " style="width: 100%;" name="class_id" id="class_id">
-                  @forelse($classes as $class )
+                <select class="form-control select2 " style="width: 100%;" 
+                name="class_id" id="class_id" data-dependent="student_id">
+                <option value="">---</option>
+                @forelse($classes as $class )
                   @if( $class->id == old('class'))
                   <option selected="selected" value="{{ $class->id }}">{{ $class->name }}</option>
                   @else
@@ -70,8 +74,9 @@
               
               <div class="form-group">
                 <label>Chọn học viên</label>
-                <select class="selectpicker form-control" multiple data-selected-text-format="count" data-live-search="true" 
+                <!-- <select class="selectpicker form-control" multiple data-selected-text-format="count" data-live-search="true" 
                 style="width: 100%;" name="student_id[]" id="student_id">
+                
                 @forelse($users as $user )
                   @if( $user->id == old('student_id'))
                   <option selected="selected" value="{{ $user->id }}">{{ $user->first_name }}</option>
@@ -80,6 +85,15 @@
                   @endif
                   @empty
                   @endforelse
+                </select> -->
+                <select class="form-select student_id"
+                            id="multiple-select-clear-field" name="student_id[]" data-dependent="class_id"
+                            data-placeholder="Choose student_id" multiple>
+                            <option value="">Selete Course first</option>
+                </select>
+                <select id="test" class="" style="width: 100%;"  >
+                <option value="0">---</option>
+                 
                 </select>
               </div>
 
@@ -108,42 +122,51 @@
 <!-- /.content -->
 @stop
 @section('style')
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+
 @stop
 @section('scripts')
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-
-<!-- (Optional) Latest compiled and minified JavaScript translation files -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/i18n/defaults-*.min.js"></script>
-<script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" />
+ <link rel="stylesheet" href="https://apalfrey.github.io/select2-bootstrap-5-theme/assets/css/docs.css" />
+ <link rel="stylesheet" href="https://apalfrey.github.io/select2-bootstrap-5-theme/assets/css/rtl.css" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.0/dist/jquery.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.8/dist/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/anchor-js/anchor.min.js"></script>
+<script src="https://apalfrey.github.io/select2-bootstrap-5-theme/assets/js/docs.js"></script>
+<script src="/ajax/ajax.js" type="text/javascript"></script> 
   
-  $(function() {
-    $('select').selectpicker();
-  });
+  
 
 
-  $('#class_id').change(function(event) {
-            var id_class=$(this).val();
-            var url = "{{ route('score.ajaxstudent', ':id_class') }}",
-      url = url.replace(':id_class', id_class);
-    
-    $.ajax({
-
-      type: 'GET',
-      url: url,
-      success: function(data) {
-        $('#student_id').html(data);
-        console.log(data);
-
-      },
-      error: function(data) {
-        console.log(data);
-      }
-    });
-    
-           
-    });
+  
 </script>
 
+
+<script type="text/javascript">
+$('#multiple-select-clear-field').select2({
+    theme: "bootstrap-5",
+    width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+    placeholder: $(this).data('placeholder'),
+    closeOnSelect: false,
+    allowClear: true,
+}).on("change", function(e) {
+
+    $('.multiple-select-clear-field li:not(.select2-search--inline)').hide();
+    $('.counter').remove();
+    var counter = $(".select2-selection__choice").length;
+    $('.select2-selection__rendered').after(
+        '<div style="line-height: 28px; padding: 5px;" class="counter"> Nhập nội dung tìm kiếm:</div>');
+    $('.select2-selection__rendered').after(
+        '<div style="line-height: 28px; padding: 5px;" class="counter"> Số câu hỏi đã chọn : ' + counter +
+        '</div>');
+    //document.getElementById("count_question_id").value = counter;
+});
+</script>
+<script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+<script type="text/javascript">
+    
+   
+</script>
 
 @stop

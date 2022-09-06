@@ -188,7 +188,7 @@ class QuestionController extends Controller
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
         }
 
-        return redirect(route('question.index'))->with('message', $msg)->with('type_alert', "success");;
+        return redirect(route('question.index'))->with('message', $msg)->with('type_alert', "success");
 
     }
 

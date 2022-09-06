@@ -83,6 +83,15 @@
 
                 </li>
                 <li class="nav-item">
+                    <a href="{{route('score.index')}}" class="nav-link">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Score
+                        </p>
+                    </a>
+
+                </li>
+                <li class="nav-item">
                     <a href="{{route('users.index')}}" class="nav-link">
                         <i class="fas fa-user"></i>
                         <p>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
+use App\Models\Test;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
@@ -17,9 +18,9 @@ class CourseController extends Controller
     {
         $courses = Course::select([
             'id',
-            'statistic_id',
             'title',
             'slug',
+            'status',
             'created_at',
             'updated_at',
         ])
@@ -46,7 +47,6 @@ class CourseController extends Controller
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
-
     }
 
     public function createCourse()
@@ -60,6 +60,11 @@ class CourseController extends Controller
         $course_item = $request->except('_token');
 
         $course_item['slug'] = Str::slug($course_item['title']);
+        $photo = $request->file('image');
+            if ($photo) {
+                $path = Storage::putFile('images', $photo);
+                $course_item['image'] = $path;
+            }
         try {
             Course::create($course_item);
         } catch (\Throwable $th) {
@@ -67,8 +72,8 @@ class CourseController extends Controller
         }
 
         return redirect(route('course.index'))
-        ->with('message', 'Khóa học đã được thêm mới')
-        ->with('type_alert', "success");;
+            ->with('message', 'Khóa học đã được thêm mới')
+            ->with('type_alert', "success");;
     }
 
     public function editCourse(Request $request, $id)
@@ -91,17 +96,24 @@ class CourseController extends Controller
             $course->title = $request->input('title');
             $course->statistic_id = $course->statistic_id;
             $course->slug = Str::slug($course->title);
+            $course->status = $request->input('status');
             $course->begin_date = $request->input('begin_date');
             $course->end_date = $request->input('end_date');
             $photo = $request->file('image');
-            $path = Storage::putFile('images', $photo);
-            $course->image = $path;
+            dd($photo);
+            if ($photo) {
+                $path = Storage::putFile('images', $photo);
+                $course->image = $path;
+            }
+            else $course->image = $course->image;
             $course->description = $request->input('description');
             $course->save();
             $message = 'Cập nhật khóa học thành công';
         }
 
-        return redirect(route('course.index'))->with('message', $message);
+        return redirect(route('course.index'))
+            ->with('message', $message)
+            ->with('type_alert', "success");;
     }
 
     public function destroyCourse(Request $request)
@@ -118,5 +130,22 @@ class CourseController extends Controller
                 ->with('type_alert', "danger");
     }
 
-}
+    public function showTest($id){
+        $course = Course::find($id);
+        if ($course) {
+            $tests = Test::select([
+                'tests.id',
+                'ct.course_id',
+                'category',
+                'title',
+            ])
+            ->leftJoin('course_tests AS ct','ct.test_id', 'tests.id')
+            ->where('ct.course_id',$id)
+            ->get();
 
+            return view('admin.modules.courses.test', compact('course','tests'));
+        }
+        return redirect(route('course'))
+        ->with('msg', 'Học sinh chưa tồn tại!');
+    }
+}

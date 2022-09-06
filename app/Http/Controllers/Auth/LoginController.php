@@ -23,8 +23,14 @@ class LoginController extends Controller
         try {
             $user = Sentinel::authenticate($credentials);
             if ($user) {
-                $request->session()->regenerate();
-                return redirect()->intended(route('dashboard'));
+                if ($user-> inRole ('student')){
+                    $request->session()->regenerate();
+                    return redirect()->intended(route('home'));
+                }
+                else{
+                    $request->session()->regenerate();
+                    return redirect()->intended(route('dashboard'));
+                }
             } else {
                 $msg = 'The provided credentials do not match our records.';
             }

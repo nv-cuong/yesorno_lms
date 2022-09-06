@@ -7,14 +7,14 @@ use App\Http\Controllers\Admin\IndexController;
 use App\Http\Controllers\Admin\LessonController;
 use App\Http\Controllers\Admin\StudentController;
 use App\Http\Controllers\Admin\QuestionController;
-use App\Http\Controllers\Admin\ScoreController;
 use App\Http\Controllers\Admin\UnitController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 
 use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\Admin\ScoreController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -26,9 +26,28 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
+
+Route::get('/courses', [HomeController::class, 'courses'])
+    ->name('courses');
+Route::get('/courses/detail/{slug}', [HomeController::class, 'courseDetail'])
+    ->name('detail');
+
+Route::get('/contact', [HomeController::class, 'contact'])
+    ->name('contact');
+    Route::get('/personal/{id}', [HomeController::class, 'personal'])
+    ->name('personal');
+    Route::get('/doTest/{id}', [HomeController::class, 'doTest'])
+    ->name('doTest');
+
+    Route::post('/sendTest/{id}', [HomeController::class, 'sendTest'])
+    ->name('send.test');
+    Route::get('/test_users', [HomeController::class, 'test_user'])
+    ->name('test_users');
+
+
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
 Route::post('/login', [LoginController::class, 'postLogin'])
@@ -41,9 +60,12 @@ Route::post('', [RegisterController::class, 'processRegistration'])->name('regis
 Route::prefix('admin')
     ->middleware('myweb.auth')
     ->group(function () {
+        
+        Route::get('/downloadFile', [LessonController::class, 'downloadFile']);
 
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
+            
         Route::prefix('/questions')->name('question.')->group(function () {
             Route::get('index', [QuestionController::class, 'index'])->name('index');
             Route::get('getData', [QuestionController::class, 'getData'])->name('getData');
@@ -80,8 +102,6 @@ Route::prefix('admin')
                 ->name('student.statistic');
         });
 
-        
-
         Route::prefix('/courses')->name('course.')->group(function () {
             Route::get('index', [CourseController::class, 'index'])->name('index');
             Route::get('/showCourse/{id}', [CourseController::class, 'showCourse'])->name('detail');
@@ -91,6 +111,7 @@ Route::prefix('admin')
             Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
             Route::post('/editCourse{id}', [CourseController::class, 'updateCourse'])->name('update');
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
+            Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
         });
 
         Route::prefix('/units')->name('unit.')->group(function () {
@@ -104,13 +125,14 @@ Route::prefix('admin')
         });
 
         Route::prefix('/lessons')->name('lesson.')->group(function () {
-            Route::get('/showLesson/{slug}', [LessonController::class, 'showLesson'])->name('detail');
+            Route::get('/showLesson/{id}', [LessonController::class, 'showLesson'])->name('detail');
             // Route::get('getData', [UnitController::class, 'getData'])->name('getData');
             Route::get('createLesson/{unit_id}', [LessonController::class, 'createLesson'])->name('create');
             Route::post('storeLesson', [LessonController::class, 'storeLesson'])->name('store');
             Route::get('/editLesson/{id}', [LessonController::class, 'editLesson'])->name('edit');
             Route::post('/editLesson{id}', [LessonController::class, 'updateLesson'])->name('update');
             Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
+            Route::get('/downloadFile{file_name}', [LessonController::class, 'downloadFile'])->name('download');
         });
 
         Route::prefix('/test')->name('test.')->group(function () {
@@ -128,26 +150,19 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
         });
-
-        // quản lý điểm test
-
         Route::prefix('/score')->name('score.')->group(function () {
             Route::get('index', [ScoreController::class, 'index'])->name('index');
             Route::get('create', [ScoreController::class, 'create'])->name('create');
             Route::post('store', [ScoreController::class, 'store'])->name('store');
-            Route::get('/edit/{id}', [ScoreController::class, 'edit'])
-                ->name('edit');
-            Route::post('/edit/{id}', [ScoreController::class, 'update'])
-                ->name('update');
+            
             Route::get('/dots/{id}', [ScoreController::class, 'dots'])
                 ->name('dots');
             Route::post('/point', [ScoreController::class, 'point'])
                 ->name('point');
-            Route::get('/ajax/student/{id}', [ScoreController::class, 'ajax_student'])
+            Route::get('/ajax/student/{id}', [ScoreController::class, 'ajaxstudent'])
                 ->name('ajaxstudent');
             
         });
-       
 
         require 'users.php';
         require 'roles.php';
@@ -155,3 +170,5 @@ Route::prefix('admin')
 
 require 'auth.php';
 Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
+Route::post('/getStudent', [ScoreController::class, 'getStudent'])->name('getStudent');
+?>

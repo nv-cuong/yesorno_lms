@@ -9,7 +9,7 @@
         <h1>Quản lý điểm bài test</h1>
       </div>
       <div class="col-sm-12">
-        @include('Admin/_alert')
+        @include('admin/_alert')
       </div><!-- /.col -->
 
     </div><!-- /.row -->
@@ -48,13 +48,13 @@
                   
                 </th>
                 <th>{{$uta->content}}</th>
-                <th>{{$uta->answer_essay}}</th>
+                <th>{{$uta->answer}}</th>
                 <th>
                    {{$uta->score}}
                 </th>
                 <th>
-                <input type="radio"  style="margin-bottom: 0.8rem" name="true[{{$uta->id}}]" value="1" checked /> Đúng
-                <input type="radio"  style="margin-bottom: 0.8rem" name="true[{{$uta->id}}]" value="0"/> Sai
+                <input type="number" min="0"  style="margin-bottom: 0.8rem" name="true[{{$uta->id}}]" /> 
+               
                 </th>
                
               </tr>

@@ -8,16 +8,6 @@
             <div class="col-sm-6">
                 <h1>Quản lí khóa học</h1>
             </div>
-            <div class="col-sm-6 ">
-                <form action="" class="form-inline justify-content-end">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
         </div>
         @include('admin._alert')
         <hr>
@@ -35,7 +25,7 @@
                     <div class="card-header">
                         <a href="{{ route('lesson.create', ['unit_id'=>$unit->id]) }}" class="btn btn-success float-right">+ Thêm bài học mới</a>
                     </div>
-                    <table class="table table-striped">
+                    <table class="table table-striped" id="example1">
                         <thead>
                             <tr>
                                 <th>STT</th>
@@ -44,6 +34,7 @@
                                 <th>Ngày xuất</th>
                                 <th>Ngày tạo</th>
                                 <th>Ngày cập nhật</th>
+                                <th>Tùy chọn</th>
                             </tr>
                         </thead>
                         <tbody id="load">
@@ -51,12 +42,17 @@
                             <tr>
                                 <td>{{ $loop->iteration + ($lessons->currentPage() -1) * $lessons->perPage() }}</td>
                                 <td>{{ $lesson->title }}</td>
+                                @if($lesson->config == 'must')
+                                <td>Tính tiến độ</td>
+                                @else
+                                <td>Không tính tiến độ</td>
+                                @endif
                                 <td>{{ $lesson->config }}</td>
                                 <td>{{ $lesson->published }}</td>
                                 <td>{{ $lesson->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $lesson->updated_at->format('d-m-Y') }}</td>
                                 <td>
-                                    <a href="{{ route('lesson.detail', ['slug'=>$lesson->slug]) }}" class="btn btn-primary">
+                                    <a href="{{ route('lesson.detail', ['id'=>$lesson->id]) }}" class="btn btn-primary">
                                         <i class="far fa-eye"></i>
                                     </a>
                                     <a href="{{ route('lesson.edit', [$lesson->id]) }}" class="btn btn-success">
@@ -111,11 +107,22 @@
 </div>
 @stop
 
-@push('custom-scripts')
+@section('scripts')
+<script>
+  $(function() {
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": false,
+      "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+  });
+</script>
+
 <script>
     function lesson_delete(id) {
         var lesson_id = document.getElementById('lesson_id');
         lesson_id.value = id;
     }
 </script>
-@endpush
+@endsection

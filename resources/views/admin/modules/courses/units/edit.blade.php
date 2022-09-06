@@ -8,16 +8,6 @@
             <div class="col-sm-6">
                 <h1>Quản lí khóa học</h1>
             </div>
-            <div class="col-sm-6 ">
-                <form action="" class="form-inline justify-content-end">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tiêu đề...">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
         </div>
     </div>
 </section>
@@ -25,11 +15,15 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <h2>Sửa chương</h2>
-                <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title" style="font-weight:bold">Chỉnh sửa chương</h2>
+                    </div>
                     <form method="post" action="{{ route('unit.update', [$unit->id]) }}" enctype="multipart/form-data">
-                        @include('admin.modules.courses.units._unit_form')
-                        <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        <div class="card-body">
+                            @include('admin.modules.courses.units._unit_form')
+                            <button type="submit" class="btn btn-primary">Cập nhật</button>
+                        </div>
                     </form>
                 </div>
             </div>

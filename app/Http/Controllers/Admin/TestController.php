@@ -17,7 +17,7 @@ class TestController extends Controller
     public function index()
     {
         // $tests = DB::table('tests')->paginate(15);
-        $tests = Test::paginate(15);
+        $tests = Test::all();
         return view('admin.tests.index', compact('tests'));
     }
     public function create()
@@ -113,7 +113,7 @@ class TestController extends Controller
             if ($row->category == 0) {
                 $category = "Tự luận";
             } elseif ($row->category==1) {
-                $category="Câu hỏi trắc nhiệm";
+                $category="Trắc nhiệm nhiều lựa chọn";
             } elseif ($row->category==2) {
                 $category="Câu hỏi đúng sai";
             }
@@ -156,7 +156,8 @@ class TestController extends Controller
     {
         $tests  = Test::find($id);
         $question1 = $tests->question;
-        $question = $tests->question()->paginate(4);
+        // $question = $tests->question()->paginate(4);
+        $question = $tests->question;
         $arr_question=[];
         foreach ($question1 as $row) {
             $arr_question[] = $row->pivot->question_id;
