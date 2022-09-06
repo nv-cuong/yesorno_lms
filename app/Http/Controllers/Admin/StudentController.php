@@ -120,8 +120,20 @@ class StudentController extends Controller
         $student = User::find($id);
         if ($student) {
             $classStudiesNumber=User::find($id)->classStudies()->where("user_id",$id)->count();
-            $coursesNumber = User::find($id)->courses()->where("user_id",$id)->count();
-            $coursesNumber = ceil($coursesNumber*100)/Course::all()->count();
+            $courseLesson =Lesson::select()
+            ->leftJoin('units AS u','u.id', 'lessons.unit_id')
+            ->join('courses AS c', 'c.id', 'u.course_id')
+            ->where('c.status',1)
+            ->count();
+            $lessonNumber = Lesson::select()
+            ->leftJoin('user_lessons AS ul','ul.lesson_id', 'lessons.id')
+            ->where('ul.user_id',$id)
+            ->where('status',1)
+            ->count();
+            if($courseLesson != 0){
+                $coursesNumber = ceil($lessonNumber*100)/$courseLesson;
+            }
+            else $coursesNumber = 0;
             return view('admin.students.statistic', compact('student','coursesNumber','classStudiesNumber'));
         }
         return redirect(route('students'))

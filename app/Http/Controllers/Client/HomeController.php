@@ -100,12 +100,19 @@ class HomeController extends Controller
         return view('client.modules.courses', compact('courses', 'courseTotal'));
     }
 
-    public function personal($id)
+    public function personal(Request $request)
     {
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $student = User::where('id', $id)->first();;
         $courses = User::find($id)->courses()->where("user_id",$id)->paginate(3);
         $lessons = User::find($id)->lessons()->where([["user_id",$id],['status',1]])->count();
-        $progress= ceil( ($lessons*100)/(Lesson::all()->count()));
+        $courseLesson =Lesson::select()
+        ->leftJoin('units AS u','u.id', 'lessons.unit_id')
+        ->join('courses AS c', 'c.id', 'u.course_id')
+        ->where('c.status',1)
+        ->count();
+        $progress= ceil( ($lessons*100)/($courseLesson));
         return view('client.modules.personal', compact('student','progress','courses'));
     }
 

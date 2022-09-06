@@ -128,7 +128,7 @@
                                                 </div>
                                             </div>
                                             <div class="course-2-btn">
-                                                <a href="{{ route('personal.course',[$student->id,$course->slug]) }}" class="theme-btn btn-2">Xem chi tiết</a>
+                                                <a href="{{ route('personal.course',[$course->slug]) }}" class="theme-btn btn-2">Xem chi tiết</a>
                                             </div>
                                         </div>
                                     </div>

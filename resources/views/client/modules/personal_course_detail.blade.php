@@ -43,7 +43,14 @@
                                 <li>
                                     <p><i class="fas fa-user"></i>Ngày kết thúc : {{ $course->begin_date }}</p>
                                 </li>
-
+                                <li>
+                                    <form action="{{ route('post.detach') }}" method="get">
+                                        Bạn đã đăng kí khóa học này
+                                        <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                        <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                        <button type="submit" class="btn btn-danger" title="Đăng kí vào khóa học">Hủy</button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                         <div class="course-course-pic cr-mb">
@@ -132,7 +139,7 @@
                                                                                     </div>
                                                                                     <div class="course-time-preview">
                                                                                         <div class="course-item-info">
-                                                                                            <a  href="{{ route('personal.lesson', [$id, $lessonItem->slug]) }}">Xem</a>
+                                                                                            <a  href="{{ route('personal.lesson', [$lessonItem->slug]) }}">Xem</a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -160,7 +167,7 @@
                                                                                     <div class="course-time-preview">
                                                                                         <div class="course-item-info">
                                                                                             <a
-                                                                                                href="{{ route('personal.lesson', [$id, $lessonItem->slug]) }}">Xem</a>
+                                                                                                href="{{ route('personal.lesson', [$lessonItem->slug]) }}">Xem</a>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -172,33 +179,6 @@
                                                             @endif
                                                         @endif
                                                     @endforeach
-                                                    @if($countLesson == $unit->lessons()->count())
-                                                        <div id="collapse{{ $unit->id }}"
-                                                            class="panel-collapse in collapse" role="tabpanel"
-                                                            aria-labelledby="heading{{ $unit->id }}">
-                                                            <div class="panel-body">
-                                                                <ul class="course-video-list">
-                                                                    <li>
-                                                                        <div class="course-video-wrp">
-                                                                            <div class="course-item-name">
-                                                                                <div>
-                                                                                    <i class="fas fa-play"></i>
-                                                                                </div>
-                                                                                <h5>Làm bài kiểm tra</h5>
-                                                                            </div>
-                                                                            <div class="course-time-preview">
-                                                                                <div class="course-item-info">
-                                                                                    <a href="#">Xem</a>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-
-                                                        </div>
-                                                    @endif
-                                                </div>
                                             @empty
                                                 <div class="panel-heading" role="tab"
                                                     id="heading{{ $unit->id }}" style="margin-bottom : 20px">

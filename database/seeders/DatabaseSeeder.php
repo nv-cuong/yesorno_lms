@@ -18,23 +18,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
         $this->call(UserSeeder::class);
-        // Course::factory()
-        // ->count(5)
-        // ->has(
-        //     Unit::factory()
-        //     ->count(10)
-        //     ->has(
-        //         Lesson::factory()
-        //         ->count(20)
-        //     )
-        // )
-        // ->create();
+        $this->call(CourseSeeder::class);
     }
 }

@@ -55,6 +55,15 @@ class StudentControllerTest extends TestCase
         $response->assertSee('<span class="badge badge-danger navbar-badge">3</span>', false);
     }
 
+    public function test_showStatistic(){
+        $response = $this->get(route('student.statistic',[
+            'id'=> 4,
+        ]));
+         $response->assertStatus(200);
+
+        $response->assertSee('<h3 class="page-title d-inline mb-0">Chi tiết học viên</h3>', false);
+    }
+
     public function test_edit(){
         $response = $this->get(route('student.edit',[
             'id'=> 4,
@@ -72,7 +81,7 @@ class StudentControllerTest extends TestCase
             'last_name' =>    'Hieu',
             'gender' =>       'male',
             'phone' =>        '0123456789',
-            'birthday' =>     '20/09/2000',
+            'birthday' =>     '2000-09-20',
         ];
 
         $response = $this->post(route('student.update',[
@@ -103,6 +112,7 @@ class StudentControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertSessionHasErrors($fieldsInvalid);
     }
+
     protected function set_student_data_test_is_invalid()
     {
         return [
@@ -188,6 +198,18 @@ class StudentControllerTest extends TestCase
                 ]
             ]
         ];
+    }
+
+    public function test_delete()
+    {
+        $response = $this->delete(route('student.delete'),[
+            'student_id'=> 4,
+        ]);
+        // $response = $this->call('DELETE', 'student.delete',$studentData);
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('users', [
+            'id' =>  4,
+        ]);
     }
 }
 

@@ -41,7 +41,7 @@ Route::get('/search', [SearchController::class, 'search'])
     ->name('search');
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
-Route::get('/personal/{id}', [HomeController::class, 'personal'])
+Route::get('/personal', [HomeController::class, 'personal'])
     ->name('personal');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
@@ -49,12 +49,14 @@ Route::get('/attach', [CourseDetailController::class, 'attach'])
     ->name('post.attach');
 Route::get('/detach', [CourseDetailController::class, 'detach'])
     ->name('post.detach');
-Route::get('/personal/courses/{id}/{slug}', [StudentCoursesController::class, 'personalCourse'])
+Route::get('/personal/courses/{slug}', [StudentCoursesController::class, 'personalCourse'])
     ->name('personal.course');
-Route::get('/personal/lesson/{id}/{slug}', [StudentCoursesController::class, 'personalLesson'])
+Route::get('/personal/lesson/{slug}', [StudentCoursesController::class, 'personalLesson'])
     ->name('personal.lesson');
-Route::post('/personal/lessonprogress/{id}/{slug}', [StudentCoursesController::class, 'lessonProgress'])
+Route::post('/personal/lessonprogress/{slug}', [StudentCoursesController::class, 'lessonProgress'])
     ->name('lessonProgress');
+Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
+    ->name('post.personal.detach');
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');

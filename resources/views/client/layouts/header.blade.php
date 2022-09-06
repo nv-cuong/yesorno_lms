@@ -49,7 +49,7 @@
                     </div>
                     <div class="header-3-bt">
                         @if ($user = Sentinel::getUser())
-                        <a href="{{ route('personal', $user->id) }}" class="header-3-btn">Khóa học của tôi</a>
+                        <a href="{{ route('personal') }}" class="header-3-btn">Khóa học của tôi</a>
                         @else
                         <a class="header-3-btn">Khóa học của tôi</a>
                         @endif
