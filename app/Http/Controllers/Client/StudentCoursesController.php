@@ -9,10 +9,13 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\File;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class StudentCoursesController extends Controller
 {
-    public function personalCourse($id,$slug){
+    public function personalCourse(Request $request,$slug){
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $course = Course::where('slug', $slug)->first();
         $courses = Course::select()->paginate(3);
         $lessons = Lesson::select([
@@ -34,7 +37,9 @@ class StudentCoursesController extends Controller
         return view('client.modules.personal_course_detail',compact('course','courses','lessons','id','courseLesson'));
     }
 
-    public function personalLesson($id,$slug){
+    public function personalLesson(Request $request,$slug){
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $lesson = Lesson::where('slug', $slug)->first();
         $slCount = Lesson::select()
         ->leftJoin('user_lessons AS ul','ul.lesson_id', 'lessons.id')
@@ -50,7 +55,9 @@ class StudentCoursesController extends Controller
         return view('client.modules.lesson',compact('lesson','files','id','slug','status'));
     }
 
-    public function lessonProgress($id,$slug){
+    public function lessonProgress(Request $request,$slug){
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $lesson = Lesson::where('slug', $slug)->first();
         $studentLesson =Lesson::select([
             'lessons.id',

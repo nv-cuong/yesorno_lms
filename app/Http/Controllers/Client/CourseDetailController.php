@@ -48,6 +48,6 @@ class CourseDetailController extends Controller
             return redirect(route('detail', $request->course_slug))
                 ->with('message', "Bạn đã hủy đăng kí khóa học này !")
                 ->with('type_alert', "success");
- 
+
     }
 }
