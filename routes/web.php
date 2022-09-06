@@ -133,7 +133,7 @@ Route::prefix('admin')
             Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
             Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
             Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
-            Route::post('/editCourse{id}', [CourseController::class, 'updateCourse'])->name('update');
+            Route::post('/editCourse/{id}', [CourseController::class, 'updateCourse'])->name('update');
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
             Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
             Route::get('/showStudent/{id}', [CourseController::class, 'showStudent'])->name('student');
@@ -146,7 +146,7 @@ Route::prefix('admin')
             Route::get('createUnit/{course_id}', [UnitController::class, 'createUnit'])->name('create');
             Route::post('storeUnit', [UnitController::class, 'storeUnit'])->name('store');
             Route::get('/editUnit/{id}', [UnitController::class, 'editUnit'])->name('edit');
-            Route::post('/editUnit{id}', [UnitController::class, 'updateUnit'])->name('update');
+            Route::post('/editUnit/{id}', [UnitController::class, 'updateUnit'])->name('update');
             Route::delete('/destroyUnit/{course_id}', [UnitController::class, 'destroyUnit'])->name('delete');
         });
 
@@ -156,9 +156,9 @@ Route::prefix('admin')
             Route::get('createLesson/{unit_id}', [LessonController::class, 'createLesson'])->name('create');
             Route::post('storeLesson', [LessonController::class, 'storeLesson'])->name('store');
             Route::get('/editLesson/{id}', [LessonController::class, 'editLesson'])->name('edit');
-            Route::post('/editLesson{id}', [LessonController::class, 'updateLesson'])->name('update');
+            Route::post('/editLesson/{id}', [LessonController::class, 'updateLesson'])->name('update');
             Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
-            Route::get('/downloadFile{file_name}', [LessonController::class, 'downloadFile'])->name('download');
+            Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])->name('download');
         });
 
         Route::prefix('/test')->name('test.')->group(function () {
