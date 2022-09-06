@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Score\ScoreRequest;
 use App\Models\Answer;
 use App\Models\ClassStudy;
 use Illuminate\Http\Request;
@@ -88,7 +89,7 @@ class ScoreController extends Controller
         return view('admin.score.dots', compact('user_test_answers'));
     }
 
-    public function point(Request $request)
+    public function point(ScoreRequest $request)
     {
         $test_user_item = $request->except('_token');
        

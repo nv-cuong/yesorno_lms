@@ -53,8 +53,11 @@
                    {{$uta->score}}
                 </th>
                 <th>
-                <input type="number" min="0"  style="margin-bottom: 0.8rem" name="true[{{$uta->id}}]" /> 
+                <input type="number" min="0" name="true[{{$uta->id}}]" class=" @error('true'.'['.$uta->id.']') is-invalid @enderror"  style="margin-bottom: 0.8rem"  /> 
+                @error('true'.'['.$uta->id.']')
                
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
                 </th>
                
               </tr>
