@@ -79,7 +79,7 @@
                     _html += '<ul>';
                     for (var course of data) {
                         _html += '<li>';
-                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'"><img src="{{ asset( '+ course.image +') }}"> ' + course.title + '</a>';
+                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'"><img src="http://127.0.0.1:8000/'+ course.image +'"> ' + course.title + '</a>';
                         _html += '<hr>';
                         _html += '</li>';
                     }
