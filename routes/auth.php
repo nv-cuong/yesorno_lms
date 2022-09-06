@@ -7,6 +7,17 @@ use App\Http\Controllers\Auth\ForgotController;
 /**
  * Users Register Route
  */
+Route::prefix('/register')->group(function () {
+    Route::get('', [RegisterController::class, 'register'])
+    ->name('register.form');
+
+    // For Action
+    Route::post('', [RegisterController::class, 'processRegistration'])
+    ->name('register.action');
+
+    Route::get('activate/{userId}/{code}', [RegisterController::class, 'activate'])
+    ->name('register.activate');
+});
 
 
 /**

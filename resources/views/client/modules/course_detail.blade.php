@@ -67,7 +67,6 @@
                     </div>
 
                     @if ($course->status == 0)
-                        {{ $course->status }}
                         <h5>( Khóa học miễn phí )</h5>
                     @else
                     <div class="course-syl-price cr-mb">
@@ -199,7 +198,7 @@
                                                                             @elseif($course->status == 0)
                                                                             <a href="{{ route('home') }}">Xem</a>
                                                                             @else
-                                                                            <span style="color: red">Hãy đăng kí và đợi duyệt!</span>
+                                                                            <span style="color: red">Hãy đăng kí!</span>
                                                                             @endif
                                                                         </div>
                                                                     </div>

@@ -12,8 +12,8 @@
                             <a href="{{ route('personal', $user->id) }}" class="d-inline bg-primary text-white" style="border-radius: 10px; padding: 6px 15px">Hello: {{ $user->first_name }}</a>
                             <a href="{{ route('logout') }}" class="d-inline p-3 bg-dark text-white" style="border-radius: 15px"><i class="fas fa-power-off"></i></a>
                             @else
-                            <a href="{{ route('login') }}" class="d-inline p-2 bg-primary text-white">Đăng nhập</a>
-                            <a href="{{ route('register') }}" class="d-inline p-2 bg-dark text-white">Đăng ký</a>
+                            <a href="{{ route('login.form') }}" class="d-inline p-2 bg-primary text-white">Đăng nhập</a>
+                            <a href="{{ route('register.form') }}" class="d-inline p-2 bg-dark text-white">Đăng ký</a>
                             @endif
                         </div>
                     </div>

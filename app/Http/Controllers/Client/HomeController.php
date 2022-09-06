@@ -113,12 +113,4 @@ class HomeController extends Controller
     {
         return view('client.modules.contact');
     }
-
-    public function search( Request $request)
-    {
-        $output = '';
-        $course = Course::where('title', 'LIKE', '%'.$request->keyword.'%')->get();
-
-
-    }
 }

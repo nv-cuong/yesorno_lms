@@ -57,13 +57,10 @@ Route::post('/personal/lessonprogress/{id}/{slug}', [StudentCoursesController::c
     ->name('lessonProgress');
 
 Route::get('/login', [LoginController::class, 'login'])
-    ->name('login');
+    ->name('login.form');
 Route::post('/login', [LoginController::class, 'postLogin'])
     ->name('login.post');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-Route::get('/register', [RegisterController::class, 'register'])->name('register');
-Route::post('', [RegisterController::class, 'processRegistration'])->name('register.action');
 
 
 Route::get('/course', function () {

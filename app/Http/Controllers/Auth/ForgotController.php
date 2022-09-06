@@ -89,7 +89,7 @@ class ForgotController extends Controller
      */
     public function resetPassword()
     {
-        return view('auth.password.reset');
+        return view('admin.auth.password.reset');
     }
 
     /**
@@ -116,7 +116,7 @@ class ForgotController extends Controller
 
         Session::flash('success', __('auth.password_change_successful'));
 
-        return redirect()->route('login.form');
+        return redirect()->route('login');
     }
 
     /**

@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Admin</b>LTE</a>
+    <img class="mb-4" src="https://co-well.vn/wp-content/themes/cowell/assets/img/logo-1.png" alt="" width="auto" height="60">
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -41,17 +41,17 @@
         </div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Request new password</button>
+            <button type="submit" class="btn btn-primary btn-block">Yêu cầu mật khẩu mới</button>
           </div>
           <!-- /.col -->
         </div>
       </form>
 
       <p class="mt-3 mb-1">
-        <a href="login.html">Login</a>
+        <a href="{{ Route('login.form') }}">Đăng nhập</a>
       </p>
       <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
+        <a href="{{ route('register.form') }}" class="text-center">Đăng kí thành viên mới</a>
       </p>
     </div>
     <!-- /.login-card-body -->
