@@ -41,7 +41,7 @@ class User extends EloquentUser
             Test::class,
             'user_tests',
             'user_id',
-            'test_id'
+            'test_id',
         );
     }
 
