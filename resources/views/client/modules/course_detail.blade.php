@@ -66,14 +66,17 @@
                         @endif
                     </div>
 
+                    @if ($course->status == 0)
+                        {{ $course->status }}
+                        <h5>( Khóa học miễn phí )</h5>
+                    @else
                     <div class="course-syl-price cr-mb">
-
                         <ul>
                             <li>
                                 <p title="Số lượng học sinh đã đang kí học"><i class="fas fa-user"></i>{{ $course->users()->get()->count() }} Đang học</p>
                             </li>
                             <li>
-                                @if($user && $ok == 1)
+                                @if($user && $access)
                                 <form action="{{ route('post.detach') }}" method="get">
                                     Bạn đã đăng kí khóa học này
                                     <input type="hidden" name="course_id" value="{{ $course->id }}">
@@ -82,6 +85,14 @@
                                 </form>
                                 @elseif($user)
                                 <form action="{{ route('post.attach') }}" method="get">
+                                    @foreach ($units as $unit)
+                                                @php
+                                                    $lessons = App\Models\Lesson::where('unit_id', $unit->id)->get();
+                                                @endphp
+                                                @foreach ($lessons as $item)
+                                                <input type="hidden" name="lesson_id[]" value="{{ $item->id }}">
+                                                @endforeach
+                                            @endforeach
                                     <input type="hidden" name="course_id" value="{{ $course->id }}">
                                     <input type="hidden" name="course_slug" value="{{ $course->slug }}">
                                     <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
@@ -95,8 +106,11 @@
                             </li>
                         </ul>
                     </div>
+
+                    @endif
+
                     <div class="course-course-pic cr-mb">
-                        <img src="{{ asset('/user/img/details-page/imagesss.jpg') }}" alt="thumb">
+                        <img src="{{ asset($course->image) }}" style="width: 100%; height: 410px" alt="thumb">
                     </div>
                 </div>
                 <div class="course-syl-bottom">
@@ -133,7 +147,6 @@
                                             <span>
                                                 Học lập trình để đi làm
                                             </span>
-
                                         </p>
                                     </div>
                                     <div class="ask">
@@ -144,7 +157,6 @@
                                             @foreach ($units as $unit)
 
                                             @php $n = $n + 1; @endphp
-
                                             <div class="panel panel-default panel-active">
                                                 <div class="panel-heading" role="tab" id="@if ($n == 1){{'headingOne'}}@elseif($n == 2){{'headingTwo'}}@else{{'heading'.$n}}@endif">
                                                     <h4 class="panel-title">
@@ -178,8 +190,17 @@
                                                                     </div>
                                                                     <div class="course-time-preview">
                                                                         <div class="course-item-info">
-                                                                            <span>Duration: 5 min</span>
-                                                                            <a href="#">Xem</a>
+                                                                            @if ($access)
+                                                                                @if (($access->status == 0))
+                                                                                    <span style="color: red">Hãy đăng kí và đợi duyệt!</span>
+                                                                                @else
+                                                                                <a href="{{ route('home') }}">Xem</a>
+                                                                                @endif
+                                                                            @elseif($course->status == 0)
+                                                                            <a href="{{ route('home') }}">Xem</a>
+                                                                            @else
+                                                                            <span style="color: red">Hãy đăng kí và đợi duyệt!</span>
+                                                                            @endif
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -190,8 +211,6 @@
                                                 </div>
                                             </div>
                                             @endforeach
-
-
                                         </div>
                                     </div>
                                 </div>
@@ -231,3 +250,4 @@
 </div>
 
 @endsection
+

@@ -2282,8 +2282,13 @@ header.header.header-2 .header-1 {
 	width: 100%;
 }
 
-.course-box .course-pic .course-img {
+.course-box .course-pic{
 	width: 100%;
+}
+
+.course-img{
+    height: 240px;
+    width: 100%;
 }
 
 .course-box .course-pic .course-rating {
@@ -4182,6 +4187,11 @@ ul.author-list li:last-child {
 .event-pic {
     position: relative;
     z-index: 1;
+}
+
+.event-pic img{
+    height: 280px;
+    width: 100%;
 }
 
 .event-date {
@@ -6206,7 +6216,7 @@ header.header.single-head .navbar.in {
 
 .search_results{
     position: relative;
-   
+
 }
 
 .search_main{
@@ -6227,7 +6237,7 @@ header.header.single-head .navbar.in {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis; 
+    text-overflow: ellipsis;
 }
 
 .search_main img{

@@ -101,29 +101,26 @@
                 </div>
                 <div class="event-area grid-2">
                     @foreach ($courses as $item)
+
                         <div class="event-box">
                             <div class="event-pic">
-                                <img src="{{ asset('/user/img/event/event-1.jpg') }}" alt="thumb">
-                                <div class="event-date">
-                                    <p>27</p>
-                                    <span>sep</span>
-                                </div>
+                                <img src="{{ asset($item->image) }}" alt="thumb">
                             </div>
                             <div class="event-content">
                                 <div class="event-meta">
-                                    <p> Speaker: <span>Caron Simon</span></p>
+                                    <p></p>
                                     <p>{{ date('d-m-Y', strtotime($item->begin_date)) }} - {{ date('d-m-Y', strtotime($item->end_date)) }}</p>
                                 </div>
                                 <div class="event-desc">
                                     <h4>{{ $item->title }}</h4>
-                                    <p class="desciption_course">
+                                    <div class="desciption_course">
                                         {!! $item->description !!}
-                                    </p>
+                                    </div>
                                     <div class="event-bottom">
                                         <a href="{{ route('detail', $item->slug) }}" class="event-btn">Vào khóa học</a>
                                         <div class="event-bottom-right">
-                                            <i class="fas fa-ticket-alt"></i>
-                                            <span>Available (179)</span>
+                                            <i class="fas fa-users"></i>
+                                            <span>Học viên ({{ $item->users()->count() }})</span>
                                         </div>
                                     </div>
                                 </div>

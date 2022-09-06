@@ -19,13 +19,16 @@ class HomeController extends Controller
             'id',
             'title',
             'slug',
+            'status',
             'description',
             'begin_date',
             'end_date',
             'image'
 
-        ])->take(4)
-            ->get();
+        ])
+        ->orderBy('created_at', 'DESC')
+        ->take(4)
+        ->get();
 
         $classes = ClassStudy::select([
             'id'
@@ -33,17 +36,64 @@ class HomeController extends Controller
         return view('client.modules.home', compact('courses', 'classes'));
     }
 
-    public function courses()
+    public function courses(Request $request)
     {
+        if($request->sort == 'old'){
+            $name = 'created_at';
+            $sort = 'ASC';
+        }
+        elseif($request->sort == 'new'){
+            $name = 'created_at';
+            $sort = 'DESC';
+        }
+        elseif($request->sort == 'name'){
+            $name = 'title';
+            $sort = 'ASC';
+        }
+        else{
+            $name = 'created_at';
+            $sort = 'DESC';
+        }
         $courses = Course::select([
             'id',
             'title',
             'slug',
+            'status',
             'description',
             'begin_date',
             'end_date',
             'image'
-        ])->with('units')->paginate(3);
+        ])
+        ->with('units', 'users')
+        ->orderBy($name, $sort)
+        // ->where('status', $filter)
+        ->paginate(6);
+        $courseTotal = Course::select([
+            'id',
+        ]);
+        return view('client.modules.courses', compact('courses', 'courseTotal'));
+    }
+
+    public function courseFilter(Request $request){
+        if($request->filter == 'free'){
+            $filter = '0';
+        }
+        elseif($request->filter == 'pro'){
+            $filter = '1';
+        }
+        $courses = Course::select([
+            'id',
+            'title',
+            'slug',
+            'status',
+            'description',
+            'begin_date',
+            'end_date',
+            'image'
+        ])
+        ->with('units', 'users')
+        ->where('status', $filter)
+        ->paginate(6);
         $courseTotal = Course::select([
             'id',
         ]);
