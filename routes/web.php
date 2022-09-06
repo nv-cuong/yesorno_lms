@@ -35,6 +35,8 @@ Route::get('/', [HomeController::class, 'index'])
 
 Route::get('/courses', [HomeController::class, 'courses'])
     ->name('courses');
+Route::get('/courses-filter', [HomeController::class, 'courseFilter'])
+    ->name('courses.filter');
 Route::get('/search', [SearchController::class, 'search'])
     ->name('search');
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
