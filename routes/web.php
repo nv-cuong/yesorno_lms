@@ -67,6 +67,7 @@ Route::post('/sendTest/{id}', [HomeController::class, 'sendTest'])
 Route::get('/test_users', [HomeController::class, 'test_user'])
     ->name('test_users');
 
+Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login');
@@ -176,7 +177,6 @@ Route::prefix('admin')
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
             Route::get('/show_makes', [TestController::class, 'show_make'])->name('show.make');
-            Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
             Route::post('/index/save_maked/{id_test}/{id_user}', [TestController::class, 'save_maked'])->name('save_maked');
             Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])->name('view_maked');
             Route::get('/index/make_again_test/{id_user}/{id_test}', [TestController::class, 'index_make_test1'])->name('index_again_make');

@@ -204,7 +204,7 @@
                                                 <div class="panel-group" id="accordion">
                                                     <div class="panel-heading" role="tab" id="headingOne">
                                                         <h4 class="panel-title">
-                                                            <a role="button" href="#">
+                                                            <a role="button" href="{{ route('index_make',['4','1']) }}">
                                                                 Làm bài kiểm tra cuối khóa
                                                             </a>
                                                         </h4>
