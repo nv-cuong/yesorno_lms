@@ -7,6 +7,7 @@ use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\Unit;
 use App\Models\Lesson;
+use App\Models\Notification;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
@@ -70,5 +71,16 @@ class HomeController extends Controller
         $course = Course::where('title', 'LIKE', '%'.$request->keyword.'%')->get();
 
 
+    }
+    public function notifications()
+    {
+        $user = Sentinel::getUser();
+        $notifications = Notification::select(
+            'notifications.id',
+            'content'
+        )
+        ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
+        ->where('un.user_id', $user->id);
+        return view('client.modules.home', compact('notifications', 'user'));
     }
 }

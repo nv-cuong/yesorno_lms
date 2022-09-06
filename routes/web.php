@@ -33,6 +33,8 @@ use App\Http\Controllers\Client\StudentCoursesController;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 
+Route::get('/notifications', [HomeController::class, 'notifications'])
+    ->name('notifications');
 Route::get('/courses', [HomeController::class, 'courses'])
     ->name('courses');
 Route::get('/search', [SearchController::class, 'search'])
@@ -123,6 +125,7 @@ Route::prefix('admin')
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
             Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
             Route::get('/showStudent/{id}', [CourseController::class, 'showStudent'])->name('student');
+            Route::post('/activeStudent{id}', [CourseController::class, 'activeStudent'])->name('active');
         });
 
         Route::prefix('/units')->name('unit.')->group(function () {

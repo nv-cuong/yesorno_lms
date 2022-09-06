@@ -27,7 +27,7 @@ class DatabaseSeeder extends Seeder
         // ]);
         $notifications = [
             [
-                'Bạn đã được duyệt vào khóa học '
+                'content' => 'Bạn đã được duyệt vào khóa học '
             ],
         ];
         Notification::insert($notifications);
