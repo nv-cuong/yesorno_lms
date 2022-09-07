@@ -79,7 +79,10 @@ $path_link = ''
 </div>
 <div class="form-group">
     <label class="form-label">Tệp bài học (Định dạng .zip)</label>
-    <input type="file" name="path_zip" id="path_zip" class="form-control">
+    <input type="file" name="path_zip" id="path_zip" class="form-control @error('path_zip') is-invalid @enderror">
+    @error('path_zip')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
 </div>
 <div class="form-group">
     <label for="content" class="form-label">Nội dung bài học (Trên 20 ký tự)</label>

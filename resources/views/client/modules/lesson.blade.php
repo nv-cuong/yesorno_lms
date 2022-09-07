@@ -33,15 +33,14 @@
                         $vid_code = explode('&', $vid[1]);
                         $vid_id = $vid_code[0];
                         @endphp
-                        {{-- <iframe id = 'existing-iframe-example' src="@php echo'https://youtube.com/embed/'. $vid_id .'?enablejsapi=1' @endphp" width="560"
-                                        height="315" allowfullscreen frameborder="0"
-                                        style="border: solid 4px #37474F"></iframe> --}}
                         <div style="text-align: center; margin : 50px">
                             <iframe id="existing-iframe-example" width="1280" height="720" src="https://www.youtube.com/embed/{{ $vid_id }}?enablejsapi=1" frameborder="0" style="border: solid 4px rgb(247, 174, 38)" method="POST">
                                 csrf_token()</iframe>
                         </div>
                         @else
-                        {{ $file->path }}
+                        <div class="d-inline-flex p-2 bd-highlight">
+                            <a href="{{ route('lesson.download', [$file->id]) }}" download="">Tải tài liệu</a>
+                        </div>
                         @endif
                         @empty
                         <p>Không có file nào</p>
