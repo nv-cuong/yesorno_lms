@@ -33,8 +33,11 @@
                                             $vid_code = explode('&', $vid[1]);
                                             $vid_id = $vid_code[0];
                                         @endphp
+                                        {{-- <iframe id = 'existing-iframe-example' src="@php echo'https://youtube.com/embed/'. $vid_id .'?enablejsapi=1' @endphp" width="560"
+                                        height="315" allowfullscreen frameborder="0"
+                                        style="border: solid 4px #37474F"></iframe> --}}
                                         <div style="text-align: center; margin : 50px">
-                                            <iframe id="existing-iframe-example" width="1024" height="640"
+                                            <iframe id="existing-iframe-example" width="1280" height="720"
                                                 src="https://www.youtube.com/embed/{{ $vid_id }}?enablejsapi=1"
                                                 frameborder="0" style="border: solid 4px rgb(247, 174, 38)" method="POST">
                                                 csrf_token()</iframe>
@@ -53,55 +56,53 @@
                         @endif
                     </div>
                 </div>
-            </div>
-        @endsection
-        @section('js')
-            <script type="text/javascript">
-                var tag = document.createElement('script');
-                tag.id = 'iframe-demo';
-                tag.src = 'https://www.youtube.com/iframe_api';
-                var firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+                <script type="text/javascript">
+                    var tag = document.createElement('script');
+                    tag.id = 'iframe-demo';
+                    tag.src = 'https://www.youtube.com/iframe_api';
+                    var firstScriptTag = document.getElementsByTagName('script')[0];
+                    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-                var player;
+                    var player;
 
-                function onYouTubeIframeAPIReady() {
-                    player = new YT.Player('existing-iframe-example', {
-                        events: {
-                            'onReady': onPlayerReady,
-                            'onStateChange': onPlayerStateChange
-                        }
-                    });
-                }
-
-                function onPlayerReady(event) {
-                    document.getElementById('existing-iframe-example');
-                }
-
-                function changeStatus(playerStatus) {
-                    if (playerStatus == 1) {
-                        $(document).ready(function() {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                }
-                            });
-                            $.ajax({
-                                url: 'http://localhost/personal/lessonprogress/' + {{ $id }} +
-                                    '/' + "{{ $slug }}",
-                                method: "POST",
-                                data: {},
-                            })
+                    function onYouTubeIframeAPIReady() {
+                        player = new YT.Player('existing-iframe-example', {
+                            events: {
+                                'onReady': onPlayerReady,
+                                'onStateChange': onPlayerStateChange
+                            }
                         });
                     }
 
-                    // } else if (playerStatus == 3) {
-                    //     color = "#AA00FF"; // buffering = purple
-                    // }
-                }
+                    function onPlayerReady(event) {
+                        document.getElementById('existing-iframe-example');
+                    }
 
-                function onPlayerStateChange(event) {
-                    changeStatus(event.data);
-                }
-            </script>
+                    function changeStatus(playerStatus) {
+                        if (playerStatus == 1) {
+                            $(document).ready(function() {
+                                $.ajaxSetup({
+                                    headers: {
+                                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                                    }
+                                });
+                                $.ajax({
+                                    url: 'http://localhost/personal/lessonprogress/' + "{{ $slug }}",
+                                    method: "POST",
+                                    data: {},
+                                })
+                            });
+                        }
+
+                        // } else if (playerStatus == 3) {
+                        //     color = "#AA00FF"; // buffering = purple
+                        // }
+                    }
+
+                    function onPlayerStateChange(event) {
+                        changeStatus(event.data);
+                    }
+                </script>
+            </div>
         @endsection
+

@@ -132,7 +132,7 @@ class StudentController extends Controller
             ->where('status',1)
             ->count();
             if($courseLesson != 0){
-                $coursesNumber = ceil($lessonNumber*100)/$courseLesson;
+                $coursesNumber = ceil(($lessonNumber*100)/$courseLesson);
             }
             else $coursesNumber = 0;
             return view('admin.students.statistic', compact('student','coursesNumber','classStudiesNumber'));

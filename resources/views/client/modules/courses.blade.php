@@ -83,7 +83,6 @@
                                                         <i class="fas fa-book-open"></i>
                                                         <p class="mb-0">Tổng số chương: {{ $course->units()->count() }}
                                                         </p>
-                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="course-2-btn">

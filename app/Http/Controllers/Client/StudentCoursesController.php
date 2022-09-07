@@ -67,7 +67,7 @@ class StudentCoursesController extends Controller
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
         $lesson = Lesson::where('slug', $slug)->first();
-        $studentLesson =Lesson::select([
+        Lesson::select([
             'lessons.id',
             'ul.user_id',
             'title',
