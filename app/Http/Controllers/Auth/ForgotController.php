@@ -117,7 +117,7 @@ class ForgotController extends Controller
 
         Session::flash('success', __('reset password thành công'));
 
-        return redirect()->route('login');
+        return redirect()->route('login.form');
     }
 
     /**
