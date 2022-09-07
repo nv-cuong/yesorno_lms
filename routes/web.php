@@ -70,13 +70,10 @@ Route::get('/test_users', [HomeController::class, 'test_user'])
 Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
 
 Route::get('/login', [LoginController::class, 'login'])
-    ->name('login');
+    ->name('login.form');
 Route::post('/login', [LoginController::class, 'postLogin'])
     ->name('login.post');
 Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
-
-Route::get('/register', [RegisterController::class, 'register'])->name('register');
-Route::post('', [RegisterController::class, 'processRegistration'])->name('register.action');
 
 
 Route::get('/course', function () {

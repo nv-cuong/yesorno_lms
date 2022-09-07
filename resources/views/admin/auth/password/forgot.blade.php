@@ -17,7 +17,7 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=""><b>Admin</b></a>
+    <img class="mb-4" src="https://co-well.vn/wp-content/themes/cowell/assets/img/logo-1.png" alt="" width="auto" height="60">
   </div>
   <!-- /.login-logo -->
   <div class="card">
@@ -33,7 +33,7 @@
                     @error('email')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-         
+
         </div>
         <div class="row">
           <div class="col-12">
@@ -44,9 +44,12 @@
       </form>
 
       <p class="mt-3 mb-1">
-        <a href="{{route('login')}}">Đăng nhập</a>
+        <a href="{{ Route('login.form') }}">Đăng nhập</a>
       </p>
-      
+      <p class="mb-0">
+        <a href="{{ route('register.form') }}" class="text-center">Đăng kí thành viên mới</a>
+      </p>
+
     </div>
     <!-- /.login-card-body -->
   </div>

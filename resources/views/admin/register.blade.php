@@ -27,6 +27,7 @@
             <div class="card">
                 <div class="card-body register-card-body">
                     <p class="login-box-msg">Đăng ký thành viên mới </p>
+                    <p class="login-box-msg">@include('admin._alert')</p>
                     <form action="{{ route('register.action') }}" method="post">
                         @csrf
                         <div class="input-group mb-3">
@@ -95,7 +96,7 @@
                         <div class="row">
                             <div class="col-8">
                                 <div class="icheck-primary">
-                                    <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                                    <input type="checkbox" id="agreeTerms">
                                     <label for="agreeTerms">
                                         Tôi đồng ý <a href="#"> điều khoản</a>
                                     </label>
@@ -119,7 +120,7 @@
                             Đăng nhập với Google+
                         </a>
                     </div>
-                    <a href="{{ route('login') }}" class="text-center">Tôi đã có tài khoản</a>
+                    <a href="{{ route('login.form') }}" class="text-center">Tôi đã có tài khoản</a>
                 </div>
 
             </div>
