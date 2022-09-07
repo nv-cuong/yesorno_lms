@@ -236,29 +236,24 @@
                                                 {!! $class->description !!}
                                             </div>
                                             @if ($user)
-
-                                            @forelse ($class_of_user as $item)
-                                            {{ 'vong2' }}
-
-                                                @if($item->id == $class->id)
+                                            @if ($class_of_user)
+                                            @if(in_array($class->id, $class_of_user))
                                                 {{ 'TH1' }}
                                                             <form action="{{ route('post.detach.class') }}" method="get">
                                                                 <span>Bạn đã đăng kí lớp học này !</span>
-                                                                <input type="hidden" name="class_id" value="{{ $item->id }}">
+                                                                <input type="hidden" name="class_id" value="{{ $class->id }}">
                                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
                                                                 <button type="submit" class="btn btn-danger">Hủy</button>
                                                             </form>
-                                                            @continue
-                                                            @else
+                                                @else
                                                             {{ 'TH2' }}
                                                             <form action="{{ route('post.attach.class') }}" method="get">
                                                                 <input type="hidden" name="class_id" value="{{ $class->id }}">
                                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
                                                                 <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
                                                             </form>
-                                                            {{-- @break --}}
                                                             @endif
-                                                        @empty
+                                                        @else
 
                                                         {{ 'sdfsd' }}
                                                         <form action="{{ route('post.attach.class') }}" method="get">
@@ -266,7 +261,7 @@
                                                             <input type="hidden" name="course_slug" value="{{ $course->slug }}">
                                                             <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
                                                         </form>
-                                                        @endforelse
+                                                        @endif
                                             @else
                                             Đăng nhập!!
                                             @endif
