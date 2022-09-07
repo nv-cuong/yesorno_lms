@@ -47,18 +47,16 @@
 
                 <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">@lang('auth.reset_password_submit_btn')</button>
+            <button type="submit" class="btn btn-primary btn-block">Reset mật khẩu</button>
           </div>
           <!-- /.col -->
         </div>
             </form>
 
       <p class="mt-3 mb-1">
-        <a href="login.html">Login</a>
+        <a href="{{route('login.form')}}">Đăng nhập</a>
       </p>
-      <p class="mb-0">
-        <a href="register.html" class="text-center">Register a new membership</a>
-      </p>
+      
     </div>
     <!-- /.login-card-body -->
   </div>

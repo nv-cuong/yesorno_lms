@@ -31,7 +31,7 @@ class ClassController extends Controller
         ])
             ->with('courses', 'users')
             ->search()
-            ->paginate(2);
+            ->paginate(10);
         return view('admin.modules.classes.index', compact('classes'));
     }
 

@@ -14,11 +14,11 @@ class SentinelAuth
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @param array|object|string $role
+     * @param array $role
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle(Request $request, Closure $next, $role=[])
-    {
+    public function handle( $request, Closure $next, $role) {
+
         Sentinel::setHasher( new BcryptHasher() );
 
         $user = Sentinel::check();
@@ -27,19 +27,17 @@ class SentinelAuth
             return redirect()->guest( 'login' );
         }
 
-        #This Is Admin User?
+        #This Is Root User?
         $roles = Sentinel::getRoles()->pluck('slug')->all();
-
         if ( is_array($roles) ) {
-            if ( in_array('admin', $roles,) || in_array('manager', $roles,) || in_array('teacher', $roles,) || in_array('class-manager', $roles,))
-            {
+            if ( in_array('admin', $roles,) || in_array('manager', $roles,) 
+            || in_array('teacher', $roles,) || in_array('classmanager', $roles,)) {
                 return $next( $request );
             }
-
         }
 
-        #Check Access When User Is Not Admin
-        if ( $user->inRole( $role ) ) {
+        #Check Access When User Is Not Root
+        if ( $user->hasAccess( $role ) ) {
             return $next( $request );
         }
 
@@ -48,5 +46,5 @@ class SentinelAuth
         }
 
         return abort(404, 'Unauthorized action.');
-    }
+	}
 }

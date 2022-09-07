@@ -32,16 +32,22 @@ class User extends EloquentUser
         'permissions',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tests()
     {
         return $this->belongsToMany(
             Test::class,
             'user_tests',
             'user_id',
-            'test_id'
+            'test_id',
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function classStudies()
     {
         return $this->belongsToMany(
@@ -52,6 +58,9 @@ class User extends EloquentUser
         );
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function courses()
     {
         return $this->belongsToMany(
@@ -61,6 +70,7 @@ class User extends EloquentUser
             'course_id'
         );
     }
+
 
     public function lessons()
     {
@@ -72,11 +82,21 @@ class User extends EloquentUser
         );
     }
 
+    public function notifications()
+    {
+        return $this->belongsToMany(
+            Notification::class,
+            'user_notifications',
+            'user_id',
+            'notification_id'
+        );
+    }
     public function scopeSearch($query)
     {
         if ($key = request()->key) {
             $query = $query->where('first_name', 'like', '%' . $key . '%')
                 ->orWhere('last_name', 'like', '%' . $key . '%');
+
         }
         return $query;
     }

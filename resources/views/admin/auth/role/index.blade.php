@@ -103,7 +103,15 @@
     $(function () {
     $("#roles-table").DataTable({
       "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+      "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ roles",// text you want show for info section
+               "sSearch":"Tìm kiếm",
+               "oPaginate":{
+                "sPrevious":"Trước",
+                "sNext":"Tiếp",
+               }
+            },
     }).buttons().container().appendTo('#roles-table_wrapper .col-md-6:eq(0)');
     
   });

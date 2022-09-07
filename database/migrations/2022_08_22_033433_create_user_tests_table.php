@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('test_id');
-            $table->integer('score')->nullable();
+            $table->string('score')->nullable();
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

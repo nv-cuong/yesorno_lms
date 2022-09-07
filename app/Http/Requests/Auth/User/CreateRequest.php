@@ -14,6 +14,7 @@ class CreateRequest extends FormRequest
     public function authorize()
     {
         return true;
+        
     }
 
     /**
@@ -23,6 +24,7 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
+        
         return [
             'first_name' => 'required|regex:/(^[A-Za-z0-9_-_ ]+$)+/',
             'last_name'  => 'required|regex:/(^[A-Za-z0-9_-_ ]+$)+/',
@@ -31,9 +33,17 @@ class CreateRequest extends FormRequest
             'role'       => 'required',
             'password'   => 'required|confirmed|min:8',
         ];
+        
     }
+    
+    
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
     public function messages()
     {
+        
         return [
          
             'first_name.required'     => 'Bạn chưa nhập first_name',
@@ -50,4 +60,5 @@ class CreateRequest extends FormRequest
             'password.confirmed'     => 'Password xác nhận không đúng',
         ];
     }
+    
 }

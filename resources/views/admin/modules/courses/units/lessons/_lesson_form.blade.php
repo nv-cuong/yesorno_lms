@@ -24,30 +24,6 @@
     @enderror
 </div>
 <div class="form-group">
-    <label for="config" class="form-label">Loại bài học</label>
-    <div class="form-group" style="display: flex; justify-content: space-around">
-        <div class="form-check ">
-            <input class="form-check-input @error('config') is-invalid @enderror" type="radio" 
-            name="config" value="must"
-            @if ($lesson->config == 'must')
-                checked
-            @endif >
-            <label class="form-check-label">Tính tiến độ</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input @error('config') is-invalid @enderror" type="radio" 
-            name="config" value="optional"
-            @if ($lesson->config == 'optional')
-                checked
-            @endif >
-            <label class="form-check-label">Không tính tiến độ</label>
-        </div>
-    </div>
-    @error('config')
-    <div class="text-danger">{{ $message }}</div>
-    @enderror
-</div>
-<div class="form-group">
     <label for="published" class="form-label">Ngày xuất</label>
     <input type="date" name="published" class="form-control @error('published') is-invalid @enderror" id="published" value="{{ old('published', $lesson->published) }}">
     @error('published')
@@ -79,7 +55,10 @@ $path_link = ''
 </div>
 <div class="form-group">
     <label class="form-label">Tệp bài học (Định dạng .zip)</label>
-    <input type="file" name="path_zip" id="path_zip" class="form-control">
+    <input type="file" name="path_zip" id="path_zip" class="form-control @error('path_zip') is-invalid @enderror">
+    @error('path_zip')
+    <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
 </div>
 <div class="form-group">
     <label for="content" class="form-label">Nội dung bài học (Trên 20 ký tự)</label>

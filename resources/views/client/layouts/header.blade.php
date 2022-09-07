@@ -12,8 +12,8 @@
                             <a href="{{ route('personal', $user->id) }}" class="d-inline bg-primary text-white" style="border-radius: 10px; padding: 6px 15px">Hello: {{ $user->first_name }}</a>
                             <a href="{{ route('logout') }}" class="d-inline p-3 bg-dark text-white" style="border-radius: 15px"><i class="fas fa-power-off"></i></a>
                             @else
-                            <a href="{{ route('login') }}" class="d-inline p-2 bg-primary text-white">Đăng nhập</a>
-                            <a href="{{ route('register') }}" class="d-inline p-2 bg-dark text-white">Đăng ký</a>
+                            <a href="{{ route('login.form') }}" class="d-inline p-2 bg-primary text-white">Đăng nhập</a>
+                            <a href="{{ route('register.form') }}" class="d-inline p-2 bg-dark text-white">Đăng ký</a>
                             @endif
                         </div>
                     </div>
@@ -31,10 +31,57 @@
                                 <a class="nav-link" href="{{ route('courses') }}">Khóa học</i></a>
                             </li>
                             <li class="nav-item {{  url()->current() == route('contact')  ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a></li>
-                            <li class="nav-item"> <a class="nav-link" href="#"><i class="far fa-bell"></i>
-                                    Thông báo(0) </a></li>
-
+                                <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
+                            </li>
+                            @php
+                            use App\Models\Notification;
+                            if($user = Sentinel::getUser()){
+                            $notifications = Notification::select(
+                                'notifications.id',
+                                'content'
+                            )
+                            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
+                            ->where('un.user_id', $user->id)
+                            ->get();
+                            @endphp
+                            <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo({{ $notifications->count() + $count_user_tests }}) </a>
+                                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                    
+                                    @forelse($notifications as $notification)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
+                                       
+                                    </a>
+                                    @empty
+                                    
+                                    @endforelse
+                                    @forelse($user_tests as $user_test)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
+                                       
+                                    </a>
+                                    @empty
+                                    @endforelse
+                                </div>
+                            </li>
+                            @php
+                            } else {
+                            @endphp
+                            <li class="nav-item"> <a class="nav-link" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo </a>
+                            </li>
+                            @php
+                            }
+                            @endphp
+                           
+                            <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('test_users') }}">Test </a>
+                            </li>
                             <form class="form-inline" style="padding-left: 100px" action="{{ route('search')}}" method="GET">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <input type="text" class="form-control input_search" name="keyword" style="width: 200px; font-size: 13px" placeholder="Tên khóa học">
@@ -49,7 +96,7 @@
                     </div>
                     <div class="header-3-bt">
                         @if ($user = Sentinel::getUser())
-                        <a href="{{ route('personal', $user->id) }}" class="header-3-btn">Khóa học của tôi</a>
+                        <a href="{{ route('personal') }}" class="header-3-btn">Khóa học của tôi</a>
                         @else
                         <a class="header-3-btn">Khóa học của tôi</a>
                         @endif
@@ -63,7 +110,6 @@
             <div class="navbar"></div>
         </div>
     </div>
-</header>
 @push('scripts')
 <script>
     $('.input_search').keyup(function() {
@@ -79,7 +125,7 @@
                     _html += '<ul>';
                     for (var course of data) {
                         _html += '<li>';
-                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'"><img src="' + course.image + '">' + course.title + '</a>';
+                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'"><img src="http://127.0.0.1:8000/'+ course.image +'"> ' + course.title + '</a>';
                         _html += '<hr>';
                         _html += '</li>';
                     }

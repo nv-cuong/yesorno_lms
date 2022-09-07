@@ -30,10 +30,7 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tên bài</th>
-                                <th>Loại</th>
                                 <th>Ngày xuất</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
                                 <th>Tùy chọn</th>
                             </tr>
                         </thead>
@@ -42,15 +39,7 @@
                             <tr>
                                 <td>{{ $loop->iteration + ($lessons->currentPage() -1) * $lessons->perPage() }}</td>
                                 <td>{{ $lesson->title }}</td>
-                                @if($lesson->config == 'must')
-                                <td>Tính tiến độ</td>
-                                @else
-                                <td>Không tính tiến độ</td>
-                                @endif
-                                <td>{{ $lesson->config }}</td>
                                 <td>{{ $lesson->published }}</td>
-                                <td>{{ $lesson->created_at->format('d-m-Y') }}</td>
-                                <td>{{ $lesson->updated_at->format('d-m-Y') }}</td>
                                 <td>
                                     <a href="{{ route('lesson.detail', ['id'=>$lesson->id]) }}" class="btn btn-primary">
                                         <i class="far fa-eye"></i>

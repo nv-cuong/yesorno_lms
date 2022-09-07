@@ -5,10 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
+use App\Models\Notification;
 use App\Models\Test;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -21,10 +24,9 @@ class CourseController extends Controller
             'title',
             'slug',
             'status',
-            'created_at',
-            'updated_at',
+            'begin_date',
+            'end_date',
         ])
-            ->orderBy('id', 'desc')
             ->paginate();
         return view('admin.modules.courses.index', compact('courses'));
     }
@@ -43,7 +45,6 @@ class CourseController extends Controller
         ])
             ->join('courses', 'units.course_id', 'courses.id')
             ->where('courses.id', $id)
-            ->orderBy('id', 'desc')
             ->paginate();
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
@@ -61,10 +62,10 @@ class CourseController extends Controller
 
         $course_item['slug'] = Str::slug($course_item['title']);
         $photo = $request->file('image');
-            if ($photo) {
-                $path = Storage::putFile('images', $photo);
-                $course_item['image'] = $path;
-            }
+        if ($photo) {
+            $path = Storage::putFile('images', $photo);
+            $course_item['image'] = $path;
+        }
         try {
             Course::create($course_item);
         } catch (\Throwable $th) {
@@ -73,7 +74,7 @@ class CourseController extends Controller
 
         return redirect(route('course.index'))
             ->with('message', 'Khóa học đã được thêm mới')
-            ->with('type_alert', "success");;
+            ->with('type_alert', "success");
     }
 
     public function editCourse(Request $request, $id)
@@ -85,12 +86,13 @@ class CourseController extends Controller
         }
         return redirect(route('course.index'))
             ->with('message', 'Khóa học không tồn tại')
-            ->with('type_alert', "danger");;
+            ->with('type_alert', "danger");
     }
 
     public function updateCourse(CourseRequest $request, $id)
     {
         $message = 'Khóa học không tồn tại';
+        $type = 'danger';
         $course = Course::find($id);
         if ($course) {
             $course->title = $request->input('title');
@@ -100,20 +102,19 @@ class CourseController extends Controller
             $course->begin_date = $request->input('begin_date');
             $course->end_date = $request->input('end_date');
             $photo = $request->file('image');
-            dd($photo);
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
-            }
-            else $course->image = $course->image;
+            } else $course->image = $course->image;
             $course->description = $request->input('description');
             $course->save();
             $message = 'Cập nhật khóa học thành công';
+            $type = 'success';
         }
 
         return redirect(route('course.index'))
             ->with('message', $message)
-            ->with('type_alert', "success");;
+            ->with('type_alert', $type);
     }
 
     public function destroyCourse(Request $request)
@@ -130,7 +131,8 @@ class CourseController extends Controller
                 ->with('type_alert', "danger");
     }
 
-    public function showTest($id){
+    public function showTest($id)
+    {
         $course = Course::find($id);
         if ($course) {
             $tests = Test::select([
@@ -139,13 +141,59 @@ class CourseController extends Controller
                 'category',
                 'title',
             ])
-            ->leftJoin('course_tests AS ct','ct.test_id', 'tests.id')
-            ->where('ct.course_id',$id)
-            ->get();
+                ->leftJoin('course_tests AS ct', 'ct.test_id', 'tests.id')
+                ->where('ct.course_id', $id)
+                ->get();
 
-            return view('admin.modules.courses.test', compact('course','tests'));
+            return view('admin.modules.courses.test', compact('course', 'tests'));
         }
-        return redirect(route('course'))
-        ->with('msg', 'Học sinh chưa tồn tại!');
+        return redirect(route('course.index'))
+            ->with('message', 'Khóa học không tồn tại')
+            ->with('type_alert', "danger");
+    }
+
+    public function showStudent(Request $request, $id)
+    {
+        $course = Course::find($id);
+        if ($course) {
+            $users = User::select([
+                'users.id',
+                'uc.course_id as course_id',
+                'first_name',
+                'last_name',
+                'email',
+                'uc.status as status'
+            ])
+                ->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
+                ->where('uc.course_id', $id)
+                ->get();
+            return view('admin.modules.courses.student', compact('users', 'course'));
+        }
+        return redirect(route('course.index'))
+            ->with('message', 'Khóa học không tồn tại')
+            ->with('type_alert', "danger");
+    }
+
+    public function activeStudent(Request $request, $id)
+    {
+        $user_id = $request->input('user_id', 0);
+        if ($user_id) {
+            $user_course = DB::table('user_courses')
+                ->where('user_id', $user_id)
+                ->where('course_id', $id)
+                ->first();
+            if ($user_course->status == 0) {
+                DB::table('user_courses')->where('id', $user_course->id)->update(['status' => 1]);
+            }
+            $user = User::find($user_id);
+            $notification = Notification::find(1);
+            $user->notifications()->attach($notification->id);
+            return redirect(route('course.student', $id))
+                ->with('message', 'Học viên đã được chấp nhận vào khóa học')
+                ->with('type_alert', "success");
+        } else
+            return redirect(route('course.student', $id))
+                ->with('message', 'Học viên không tồn tại')
+                ->with('type_alert', "danger");
     }
 }

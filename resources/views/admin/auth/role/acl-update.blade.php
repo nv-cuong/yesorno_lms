@@ -251,6 +251,33 @@
         </td>
         <td>&nbsp;</td>
     </tr>
+    <!-- score -->
+    <tr>
+        <td>Câu hỏi</td>
+        <td class="text-center">
+            <div class="checkbox checkbox-success">
+                <input type="checkbox" value="ok" class="styled acl"
+                        name="score_create" {{ old('score_create') || array_key_exists('score.create', $permissions) ? 'checked' : ''}}>
+                <label></label>
+            </div>
+        </td>
+        <td class="text-center">
+            <div class="checkbox checkbox-success">
+                <input type="checkbox" value="ok" class="styled acl"
+                        name="score_point" {{ old('score_point') || array_key_exists('score.point', $permissions) ? 'checked' : ''}}>
+                <label></label>
+            </div>
+        </td>
+        <td class="text-center">
+            <div class="checkbox checkbox-success">
+                <input type="checkbox" value="ok" class="styled acl"
+                        name="score_show" {{ old('score_show') || array_key_exists('score.show', $permissions) ? 'checked' : ''}}>
+                <label></label>
+            </div>
+        </td>
+        
+        <td>&nbsp;</td>
+    </tr>
     </tbody>
 </table>
 

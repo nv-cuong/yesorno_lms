@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class ForgotController extends Controller
 {
+
     /**
      * Display the password reset view for the email.
      *
@@ -46,7 +47,7 @@ class ForgotController extends Controller
             if (! $user) {
                 DB::rollBack();
 
-                Session::flash('failed', __('auth.forgot_password_email_not_found'));
+                Session::flash('failed', __('Không tồn tại user !'));
 
                 return redirect()->back()->withInput();
             }
@@ -63,20 +64,20 @@ class ForgotController extends Controller
 
             if ($sent === 0) {
                 DB::commit();
-                Session::flash('failed', __('auth.forgot_password_unsuccessful'));
+                Session::flash('failed', __('không tìm thấy mail !'));
 
                 return redirect()->back();
             }
 
             DB::commit();
 
-            Session::flash('success', __('auth.forgot_password_successful'));
+            Session::flash('success', __('Gửi link reset password thành công !'));
             return redirect()->back();
         } catch (\Exception $exception) {
             DB::rollBack();
             Log::info($exception->getMessage());
 
-            Session::flash('failed', __('auth.forgot_password_unsuccessful'));
+            Session::flash('failed', __('không thể reset password'));
 
             return redirect()->back();
         }
@@ -89,7 +90,7 @@ class ForgotController extends Controller
      */
     public function resetPassword()
     {
-        return view('auth.password.reset');
+        return view('admin.auth.password.reset');
     }
 
     /**
@@ -104,17 +105,17 @@ class ForgotController extends Controller
         $user = Sentinel::findById($request->userId);
 
         if (! $user) {
-            Session::flash('failed', __('auth.forgot_password_email_not_found'));
+            Session::flash('failed', __('Không tìm thấy email !'));
             return redirect()->back()->withInput();
         }
 
         if (! Reminder::complete($user, $request->code, $request->password)) {
-            Session::flash('failed', __('Invalid or expired reset code.'));
+            Session::flash('failed', __('Mã đặt lại không hợp lệ hoặc hết hạn.'));
 
             return redirect()->route('forgotPassword.form');
         }
 
-        Session::flash('success', __('auth.password_change_successful'));
+        Session::flash('success', __('reset password thành công'));
 
         return redirect()->route('login.form');
     }
@@ -126,7 +127,7 @@ class ForgotController extends Controller
      */
     public function accessDenied()
     {
-        return view('auth.password.change');
+        return view('admin.auth.password.change');
     }
 
     /**

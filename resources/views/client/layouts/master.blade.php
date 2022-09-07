@@ -24,6 +24,7 @@
     <link href="{{ asset('/user/css/swiper.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/user/style.css') }}" rel="stylesheet">
     <link href="{{ asset('/user/css/responsive.css') }}" rel="stylesheet" />
+    @yield('css')
     <style>
         .pagination {
             height: auto;
@@ -41,6 +42,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             min-height: 90px;
+            color: #000;
+        }
+        .desciption_course>p, .desciption_course>ul>li{
+            color: #000;
         }
     </style>
 
@@ -84,6 +89,7 @@
     <script src="{{ asset('/user/js/jquery.easypiechart.js') }}"></script>
     <script src="{{ asset('/user/js/main.js') }}"></script>
     @stack('scripts')
+    @yield('scripts')
 </body>
 
 </html>

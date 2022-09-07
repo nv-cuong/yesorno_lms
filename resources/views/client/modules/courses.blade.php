@@ -36,15 +36,26 @@
                 <div class="row">
                     <div class="col-xl-12 portfolio-content">
                         <div class="row align-items-center">
-                            <div class="col-xl-8">
-                               Sắp xếp theo:
-                               <a href="" class="btn btn-primary">Mới nhất</a>
-                               <a href="" class="btn btn-primary">Cũ nhất</a>
-                               <a href="" class="btn btn-primary">Số lượng học viên</a>
+                            <div class="col-xl-6">
+                                Sắp xếp theo:
+                                <a href="{{ route('courses') }}?sort=new" class="btn btn-info" style="font-size: 13px">Mới nhất</a>
+                                <a href="{{ route('courses') }}?sort=old" class="btn btn-info" style="font-size: 13px">Cũ nhất</a>
+                                <a href="{{ route('courses') }}?sort=name" class="btn btn-info" style="font-size: 13px">Tên A-Z</a>
+
+
+                            </div>
+                            <div class="col-xl-2">
+                                <select name="" onchange="location = this.value;" class="form-control-lg">
+                                    <option value="{{ route('courses') }}">Loại khóa học</option>
+                                    <option value="{{ route('courses') }}"> Tất cả</option>
+                                    <option value="{{ route('courses.filter') }}?filter=free&" >Miễn phí</option>
+                                    <option value="{{ route('courses.filter') }}?filter=pro" >Trả phi</option>
+                                </select>
+
                             </div>
                             <div class="col-xl-4">
                                 <div class="course-view-more">
-                                    <h6>Tổng khóa học: {{$courseTotal->count()}} - <a>View All</a></h6>
+                                    <h6>Tổng khóa học: {{ $courseTotal->count() }} - <a>View All</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -55,25 +66,23 @@
                                     <div class="pf-item video photography" style="position: absolute; left: 0%; top: 0px;">
                                         <div class="course-2-box">
                                             <div class="course-2-pic">
-                                                <img src="{{ asset('/user/img/course/course-1.jpg') }}" class="course-img"
-                                                    alt="thumb">
+                                                <img src="{{ asset($course->image) }}" class="course-img" alt="thumb">
                                                 <div class="course-2-pic-content">
-
                                                     <p><span>{{ $course->users()->count() }}</span> người đã học</p>
                                                 </div>
                                             </div>
                                             <div class="course-2-content">
-
                                                 <div class="course-2-text">
                                                     <h5>{{ $course->title }}</h5>
-                                                    <p class="desciption_course">
+                                                    <div class="desciption_course">
                                                         {!! $course->description !!}
-                                                    </p>
+                                                    </div>
                                                 </div>
                                                 <div class="course-2-bottom">
                                                     <div class="course-2-lesson">
                                                         <i class="fas fa-book-open"></i>
-                                                        <p class="mb-0">Tổng số chương: {{$course->units()->count() }}</p></p>
+                                                        <p class="mb-0">Tổng số chương: {{ $course->units()->count() }}
+                                                        </p>
                                                     </div>
                                                 </div>
                                                 <div class="course-2-btn">
@@ -93,7 +102,7 @@
             </div>
         </div>
         <div class="text-center">
-            {{ $courses->links() }}
+            {{ $courses->appends(request()->query())->links() }}
         </div>
     </div>
 @endsection

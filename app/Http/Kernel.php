@@ -64,5 +64,7 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'myweb.auth' => \App\Http\Middleware\SentinelAuth::class,
+        'prevent.back.history' => \App\Http\Middleware\PreventBackHistory::class,
+        'sentinel.permission' => \App\Http\Middleware\SentinelPermission::class,
     ];
 }

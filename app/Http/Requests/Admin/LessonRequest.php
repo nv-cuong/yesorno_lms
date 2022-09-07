@@ -29,6 +29,7 @@ class LessonRequest extends FormRequest
             'config' =>     ['required'],
             'content' =>    ['required', 'min:20'],
             'published' =>  ['required', 'date'],
+            'path_zip' =>   ['max:10000'],
         ];
     }
 }

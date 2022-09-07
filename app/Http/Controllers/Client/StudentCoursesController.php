@@ -9,11 +9,22 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\File;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class StudentCoursesController extends Controller
 {
-    public function personalCourse($id,$slug){
+    public function personalCourse(Request $request,$slug){
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $course = Course::where('slug', $slug)->first();
+        $access = Course::select([
+            'courses.id',
+            'uc.status',
+        ])
+        ->join('user_courses AS uc','uc.course_id', 'courses.id')
+        ->where('courses.id', $course->id)
+        ->where('uc.user_id',$id)
+        ->first();
         $courses = Course::select()->paginate(3);
         $lessons = Lesson::select([
             'lessons.id',
@@ -31,10 +42,12 @@ class StudentCoursesController extends Controller
         ->join('courses AS c', 'c.id', 'u.course_id')
         ->where('c.id',$course->id)
         ->count();
-        return view('client.modules.personal_course_detail',compact('course','courses','lessons','id','courseLesson'));
+        return view('client.modules.personal_course_detail',compact('course','courses','lessons','id','courseLesson','access'));
     }
 
-    public function personalLesson($id,$slug){
+    public function personalLesson(Request $request,$slug){
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $lesson = Lesson::where('slug', $slug)->first();
         $slCount = Lesson::select()
         ->leftJoin('user_lessons AS ul','ul.lesson_id', 'lessons.id')
@@ -50,9 +63,11 @@ class StudentCoursesController extends Controller
         return view('client.modules.lesson',compact('lesson','files','id','slug','status'));
     }
 
-    public function lessonProgress($id,$slug){
+    public function lessonProgress(Request $request,$slug){
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $lesson = Lesson::where('slug', $slug)->first();
-        $studentLesson =Lesson::select([
+        Lesson::select([
             'lessons.id',
             'ul.user_id',
             'title',
