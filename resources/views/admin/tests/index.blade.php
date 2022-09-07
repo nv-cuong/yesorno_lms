@@ -30,22 +30,22 @@
                                     ID
                                 </th>
                                 <th>
-                                    Category
+                                    Loại
                                 </th>
                                 <th>
-                                    Course
+                                    Kháo học
                                 </th>
                                 <th>
                                     Số câu hỏi
                                 </th>
                                 <th>
-                                    Title
+                                    Tiêu đề
                                 </th>
                                 <th>
-                                    Time
+                                    Thời gian
                                 </th>
                                 <th>
-                                    Description
+                                    Mô tả
                                 </th>
                                 <th>
                                     Tùy chọn
@@ -100,7 +100,7 @@
                             </tr>
                             @empty
                             <tr>
-                                <td class="text-center" colspan="12">Data Not Found!</td>
+                                <td class="text-center" colspan="12">Chưa có dữ liệu!</td>
                             </tr>
                             @endforelse
                         </tbody>
@@ -120,7 +120,15 @@ $(function() {
         "responsive": true,
         "lengthChange": false,
         "autoWidth": false,
-        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+        "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ bài test",// text you want show for info section
+               "sSearch":"Tìm kiếm",
+               "oPaginate":{
+                "sPrevious":"Trước",
+                "sNext":"Tiếp",
+               }
+            },
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
 });
 </script>
@@ -131,7 +139,7 @@ $(function() {
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Delete Test?</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Xóa bài Test?</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -144,9 +152,9 @@ $(function() {
                     @method('DELETE')
                     @csrf
                     <input type="hidden" name="test_id" id='test_id' value="0"><br>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">không</button>
 
-                    <button class="btn btn-danger" type="submit">Delete</button>
+                    <button class="btn btn-danger" type="submit">Đồng ý</button>
                 </form>
             </div>
         </div>

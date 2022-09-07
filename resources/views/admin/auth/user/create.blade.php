@@ -41,20 +41,20 @@
                             <div class="form-group @if($errors->has('first_name')) has-error @endif">
                                 <label for="name" class="control-label">@lang('auth.index_fname_th') <span style="color: red">*</span></label>
                                 <input type="text" name="first_name" class="form-control input-sm" placeholder="@lang('auth.index_fname_th')" value="{{ old('first_name') }}" tabindex="1">
-                                {!! $errors->first('first_name', '<em for="first_name" class="help-block">:message</em>') !!}
+                                {!! $errors->first('first_name', '<em for="first_name" class="help-block" style="color: red">:message</em>') !!}
                             </div>
 
                             <div class="form-group @if($errors->has('email')) has-error @endif">
                                 <label for="email" class="control-label">@lang('auth.form_user_email_label') <span style="color: red">*</span></label>
                                 <input type="text" name="email" class="form-control input-sm" placeholder="user@dhanhost.com" value="{{ old('email') }}" tabindex="3">
-                                {!! $errors->first('email', '<em for="email" class="help-block">:message</em>') !!}
+                                {!! $errors->first('email', '<em for="email" class="help-block" style="color: red">:message</em>') !!}
                             </div>
 
                             <div class="form-group @if($errors->has('password')) has-error @endif">
                                 <label for="password" class="control-label">@lang('auth.form_user_password_label') <span style="color: red">*</span></label>
                                 <input type="password" name="password" class="form-control input-sm" placeholder="@lang('auth.form_user_password_label')" value="{{old('password')}}" tabindex="5">
                                 <span class="help-block margin-top-sm">{{trans('auth.form_user_password_long')}}</span>
-                                {!! $errors->first('password', '<em for="password" class="help-block">:message</em>') !!}
+                                {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
                             </div>
                         </div>
 
@@ -62,12 +62,12 @@
                             <div class="form-group @if($errors->has('last_name')) has-error @endif">
                                 <label for="name" class="control-label">@lang('auth.index_lname_th') <span style="color: red">*</span></label>
                                 <input type="text" name="last_name" class="form-control input-sm" placeholder="@lang('auth.index_lname_th')" value="{{ old('last_name') }}" tabindex="1">
-                                {!! $errors->first('last_name', '<em for="last_name" class="help-block">:message</em>') !!}
+                                {!! $errors->first('last_name', '<em for="last_name" class="help-block" style="color: red">:message</em>') !!}
                             </div>
                             <div class="form-group @if($errors->has('phone')) has-error @endif">
                                 <label for="name" class="control-label">Phone <span style="color: red">*</span></label>
                                 <input type="number" name="phone" class="form-control input-sm" placeholder="phone" value="{{ old('phone') }}" tabindex="1">
-                                {!! $errors->first('phone', '<em for="phone" class="help-block ">:message</em>') !!}
+                                {!! $errors->first('phone', '<em for="phone" class="help-block " style="color: red">:message</em>') !!}
                             </div>
 
                             <div class="form-group @if($errors->has('role')) has-error @endif">
@@ -84,7 +84,7 @@
                                         @endif
                                     @endforeach
                                 </select>
-                                {!! $errors->first('role', '<em for="role" class="help-block">:message</em>') !!}
+                                {!! $errors->first('role', '<em for="role" class="help-block" style="color: red">:message</em>') !!}
 
                             </div>
 
@@ -92,7 +92,7 @@
                                 <label for="password_confirmation" class="control-label">@lang('auth.form_user_password_confirm_label') <span style="color: red">*</span></label>
                                 <input type="password" name="password_confirmation" class="form-control input-sm" placeholder="@lang('auth.form_user_password_confirm_label')" value="{{old('password_confirmation')}}" tabindex="6">
                                 <span class="help-block margin-top-sm">@lang('auth.form_user_password_type_again')</span>
-                                {!! $errors->first('password', '<em for="password" class="help-block">:message</em>') !!}
+                                {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
                             </div>
                         </div>
                     </div>

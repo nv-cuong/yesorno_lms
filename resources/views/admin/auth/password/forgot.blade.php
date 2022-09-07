@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Forgot Password</title>
+  <title>Admin | Forgot Password</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -29,19 +29,15 @@
         <div class="input-group mb-3">
         <input type="email" name="email"
                     class="form-control @error('email') is-invalid @enderror"
-                    placeholder="@lang('auth.form_user_email_label')">
+                    placeholder="@lang('auth.form_user_email_label')" />
                     @error('email')
                      <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
+
         </div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" class="btn btn-primary btn-block">Yêu cầu mật khẩu mới</button>
+            <button type="submit" class="btn btn-primary btn-block">Tạo mật khẩu mới</button>
           </div>
           <!-- /.col -->
         </div>
@@ -53,6 +49,7 @@
       <p class="mb-0">
         <a href="{{ route('register.form') }}" class="text-center">Đăng kí thành viên mới</a>
       </p>
+
     </div>
     <!-- /.login-card-body -->
   </div>

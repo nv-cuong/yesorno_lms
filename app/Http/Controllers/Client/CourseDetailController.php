@@ -17,15 +17,15 @@ class CourseDetailController extends Controller
         $units = Unit::where('course_id', $course->id)->get();
         $user = Sentinel::getUser();
         $access = '';
-        if($user){
+        if ($user) {
             $access = Course::select([
                 'courses.id',
                 'uc.status',
             ])
-            ->join('user_courses AS uc','uc.course_id', 'courses.id')
-            ->where('courses.id', $course->id)
-            ->where('uc.user_id',$user->id)
-            ->first();
+                ->join('user_courses AS uc', 'uc.course_id', 'courses.id')
+                ->where('courses.id', $course->id)
+                ->where('uc.user_id', $user->id)
+                ->first();
         }
         return view('client.modules.course_detail', compact('course', 'units', 'user', 'access'));
     }
@@ -47,11 +47,22 @@ class CourseDetailController extends Controller
 
     public function detach(Request $request)
     {
-            $getUser = Sentinel::getUser();
-            $getUser->courses()->detach($request->course_id);
-            return redirect(route('detail', $request->course_slug))
-                ->with('message', "Bạn đã hủy đăng kí khóa học này !")
-                ->with('type_alert', "success");
-
+        $getUser = Sentinel::getUser();
+        $getUser->courses()->detach($request->course_id);
+        $lessons = Lesson::select([
+            'ul.lesson_id'
+        ])
+            ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
+            ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
+            ->join('courses AS c', 'c.id', 'u.course_id')
+            ->where('ul.user_id', $getUser->id)
+            ->where('c.id', $request->course_id)
+            ->get();
+        foreach ($lessons as $lesson) {
+            $getUser->lessons()->detach($lesson->lesson_id);
+        }
+        return redirect(route('detail', $request->course_slug))
+            ->with('message', "Bạn đã hủy đăng kí khóa học này !")
+            ->with('type_alert', "success");
     }
 }

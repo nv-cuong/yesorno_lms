@@ -17,7 +17,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\CourseDetailController;
 use App\Http\Controllers\Client\SearchController;
 use App\Http\Controllers\Client\StudentCoursesController;
-
+use App\Http\Controllers\Admin\ScoreController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,6 +33,8 @@ use App\Http\Controllers\Client\StudentCoursesController;
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
 
+Route::get('/notifications', [HomeController::class, 'notifications'])
+    ->name('notifications');
 Route::get('/courses', [HomeController::class, 'courses'])
     ->name('courses');
 Route::get('/courses-filter', [HomeController::class, 'courseFilter'])
@@ -41,7 +43,7 @@ Route::get('/search', [SearchController::class, 'search'])
     ->name('search');
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
-Route::get('/personal/{id}', [HomeController::class, 'personal'])
+Route::get('/personal', [HomeController::class, 'personal'])
     ->name('personal');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
@@ -49,12 +51,22 @@ Route::get('/attach', [CourseDetailController::class, 'attach'])
     ->name('post.attach');
 Route::get('/detach', [CourseDetailController::class, 'detach'])
     ->name('post.detach');
-Route::get('/personal/courses/{id}/{slug}', [StudentCoursesController::class, 'personalCourse'])
+Route::get('/personal/courses/{slug}', [StudentCoursesController::class, 'personalCourse'])
     ->name('personal.course');
-Route::get('/personal/lesson/{id}/{slug}', [StudentCoursesController::class, 'personalLesson'])
+Route::get('/personal/lesson/{slug}', [StudentCoursesController::class, 'personalLesson'])
     ->name('personal.lesson');
-Route::post('/personal/lessonprogress/{id}/{slug}', [StudentCoursesController::class, 'lessonProgress'])
+Route::post('/personal/lessonprogress/{slug}', [StudentCoursesController::class, 'lessonProgress'])
     ->name('lessonProgress');
+Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
+    ->name('post.personal.detach');
+Route::get('/doTest/{id}', [HomeController::class, 'doTest'])
+    ->name('doTest');
+
+Route::post('/sendTest/{id}', [HomeController::class, 'sendTest'])
+    ->name('send.test');
+Route::get('/test_users', [HomeController::class, 'test_user'])
+    ->name('test_users');
+
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login.form');
@@ -118,9 +130,11 @@ Route::prefix('admin')
             Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
             Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
             Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
-            Route::post('/editCourse{id}', [CourseController::class, 'updateCourse'])->name('update');
+            Route::post('/editCourse/{id}', [CourseController::class, 'updateCourse'])->name('update');
             Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
             Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
+            Route::get('/showStudent/{id}', [CourseController::class, 'showStudent'])->name('student');
+            Route::post('/activeStudent{id}', [CourseController::class, 'activeStudent'])->name('active');
         });
 
         Route::prefix('/units')->name('unit.')->group(function () {
@@ -129,7 +143,7 @@ Route::prefix('admin')
             Route::get('createUnit/{course_id}', [UnitController::class, 'createUnit'])->name('create');
             Route::post('storeUnit', [UnitController::class, 'storeUnit'])->name('store');
             Route::get('/editUnit/{id}', [UnitController::class, 'editUnit'])->name('edit');
-            Route::post('/editUnit{id}', [UnitController::class, 'updateUnit'])->name('update');
+            Route::post('/editUnit/{id}', [UnitController::class, 'updateUnit'])->name('update');
             Route::delete('/destroyUnit/{course_id}', [UnitController::class, 'destroyUnit'])->name('delete');
         });
 
@@ -139,9 +153,9 @@ Route::prefix('admin')
             Route::get('createLesson/{unit_id}', [LessonController::class, 'createLesson'])->name('create');
             Route::post('storeLesson', [LessonController::class, 'storeLesson'])->name('store');
             Route::get('/editLesson/{id}', [LessonController::class, 'editLesson'])->name('edit');
-            Route::post('/editLesson{id}', [LessonController::class, 'updateLesson'])->name('update');
+            Route::post('/editLesson/{id}', [LessonController::class, 'updateLesson'])->name('update');
             Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
-            Route::get('/downloadFile{file_name}', [LessonController::class, 'downloadFile'])->name('download');
+            Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])->name('download');
         });
 
         Route::prefix('/test')->name('test.')->group(function () {
@@ -158,8 +172,23 @@ Route::prefix('admin')
             Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class, 'question_edit'])->name('question.edit');
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
+            Route::get('/show_makes', [TestController::class, 'show_make'])->name('show.make');
+            Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
+            Route::post('/index/save_maked/{id_test}/{id_user}', [TestController::class, 'save_maked'])->name('save_maked');
+            Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])->name('view_maked');
+            Route::get('/index/make_again_test/{id_user}/{id_test}', [TestController::class, 'index_make_test1'])->name('index_again_make');
         });
-
+        Route::prefix('/score')->name('score.')->group(function () {
+            Route::get('index', [ScoreController::class, 'index'])->name('index');
+            Route::get('create', [ScoreController::class, 'create'])->name('create');
+            Route::post('store', [ScoreController::class, 'store'])->name('store');
+            Route::get('/dots/{id}', [ScoreController::class, 'dots'])
+                ->name('dots');
+            Route::post('/point', [ScoreController::class, 'point'])
+                ->name('point');
+            Route::get('/ajax/student/{id}', [ScoreController::class, 'ajaxstudent'])
+                ->name('ajaxstudent');
+        });
 
         require 'users.php';
         require 'roles.php';
@@ -167,3 +196,4 @@ Route::prefix('admin')
 
 require 'auth.php';
 Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
+Route::post('/getStudent', [ScoreController::class, 'getStudent'])->name('getStudent');

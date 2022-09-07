@@ -23,34 +23,36 @@ class EditQuestionRequest extends FormRequest
      */
     public function rules()
     {
-         
-        if($this->category == 1)
-        {
+
+        if ($this->category == 1) {
             return [
                 'content' => ['required', 'max:50'],
                 'course_id' => ['required'],
-                'score' => ['required', 'integer' ,'min:1'],  
+                'score' => ['required', 'integer', 'min:1'],
                 'content_1' => ['required'],
                 'content_2' => ['required'],
                 'content_3' => ['required'],
                 'content_4' => ['required'],
 
             ];
-        }
-        else{
+        } else {
             return [
                 'content' => ['required', 'max:50'],
-                'course_id' => ['required'],      
-                'score' => ['required', 'integer' ,'min:1'],  
-            
+                'course_id' => ['required'],
+                'score' => ['required', 'integer', 'min:1'],
+
             ];
         }
-       
     }
+    
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
     public function messages()
     {
         return [
-         
+
             'content.required'     => 'Bạn chưa nhập tên câu hỏi',
             'content.max'     => 'Câu hỏi quá dài',
             'score.required'     => 'Bạn chưa nhập điểm',

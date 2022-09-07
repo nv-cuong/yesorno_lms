@@ -47,7 +47,6 @@
                                 @else
                                 <td>Không tính tiến độ</td>
                                 @endif
-                                <td>{{ $lesson->config }}</td>
                                 <td>{{ $lesson->published }}</td>
                                 <td>{{ $lesson->created_at->format('d-m-Y') }}</td>
                                 <td>{{ $lesson->updated_at->format('d-m-Y') }}</td>

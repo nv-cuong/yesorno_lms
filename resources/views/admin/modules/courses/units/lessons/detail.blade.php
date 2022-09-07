@@ -39,7 +39,7 @@
                             </div>
                             @else
                             <div class="d-inline-flex p-2 bd-highlight">
-                                <a href="{{ route('lesson.download', [$file->path]) }}" download="{{ $file->path}}">Tải tài liệu</a>
+                                <a href="{{ route('lesson.download', [$file->id]) }}" download="">Tải tài liệu</a>
                             </div>
                             @endif
                             @empty
@@ -61,3 +61,4 @@
         </div>
     </div>
 </section>
+@stop
