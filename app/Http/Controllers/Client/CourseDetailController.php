@@ -43,7 +43,8 @@ class CourseDetailController extends Controller
                 ->join('class_study_courses as cc', 'cc.class_study_id', 'class_studies.id')
                 ->where('cu.user_id', $user->id)
                 ->where('cc.course_id', $course->id)
-                ->get();
+                ->pluck('id')
+                ->toArray();
 
         }
         return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
@@ -97,6 +98,7 @@ class CourseDetailController extends Controller
 
     public function detachClass(Request $request)
     {
+        // dd($request->class_id);
         $user = Sentinel::getUser();
         $class = ClassStudy::where('id', $request->class_id)->first();
         $class->users()->detach($user->id);

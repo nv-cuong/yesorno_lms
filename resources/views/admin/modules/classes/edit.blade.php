@@ -16,7 +16,7 @@
                             <div class="card-body">
                                 @method("PUT")
                                 @include('admin.modules.classes._form')
-                                <button type="submit" class="btn btn-primary">Tạo lớp</button>
+                                <button type="submit" class="btn btn-primary">Cập nhật</button>
                             </div>
                         </form>
                     </div>

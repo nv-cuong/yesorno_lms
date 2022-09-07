@@ -42,6 +42,10 @@
             overflow: hidden;
             text-overflow: ellipsis;
             min-height: 90px;
+            color: #000;
+        }
+        .desciption_course>p, .desciption_course>ul>li{
+            color: #000;
         }
     </style>
 
