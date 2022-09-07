@@ -81,8 +81,7 @@
                                                 Bạn đã đăng kí khóa học này
                                                 <input type="hidden" name="course_id" value="{{ $course->id }}">
                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="btn btn-danger"
-                                                    title="Đăng kí vào khóa học">Hủy</button>
+                                                <button type="submit" class="btn btn-danger" title="Đăng kí vào khóa học">Hủy</button>
                                             </form>
                                         @elseif($user)
                                             <form action="{{ route('post.attach') }}" method="get">
@@ -97,14 +96,12 @@
                                                 @endforeach
                                                 <input type="hidden" name="course_id" value="{{ $course->id }}">
                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi
-                                                    danh </button>
+                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
                                             </form>
                                         @else
                                             <form action="{{ route('post.attach') }}" method="get">
                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi
-                                                    danh </button>
+                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
                                             </form>
                                         @endif
                                     </li>
@@ -229,30 +226,48 @@
                                 <div class="tab-pane fade" id="nav-contact" role="tabpanel"
                                     aria-labelledby="nav-contact-tab">
                                     @foreach ($course->classStudies()->get() as $class)
-                                        <div class="course-ovr-wrp">
-                                            <div class="course-over-fet">
-                                                <div class="course-over-bio">
-                                                    <div class="course-over-name">
-                                                        <h5> <span style="color: violet">Tên lớp: </span>
-                                                            {{ $class->name }}</h5>
-                                                        <h6><span style="color: violet">Thời gian học: </span>
-                                                            @if ($class->schedule == 0)
-                                                                Sáng
-                                                            @elseif ($class->schedule == 1)
-                                                                Chiều
-                                                            @else
-                                                                Cả ngày
-                                                            @endif
-                                                        </h6>
-                                                    </div>
+                                    <div class="course-ovr-wrp">
+                                        <div class="course-over-fet">
+                                            <div class="course-over-bio">
+                                                <div class="course-over-name">
+                                                    <h5><span style="color: violet">Tên lớp: </span> {{ $class->name }} </h5>
+                                                    <h5><span style="color: violet">Thời gian học: </span>
+                                                        @if ($class->schedule == 0)
+                                                            Sáng
+                                                        @elseif ($class->schedule == 1)
+                                                            Chiều
+                                                        @else
+                                                            Cả ngày
+                                                        @endif
+                                                    </h5>
                                                 </div>
-                                                <p class="mb-0">
-                                                    {!! $class->description !!}
-                                                </p>
-                                                <a href="#" class="theme-btn">Đăng kí lớp</a>
                                             </div>
+                                            <div class="mb-0" style="text-align: justify">
+                                                {!! $class->description !!}
+                                            </div>
+                                            @if ($class_of_user != null && $user)
+
+                                                @foreach ($class_of_user as $item)
+                                                    @if($item->id == $class->id)
+                                                    <button type="submit" class="theme-btn" title="Bạn đã đăng kí lớp học này rồi">đã đăng kí !!</button>
+                                                    @else
+                                                    <form action="{{ route('post.attach.class') }}" method="get">
+                                                        <input type="hidden" name="class_id" value="{{ $class->id }}">
+                                                        <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                                        <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
+                                                    </form>
+                                                    @endif
+                                                @endforeach
+
+                                            @else
+                                                    Đăng nhập!!
+                                            @endif
+
+                                            <hr>
                                         </div>
-                                    @endforeach
+                                    </div>
+                                @endforeach
+
                                 </div>
                             </div>
                         </div>
