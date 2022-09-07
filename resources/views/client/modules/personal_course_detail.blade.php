@@ -109,21 +109,19 @@
                                 </div>
                                 @endforeach
                             </div>
-                            @if ($access->status == 1)
                             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                @if ($access->status == 1)
                                 <div class="course-accordion">
                                     <div class="course-accordion-header mb-30">
                                         <h2 class="course-content-title">Nội dung khóa học</h2>
-                                        <p class="mb-0">
-                                            123
-                                        </p>
                                     </div>
                                     <div class="ask">
                                         @php
                                         $countCourse = 0
                                         @endphp
+                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-bottom : 50px">
                                         @forelse ($course->units()->get() as $unit )
-                                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-bottom : 20px">
+
                                             <div class="panel-heading" role="tab" id="heading{{ $unit->id }}">
                                                 <h4 class="panel-title">
                                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $unit->id }}" aria-expanded="false" aria-controls="collapse{{ $unit->id }}" class="collapsed">
@@ -186,7 +184,6 @@
                                                         </li>
                                                     </ul>
                                                 </div>
-
                                             </div>
                                             @endif
                                             @endif
@@ -199,7 +196,8 @@
                                                     </a>
                                                 </h4>
                                             </div>
-                                            @endforelse
+                                        </div>
+                                        @endforelse
                                             @if($countCourse == $courseLesson)
                                             <div class="ask">
                                                 <div class="panel-group" id="accordion">
@@ -213,13 +211,11 @@
                                                 </div>
                                             </div>
                                             @endif
-                                        </div>
                                     </div>
                                 </div>
 
                             </div>
                             @else
-                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                             <div class="ask">
                                 <div class="panel-group" id="accordion">
                                     <div class="panel-heading" role="tab" id="headingOne">
