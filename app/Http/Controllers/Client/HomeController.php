@@ -131,7 +131,10 @@ class HomeController extends Controller
             ->join('courses AS c', 'c.id', 'u.course_id')
             ->where('c.status', 1)
             ->count();
-        $progress = ceil(($lessons * 100) / ($courseLesson));
+            if($courseLesson != 0){
+                $progress = ceil(($lessons*100)/$courseLesson);
+            }
+            else $progress = 0;
         return view('client.modules.personal', compact('student', 'progress', 'courses'));
     }
 

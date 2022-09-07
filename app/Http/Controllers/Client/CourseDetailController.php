@@ -43,9 +43,13 @@ class CourseDetailController extends Controller
                 ->join('class_study_courses as cc', 'cc.class_study_id', 'class_studies.id')
                 ->where('cu.user_id', $user->id)
                 ->where('cc.course_id', $course->id)
+<<<<<<< HEAD
                 ->pluck('id')
                 ->toArray();
 
+=======
+                ->pluck('id')->toArray();
+>>>>>>> origin/feature-hieu
         }
         return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
     }
