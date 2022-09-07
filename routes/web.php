@@ -17,6 +17,7 @@ use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\CourseDetailController;
 use App\Http\Controllers\Client\SearchController;
 use App\Http\Controllers\Client\StudentCoursesController;
+use App\Http\Controllers\Client\TestCoursesController;
 use App\Http\Controllers\Admin\ScoreController;
 /*
 |--------------------------------------------------------------------------
@@ -70,11 +71,27 @@ Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
 Route::get('/doTest/{id}', [HomeController::class, 'doTest'])
     ->name('doTest');
 
+Route::get('/show_makes', [TestCoursesController::class, 'show_make'])
+    ->name('show.make');
+Route::get('/index/make_test/{id_test}', [TestCoursesController::class, 'index_make_test'])
+    ->name('index_make');
+Route::post('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
+    ->name('save_maked');
+Route::get('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
+    ->name('save_maked_get');  
+Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])
+    ->name('view_maked');
+Route::get('/index/make_again_test/{id_test}', [TestCoursesController::class, 'make_again_test'])
+    ->name('make_again_test');
+Route::get('/index/random/{id_course}', [TestCoursesController::class, 'random_test'])
+    ->name('random_test');
+
 Route::post('/sendTest/{id}', [HomeController::class, 'sendTest'])
     ->name('send.test');
 Route::get('/test_users', [HomeController::class, 'test_user'])
     ->name('test_users');
 
+Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
 
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login.form');
@@ -180,11 +197,6 @@ Route::prefix('admin')
             Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class, 'question_edit'])->name('question.edit');
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
-            Route::get('/show_makes', [TestController::class, 'show_make'])->name('show.make');
-            Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
-            Route::post('/index/save_maked/{id_test}/{id_user}', [TestController::class, 'save_maked'])->name('save_maked');
-            Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])->name('view_maked');
-            Route::get('/index/make_again_test/{id_user}/{id_test}', [TestController::class, 'index_make_test1'])->name('index_again_make');
         });
         Route::prefix('/score')->name('score.')->group(function () {
             Route::get('index', [ScoreController::class, 'index'])->name('index');

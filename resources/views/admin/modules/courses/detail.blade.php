@@ -51,8 +51,6 @@
                             <tr>
                                 <th>STT</th>
                                 <th>Tên chương</th>
-                                <th>Ngày tạo</th>
-                                <th>Ngày cập nhật</th>
                                 <th>Tùy chọn</th>
                             </tr>
                         </thead>
@@ -61,8 +59,6 @@
                             <tr>
                                 <td>{{ $loop->iteration + ($units->currentPage() -1) * $units->perPage() }}</td>
                                 <td>{{ $unit->title }}</td>
-                                <td>{{ $unit->created_at->format('d-m-Y') }}</td>
-                                <td>{{ $unit->updated_at->format('d-m-Y') }}</td>
                                 <td>
                                     <a href="{{ route('unit.detail', ['id'=>$unit->id]) }}" class="btn btn-primary">
                                         <i class="far fa-eye"></i>
