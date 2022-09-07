@@ -17,6 +17,14 @@ class StudentCoursesController extends Controller
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
         $course = Course::where('slug', $slug)->first();
+        $access = Course::select([
+            'courses.id',
+            'uc.status',
+        ])
+        ->join('user_courses AS uc','uc.course_id', 'courses.id')
+        ->where('courses.id', $course->id)
+        ->where('uc.user_id',$id)
+        ->first();
         $courses = Course::select()->paginate(3);
         $lessons = Lesson::select([
             'lessons.id',
@@ -34,7 +42,7 @@ class StudentCoursesController extends Controller
         ->join('courses AS c', 'c.id', 'u.course_id')
         ->where('c.id',$course->id)
         ->count();
-        return view('client.modules.personal_course_detail',compact('course','courses','lessons','id','courseLesson'));
+        return view('client.modules.personal_course_detail',compact('course','courses','lessons','id','courseLesson','access'));
     }
 
     public function personalLesson(Request $request,$slug){

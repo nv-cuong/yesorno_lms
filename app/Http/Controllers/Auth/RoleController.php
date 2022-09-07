@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 class RoleController extends Controller
 {
-    
+
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -28,7 +28,7 @@ class RoleController extends Controller
         return view('admin.auth.role.index', compact('roles'));
     }
 
-    
+
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -52,7 +52,6 @@ class RoleController extends Controller
         $role->name = $request->name;
         $role->slug = Str::slug($request->name);
 
-        
         $permissions = collect(json_decode($this->permissions($request)))->toArray();
         $role->permissions = $permissions;
 
@@ -63,9 +62,9 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
-    
-   
-    
+
+
+
     /**
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
@@ -88,7 +87,7 @@ class RoleController extends Controller
         ));
     }
 
-    
+
     /**
      * @param UpdateRequest $request
      * @param int $id
@@ -118,7 +117,7 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
-    
+
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
@@ -144,7 +143,7 @@ class RoleController extends Controller
         return redirect()->route('roles.index');
     }
 
-    
+
     /**
      * @param Request $request
      * @return string
@@ -164,7 +163,7 @@ class RoleController extends Controller
         return json_encode($permissions);
     }
 
-    
+
     /**
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
