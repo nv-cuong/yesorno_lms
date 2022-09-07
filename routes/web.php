@@ -96,8 +96,6 @@ Route::get('/user_tests', [UserTestController::class, 'test_user'])
 Route::get('/user_tests/detail/{id}', [UserTestController::class, 'user_tests_detail'])
     ->name('user_tests_detail');
 
-Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
-
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login.form');
 Route::post('/login', [LoginController::class, 'postLogin'])
@@ -208,6 +206,7 @@ Route::prefix('admin')
             Route::post('/point', [ScoreController::class, 'point'])
                 ->name('point')->middleware('myweb.auth:scores.point');
             Route::get('/getStudent/{id}', [ScoreController::class, 'getStudent'])->name('getStudent');
+            Route::get('/dots/{id}', [ScoreController::class, 'dots'])->name('dots');
         });
 
         require 'users.php';

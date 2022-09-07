@@ -20,7 +20,6 @@ class QuestionFactory extends Factory
             'category'=> $this->faker->randomElement([0]),
             'content'=>$this->faker->text(10),
             'course_id' =>$this -> faker->numberBetween(1,10),
-            'answer'=> $this->faker->numberBetween(0, 1),
             'score'=>$this -> faker->numberBetween(1, 100),
         ];
     }
