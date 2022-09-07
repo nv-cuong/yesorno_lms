@@ -111,7 +111,7 @@ Route::get('/course', function () {
 Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
-    ->middleware('myweb.auth')
+    
     ->group(function () {
 
         Route::get('/dashboard', [IndexController::class, 'index'])
@@ -137,7 +137,7 @@ Route::prefix('admin')
         // Đức
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
-                ->name('students');
+                ->name('students')->middleware('myweb.auth:student.show');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])
                 ->name('student.edit');
             Route::post('/edit/{id}', [StudentController::class, 'update'])
@@ -202,11 +202,11 @@ Route::prefix('admin')
             Route::post('/search', [TestController::class, 'search'])->name('search');
         });
         Route::prefix('/score')->name('score.')->group(function () {
-            Route::get('index', [ScoreController::class, 'index'])->name('index');
-            Route::get('create', [ScoreController::class, 'create'])->name('create');
+            Route::get('index', [ScoreController::class, 'index'])->name('index')->middleware('myweb.auth:scores.show');
+            Route::get('create', [ScoreController::class, 'create'])->name('create')->middleware('myweb.auth:scores.create');
             Route::post('store', [ScoreController::class, 'store'])->name('store');
             Route::post('/point', [ScoreController::class, 'point'])
-                ->name('point');
+                ->name('point')->middleware('myweb.auth:scores.point');
             Route::get('/getStudent/{id}', [ScoreController::class, 'getStudent'])->name('getStudent');
         });
 

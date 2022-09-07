@@ -54,7 +54,7 @@
             </form>
 
       <p class="mt-3 mb-1">
-        <a href="{{route('login')}}">Đăng nhập</a>
+        <a href="{{route('login.form')}}">Đăng nhập</a>
       </p>
       
     </div>
