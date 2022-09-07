@@ -23,12 +23,10 @@ class UnitController extends Controller
             'lessons.title',
             'lessons.slug',
             'lessons.config',
-            'lessons.created_at',
-            'lessons.updated_at',
+            'published'
         ])
             ->join('units', 'lessons.unit_id', 'units.id')
             ->where('units.id', $id)
-            ->orderBy('id', 'desc')
             ->paginate();
 
         return view('admin.modules.courses.units.detail', compact('unit', 'lessons'));
@@ -53,7 +51,8 @@ class UnitController extends Controller
         }
 
         return redirect(route('course.detail', [$unit_item['course_id']]))
-            ->with('msg', 'Thêm chương mới thành công');;
+        ->with('message', 'Thêm chương mới thành công')
+        ->with('type_alert', "success");
     }
 
     public function editUnit(Request $request, $id)
@@ -65,23 +64,27 @@ class UnitController extends Controller
             return view('admin.modules.courses.units.edit', compact('unit', 'course'));
         }
         return redirect(route('course.detail', [$unit->course_id]))
-            ->with('msg', 'Chương không tồn tại');
+        ->with('message', 'Chương không tồn tại')
+        ->with('type_alert', "danger");
     }
 
     public function updateUnit(UnitRequest $request, $id)
     {
-        $msg = 'Chương không tồn tại';
+        $message = 'Chương không tồn tại';
+        $type = 'danger';
         $unit = Unit::find($id);
         if ($unit) {
             $unit->title = $request->input('title');
             $unit->course_id = $request->input('course_id');
             $unit->slug = Str::slug($unit->title);
             $unit->save();
-            $msg = 'Cập nhật khóa học thành công';
+            $message = 'Cập nhật khóa học thành công';
+            $type = 'success';
         }
 
         return redirect(route('course.detail', [$unit->course_id]))
-        ->with('msg', $msg);
+        ->with('message', $message)
+        ->with('type_alert', $type);
     }
 
     public function destroyUnit(Request $request, $course_id)
@@ -90,9 +93,11 @@ class UnitController extends Controller
         if ($unit_id) {
             Unit::destroy($unit_id);
             return redirect(route('course.detail', [$course_id]))
-                ->with('msg', 'Chương đã được xóa');
+            ->with('message', 'Chương đã được xóa')
+            ->with('type_alert', "success");
         } else
             return redirect(route('course.detail', [$course_id]))
-                ->with('msg', 'Chương không tồn tại');
+            ->with('message', 'Chương không tồn tại')
+            ->with('type_alert', "danger");
     }
 }

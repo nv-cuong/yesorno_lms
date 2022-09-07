@@ -63,7 +63,8 @@ class LessonController extends Controller
         }
 
         return redirect(route('unit.detail', [$lesson_item['unit_id']]))
-            ->with('msg', 'Thêm bài học mới thành công');;
+        ->with('message', 'Thêm bài học mới thành công')
+        ->with('type_alert', "success");
     }
 
     public function editLesson(Request $request, $id)
@@ -76,13 +77,14 @@ class LessonController extends Controller
             return view('admin.modules.courses.units.lessons.edit', compact('lesson', 'files', 'unit'));
         }
         return redirect(route('unit.detail', [$lesson->unit_id]))
-            ->with('msg', 'Bài học không tồn tại');
+            ->with('message', 'Bài học không tồn tại')
+            ->with('type_alert', "danger");
     }
 
     public function updateLesson(LessonRequest $request, $id)
     {
-        $msg = 'Bài học không tồn tại';
-
+        $message = 'Bài học không tồn tại';
+        $type = 'danger';
         $lesson = Lesson::find($id);
         if ($lesson) {
             $lesson->title = $request->input('title');
@@ -120,10 +122,13 @@ class LessonController extends Controller
                     'path' => $path
                 ]);
             }
-            $msg = 'Cập nhật bài học thành công';
+            $message = 'Cập nhật bài học thành công';
+            $type = 'success';
         }
 
-        return redirect(route('unit.detail', [$lesson->unit_id]))->with('msg', $msg);
+        return redirect(route('unit.detail', [$lesson->unit_id]))
+        ->with('message', $message)
+        ->with('type_alert', $type);
     }
 
     public function destroyLesson(Request $request, $unit_id)
@@ -132,10 +137,12 @@ class LessonController extends Controller
         if ($lesson_id) {
             Lesson::destroy($lesson_id);
             return redirect(route('unit.detail', [$unit_id]))
-                ->with('msg', 'Bài học đã được xóa');
+            ->with('message', 'Bài học đã được xóa')
+            ->with('type_alert', "success");
         } else
             return redirect(route('unit.detail', [$unit_id]))
-                ->with('msg', 'Bài học không tồn tại');
+            ->with('message', 'Bài học không tồn tại')
+            ->with('type_alert', "danger");
     }
 
     public function downloadFile($id) {
