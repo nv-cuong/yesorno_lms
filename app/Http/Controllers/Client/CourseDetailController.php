@@ -9,11 +9,19 @@ use App\Models\Lesson;
 use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
+use PHPUnit\Framework\Constraint\Count;
 
 class CourseDetailController extends Controller
 {
     public function courseDetail($slug)
     {
+        $courses = Course::select([
+            'title',
+            'slug',
+            'image',
+        ])
+        ->take(4)
+        ->get();
         $course = Course::where('slug', $slug)->with('classStudies', 'users')->first();
         $units = Unit::where('course_id', $course->id)->get();
         $user = Sentinel::getUser();
@@ -38,7 +46,7 @@ class CourseDetailController extends Controller
                 ->get();
 
         }
-        return view('client.modules.course_detail', compact('course', 'units', 'user', 'access', 'class_of_user'));
+        return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
     }
 
     public function attach(Request $request)
@@ -89,5 +97,11 @@ class CourseDetailController extends Controller
 
     public function detachClass(Request $request)
     {
+        $user = Sentinel::getUser();
+        $class = ClassStudy::where('id', $request->class_id)->first();
+        $class->users()->detach($user->id);
+        return redirect(route('detail', $request->course_slug))
+            ->with('message', "Bạn đã hủy đăng kí lớp thành công !")
+            ->with('type_alert', "success");
     }
 }
