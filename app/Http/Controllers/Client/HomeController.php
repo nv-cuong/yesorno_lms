@@ -6,19 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Answer;
 use App\Models\ClassStudy;
 use App\Models\Course;
-use App\Models\Question;
-use App\Models\Test;
+use App\Models\Lesson;
+use App\Models\Notification;
 use App\Models\User;
+use App\Models\Question;
 use App\Models\UserTest;
+use App\Models\UserTestAnswer;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
-
-
-
     public function compose(View $view)
     {
         $user = Sentinel::getUser();
@@ -30,22 +29,21 @@ class HomeController extends Controller
         }
     }
 
-
     public function index()
     {
-
-
-
         $courses = Course::select([
             'id',
             'title',
             'slug',
+            'status',
             'description',
             'begin_date',
             'end_date',
             'image'
 
-        ])->take(4)
+        ])
+            ->orderBy('created_at', 'DESC')
+            ->take(4)
             ->get();
 
         $classes = ClassStudy::select([
@@ -54,32 +52,81 @@ class HomeController extends Controller
         return view('client.modules.home', compact('courses', 'classes'));
     }
 
-    public function courses()
+    public function courses(Request $request)
     {
-
+        if ($request->sort == 'old') {
+            $name = 'created_at';
+            $sort = 'ASC';
+        } elseif ($request->sort == 'new') {
+            $name = 'created_at';
+            $sort = 'DESC';
+        } elseif ($request->sort == 'name') {
+            $name = 'title';
+            $sort = 'ASC';
+        } else {
+            $name = 'created_at';
+            $sort = 'DESC';
+        }
         $courses = Course::select([
             'id',
             'title',
             'slug',
+            'status',
             'description',
             'begin_date',
             'end_date',
             'image'
-
-        ])->paginate(3);
-        return view('client.modules.courses', compact('courses'));
+        ])
+            ->with('units', 'users')
+            ->orderBy($name, $sort)
+            // ->where('status', $filter)
+            ->paginate(6);
+        $courseTotal = Course::select([
+            'id',
+        ]);
+        return view('client.modules.courses', compact('courses', 'courseTotal'));
     }
 
-    public function courseDetail($slug)
+    public function courseFilter(Request $request)
     {
-        $course = Course::where('slug', $slug)->first();
-        return view('client.modules.course_detail', compact('course'));
+        if ($request->filter == 'free') {
+            $filter = '0';
+        } elseif ($request->filter == 'pro') {
+            $filter = '1';
+        }
+        $courses = Course::select([
+            'id',
+            'title',
+            'slug',
+            'status',
+            'description',
+            'begin_date',
+            'end_date',
+            'image'
+        ])
+            ->with('units', 'users')
+            ->where('status', $filter)
+            ->paginate(6);
+        $courseTotal = Course::select([
+            'id',
+        ]);
+        return view('client.modules.courses', compact('courses', 'courseTotal'));
     }
 
-    public function personal($id)
+    public function personal(Request $request)
     {
+        $getUser = Sentinel::getUser();
+        $id = $getUser->id;
         $student = User::where('id', $id)->first();;
-        return view('client.modules.personal', compact('student'));
+        $courses = User::find($id)->courses()->where("user_id", $id)->paginate(3);
+        $lessons = User::find($id)->lessons()->where([["user_id", $id], ['status', 1]])->count();
+        $courseLesson = Lesson::select()
+            ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
+            ->join('courses AS c', 'c.id', 'u.course_id')
+            ->where('c.status', 1)
+            ->count();
+        $progress = ceil(($lessons * 100) / ($courseLesson));
+        return view('client.modules.personal', compact('student', 'progress', 'courses'));
     }
 
 
@@ -88,10 +135,24 @@ class HomeController extends Controller
         return view('client.modules.contact');
     }
 
+    public function search(Request $request)
+    {
+        $output = '';
+        $course = Course::where('title', 'LIKE', '%' . $request->keyword . '%')->get();
+    }
+    public function notifications()
+    {
+        $user = Sentinel::getUser();
+        $notifications = Notification::select(
+            'notifications.id',
+            'content'
+        )
+            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
+            ->where('un.user_id', $user->id);
+        return view('client.modules.home', compact('notifications', 'user'));
+    }
     public function doTest(Request $request, $id)
     {
-
-
         $test = UserTest::find($id)->test;
         $user_test = $id;
         $questions = $test->question;
@@ -100,20 +161,18 @@ class HomeController extends Controller
     }
 
     public function sendTest(Request $request, $id)
-    {
+    { 
+        
         $test_user_item = $request->except('_token');
-
-        //dd( $test_user_item['questions']);
+       
         $test_users = UserTest::find($id);
         $answers = [];
         $test_score = 0;
         $questions = 0;
-        if ($test_user_item['answers']) {
-
-
+    
+        if ($request->get('answers')) {
 
             foreach ($test_user_item['answers'] as $key  => $answer_id) {
-
 
                 $question_id = Answer::find($answer_id)->question->id;
                 $question = Answer::find($answer_id)->question;
@@ -124,7 +183,6 @@ class HomeController extends Controller
                 } else {
                     $check = 1;
                 }
-
                 if ($questions != $question_id) {
 
                     $answers[$question_id] = [
@@ -133,7 +191,6 @@ class HomeController extends Controller
                         'correct' => $check
                     ];
                 } else {
-
                     if ($answers[$question_id]['answer']) {
                         if ($check == 0) {
                             $answers[$question_id]['correct'] =  0;
@@ -141,8 +198,6 @@ class HomeController extends Controller
                         $answers[$question_id]['answer'] = $answers[$question_id]['answer'] . "," . $answers_item->id;
                     }
                 }
-
-
                 if ($check == 1) {
 
                     $test_score += $question->score;
@@ -170,24 +225,20 @@ class HomeController extends Controller
         }
         $test_users->status = 1;
         $test_users->score =  $test_score;
-
         $test_users->save();
-
         if ($request->get('essay')) {
             foreach ($request->get('essay') as $question_id => $answer_id) {
                 $answers[] = [
                     'question_id' => $question_id,
                     'answer' => $answer_id,
-
                 ];
             }
             $test_users->score = '';
         }
-
         $test_users->answers()->createMany($answers);
         $test_users->save();
     }
-
+    
     public function test_user()
     {
         $user = Sentinel::getUser();
@@ -195,5 +246,22 @@ class HomeController extends Controller
         $user_test_status = UserTest::where('user_id', $user->id)->where('status', 1)->get();
 
         return view('client.modules.user_test', compact('user_test_status'));
+    }
+
+    public function user_tests_detail($id)
+    {      
+        $user_test_answers = UserTestAnswer::select([
+            'questions.content',
+            'questions.id',
+            'questions.category',
+            'questions.score',
+            'user_test_answers.answer',
+            'user_test_answers.correct'
+        ])
+            ->where('user_test_id', $id)
+            ->join('questions', 'question_id', 'questions.id')
+            ->get();
+        
+        return view('client.modules.user_tests_detail', compact('user_test_answers'));
     }
 }

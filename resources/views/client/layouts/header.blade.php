@@ -4,7 +4,7 @@
             <div class="header-top">
                 <div class="container">
                     <div class="header-logo">
-                        <a class="navbar-brand" href="index-2.html">
+                        <a class="navbar-brand" href="{{ route('home')}}">
                             <img src="{{ asset('/user/img/logo/logo-3.png') }}" class="logo-display" alt="thumb">
                         </a>
                         <div class="f">
@@ -33,52 +33,59 @@
                             <li class="nav-item {{  url()->current() == route('contact')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                             </li>
-                            <li class="nav-item dropdown"> <a class="nav-link"  data-toggle="dropdown" href="#"><i class="far fa-bell"></i>
-                                    Thông báo(<?php
-                                         if($count_user_tests)
-                                          echo $count_user_tests;
-                                       ?>)</a>
+                            @php
+                            use App\Models\Notification;
+                            if($user = Sentinel::getUser()){
+                            $notifications = Notification::select(
+                                'notifications.id',
+                                'content'
+                            )
+                            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
+                            ->where('un.user_id', $user->id)
+                            ->get();
+                            @endphp
+                            <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo({{ $notifications->count() + $count_user_tests }}) </a>
                                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-
-                                     @forelse ($user_tests as $user_test)
-                                     <a href="#" class="dropdown-item">
-                                        <!-- Message Start -->
-                                        <div class="media">
-                                        Bạn có 1 bài test 
-                                            <div class="media-body">
-                                                <h5 class="dropdown-item-title">
-                                                   
-                                                    
-                                                    <a href="{{ route('doTest',$user_test->id) }}">Click</a>
-                                                    
-                                                </h5>
-                                                
-                                            </div>
-                                        </div>
-                                        <!-- Message End -->
-                                    </a>
+                                    
+                                    @forelse($notifications as $notification)
                                     <div class="dropdown-divider"></div>
-                                     @empty
-                                         
-                                     @endforelse
+                                    <a href="#" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
+                                       
+                                    </a>
+                                    @empty
                                     
-                                    
+                                    @endforelse
+                                    @forelse($user_tests as $user_test)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
+                                       
+                                    </a>
+                                    @empty
+                                    @endforelse
                                 </div>
-
                             </li>
-
-                            <form class="form-inline" style="padding-left: 100px">
+                            @php
+                            }
+                            @endphp
+                            <form class="form-inline" style="padding-left: 100px" action="{{ route('search')}}" method="GET">
                                 <div class="form-group mx-sm-3 mb-2">
-                                    <input type="text" class="form-control" id="" placeholder="" style="width: 200px">
+                                    <input type="text" class="form-control input_search" name="keyword" style="width: 200px; font-size: 13px" placeholder="Tên khóa học">
                                 </div>
                                 <button type="submit" class="btn btn-primary mb-2"><i class="fas fa-search"></i></button>
+                                <div class="search_results" id="search_results">
+
+                                </div>
                             </form>
                         </ul>
 
                     </div>
                     <div class="header-3-bt">
                         @if ($user = Sentinel::getUser())
-                        <a href="{{ route('personal', $user->id) }}" class="header-3-btn">Khóa học của tôi</a>
+                        <a href="{{ route('personal') }}" class="header-3-btn">Khóa học của tôi</a>
                         @else
                         <a class="header-3-btn">Khóa học của tôi</a>
                         @endif
@@ -92,4 +99,33 @@
             <div class="navbar"></div>
         </div>
     </div>
-</header>
+@push('scripts')
+<script>
+    $('.input_search').keyup(function() {
+        var _text = $(this).val();
+
+        if (_text != '') {
+            $.ajax({
+                url: "{{ route('live.search') }}?key=" + _text
+                , type: 'GET'
+                , success: function(data) {
+                    var _html = '';
+                    _html += '<div class="search_main">';
+                    _html += '<ul>';
+                    for (var course of data) {
+                        _html += '<li>';
+                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'"><img src="http://127.0.0.1:8000/'+ course.image +'"> ' + course.title + '</a>';
+                        _html += '<hr>';
+                        _html += '</li>';
+                    }
+                    _html += '</ul>';
+                    _html += '</div>';
+                    $('.search_results').html(_html)
+                }
+            });
+        }else{
+            $('.search_results').html('')
+        }
+    })
+</script>
+@endpush

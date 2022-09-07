@@ -36,34 +36,27 @@
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>
-<div class="col-sm-6" >
+<div class="col-sm-6">
     <!-- radio -->
     <label>Thời gian học</label>
     <div class="form-group" style="display: flex; justify-content: space-between">
         <div class="form-check ">
-            <input class="form-check-input @error('description') is-invalid @enderror" type="radio" name="amount" value="0"
-            @if ($class->amount == 0)
-                checked
-            @endif>
+            <input class="form-check-input @error('schedule') is-invalid @enderror" type="radio" name="schedule"
+                value="0" @if ($class->schedule == 0) checked @endif>
             <label class="form-check-label">Sáng</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input @error('description') is-invalid @enderror" type="radio" name="amount" value="1"
-            @if ($class->amount == 1)
-                checked
-            @endif
-            >
+            <input class="form-check-input @error('schedule') is-invalid @enderror" type="radio" name="schedule"
+                value="1" @if ($class->schedule == 1) checked @endif>
             <label class="form-check-label">Chiều</label>
         </div>
         <div class="form-check">
-            <input class="form-check-input @error('description') is-invalid @enderror" type="radio" name="amount" value="2"
-            @if ($class->amount == 2)
-                checked
-            @endif>
+            <input class="form-check-input @error('schedule') is-invalid @enderror" type="radio" name="schedule"
+                value="2" @if ($class->schedule == 2) checked @endif>
             <label class="form-check-label">Cả ngày</label>
         </div>
     </div>
-    @error('amount')
+    @error('schedule')
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>

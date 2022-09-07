@@ -1,18 +1,18 @@
 @extends('admin.layouts.master')
-@section('title', 'Create Question')
+@section('title', 'Thêm câu hỏi trong test')
 @section('content')
 @include('admin.tests.bootstrap5')
 <meta name="csrf-token" content="{{csrf_token()}}">
 <div class="card-body">
 
 
-    <h2>Add Question</h2>
+    <h2>Thêm câu hỏi trong test:</h2>
     <form action="{{route('test.store_question',$id_test)}}" method="post">
         @csrf
         {{ csrf_field() }}
 
         <div class="form-group">
-            <label for="confirmation_pwd">Course:</label>
+            <label for="confirmation_pwd">Khóa học:</label>
             <select class="form-control course" id="id" name="course" data-dependent="question" disabled="disabled">
 
                 <option value="">{{$courses->id}}. {{$courses->title }}</option>
@@ -24,11 +24,11 @@
         <input type="hidden" name="count_question_id" id='count_question_id' value="0"><br>
 
         <div class="form-group">
-            <label for="exampleFormControlSelect1">Select Question</label>
+            <label for="exampleFormControlSelect1">Chọn câu hỏi:</label>
 
             <select class="form-select @error('question') is-invalid @enderror question"
                 id="multiple-select-clear-field" name="question[]" data-dependent="course"
-                data-placeholder="Choose question" multiple>
+                 multiple>
                 <?php
        $i=1;?>
                 @foreach($question as $row)
@@ -56,6 +56,12 @@ $('#multiple-select-clear-field').select2({
     placeholder: $(this).data('placeholder'),
     closeOnSelect: false,
     allowClear: true,
+    placeholder: ' Nhập nội dung cần tìm',
+    language: {
+    noResults: function (params) {
+      return "Không có câu hỏi nào.";
+    },
+  },
 }).on("change", function(e) {
 
     $('.multiple-select-clear-field li:not(.select2-search--inline)').hide();

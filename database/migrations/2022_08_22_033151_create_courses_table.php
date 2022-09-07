@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('statistic_id')->nullable();
             $table->string('title');
             $table->string('slug');
-            $table->boolean('status');
+            $table->boolean('status')->default('0');
             $table->text('description')->nullable();
             $table->date('begin_date')->nullable();
             $table->date('end_date')->nullable();

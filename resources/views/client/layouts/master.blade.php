@@ -41,6 +41,7 @@
             -webkit-box-orient: vertical;
             overflow: hidden;
             text-overflow: ellipsis;
+            min-height: 90px;
         }
     </style>
 
@@ -57,9 +58,9 @@
 
     @yield('content')
     <div class="clearfix"></div>
-
+    @yield('js')
     @include('client.layouts.footer')
-
+    <script src="{{ asset('/user/js/jquery-2.0.0.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery-1.12.4.min.js') }}"></script>
     <script src="{{ asset('/user/js/popper.min.js') }}"></script>
     <script src="{{ asset('/user/js/bootstrap.min.js') }}"></script>
@@ -83,6 +84,7 @@
     <script src="{{ asset('/user/js/bsnav.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery.easypiechart.js') }}"></script>
     <script src="{{ asset('/user/js/main.js') }}"></script>
+    @stack('scripts')
     @yield('scripts')
 </body>
 

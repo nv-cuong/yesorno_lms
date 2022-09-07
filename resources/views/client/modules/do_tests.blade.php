@@ -159,8 +159,8 @@
                     {{ $loop->iteration }}. {{ $question->content }}
                 </h3>
                 @if($question->category == 2)
-                <label><input name="true[{{ $question->id }}]" type="checkbox" value="1" checked /> A) Đúng </BR></label>
-                <label><input name="true[{{ $question->id }}]" type="checkbox" value="0" /> B) Sai </BR></label>
+                <label><input name="true[{{ $question->id }}]" type="radio" value="1" checked /> A) Đúng </BR></label>
+                <label><input name="true[{{ $question->id }}]" type="radio" value="0" /> B) Sai </BR></label>
                 @endif
                 @if ($question->category == 0)
 
@@ -183,7 +183,7 @@
         <!-- /.card-body -->
         <br>
 
-        <button type="submit" class="btn btn-primary" onclick="stop()">Nộp bài</button></BR>
+        <button type="submit" class="btn btn-primary" onclick="stop()" id="checkBtn">Nộp bài</button></BR>
         <?php
         if ($score) {
         echo'
@@ -202,7 +202,10 @@
         </p>
     </div>';
     @endphp
+    
     <script language="javascript">
+
+        
         window.addEventListener('load', start);
         var h = null; // Giờ
         var m = null; // Phút
@@ -249,7 +252,8 @@
             if (h == -1) {
                 clearTimeout(timeout);
                 $(document).ready(function() {
-                    $("#do_test :input").prop("disabled", true);
+        
+                    $('#do_test').submit();
                 });
 
                 return false;
@@ -284,8 +288,11 @@
 </script>';
     }
     ?>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    
+    <script type="text/javascript">
 
+
+</script>
 </body>
 
 </html>

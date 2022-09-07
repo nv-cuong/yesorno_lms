@@ -24,18 +24,19 @@ class ScoreRequest extends FormRequest
      */
     public function rules()
     {
-       $a=0;
-        foreach($this->true as $question_id => $score)
-        {
-            
-            $question =Question::find($question_id)->score;
-            $a = 'true'.'['.$question_id.']';
-            $a++;
-           
-        }
-        return [
-            "true.*" => 'required',
+        return [    
+            'student_id' => ['required'],   
         ];
-        
+       
     }
+    public function messages()
+    {
+        return [
+
+            'student_id.required'     => 'Bạn chưa chọn học viên !',    
+        ];
+    }
+
+   
+    
 }

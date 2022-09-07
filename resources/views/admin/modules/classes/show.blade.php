@@ -14,7 +14,7 @@
                             <div class="col-sm-4 invoice-col">
                                 <address>
                                     <strong><span style="color: rgb(163, 0, 0)">Tên lớp: </span>{{ $class->name }}</strong><br>
-                                    <span style="color: rgb(163, 0, 0)">Mô tả lớp học: </span>
+                                    <span style="color: rgb(0, 85, 196)">Mô tả lớp học: </span>
                                     {!! $class->description !!}
                                 </address>
                             </div>

@@ -19,58 +19,64 @@
                                             src="https://www.clipartmax.com/png/middle/176-1763433_user-account-profile-avatar-person-male-icon-icon-user-account.png"
                                             class="user-profile-image"></td>
                                 @else
-                                <td><img height="100px"
-                                    src="https://www.clipartmax.com/png/middle/293-2931307_account-avatar-male-man-person-profile-icon-profile-icons.png"
-                                    class="user-profile-image"></td>
+                                    <td><img height="100px"
+                                            src="https://www.clipartmax.com/png/middle/293-2931307_account-avatar-male-man-person-profile-icon-profile-icons.png"
+                                            class="user-profile-image"></td>
                                 @endif
                             </tr>
 
                             <tr>
                                 <th>Họ và tên</th>
-                                <td>{{$student->first_name}} {{$student->last_name}}</td>
+                                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
                             </tr>
 
                             <tr>
                                 <th>Ngày sinh</th>
-                                <td>{{$student->birthday}}</td>
+                                <td>{{ $student->birthday }}</td>
                             </tr>
 
                             <tr>
                                 <th>Số điện thoại</th>
-                                <td>{{$student->phone}}</td>
+                                <td>{{ $student->phone }}</td>
                             </tr>
 
                             <tr>
                                 <th>Địa chỉ</th>
-                                <td>{{$student->address}}</td>
+                                <td>{{ $student->address }}</td>
                             </tr>
 
                             <tr>
                                 <th>Ngày sinh</th>
-                                <td>{{$student->birthday}}</td>
+                                <td>{{ $student->birthday }}</td>
                             </tr>
 
                             <tr>
                                 <th>Tuổi</th>
-                                <td>{{$student->age}}</td>
+                                <td>{{ $student->age }}</td>
                             </tr>
 
                             <tr>
                                 <th>Giới tính</th>
-                                <td>{{$student->gender}}</td>
+                                <td>{{ $student->gender }}</td>
                             </tr>
 
                             <tr>
                                 <th>Lần cuối đăng nhập</th>
-                                <td>{{$student->last_login}}</td>
+                                <td>{{ $student->last_login }}</td>
                             </tr>
                             <tr>
                                 <th>Số lớp học đang tham gia</th>
-                                <td>{{$classStudiesNumber}}</td>
+                                <td>{{ $classStudiesNumber }}</td>
                             </tr>
                             <tr>
                                 <th>Tiến độ</th>
-                                <td>{{$coursesNumber}}%</td>
+                                <td>
+                                    <div class="progress" style="width: 50%">
+                                        <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                            role="progressbar" aria-valuenow={{ $coursesNumber }} aria-valuemin="0" aria-valuemax="100"
+                                            style="width: {{ $coursesNumber }}%">{{ $coursesNumber }}%</div>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>

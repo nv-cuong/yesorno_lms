@@ -138,7 +138,12 @@ class LessonController extends Controller
                 ->with('msg', 'Bài học không tồn tại');
     }
 
-    public function downloadFile($file_name) {
-        return Storage::download(public_path($file_name));
+    public function downloadFile($id) {
+        $file = File::find($id);
+        $name = 'baihoc'.$id.'.zip';
+        if ($file){
+            return Storage::download($file->path,$name);
+        }
+        throw new ModelNotFoundException();
     }
 }

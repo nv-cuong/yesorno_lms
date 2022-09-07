@@ -31,10 +31,11 @@
                     </div>
                 </div>
             </div>
-            <span> Tiến độ các khóa học</span>
-            <div class="progress">
-                <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0"
-                    aria-valuemax="100">25%</div>
+            <span> Tiến độ các khóa học : {{$progress}}%</span>
+            <div class="progress" style="height: 30px">
+                <div class="progress-bar progress-bar-striped progress-bar-animated"
+                    role="progressbar" aria-valuenow={{$progress}} aria-valuemin="0" aria-valuemax="100"
+                    style="width: {{$progress}}%"></div>
             </div>
             <br>
         </div>
@@ -103,43 +104,40 @@
                         <!-- End Mixitup Nav-->
                         <div class="magnific-mix-gallery masonary">
                             <div id="portfolio-grid" class="portfolio-items" style="position: relative; height: 1285.32px;">
+                                @foreach ($courses as $course)
                                 <div class="pf-item video photography" style="position: absolute; left: 0%; top: 0px;">
                                     <div class="course-2-box">
                                         <div class="course-2-pic">
-                                            <img src="{{ asset('user/img/course/course-1.jpg') }}" class="course-img"
+                                            <img src="{{$course->image}}" class="course-img"
                                                 alt="thumb">
                                             <div class="course-2-pic-content">
-                                                <p><span>356</span> Enrolled</p>
+                                                <p><span>{{$course->classStudies()->count()}}</span> Lớp học</p>
                                             </div>
                                         </div>
                                         <div class="course-2-content">
-                                            <div class="course-author">
-                                                <img src="{{ asset('user/img/course/user-1.jpg') }}" alt="thumb">
-                                                <h6>Samrun Whatson</h6>
-                                            </div>
                                             <div class="course-2-text">
-                                                <h5>Computer Science Course 42</h5>
-                                                <p>
-                                                    Conubia egestas eos laboris netus velit mi aliquid aute euismod,
-                                                    integer? Quo class taciti labore
+                                                <h5>{{$course->title}}</h5>
+                                                <p class = "desciption_course">
+                                                    {{$course->description}}
                                                 </p>
                                             </div>
                                             <div class="course-2-bottom">
                                                 <div class="course-2-lesson">
                                                     <i class="fas fa-book-open"></i>
-                                                    <p class="mb-0">26 lesson</p>
-                                                </div>
-                                                <div class="course-2-price">
-                                                    Price:<span>$15.00</span>
+                                                    <p class="mb-0">{{$course->units()->count()}} Bài học</p>
                                                 </div>
                                             </div>
                                             <div class="course-2-btn">
-                                                <a href="#" class="theme-btn btn-2">Enroll Now</a>
+                                                <a href="{{ route('personal.course',[$course->slug]) }}" class="theme-btn btn-2">Xem chi tiết</a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                                @endforeach
                             </div>
+                        </div>
+                        <div class="text-center">
+                            {{ $courses->links() }}
                         </div>
                     </div>
                 </div>

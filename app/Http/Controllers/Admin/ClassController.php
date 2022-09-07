@@ -27,11 +27,11 @@ class ClassController extends Controller
             'id',
             'slug',
             'name',
-            'amount'
+            'schedule'
         ])
             ->with('courses', 'users')
             ->search()
-            ->paginate(2);
+            ->paginate(10);
         return view('admin.modules.classes.index', compact('classes'));
     }
 
@@ -67,7 +67,7 @@ class ClassController extends Controller
                 'name'          => $class_item['name'],
                 'slug'          => Str::slug($class_item['name']),
                 'description'   => $class_item['description'],
-                'amount'        => $class_item['amount'],
+                'schedule'    => $class_item['schedule'],
             ]);
             if (isset($_POST['course_id'])) {
                 foreach ($_POST['course_id'] as $value) {
@@ -138,7 +138,7 @@ class ClassController extends Controller
             $class->name        = $request->input('name');
             $class->slug        = Str::slug($class->name);
             $class->description = $request->input('description');
-            $class->amount      = $request->input('amount');
+            $class->schedule  = $request->input('schedule');
             $class->save();
             $message            = 'Cập nhật lớp học thành công';
             $type               = 'success';

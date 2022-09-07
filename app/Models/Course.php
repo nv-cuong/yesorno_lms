@@ -53,4 +53,21 @@ class Course extends Model
             'class_study_id'
         );
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_courses',
+            'course_id',
+            'user_id'
+        );
+    }
+
+    public function scopeSearch($query){
+        if($key = request()->key){
+            $query = $query-> where('title', 'like', '%'.$key.'%');
+        }
+        return $query;
+    }
 }

@@ -41,7 +41,7 @@ class User extends EloquentUser
             Test::class,
             'user_tests',
             'user_id',
-            'test_id'
+            'test_id',
         );
     }
 
@@ -82,6 +82,15 @@ class User extends EloquentUser
         );
     }
 
+    public function notifications()
+    {
+        return $this->belongsToMany(
+            Notification::class,
+            'user_notifications',
+            'user_id',
+            'notification_id'
+        );
+    }
     public function scopeSearch($query)
     {
         if ($key = request()->key) {

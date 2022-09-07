@@ -1,31 +1,30 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
 
 
-    $("#class_id").change(function() {
+    $("#class_id").change(function () {
+       
         if ($(this.val != '')) {
-            var select = $(this).attr('id');
-            var value = $("#class_id").val();
-           
-            var dependent = $(this).data('dependent');
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-            $.ajax({
-                url: '/getStudent',
-                method: "post",
-                data: {
-                    select: select,
-                    value: value,
-                    dependent: dependent
-    
-                },
-                success: function(result) {
-                    $("#student_id").html(result);
-                }
-            })
+            
+            var id = $("#class_id").val();
+            var url = "{{ route('test1', ':id') }}",
+            url = url.replace(':id', id);
+          $.ajax({
+      
+            type: 'GET',
+            url: '/getStudent/1',
+            success: function(data) {
+                console.log(data);
+                $(".student_id").html(data);
+      
+            },
+            error: function(data) {
+              console.log(data);
+            }
+          });
+            
+            
+            
         }
     })
-    })
+})

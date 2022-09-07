@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Notification;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
 
@@ -18,22 +19,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(UserSeeder::class);
+        $this->call(CourseSeeder::class);
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        Course::factory()
-        ->count(5)
-        ->has(
-            Unit::factory()
-            ->count(10)
-            ->has(
-                Lesson::factory()
-                ->count(20)
-            )
-        )
-        ->create();
+        $notifications = [
+            [
+                'content' => 'Bạn đã được duyệt vào khóa học '
+            ],
+        ];
+        Notification::insert($notifications);
     }
 }

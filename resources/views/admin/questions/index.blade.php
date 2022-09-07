@@ -92,8 +92,6 @@
 
             </tbody>
           </table>
-
-
         </div>
       </div>
     </div>
@@ -133,7 +131,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header text-center">
-        <h2 class="modal-title ">Danh sách Câu trả lời</h2>
+        <h2>Danh sách Câu trả lời</h2>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 

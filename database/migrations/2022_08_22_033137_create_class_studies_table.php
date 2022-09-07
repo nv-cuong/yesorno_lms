@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('slug')->nullable();
             $table->text('description')->nullable();
-            $table->integer('time_study')->nullable();
+            $table->integer('schedule')->nullable();
             $table->timestamps();
         });
     }
