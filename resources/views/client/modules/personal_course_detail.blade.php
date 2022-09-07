@@ -109,6 +109,7 @@
                                 </div>
                                 @endforeach
                             </div>
+                            @if ($access->status == 1)
                             <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
                                 <div class="course-accordion">
                                     <div class="course-accordion-header mb-30">
@@ -204,7 +205,7 @@
                                                 <div class="panel-group" id="accordion">
                                                     <div class="panel-heading" role="tab" id="headingOne">
                                                         <h4 class="panel-title">
-                                                            <a role="button" href="#">
+                                                            <a role="button" href="{{route('random_test',[$course->id])}}">
                                                                 Làm bài kiểm tra cuối khóa
                                                             </a>
                                                         </h4>
@@ -215,7 +216,23 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
+                            @else
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="ask">
+                                <div class="panel-group" id="accordion">
+                                    <div class="panel-heading" role="tab" id="headingOne">
+                                        <h4 class="panel-title">
+                                            <a role="button" href="{{ route('home') }}">
+                                                Hãy đợi được tham gia khóa học
+                                            </a>
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -224,4 +241,4 @@
     </div>
 </div>
 
-@endsection
+@stop

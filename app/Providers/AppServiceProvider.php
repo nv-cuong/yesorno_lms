@@ -28,6 +28,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Paginator::useBootstrap();
+        view()->composer('*', 'App\Http\Controllers\Controller');
         
     }
 }

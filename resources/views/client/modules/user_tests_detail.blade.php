@@ -24,7 +24,7 @@
         <div class="row csf align-items-center">
             <div class="col-xl-8">
                 <div class="site-title-left">
-                    <h2>Các khóa học tuyệt vời của chúng tôi</h2>
+                    <h2>Chi tiết bài test</h2>
                 </div>
             </div>
             <div class="col-xl-4">
@@ -78,17 +78,27 @@
                                                 if($uta->category==1)
                                                 {
                                                 $answer= explode(",",$uta->answer);
-                                                
-                                                for( $i=0 ; $i<count($answer);$i++ ) {
-                                                    
-                                                     $answer_content = Answer::find($answer[$i]);
-                                                     echo ($answer_content->content);
-                                                     echo "<br>";
-                                                }
-                                            }
+
+                                                for( $i=0 ; $i<count($answer);$i++ ) { $answer_content=Answer::find($answer[$i]); echo ($answer_content->content);
+                                                    echo "<br>";
+                                                    }
+                                                    }
+                                                    if($uta->category==0)
+                                                    {
+                                                    echo $uta->answer;
+                                                    }
+                                                    if($uta->category==2)
+                                                    {
+                                                    if($uta->answer==1)
+                                                    {
+                                                    echo 'Đúng';
+                                                    }else{
+                                                    echo 'Sai';
+                                                    }
+                                                    }
 
 
-                                                @endphp
+                                                    @endphp
                                             </th>
                                             <th>
                                                 @if($uta->correct != '')
@@ -125,3 +135,50 @@
 </div>
 
 @endsection
+@section('css')
+<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
+<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
+<!-- DataTables & Plugins -->
+@endsection
+@section('scripts')
+<!-- datatables -->
+
+<script src="{{ asset('/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
+<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
+<script>
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+            "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ câu hỏi",// text you want show for info section
+               "sSearch":"Tìm kiếm",
+               "oPaginate":{
+                "sPrevious":"Trước",
+                "sNext":"Tiếp",
+               }
+            },
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+</script>
+
+<script>
+    function student_delete(id) {
+        var student_id = document.getElementById('student_id');
+        student_id.value = id;
+    }
+</script>
+@stop

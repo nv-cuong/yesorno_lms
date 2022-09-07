@@ -1,11 +1,11 @@
 <html>
 
 <head>
-@include('admin.tests.bootstrap5')
-<meta name="csrf-token" content="{{ csrf_token() }}">
+    @include('admin.tests.bootstrap5')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <style>
-  .h1,
+.h1,
 h1 {
     color: #990000;
     font-size: 30px;
@@ -16,11 +16,11 @@ h1 {
 }
 
 
-.clock{
-  position: fixed;
-  bottom: 0;
-  right: 0;
-  width: 300px;
+.clock {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
 }
 
 * {
@@ -131,6 +131,7 @@ label {
         opacity: 0.35;
         position: relative;
     }
+
     100% {
         height: 200px;
         width: 200px;
@@ -139,133 +140,138 @@ label {
         opacity: 0;
     }
 }
+
 h6 {
-  color: red;
+    color: red;
 }
-#btn{margin-left:50px;}
+
+#btn {
+    margin-left: 50px;
+}
 </style>
+
 <body>
     <?php $q=1?>
-    <h1> Test 1</h1>
-    <form id="myForm" method="post" action="{{ route('test.save_maked',[$tests->id,$user->id]) }}">
+    <h1> BÀi TEST CUỐI KHÓA </h1>
+    <form id="myForm" method="post" action="{{ route('save_maked',[$tests->id,$user->id]) }}">
         @csrf
         <div class="container">
-        <div class='py'>
-    
-        @foreach($question as $question)
-        <h5> Câu
-            <?php echo $q;?>
-            :
-            {{ $question->content}}
-        </h5>
-        <label>
-        <?php 
-$answer=$answers->where('question_id','like',$question->id);
-if ($question->category==2) {
-    $users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ? and answer = ?", [$user->id,1]);
-    if ($users_test==null) {
-        echo '<label><input name="q'.$q.'[]" type="radio" value="1" />  A) Đúng </BR></label>';
-    } else {
-        echo '<label><input name="q'.$q.'" type="radio" value="1" checked />  A) Đúng </BR></label>';
+            <div class='py'>
+
+                @foreach($question as $question)
+                <h5> Câu
+                    <?php echo $q;?>
+                    :
+                    {{ $question->content}}
+                </h5>
+                <label>
+                    <?php
+$answer=$answers->where('question_id', 'like', $question->id);
+    if ($question->category==2) {
+        $users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ? and answer = ?", [$id_user_test,1]);
+        if ($users_test==null) {
+            echo '<label><input name="q'.$q.'[]" type="radio" value="1" />  A) Đúng </BR></label>';
+        } else {
+            echo '<label><input name="q'.$q.'" type="radio" value="1" checked />  A) Đúng </BR></label>';
+        }
+        $users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ? and answer = ?", [$id_user_test,0]);
+        if ($users_test==null) {
+            echo '<label><input name="q'.$q.'[]" type="radio" value="0" />  B) Sai </BR></label>';
+        } else {
+            echo '<label><input name="q'.$q.'" type="radio" value="0" checked/>  B) Sai </BR></label>';
+        }
     }
-    $users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ? and answer = ?", [$user->id,0]);
-    if ($users_test==null) {
-        echo '<label><input name="q'.$q.'[]" type="radio" value="0" />  B) Sai </BR></label>';
-    }
-    else {
-        echo '<label><input name="q'.$q.'" type="radio" value="0" checked/>  B) Sai </BR></label>';
-    }
-}
-if ($question->category==0) {
-    $users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ? and question_id = ?", [$user->id,$question->id]);
-    if ($users_test==null) {
-        echo '<textarea class="form-control "
+    if ($question->category==0) {
+        $users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ? and question_id = ?", [$id_user_test,$question->id]);
+        if ($users_test==null) {
+            echo '<textarea class="form-control "
         value="" name="q'.$q.'[]" id="exampleFormControlTextarea1"placeholder="nhập câu trả lời"
         rows="3"></textarea>';
-    } else {
-        foreach ($users_test as $users_test) {
-            echo '<textarea class="form-control "
+        } else {
+            foreach ($users_test as $users_test) {
+                echo '<textarea class="form-control "
    value="" name="q'.$q.'" id="exampleFormControlTextarea1"placeholder="nhập câu trả lời"
    rows="3">'.$users_test->answer.'</textarea>';
+            }
+        }
+    } else {
+        $k=1;
+        foreach ($answer as $answer) {
+            $answer1="";
+            $arr_answer =[];
+            $users_test = DB::select("SELECT *  FROM user_test_answers where user_test_id = ? and question_id = ?", [$id_user_test,$question->id]);
+            foreach ($users_test as $users_test) {
+                $answer1= $users_test->answer;
+            }
+            $arr_answer = explode(",", $answer1);
+            if ($k==1) {
+                if (in_array($answer->id, $arr_answer)==0) {
+                    echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'"/>  A) '.$answer->content.' </BR></label>';
+                } else {
+                    echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'" checked/> A) '.$answer->content.' </BR></label>';
+                }
+            }
+
+            if ($k==2) {
+                if (in_array($answer->id, $arr_answer)==0) {
+                    echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'" />  B) '.$answer->content.' </BR></label>';
+                } else {
+                    echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'"checked />  B) '.$answer->content.' </BR></label>';
+                }
+            }
+            if ($k==3) {
+                if (in_array($answer->id, $arr_answer)==0) {
+                    echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'" />  C) '.$answer->content.' </BR></label>';
+                } else {
+                    echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'"checked />  C) '.$answer->content.' </BR></label>';
+                }
+            }
+            if ($k==4) {
+                if (in_array($answer->id, $arr_answer)==0) {
+                    echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'" />  D) '.$answer->content.' </BR></label>';
+                } else {
+                    echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'" checked/>  D) '.$answer->content.' </BR></label>';
+                }
+            }
+            $k++;
         }
     }
-}
-else{
-   $k=1;
-   foreach ($answer as $answer) {
-    $answer1="";
-    $arr_answer =[];
-    $users_test = DB::select("SELECT *  FROM user_test_answers where user_test_id = ? and question_id = ?", [$user->id,$question->id]);
-    foreach ($users_test as $users_test) {
-   
-    $answer1= $users_test->answer;
 
-}
-    $arr_answer = explode(",", $answer1);
-    if ($k==1) {
-        if (in_array($answer->id,$arr_answer)==0) {
-            echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'"/>  A) '.$answer->content.' </BR></label>';
-        } else {
-            echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'" checked/> A) '.$answer->content.' </BR></label>';
-        }
-    }
+    ?><?php $q++;?>
+                    <hr>
+                </label>
+                @endforeach
+                <button type="submit" class="btn btn-primary">Nộp bài</button>
 
-    if ($k==2) {
-        if (in_array($answer->id,$arr_answer)==0) {
-            echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'" />  B) '.$answer->content.' </BR></label>';
-        } else {
-            echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'"checked />  B) '.$answer->content.' </BR></label>';
-        }
-    }
-    if ($k==3) {
-        if (in_array($answer->id,$arr_answer)==0) {
-            echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'" />  C) '.$answer->content.' </BR></label>';
-        } else {
-            echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'"checked />  C) '.$answer->content.' </BR></label>';
-        }
-    }
-    if ($k==4) {
-        if (in_array($answer->id,$arr_answer)==0) {
-            echo '<label><input name="q'.$q.'[]" type="checkbox" value="'.$answer->id.'" />  D) '.$answer->content.' </BR></label>';
-        } else {
-            echo '<label><input name="q'.$q.'" type="checkbox" value="'.$answer->id.'" checked/>  D) '.$answer->content.' </BR></label>';
-        }
-    }
-    $k++;
+                <a id="btn" class="btn btn-primary" href="{{route('make_again_test',$tests->id)}}">
+                    Làm lại
+                </a>
 
-   }
-}
+    </form></BR></BR>
 
-?><?php $q++;?>
-<hr>
-</label>
-        @endforeach
-        <button type="submit" class="btn btn-primary">Nộp bài</button>
-        <a id="btn" class="btn btn-primary" href="{{route('test.index_again_make',[$tests->id,$user->id])}}">                 
-                                        Làm lại
-                                    </a>
 
-    </form>    
-    
-    
-        <?php
-if ($diem!="bạn chưa có kết quả") {
+    <?php
+if ($u->status==1 && $u->score!=null) {
     echo'
-        <h6>Bạn đã được số điểm là: '.$diem.'</h6>';
-}?>
-       
-    
+        <h6>Bạn đã được số điểm là: '.$u->score.'</h6>';
+} elseif ($u->status==1 && $u->score==null) {
+    echo'
+        <h6>Vui lòng đợi giáo viên chấm.</h6>';
+}
+    ?>
+
     @php
     if($u->score == null)
-    echo 
-    '<div class = "clock">
-        <p >Thời gian làm bài:  <span id="h"> Giờ</span> :
-        <span id="m">Phút</span> :
-        <span id="s">Giây</span></p> 
+    echo
+    '<div class="clock">
+        <p>Thời gian làm bài: <span id="h"> Giờ</span> :
+            <span id="m">Phút</span> :
+            <span id="s">Giây</span>
+        </p>
     </div>';
     @endphp
     <script language="javascript">
-     window.addEventListener('load', start);
+    window.addEventListener('load', start);
     var h = null; // Giờ
     var m = null; // Phút
     var s = null; // Giây
@@ -275,15 +281,15 @@ if ($diem!="bạn chưa có kết quả") {
     function start() {
         /*BƯỚC 1: LẤY GIÁ TRỊ BAN ĐẦU*/
         if (h === null) {
-            
+
             <?php
-            $hourse=0;
-                $minute=$tests->time;
-                if($minute>=60){
-                    $hourse = floor($minute/60);
-                    $minute = $minute%60;
-                }
-                ?>
+                $hourse=0;
+    $minute=$tests->time;
+    if ($minute>=60) {
+        $hourse = floor($minute/60);
+        $minute = $minute%60;
+    }
+    ?>
             h = <?php  echo $hourse;?>;
             m = <?php echo $minute?>;
             s = 0;
@@ -310,11 +316,11 @@ if ($diem!="bạn chưa có kết quả") {
         //  - Dừng chương trình
         if (h == -1) {
             clearTimeout(timeout);
-            $(document).ready(function(){
-        $("#myForm :input").prop("disabled", true);
-        $("#btn").prop("disabled", null);
-    });
-            
+            $(document).ready(function() {
+                $("#myForm :input").prop("disabled", true);
+                location.replace("{{ route('save_maked_get',[$tests->id,$user->id]) }}");
+            });
+
             return false;
         }
 
@@ -328,32 +334,36 @@ if ($diem!="bạn chưa có kết quả") {
             s--;
             start();
         }, 1000);
-        function stop(){
-                clearTimeout(timeout);
-            }
+
+        function stop() {
+            clearTimeout(timeout);
+        }
     }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <?php
-    if($diem!="bạn chưa có kết quả"){
-      echo '<script>
+    if ($u->status==1) {
+        echo '<script>
     
       $(document).ready(function(){
         $("#myForm :input").prop("disabled", true);
         $("#btn").prop("disabled", null);
     });
 </script>';
-    }
-    else{
+    } else {
         echo '<script>
     
         $(document).ready(function(){
           $("#btn").prop("disabled", true);
       });
+      $("#btn")
+        .addClass("disabled")
+        .prop("data-href", $(this).prop("href"))
+        .prop("href","#")
   </script>';
     }
     ?>
-   
+
 
 </body>
 

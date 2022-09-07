@@ -1355,7 +1355,7 @@ header.header.header-2 .header-1 {
 .header-3 .hero-p1,
 .header-3 p,
 .header-3 .hro-btn .theme-btn{
-	 color: var(--white-color);
+	 color: #ff5858;
 }
 
 .header-3 .hro-btn .theme-btn.theme-btn-active {
@@ -6243,4 +6243,8 @@ header.header.single-head .navbar.in {
 .search_main img{
     width: 30px;
     height: auto;
+}
+
+.text_color{
+    color: #000;
 }

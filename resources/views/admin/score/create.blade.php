@@ -152,7 +152,34 @@ $('#multiple-select-clear-field').select2({
 </script>
 <script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 <script type="text/javascript">
-    
+    $(document).ready(function () {
+
+
+
+$("#class_id").change(function () {
+   
+    if ($(this.val != '')) {
+        
+        var id = $("#class_id").val();
+        var url = "{{ route('score.getStudent', ':id') }}",
+        url = url.replace(':id', id);
+      $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(data) {
+            console.log(data);
+            $(".student_id").html(data);
+  
+        },
+        error: function(data) {
+          console.log(data);
+        }
+      });
+     
+    }
+})
+})
+
    
 </script>
 

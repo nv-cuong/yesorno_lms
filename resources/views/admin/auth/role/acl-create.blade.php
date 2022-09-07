@@ -93,7 +93,7 @@
         <td>&nbsp;</td>
     </tr>
 
-    
+
 
     <!-- course -->
     <tr>
@@ -262,6 +262,34 @@
                 <label></label>
             </div>
         </td>
+        <td>&nbsp;</td>
+    </tr>
+
+    <!-- score -->
+    <tr>
+        <td>Quản lý điểm</td>
+        <td class="text-center">
+            <div class="checkbox checkbox-success">
+                <input type="checkbox" value="ok" class="styled acl"
+                        name="score_create" {{ old('score_create') ? 'checked' : ''}}>
+                <label></label>
+            </div>
+        </td>
+        <td class="text-center">
+            <div class="checkbox checkbox-success">
+                <input type="checkbox" value="ok" class="styled acl"
+                        name="score_point" {{ old('score_point') ? 'checked' : ''}}>
+                <label></label>
+            </div>
+        </td>
+        <td class="text-center">
+            <div class="checkbox checkbox-success">
+                <input type="checkbox" value="ok" class="styled acl"
+                        name="score_show" {{ old('score_show') ? 'checked' : ''}}>
+                <label></label>
+            </div>
+        </td>
+        
         <td>&nbsp;</td>
     </tr>
 

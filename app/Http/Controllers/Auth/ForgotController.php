@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Log;
 
 class ForgotController extends Controller
 {
-    
+
     /**
      * Display the password reset view for the email.
      *
@@ -165,7 +165,7 @@ class ForgotController extends Controller
             Sentinel::logout();
 
             Session::flash('success', __('auth.password_change_successful'));
-            return redirect()->route('login');
+            return redirect()->route('login.form');
         } else {
             Session::flash('failed', __('auth.reset_password_change_unsuccessful_old'));
             return redirect()->back()->withInput($request->all());

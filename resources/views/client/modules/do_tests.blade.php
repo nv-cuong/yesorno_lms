@@ -2,151 +2,156 @@
 
 <head>
     @include('admin.tests.bootstrap5')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <style>
-    .h1,
-    h1 {
-        color: #990000;
-        font-size: 30px;
-        margin: 0;
-        font-weight: bold;
-        text-transform: uppercase;
-        text-align: center;
-    }
+.h1,
+h1 {
+    color: #990000;
+    font-size: 30px;
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+}
 
 
-    .clock {
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 300px;
-    }
+.clock {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+}
 
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Poppins'
-    }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins'
+}
 
-    body {
-        background: #edf2f9;
-        margin-left: 50px;
-    }
+body {
+    background: #edf2f9;
+    margin-left: 50px;
+}
 
-    .content {
-        margin: auto;
-        padding: 15px;
-        max-width: 800px;
-        text-align: center;
-    }
+.content {
+    margin: auto;
+    padding: 15px;
+    max-width: 800px;
+    text-align: center;
+}
 
-    .dpx {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-    }
+.dpx {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
 
-    h1 {
-        font-size: 28px;
-        line-height: 28px;
-        margin-bottom: 15px;
-    }
+h1 {
+    font-size: 28px;
+    line-height: 28px;
+    margin-bottom: 15px;
+}
 
-    label {
-        display: block;
-        line-height: 40px;
-    }
+label {
+    display: block;
+    line-height: 40px;
+}
 
-    .option-input {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        -ms-appearance: none;
-        -o-appearance: none;
-        appearance: none;
-        position: relative;
-        top: 13.33333px;
-        right: 0;
-        bottom: 0;
-        left: 0;
+.option-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    position: relative;
+    top: 13.33333px;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 40px;
+    width: 40px;
+    transition: all 0.15s ease-out 0s;
+    background: #cbd1d8;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    margin-right: 0.5rem;
+    outline: none;
+    position: relative;
+    z-index: 1000;
+}
+
+.option-input:hover {
+    background: #9faab7;
+}
+
+.option-input:checked {
+    background: #40e0d0;
+}
+
+.option-input:checked::before {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    content: '\f00c';
+    font-size: 25px;
+    font-weight: bold;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Font Awesome 5 Free';
+}
+
+.option-input:checked::after {
+    -webkit-animation: click-wave 0.65s;
+    -moz-animation: click-wave 0.65s;
+    animation: click-wave 0.65s;
+    background: #40e0d0;
+    content: '';
+    display: block;
+    position: relative;
+    z-index: 100;
+}
+
+.option-input.radio {
+    border-radius: 50%;
+}
+
+.option-input.radio::after {
+    border-radius: 50%;
+}
+
+@keyframes click-wave {
+    0% {
         height: 40px;
         width: 40px;
-        transition: all 0.15s ease-out 0s;
-        background: #cbd1d8;
-        border: none;
-        color: #fff;
-        cursor: pointer;
-        display: inline-block;
-        margin-right: 0.5rem;
-        outline: none;
+        opacity: 0.35;
         position: relative;
-        z-index: 1000;
     }
 
-    .option-input:hover {
-        background: #9faab7;
+    100% {
+        height: 200px;
+        width: 200px;
+        margin-left: -80px;
+        margin-top: -80px;
+        opacity: 0;
     }
+}
 
-    .option-input:checked {
-        background: #40e0d0;
-    }
+h6 {
+    color: red;
+}
 
-    .option-input:checked::before {
-        width: 40px;
-        height: 40px;
-        display: flex;
-        content: '\f00c';
-        font-size: 25px;
-        font-weight: bold;
-        position: absolute;
-        align-items: center;
-        justify-content: center;
-        font-family: 'Font Awesome 5 Free';
-    }
-
-    .option-input:checked::after {
-        -webkit-animation: click-wave 0.65s;
-        -moz-animation: click-wave 0.65s;
-        animation: click-wave 0.65s;
-        background: #40e0d0;
-        content: '';
-        display: block;
-        position: relative;
-        z-index: 100;
-    }
-
-    .option-input.radio {
-        border-radius: 50%;
-    }
-
-    .option-input.radio::after {
-        border-radius: 50%;
-    }
-
-    @keyframes click-wave {
-        0% {
-            height: 40px;
-            width: 40px;
-            opacity: 0.35;
-            position: relative;
-        }
-
-        100% {
-            height: 200px;
-            width: 200px;
-            margin-left: -80px;
-            margin-top: -80px;
-            opacity: 0;
-        }
-    }
-
-    h6 {
-        color: red;
-    }
+#btn {
+    margin-left: 50px;
+}
 </style>
 
 <body>
-    <?php $q = 1 ?>
+    
     <h1> Test 1</h1>
     <form method="post" action="{{ route('send.test', $user_test) }}" id="do_test">
         @csrf
@@ -156,7 +161,7 @@
 
                 @foreach ($questions as $question)
                 <h3 for="question" style="margin-bottom: 1.2rem">
-                    {{ $loop->iteration }}. {{ $question->content }}
+                <label> {{ $loop->iteration }}. {{ $question->content }}</label>
                 </h3>
                 @if($question->category == 2)
                 <label><input name="true[{{ $question->id }}]" type="radio" value="1" checked /> A) Đúng </BR></label>
@@ -183,13 +188,7 @@
         <!-- /.card-body -->
         <br>
 
-        <button type="submit" class="btn btn-primary" onclick="stop()" id="checkBtn">Nộp bài</button></BR>
-        <?php
-        if ($score) {
-        echo'
-        <h6>Bạn đã được số điểm là: '.$score.'</h6>';
-        }?>
-
+        <button type="submit" class="btn btn-primary" onclick="stop()" id="checkBtn">Nộp bài</button></BR>      
     </form>
 
     @php
