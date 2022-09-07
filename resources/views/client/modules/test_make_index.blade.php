@@ -262,7 +262,7 @@ if ($u->status==1 && $u->score!=null) {
 
 
     @php
-    if($u->score == null)
+    if($u->status == 0)
     echo
     '<div class="clock">
         <p>Thời gian làm bài: <span id="h"> Giờ</span> :
@@ -271,6 +271,7 @@ if ($u->status==1 && $u->score!=null) {
         </p>
     </div>';
     @endphp
+
     <script language="javascript">
     window.addEventListener('load', start);
     var h = null; // Giờ
@@ -364,7 +365,6 @@ if ($u->status==1 && $u->score!=null) {
   </script>';
     }
     ?>
-
 
 </body>
 
