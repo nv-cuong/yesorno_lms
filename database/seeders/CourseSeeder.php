@@ -23,6 +23,7 @@ class CourseSeeder extends Seeder
         DB::table('courses')->truncate();
         DB::table('units')->truncate();
         DB::table('lessons')->truncate();
+        DB::table('files')->truncate();
         Schema::enableForeignKeyConstraints();
         // Course::factory()
         // ->count(5)
@@ -39,8 +40,8 @@ class CourseSeeder extends Seeder
 
         DB::table('courses')->insert([
             [
-                'title' => 'Lập trình HTML/CSS',
-                'slug' => 'lap-trinh-html/css',
+                'title' => 'Lập trình HTML CSS',
+                'slug' => 'lap-trinh-html-css',
                 'description' => '<h2>Bạn sẽ học được g&igrave;?</h2>
 
                 <ul>
