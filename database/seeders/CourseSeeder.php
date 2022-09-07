@@ -42,8 +42,7 @@ class CourseSeeder extends Seeder
             [
                 'title' => 'Lập trình HTML CSS',
                 'slug' => 'lap-trinh-html-css',
-                'description' => '<h2>Bạn sẽ học được g&igrave;?</h2>
-
+                'description' => '
                 <ul>
                     <li>Biết c&aacute;ch x&acirc;y dựng giao diện web với HTML, CSS</li>
                     <li>Biết c&aacute;ch ph&acirc;n t&iacute;ch giao diện website</li>
@@ -61,8 +60,7 @@ class CourseSeeder extends Seeder
             [
                 'title' => 'Kiến thức nhập môn IT',
                 'slug' => 'kien-thuc-nhap-mon-it',
-                'description' => '<h2>Bạn sẽ học được g&igrave;?</h2>
-
+                'description' => '
                     <ul>
                         <li>C&aacute;c kiến thức cơ bản, nền m&oacute;ng của ng&agrave;nh IT</li>
                         <li>C&aacute;c m&ocirc; h&igrave;nh, kiến tr&uacute;c cơ bản khi triển khai ứng dụng</li>
@@ -77,8 +75,7 @@ class CourseSeeder extends Seeder
             [
                 'title' => 'Lập trình JavaScripts',
                 'slug' => 'lap-trinh-javascript',
-                'description' => '<h2>Bạn sẽ học được g&igrave;?</h2>
-
+                'description' => '
                     <ul>
                         <li>Hiểu chi tiết về c&aacute;c kh&aacute;i niệm cơ bản trong JS</li>
                         <li>X&acirc;y dựng được website đầu ti&ecirc;n kết hợp với JS</li>
@@ -95,8 +92,7 @@ class CourseSeeder extends Seeder
             [
                 'title' => 'Xây dựng Web với ReactJS',
                 'slug' => 'xay-dung-web-voi-reactjs',
-                'description' => '<h2>Bạn sẽ học được g&igrave;?</h2>
-
+                'description' => '
                     <ul>
                         <li>Hiểu về kh&aacute;i niệm SPA/MPA</li>
                         <li>Hiểu về kh&aacute;i niệm hooks</li>
@@ -116,8 +112,7 @@ class CourseSeeder extends Seeder
             [
                 'title' => 'Lập trình PHP',
                 'slug' => 'lap-trinh-php',
-                'description' => '<h2>Bạn sẽ học được g&igrave;?</h2>
-
+                'description' => '
                     <ul>
                         <li>C&oacute; tư duy lập tr&igrave;nh cốt l&otilde;i của một lập tr&igrave;nh vi&ecirc;n Backend</li>
                         <li>Đọc hiểu m&atilde; nguồn c&aacute;c website được x&acirc;y dựng với ng&ocirc;n ngữ&nbsp;PHP</li>
