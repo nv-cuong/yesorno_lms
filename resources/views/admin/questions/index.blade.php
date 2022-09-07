@@ -28,7 +28,7 @@
             <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo câu hỏi</a>
           </div>
 
-          <table class="table table-striped" id="example1">
+          <table class="table table-striped" id="table_question">
             <thead>
               <tr>
                 <th>STT</th>
@@ -92,8 +92,6 @@
 
             </tbody>
           </table>
-
-
         </div>
       </div>
     </div>
@@ -133,7 +131,7 @@
 
       <!-- Modal Header -->
       <div class="modal-header text-center">
-        <h2 class="modal-title ">Danh sách Câu trả lời</h2>
+        <h2>Danh sách Câu trả lời</h2>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
 
@@ -163,41 +161,23 @@
 @stop
 @section('scripts')
 
-<script type="text/javascript">
-  $(function() {
-    $('#Datalist').DataTable({
-      processing: true,
-      serverSide: true,
-
-      ajax: "{!! route('question.getData') !!}",
-      columns: [{
-          data: 'id',
-          name: 'id'
-        },
-        {
-          data: 'content',
-          name: 'content'
-        },
-        {
-          data: 'action',
-          name: 'action',
-          orderable: true,
-          searchable: true
-        },
-      ],
-      buttons: ['csv', 'excel', 'pdf', 'print']
-    });
-  });
-</script>
 
 <script type="text/javascript">
   $(function() {
-    $("#example1").DataTable({
+    $("#table_question").DataTable({
       "responsive": true,
       "lengthChange": false,
       "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+      "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ câu hỏi",// text you want show for info section
+               "sSearch":"Tìm kiếm",
+               "oPaginate":{
+                "sPrevious":"Trước",
+                "sNext":"Tiếp",
+               }
+            },
+    }).buttons().container().appendTo('#table_question_wrapper .col-md-6:eq(0)');
   });
 
   function question_delete(id) {

@@ -1,4 +1,4 @@
-@extends('Admin.Layouts.master')
+@extends('admin.layouts.master')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -33,13 +33,12 @@
           <!-- /.card-header -->
           <!-- form start -->
           <form method="post" action="{{ route('score.store') }}" id="gg">
-            @csrf
-            {!! csrf_field() !!}
+           
+          {{ csrf_field() }}
             <div class="card-body">
               <div class="form-group">
                 <label>Bài test <span style="color: red">*</span></label>
                 <select class="form-control select2 " style="width: 100%;" name="test_id" id="test_id">
-                <option value="">---</option>
                   @forelse($tests as $test )
                   @if( $test->id == old('test_id'))
                   <option selected="selected" value="{{ $test->id }}">{{ $test->title }}</option>
@@ -74,27 +73,15 @@
               
               <div class="form-group">
                 <label>Chọn học viên</label>
-                <!-- <select class="selectpicker form-control" multiple data-selected-text-format="count" data-live-search="true" 
-                style="width: 100%;" name="student_id[]" id="student_id">
-                
-                @forelse($users as $user )
-                  @if( $user->id == old('student_id'))
-                  <option selected="selected" value="{{ $user->id }}">{{ $user->first_name }}</option>
-                  @else
-                  <option value="{{ $user->id }}">{{ $user->first_name }}</option>
-                  @endif
-                  @empty
-                  @endforelse
-                </select> -->
-                <select class="form-select student_id"
+                <select class="form-select @error('student_id') is-invalid @enderror student_id"
                             id="multiple-select-clear-field" name="student_id[]" data-dependent="class_id"
-                            data-placeholder="Choose student_id" multiple>
-                            <option value="">Selete Course first</option>
+                            data-placeholder="Choose student_id" multiple >
+                           
                 </select>
-                <select id="test" class="" style="width: 100%;"  >
-                <option value="0">---</option>
-                 
-                </select>
+                @error('student_id')
+                        <div class="text-danger">{{ $message }}</div>
+                @enderror
+                
               </div>
 
 
@@ -165,7 +152,34 @@ $('#multiple-select-clear-field').select2({
 </script>
 <script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 <script type="text/javascript">
-    
+    $(document).ready(function () {
+
+
+
+$("#class_id").change(function () {
+   
+    if ($(this.val != '')) {
+        
+        var id = $("#class_id").val();
+        var url = "{{ route('score.getStudent', ':id') }}",
+        url = url.replace(':id', id);
+      $.ajax({
+        type: 'GET',
+        url: url,
+        success: function(data) {
+            console.log(data);
+            $(".student_id").html(data);
+  
+        },
+        error: function(data) {
+          console.log(data);
+        }
+      });
+     
+    }
+})
+})
+
    
 </script>
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('user_test_id');
             $table->integer('question_id');
             $table->string('answer')->nullable();
-            $table->float('score')->nullable();
+            $table->integer('correct')->nullable();
             $table->timestamps();
         });
     }

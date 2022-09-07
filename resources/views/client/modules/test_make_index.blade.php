@@ -260,7 +260,6 @@ if ($u->status==1 && $u->score!=null) {
 }
     ?>
 
-
     @php
     if($u->status == 0)
     echo

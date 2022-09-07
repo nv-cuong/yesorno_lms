@@ -20,7 +20,7 @@
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
-
+ 
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -28,7 +28,7 @@
             <a href="{{ route('score.create') }}" class="btn btn-success float-right">+ Tạo bài test đầu vào</a>
           </div>
 
-          <table class="table table-striped" id="example1">
+          <table class="table table-striped" id="score_table">
             <thead>
               <tr>
                 <th>STT</th>
@@ -45,7 +45,7 @@
 
               <tr>
                 <th>
-                  
+                {{ $loop->iteration  }}
                 </th>
                 <th>{{$test_user->first_name}}</th>
                 <th>{{$test_user->title}}</th>
@@ -86,12 +86,20 @@
 
 <script type="text/javascript">
   $(function() {
-    $("#example1").DataTable({
+    $("#score_table").DataTable({
       "responsive": true,
       "lengthChange": false,
       "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+      "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ bài",// text you want show for info section
+               "sSearch":"Tìm kiếm",
+               "oPaginate":{
+                "sPrevious":"Trước",
+                "sNext":"Tiếp",
+               }
+            },
+    }).buttons().container().appendTo('#score_table_wrapper .col-md-6:eq(0)');
   });
 
   function question_delete(id) {

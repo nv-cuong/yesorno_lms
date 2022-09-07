@@ -17,7 +17,7 @@
 <!-- Main content -->
 <section class="content">
         <div class="container-fluid">
-
+        <h3 class="box-title">Quản lý user</h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -77,7 +77,7 @@
                                         <i class="fas fa-edit"></i>
                                         </a>
                                         
-                                        @if($user->roles[0]->name != "admin")
+                                        @if($user->roles[0]->name != "Admin")
                                         <a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModalUser" onclick="javascript:user_delete('{{ $user->id }}')"><i class="fas fa-backspace"></i></a>
                                         @endif
                                     </td>
@@ -130,7 +130,15 @@
       "responsive": true, 
       "lengthChange": false, 
       "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+      "oLanguage": {
+               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ user",// text you want show for info section
+               "sSearch":"Tìm kiếm",
+               "oPaginate":{
+                "sPrevious":"Trước",
+                "sNext":"Tiếp",
+               }
+            },
     }).buttons().container().appendTo('#users-table_wrapper .col-md-6:eq(0)');
   });
   function user_delete (id)

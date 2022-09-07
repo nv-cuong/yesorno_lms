@@ -46,19 +46,25 @@
                             @endphp
                             <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
                                     <i class="far fa-bell"></i>
-                                    Thông báo({{ $notifications->count() }}) </a>
+                                    Thông báo({{ $notifications->count() + $count_user_tests }}) </a>
                                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                                    
                                     @forelse($notifications as $notification)
                                     <div class="dropdown-divider"></div>
                                     <a href="#" class="dropdown-item">
                                         <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
-                                        <span class="float-right text-muted text-sm">3 mins</span>
+                                       
                                     </a>
                                     @empty
+                                    
+                                    @endforelse
+                                    @forelse($user_tests as $user_test)
                                     <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="far fa-bell mr-2"></i>Không có thông báo nào
+                                    <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
+                                       
                                     </a>
+                                    @empty
                                     @endforelse
                                 </div>
                             </li>
@@ -72,6 +78,10 @@
                             @php
                             }
                             @endphp
+                           
+                            <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('test_users') }}">Test </a>
+                            </li>
                             <form class="form-inline" style="padding-left: 100px" action="{{ route('search')}}" method="GET">
                                 <div class="form-group mx-sm-3 mb-2">
                                     <input type="text" class="form-control input_search" name="keyword" style="width: 200px; font-size: 13px" placeholder="Tên khóa học">
