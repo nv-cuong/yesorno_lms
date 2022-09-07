@@ -16,15 +16,17 @@ class CourseDetailController extends Controller
         $course = Course::where('slug', $slug)->with('classStudies', 'users')->first();
         $units = Unit::where('course_id', $course->id)->get();
         $user = Sentinel::getUser();
-
-        $access = Course::select([
-            'courses.id',
-            'uc.status',
-        ])
-        ->join('user_courses AS uc','uc.course_id', 'courses.id')
-        ->where('courses.id', $course->id)
-        ->where('uc.user_id',$user->id)
-        ->first();
+        $access = '';
+        if($user){
+            $access = Course::select([
+                'courses.id',
+                'uc.status',
+            ])
+            ->join('user_courses AS uc','uc.course_id', 'courses.id')
+            ->where('courses.id', $course->id)
+            ->where('uc.user_id',$user->id)
+            ->first();
+        }
         return view('client.modules.course_detail', compact('course', 'units', 'user', 'access'));
     }
 

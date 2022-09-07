@@ -21,10 +21,12 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 @endif
-
-@if($errors->all())
-    <div class="alert alert-danger alert-dismissible fade show">
-        <strong>Warning: </strong> Please check the form carefully for errors!
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+@if(Session::has('success'))
+    <div class="alert alert-success alert-dismissible fade show">
+        <strong></strong> {!! Session::get('success') !!}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
     </div>
 @endif
+

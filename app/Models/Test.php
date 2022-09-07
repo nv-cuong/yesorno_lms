@@ -34,4 +34,13 @@ class Test extends Model
             
         );
     }
+    public function user()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_tests',
+            'test_id',
+            'user_id',
+        );
+    }
 }

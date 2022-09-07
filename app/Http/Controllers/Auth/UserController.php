@@ -18,10 +18,9 @@ use App\Http\Requests\Auth\User\UpdateRequest;
 
 class UserController extends Controller
 {
+    
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
@@ -36,13 +35,13 @@ class UserController extends Controller
         ])
         ->with('roles', 'activations')
         ->paginate();
+       
         return view('admin.auth.user.index', compact('users'));
     }
 
+    
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
     {
@@ -105,24 +104,10 @@ class UserController extends Controller
         }
     }
 
+    
     /**
-     * Display the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return void
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int $id
-     *
-     * @return \Illuminate\Http\Response
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
@@ -146,14 +131,11 @@ class UserController extends Controller
         ));
     }
 
+   
     /**
-     * Update the specified resource in storage.
-     *
      * @param UpdateRequest $request
-     * @param  int $id
-     *
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Exception
      */
     public function update(UpdateRequest $request, $id)
     {
@@ -248,11 +230,9 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
+    
     /**
-     * For Active or Deactive User
-     *
-     * @param $id
-     *
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function status($id)
