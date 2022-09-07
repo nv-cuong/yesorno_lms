@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Question;
 use App\Models\Answer;
 use App\Models\User;
+use App\Models\UserTest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -18,11 +19,6 @@ class TestController extends Controller
         // $tests = DB::table('tests')->paginate(15);
         $tests = Test::all();
         return view('admin.tests.index', compact('tests'));
-    }
-    public function show_make()
-    {
-        // $tests = DB::table('tests')->paginate(15);
-        return view('test.index');
     }
     public function create()
     {
@@ -306,146 +302,5 @@ class TestController extends Controller
         Test::destroy($id_test);
         return redirect()->action([TestController::class, 'index'])->with('success', 'Dữ liệu xóa thành công.');
     }
-    public function index_make_test($id_user,$id_test)
-    {
-        $user  = User::find($id_user);
-        //$user->tests()->attach($id_test);
-        $users_test = DB::select("SELECT * FROM user_tests where user_id = ? and test_id = ?", [$id_user,$id_test]);
-        $tests = Test::find($id_test);
-        $question= $tests->question;
-        $answers=Answer::all();
-        $diem="bạn chưa có kết quả";
-        $category='Tự luận';
-        foreach ($users_test as $users_test) {
-        if ($users_test->score!=null  ) {
-            if($users_test->score==100000000){
-                $diem="Vui lòng đợi giáo viên chấm";
-            }
-            else {
-                
-    $diem=$users_test->score;
-    
-}
-
-
-        }
-    }
-    $u = $users_test;
-        return view('test.test_make_index', compact('tests','question', 'answers','diem','user','u'));
-    }
-    public function index_make_test1($id_user,$id_test)
-    {
-        $user  = User::find($id_user);
-        
-        $user->tests()->attach($id_test);
-        $users_test = DB::select("SELECT * FROM user_tests where user_id = ? and test_id = ?", [$id_user,$id_test]);
-        $tests = Test::find($id_test);
-        $question= $tests->question;
-        $answers=Answer::all();
-        $diem="bạn chưa có kết quả";
-        $category='Tự luận';
-        
-    $u = $users_test;
-        return view('test.test_make_index', compact('tests','question', 'answers','diem','user','u'));
-    }
-    public function save_maked(Request $request,$id_test,$id_user){
-        $user_test_answer = DB::table('user_test_answers');
-        $tests = Test::find($id_test);
-        $question = $tests->question;
-        $answers=Answer::all();
-        $user  = User::find($id_user);
-        $k=1;
-        
-foreach ($question as $row) {
-    $user_test_answer1=[];
-$q='q'.$k;
-    $user_test_answer->question_id=$row->id;
-    $t=count($request->$q);
-    for ($i = 0; $i < $t; $i++) {
-        if($t>1){$user_test_answer1[]=$request->$q[$i];}
-        else{
-    $user_test_answer1=$request->$q[$i];
-}
-    }
-    if($t>1){
-        $user_test_answer1 = implode(',', $user_test_answer1);
-    }
-    DB::insert('insert into user_test_answers (user_test_id, question_id,answer) values (?, ?,?)', [$id_user, $user_test_answer->question_id,$user_test_answer1]);
-    $k++;
-  }
-$diem=0;
-$category='Tự luận';
-if (strlen(strstr($tests->category, $category)) > 0){
-    //$diem='Vui lòng đợi giám viên chấm';
-    foreach ($tests->user as $row){
-        if ($row->pivot->user_id==$id_user){
-            $row->pivot->score = 100000000;
-            $row->pivot->save();
-        }
-    }
-}
-else{
-$users_test = DB::select("SELECT * FROM user_test_answers where user_test_id = ?", [$id_user]);
-foreach ($users_test as $user_test) {
-    $question=Question::find($user_test->question_id);
-    if ($question->category==2) {
-        if ($question->answer==$user_test->answer) {
-            $diem+=$question->score;
-        }
-    } else {
-        $arr_answer = explode(",", $user_test->answer);
-        $dem=0;
-for ($i=0;$i<count($arr_answer);$i++) {
-    $answer=Answer::find($arr_answer[$i]);
-
-    if ($answer->checked!=1) {
-       $dem++;
-    }
-}
-if($dem==0){
-    $diem+=$question->score;
-}
-    }
-}
-foreach ($tests->user as $row) {
-    $k=0;
-if ($row->pivot->user_id==$id_user) {
-if ($row->pivot->score==null) {
-    $row->pivot->score = $diem;
-    $row->pivot->save();
-}
-    else{
-        if($row->pivot->score > $diem){
-            dd($row->pivot->score);
-            $row->pivot->score=$diem;
-            $row->pivot->save();
-           
-        }
-        else{
-            $tests->user()->detach();
-        }
-    }
-    $k=1;
-}
-if ($k==1) {
-    break;
-}
-}
-}
-$tests = Test::find($id_test);
-$question = $tests->question;
-return redirect()->route('test.index_make',[$id_user,$id_test]);
-//return view('test.test_make_index', compact('tests','question', 'answers','diem','user'));
-
-}
-public function view_maked($id_user,$id_test){
-    $user  = User::find($id_user);
-    //$user->tests()->attach($id_test);
-    $users_test = DB::select("SELECT * FROM user_tests where user_id = ? and test_id = ?", [$id_user,$id_test]);
-    $tests = Test::find($id_test);
-    $question= $tests->question;
-    $answers=Answer::all();
-    $diem="bạn chưa có kết quả";
-    return view('test.show_test_maked', compact('tests','question', 'answers','diem','user'));
-}
+   
 }
