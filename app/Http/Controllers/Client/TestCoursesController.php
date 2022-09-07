@@ -16,11 +16,6 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class TestCoursesController extends Controller
 {
-    public function show_make()
-    {
-        // $tests = DB::table('tests')->paginate(15);
-        return view('test.index');
-    }
     public function random_test($id_course)
     {
         $course = Course::find($id_course);
@@ -36,7 +31,8 @@ class TestCoursesController extends Controller
         $user->tests()->attach($id_test);
         return redirect()->route('index_make', [$id_test]);
     }
-    public function make_again_test($id_test){
+    public function make_again_test($id_test)
+    {
         $getUser = Sentinel::getUser();
         $id_user = $getUser->id;
         $user  = User::find($id_user);
@@ -48,10 +44,6 @@ class TestCoursesController extends Controller
         $getUser = Sentinel::getUser();
         $id_user = $getUser->id;
         $user  = User::find($id_user);
-        //$kt=UserTest::where('test_id', $id_test)->select('id','test_id')->get();
-        // if ($kt) {
-//     $user->tests()->attach($id_test);
-        // }
         $users_test=UserTest::where('user_id', $id_user)
         ->select('id', 'score', 'status')
         ->get();
@@ -62,7 +54,7 @@ class TestCoursesController extends Controller
             $id_user_test=$users_test->id;
         }
         $u = $users_test;
-        return view('test.test_make_index', compact('tests', 'question', 'answers', 'user', 'u', 'id_user_test'));
+        return view('client.modules.test_make_index', compact('tests', 'question', 'answers', 'user', 'u', 'id_user_test'));
     }
     public function save_maked(Request $request, $id_test, $id_user)
     {
@@ -153,28 +145,5 @@ class TestCoursesController extends Controller
         $question = $tests->question;
         return redirect()->route('index_make', [$id_test]);
     }
-    public function view_maked($id_user, $id_test)
-    {
-        $user  = User::find($id_user);
-        //$user->tests()->attach($id_test);
-        $users_test = DB::select("SELECT * FROM user_tests where user_id = ? and test_id = ?", [$id_user,$id_test]);
-        $tests = Test::find($id_test);
-        $question= $tests->question;
-        $answers=Answer::all();
-        $diem="bạn chưa có kết quả";
-        return view('test.show_test_maked', compact('tests', 'question', 'answers', 'diem', 'user'));
-    }
-    public function index_make_test1($id_user, $id_test)
-    {
-        $user  = User::find($id_user);
-        $user->tests()->attach($id_test);
-        $users_test = DB::select("SELECT * FROM user_tests where user_id = ? and test_id = ?", [$id_user,$id_test]);
-        $tests = Test::find($id_test);
-        $question= $tests->question;
-        $answers=Answer::all();
-        $diem="bạn chưa có kết quả";
-        $category='Tự luận';
-        $u = $users_test;
-        return view('test.test_make_index', compact('tests', 'question', 'answers', 'diem', 'user', 'u'));
-    }
+    
 }

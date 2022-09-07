@@ -6,17 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Test;
 use App\Models\Course;
 use App\Models\Question;
-use App\Models\Answer;
-use App\Models\User;
-use App\Models\UserTest;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 class TestController extends Controller
 {
     public function index()
-    {
-        // $tests = DB::table('tests')->paginate(15);
+    {      
         $tests = Test::all();
         return view('admin.tests.index', compact('tests'));
     }
@@ -107,7 +103,6 @@ class TestController extends Controller
         } else {
             $questions = Question::where('course_id', $value)->select('id', 'content', 'category')->get();
         }
-        //  $output = '<option value="">Select '.ucfirst($dependent).'</option>';
         $k = 1;
         foreach ($questions as $row) {
             if ($row->category == 0) {
@@ -130,7 +125,6 @@ class TestController extends Controller
 
         return view('admin.tests.edit', compact('course', 'question', 'tests'));
     }
-
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -155,7 +149,6 @@ class TestController extends Controller
     {
         $tests  = Test::find($id);
         $question1 = $tests->question;
-        // $question = $tests->question()->paginate(4);
         $question = $tests->question;
         $arr_question=[];
         foreach ($question1 as $row) {
@@ -167,8 +160,6 @@ class TestController extends Controller
             return redirect()->route('test.index');
         } else {
             $arr_question = implode(',', $arr_question);
-
-
             $a=[];
             $a[0]="Tự luận";
             $a[1]="Trắc nhiệm nhiều lựa chọn";
@@ -247,15 +238,6 @@ class TestController extends Controller
         $this->update_category_test($id_test);
         return redirect()->route('test.view', $id_test);
     }
-    public function search(Request $request)
-    {
-        if ($request->search == null) {
-            $tests = DB::table('tests')->paginate(15);
-        } else {
-            $tests = Test::where('title', 'like', '%' . $request->search . '%')->paginate(15);
-        }
-        return view('admin.tests.index', compact('tests'));
-    }
     public function update_category_test($id_test)
     {
         $tests=Test::find($id_test);
@@ -290,7 +272,6 @@ class TestController extends Controller
                 $b[$k] = 1;
             }
         }
-
         $tests->category=$category_question;
         $tests->save();
     }
@@ -301,6 +282,5 @@ class TestController extends Controller
         $test->question()->detach();
         Test::destroy($id_test);
         return redirect()->action([TestController::class, 'index'])->with('success', 'Dữ liệu xóa thành công.');
-    }
-   
+    } 
 }
