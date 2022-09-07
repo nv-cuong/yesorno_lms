@@ -13,7 +13,6 @@
   <option value="2">Test 2</option>
   <option value="3">Test 3</option>
 </select> -->
-<a href="{{route('test.index_make',[2,2])}}">Làm bài</a>
-<a href="{{route('test.view_maked',[2,2])}}">Xem bài</a>
+<a href="{{route('index_make',[1])}}">Làm bài</a>
 </body>
 </html>
