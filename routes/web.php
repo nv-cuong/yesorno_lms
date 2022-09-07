@@ -59,6 +59,8 @@ Route::post('/personal/lessonprogress/{slug}', [StudentCoursesController::class,
     ->name('lessonProgress');
 Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
     ->name('post.personal.detach');
+Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])
+    ->name('lesson.download');
 Route::get('/doTest/{id}', [HomeController::class, 'doTest'])
     ->name('doTest');
 
@@ -156,7 +158,6 @@ Route::prefix('admin')
             Route::get('/editLesson/{id}', [LessonController::class, 'editLesson'])->name('edit');
             Route::post('/editLesson/{id}', [LessonController::class, 'updateLesson'])->name('update');
             Route::delete('/destroyLesson/{unit_id}', [LessonController::class, 'destroyLesson'])->name('delete');
-            Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])->name('download');
         });
 
         Route::prefix('/test')->name('test.')->group(function () {
