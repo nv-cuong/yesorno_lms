@@ -73,8 +73,7 @@
                             <div class="course-syl-price cr-mb">
                                 <ul>
                                     <li>
-                                        <p title="Số lượng học sinh đã đang kí học"><i
-                                                class="fas fa-user"></i>{{ $course->users()->get()->count() }} Đang học</p>
+                                        <p title="Số lượng học sinh đã đang kí học"><i class="fas fa-user"></i>{{ $course->users()->get()->count() }} Đang học</p>
                                     </li>
                                     <li>
                                         @if ($user && $access)
