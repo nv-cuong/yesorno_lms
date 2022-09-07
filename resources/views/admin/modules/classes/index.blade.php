@@ -8,16 +8,6 @@
             <div class="col-sm-6">
                 <h1>Danh sách lớp học</h1>
             </div>
-            <div class="col-sm-6 ">
-                <form action="" class="form-inline justify-content-end">
-                    <div class="form-group">
-                        <input type="text" class="form-control" name="key" placeholder="Tìm kiếm theo tên ...">
-                    </div>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="fas fa-search"></i>
-                    </button>
-                </form>
-            </div>
         </div>
         @include('admin._alert')
         <hr>
@@ -25,7 +15,6 @@
 </section>
 <section class="content">
     <div class="container-fluid">
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -88,9 +77,6 @@
                             @endforelse
                         </tbody>
                     </table>
-                    <div class="card-footer clearfix">
-                        {!! $classes->appends(Request::all())->links() !!}
-                    </div>
                 </div>
             </div>
         </div>

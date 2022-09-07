@@ -24,27 +24,15 @@
                     <div class="course-left-box crs-post">
                         <h5 class="course-left-title">More course for you</h5>
                         <div class="course-post">
+                            @foreach ($courses as $item)
                             <div class="course-post-wrp">
-                                <img src="{{ asset('/user/img/singlepost/post-2.png') }}" alt="thumb">
+                                <img src="{{ asset($item->image) }}" style="width: 80px" alt="thumb">
                                 <div class="course-post-text">
-                                    <h6>Complete education learning course 2020</h6>
-                                    <span>$90.00</span>
+                                    <a href="{{ route('detail', $item->slug) }}">{{ $item->title }}</a>
                                 </div>
                             </div>
-                            <div class="course-post-wrp">
-                                <img src="{{ asset('/user/img/singlepost/post-2.png') }}" alt="thumb">
-                                <div class="course-post-text">
-                                    <h6>Complete education learning course 2020</h6>
-                                    <span>$90.00</span>
-                                </div>
-                            </div>
-                            <div class="course-post-wrp">
-                                <img src="{{ asset('/user/img/singlepost/post-2.png') }}" alt="thumb">
-                                <div class="course-post-text">
-                                    <h6>Complete education learning course 2020</h6>
-                                    <span>$90.00</span>
-                                </div>
-                            </div>
+                            @endforeach
+
                         </div>
                     </div>
                 </div>
@@ -67,6 +55,7 @@
                             @endif
                         </div>
 
+                       <span style="color:brown"> Bắt đầu từ: </span>{{ $course->begin_date }} <span style="color:brown"> đến: </span> {{ $course->end_date }} <br>
                         @if ($course->status == 0)
                             <h5>( Khóa học miễn phí )</h5>
                         @else
@@ -81,8 +70,7 @@
                                                 Bạn đã đăng kí khóa học này
                                                 <input type="hidden" name="course_id" value="{{ $course->id }}">
                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="btn btn-danger"
-                                                    title="Đăng kí vào khóa học">Hủy</button>
+                                                <button type="submit" class="btn btn-danger" title="Đăng kí vào khóa học">Hủy</button>
                                             </form>
                                         @elseif($user)
                                             <form action="{{ route('post.attach') }}" method="get">
@@ -97,14 +85,12 @@
                                                 @endforeach
                                                 <input type="hidden" name="course_id" value="{{ $course->id }}">
                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi
-                                                    danh </button>
+                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
                                             </form>
                                         @else
                                             <form action="{{ route('post.attach') }}" method="get">
                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi
-                                                    danh </button>
+                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
                                             </form>
                                         @endif
                                     </li>
@@ -229,30 +215,68 @@
                                 <div class="tab-pane fade" id="nav-contact" role="tabpanel"
                                     aria-labelledby="nav-contact-tab">
                                     @foreach ($course->classStudies()->get() as $class)
-                                        <div class="course-ovr-wrp">
-                                            <div class="course-over-fet">
-                                                <div class="course-over-bio">
-                                                    <div class="course-over-name">
-                                                        <h5> <span style="color: violet">Tên lớp: </span>
-                                                            {{ $class->name }}</h5>
-                                                        <h6><span style="color: violet">Thời gian học: </span>
-                                                            @if ($class->schedule == 0)
-                                                                Sáng
-                                                            @elseif ($class->schedule == 1)
-                                                                Chiều
-                                                            @else
-                                                                Cả ngày
-                                                            @endif
-                                                        </h6>
-                                                    </div>
+                                    {{ 'V1' }}
+                                    <div class="course-ovr-wrp">
+                                        <div class="course-over-fet">
+                                            <div class="course-over-bio">
+                                                <div class="course-over-name">
+                                                    <h5><span style="color: violet">Tên lớp: </span> {{ $class->name }} </h5>
+                                                    <h5><span style="color: violet">Thời gian học: </span>
+                                                        @if ($class->schedule == 0)
+                                                            Sáng
+                                                        @elseif ($class->schedule == 1)
+                                                            Chiều
+                                                        @else
+                                                            Cả ngày
+                                                        @endif
+                                                    </h5>
                                                 </div>
-                                                <p class="mb-0">
-                                                    {!! $class->description !!}
-                                                </p>
-                                                <a href="#" class="theme-btn">Đăng kí lớp</a>
                                             </div>
+                                            <div class="mb-0" style="text-align: justify">
+                                                {!! $class->description !!}
+                                            </div>
+                                            @if ($user)
+
+                                            @forelse ($class_of_user as $item)
+                                            {{ 'vong2' }}
+
+                                                @if($item->id == $class->id)
+                                                {{ 'TH1' }}
+                                                            <form action="{{ route('post.detach.class') }}" method="get">
+                                                                <span>Bạn đã đăng kí lớp học này !</span>
+                                                                <input type="hidden" name="class_id" value="{{ $item->id }}">
+                                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                                                <button type="submit" class="btn btn-danger">Hủy</button>
+                                                            </form>
+                                                            @continue
+                                                            @else
+                                                            {{ 'TH2' }}
+                                                            <form action="{{ route('post.attach.class') }}" method="get">
+                                                                <input type="hidden" name="class_id" value="{{ $class->id }}">
+                                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                                                <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
+                                                            </form>
+                                                            {{-- @break --}}
+                                                            @endif
+                                                        @empty
+
+                                                        {{ 'sdfsd' }}
+                                                        <form action="{{ route('post.attach.class') }}" method="get">
+                                                            <input type="hidden" name="class_id" value="{{ $class->id }}">
+                                                            <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                                            <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
+                                                        </form>
+                                                        @endforelse
+                                            @else
+                                            Đăng nhập!!
+                                            @endif
+
+
+                                            <hr>
                                         </div>
-                                    @endforeach
+                                    </div>
+                                @endforeach
+
                                 </div>
                             </div>
                         </div>
