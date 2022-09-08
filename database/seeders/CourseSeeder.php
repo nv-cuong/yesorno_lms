@@ -26,21 +26,6 @@ class CourseSeeder extends Seeder
         DB::table('files')->truncate();
         DB::table('questions')->truncate();
         Schema::enableForeignKeyConstraints();
-<<<<<<< HEAD
-        Course::factory()
-        ->count(5)
-        ->hasQuestions(10)
-        ->has(
-            Unit::factory()
-            ->count(2)
-            ->has(
-                Lesson::factory()
-                ->count(3)
-            )
-        )
-        ->create();
-=======
->>>>>>> eb298b0a6ea60e2c967036deebf6706cc05c2eb3
 
         DB::table('courses')->insert([
             [
