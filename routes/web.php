@@ -45,6 +45,8 @@ Route::get('/search', [SearchController::class, 'search'])
     ->name('search');
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
+Route::get('/courses/lesson/{id}', [CourseDetailController::class, 'showLesson'])
+    ->name('learning');
 Route::get('/personal', [HomeController::class, 'personal'])
     ->name('personal');
 Route::get('/contact', [HomeController::class, 'contact'])

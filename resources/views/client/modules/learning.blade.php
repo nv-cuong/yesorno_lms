@@ -1,31 +1,29 @@
-@extends('admin.layouts.master')
-@section('title', 'Quản lí khóa học')
+@extends('client.layouts.master')
+@section('title', 'Chi tiết bài học')
 
 @section('content')
-<section class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h1>Quản lí khóa học</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="{{ route('course.index') }}">Khóa học</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('unit.detail', $lesson->unit_id) }}">Chương</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">{{ $lesson->title }}</li>
-                    </ol>
-                </nav>
-            </div>
+
+    <div class="site-breadcrumb" style="background: url({{ asset('/user/img/breadcrumb/breadcrumb.jpg') }})">
+        <div class="breadcrumb-circle">
+            <img src="{{ asset('/user/img/header/header-shape-2.png') }}" class="hero-circle-1" alt="thumb">
+        </div>
+        <div class="container">
+            <h2 class="breadcrumb-title">Liên hệ</h2>
+            <ul class="breadcrumb-menu clearfix">
+                <li><a href="{{ route('home') }}">Trang chủ</a></li>
+                <li class="active">Tôi</li>
+            </ul>
         </div>
     </div>
-</section>
-<section class="content">
+
+<section class="content" style="margin:60px 0">
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
                 <div class="row">
                     <div class="col-md-12">
                         @if ($lesson)
-                        <h2>{{ $lesson->title }}</h2>
+                        <h4> Tên bài học: {{ $lesson->title }}</h4>
                         <div class="table-responsive">
                             @forelse ($files as $file)
                             @if ($file->type == 'link')
@@ -49,7 +47,7 @@
                         <div class="table-responsive">
                             <strong>
                                 <span style="color: black">
-                                    <h6>Nội dung bài học</h6>
+                                    <h4>Nội dung bài học</h4>
                                 </span>
                                 {!! $lesson->content !!}
                             </strong>
@@ -61,4 +59,6 @@
         </div>
     </div>
 </section>
-@stop
+
+
+@endsection
