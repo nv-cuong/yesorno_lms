@@ -243,10 +243,6 @@ $answer=$answers->where('question_id', 'like', $question->id);
                 @endforeach
                 <button type="submit" class="btn btn-primary">Nộp bài</button>
 
-                <a id="btn" class="btn btn-primary" href="{{route('make_again_test',$tests->id)}}">
-                    Làm lại
-                </a>
-
     </form></BR></BR>
 
 

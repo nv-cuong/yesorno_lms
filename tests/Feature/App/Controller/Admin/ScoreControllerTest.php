@@ -20,7 +20,7 @@ class ScoreControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        //Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
+        Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
         $this->user = Sentinel::findUserById(1);
         Sentinel::login($this->user, true);
     }
@@ -46,8 +46,8 @@ class ScoreControllerTest extends TestCase
     public function test_store_success()
     {
         $scoreData = [
-            'user_id' =>        '5',
-            'test_id' =>        '1',
+            'user_id' =>        '2',
+            'test_id' =>        '4',
             
         ];
 
@@ -55,8 +55,8 @@ class ScoreControllerTest extends TestCase
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('user_tests', [
-            'user_id' =>        '1',
-            'test_id' =>       '1',
+            'user_id' =>        '2',
+            'test_id' =>       '4',
         ]);
 
     }

@@ -93,9 +93,9 @@ class ScoreController extends Controller
     {
         $test_user_item = $request->except('_token');
 
-
+        $score = 0;
         if ($request->get('true')) {
-            $score = 0;
+           
             foreach ($request->get('true')  as $question_id  => $answer_value) {
                 $question = Question::find($question_id);
                 if ($answer_value > $question->score) {
