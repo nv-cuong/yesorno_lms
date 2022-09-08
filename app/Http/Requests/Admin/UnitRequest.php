@@ -25,7 +25,15 @@ class UnitRequest extends FormRequest
     {
         return [
             'title' =>          ['required', 'max:255'],
-            'course_id' =>      ['required'],
+            'course_id' =>      ['required', 'numeric'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'title.required'     => 'Bạn chưa nhập tên chương',
+            'title.max'     => 'Tên chương phải ít hơn 255 kí tự',
         ];
     }
 }

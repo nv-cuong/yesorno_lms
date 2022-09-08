@@ -81,7 +81,7 @@ Route::get('/index/make_test/{id_test}', [TestCoursesController::class, 'index_m
 Route::post('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
     ->name('save_maked');
 Route::get('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
-    ->name('save_maked_get');  
+    ->name('save_maked_get');
 Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])
     ->name('view_maked');
 Route::get('/index/make_again_test/{id_test}', [TestCoursesController::class, 'make_again_test'])
@@ -96,8 +96,6 @@ Route::get('/user_tests', [UserTestController::class, 'test_user'])
 Route::get('/user_tests/detail/{id}', [UserTestController::class, 'user_tests_detail'])
     ->name('user_tests_detail');
 
-Route::get('/index/make_test/{id_user}/{id_test}', [TestController::class, 'index_make_test'])->name('index_make');
-
 Route::get('/login', [LoginController::class, 'login'])
     ->name('login.form');
 Route::post('/login', [LoginController::class, 'postLogin'])
@@ -108,7 +106,7 @@ Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/course', function () {
     return view('course');
 });
-Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
+// Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
    
@@ -209,6 +207,7 @@ Route::prefix('admin')
             Route::post('/point', [ScoreController::class, 'point'])
                 ->name('point')->middleware('myweb.auth:scores.point');
             Route::get('/getStudent/{id}', [ScoreController::class, 'getStudent'])->name('getStudent');
+            Route::get('/dots/{id}', [ScoreController::class, 'dots'])->name('dots');
         });
 
         require 'users.php';

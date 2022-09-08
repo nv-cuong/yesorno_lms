@@ -26,6 +26,7 @@ class CourseSeeder extends Seeder
         DB::table('files')->truncate();
         DB::table('questions')->truncate();
         Schema::enableForeignKeyConstraints();
+<<<<<<< HEAD
         Course::factory()
         ->count(5)
         ->hasQuestions(10)
@@ -38,6 +39,8 @@ class CourseSeeder extends Seeder
             )
         )
         ->create();
+=======
+>>>>>>> eb298b0a6ea60e2c967036deebf6706cc05c2eb3
 
         DB::table('courses')->insert([
             [
@@ -381,5 +384,18 @@ class CourseSeeder extends Seeder
                 'path' => 'https://www.youtube.com/watch?v=G19jZzK5FWI&list=PL_-VfJajZj0U9nEXa4qyfB4U5ZIYCMPlz&index=33',
             ],
         ]);
+        
+        Course::factory()
+        ->count(10)
+        ->hasQuestions(10)
+        ->has(
+            Unit::factory()
+            ->count(2)
+            ->has(
+                Lesson::factory()
+                ->count(3)
+            )
+        )
+        ->create();
     }
 }
