@@ -238,7 +238,6 @@
                                             @if ($user)
                                             @if ($class_of_user)
                                             @if(in_array($class->id, $class_of_user))
-                                                {{ 'TH1' }}
                                                             <form action="{{ route('post.detach.class') }}" method="get">
                                                                 <span>Bạn đã đăng kí lớp học này !</span>
                                                                 <input type="hidden" name="class_id" value="{{ $class->id }}">
@@ -246,7 +245,6 @@
                                                                 <button type="submit" class="btn btn-danger">Hủy</button>
                                                             </form>
                                                 @else
-                                                            {{ 'TH2' }}
                                                             <form action="{{ route('post.attach.class') }}" method="get">
                                                                 <input type="hidden" name="class_id" value="{{ $class->id }}">
                                                                 <input type="hidden" name="course_slug" value="{{ $course->slug }}">
@@ -254,8 +252,6 @@
                                                             </form>
                                                             @endif
                                                         @else
-
-                                                        {{ 'sdfsd' }}
                                                         <form action="{{ route('post.attach.class') }}" method="get">
                                                             <input type="hidden" name="class_id" value="{{ $class->id }}">
                                                             <input type="hidden" name="course_slug" value="{{ $course->slug }}">
@@ -265,8 +261,6 @@
                                             @else
                                             Đăng nhập!!
                                             @endif
-
-
                                             <hr>
                                         </div>
                                     </div>

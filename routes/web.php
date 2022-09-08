@@ -78,7 +78,7 @@ Route::get('/index/make_test/{id_test}', [TestCoursesController::class, 'index_m
 Route::post('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
     ->name('save_maked');
 Route::get('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
-    ->name('save_maked_get');  
+    ->name('save_maked_get');
 Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])
     ->name('view_maked');
 Route::get('/index/make_again_test/{id_test}', [TestCoursesController::class, 'make_again_test'])
