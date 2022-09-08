@@ -38,22 +38,22 @@ class DatabaseSeeder extends Seeder
         ];
         Notification::insert($notifications);
 
-        Schema::disableForeignKeyConstraints();
-        DB::table('user_lessons')->truncate();
-        Schema::enableForeignKeyConstraints();
-        DB::table('user_lessons')->insert([
-            'user_id' => '4',
-            'lesson_id' => '1',
-            'status' => '1'
-        ]);
-        
-        Schema::disableForeignKeyConstraints();
-        DB::table('user_courses')->truncate();
-        Schema::enableForeignKeyConstraints();
-        DB::table('user_courses')->insert([
-            'user_id' => '4',
-            'course_id' => '1',
-            'status' => '1'
-        ]);
+        // Schema::disableForeignKeyConstraints();
+        // DB::table('user_lessons')->truncate();
+        // Schema::enableForeignKeyConstraints();
+        // DB::table('user_lessons')->insert([
+        //     'user_id' => '4',
+        //     'lesson_id' => '1',
+        //     'status' => '1'
+        // ]);
+
+        // Schema::disableForeignKeyConstraints();
+        // DB::table('user_courses')->truncate();
+        // Schema::enableForeignKeyConstraints();
+        // DB::table('user_courses')->insert([
+        //     'user_id' => '4',
+        //     'course_id' => '1',
+        //     'status' => '1'
+        // ]);
     }
 }

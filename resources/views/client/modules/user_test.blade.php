@@ -24,12 +24,12 @@
         <div class="row csf align-items-center">
             <div class="col-xl-8">
                 <div class="site-title-left">
-                    
+
                 </div>
             </div>
             <div class="col-xl-4">
                 <div class="site-title-right">
-                    
+
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-xl-12 portfolio-content">
                     <div class="row align-items-center">
-                        
+
                     </div>
                     <!-- End Mixitup Nav-->
                     <div class="magnific-mix-gallery masonary">

@@ -130,12 +130,14 @@
                                                 </h4>
                                             </div>
                                             @php
-                                            $countLesson = 0
+                                            $stt = 0;
+                                            $countLesson = 0;
                                             @endphp
                                             @foreach ($lessons as $lessonItem)
                                             @if ($lessonItem['unit_id'] == $unit->getOriginal('id'))
                                             @if ($lessonItem['status'] == 1)
                                             @php
+                                            $stt ++;
                                             $countLesson ++;
                                             $countCourse ++;
                                             @endphp
@@ -147,7 +149,7 @@
                                                                 <div class="course-item-name">
                                                                     <div>
                                                                         <i class="fas fa-play"></i>
-                                                                        <span>bài {{ $lessonItem['id'] }}:</span>
+                                                                        <span>bài {{ $stt }}:</span>
                                                                     </div>
                                                                     <h5>{{ $lessonItem['title'] }}</h5>
                                                                 </div>
@@ -162,6 +164,9 @@
                                                 </div>
                                             </div>
                                             @else
+                                            @php
+                                                $stt ++;
+                                            @endphp
                                             <div id="collapse{{ $unit->id }}" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="heading{{ $unit->id }}">
                                                 <div class="panel-body">
                                                     <ul class="course-video-list">
@@ -171,7 +176,7 @@
                                                                     <div>
                                                                         <i class="fas fa-play text-muted"></i>
                                                                         <span>bài:
-                                                                            {{ $lessonItem['id'] }}</span>
+                                                                            {{ $stt }}</span>
                                                                     </div>
                                                                     <h5>{{ $lessonItem['title'] }}</h5>
                                                                 </div>

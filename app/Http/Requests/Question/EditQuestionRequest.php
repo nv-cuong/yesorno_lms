@@ -26,7 +26,7 @@ class EditQuestionRequest extends FormRequest
 
         if ($this->category == 1) {
             return [
-                'content' => ['required', 'max:50'],
+                'content' => ['required', 'max:250'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
                 'content_1' => ['required'],
@@ -37,14 +37,14 @@ class EditQuestionRequest extends FormRequest
             ];
         } else {
             return [
-                'content' => ['required', 'max:50'],
+                'content' => ['required', 'max:250'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
 
             ];
         }
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \Illuminate\Foundation\Http\FormRequest::messages()

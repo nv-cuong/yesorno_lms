@@ -8,6 +8,7 @@ use App\Models\UserTest;
 use App\Models\UserTestAnswer;
 use Illuminate\Http\Request;
 use App\Models\Answer;
+use App\Models\Test;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 class UserTestController extends Controller
 {
@@ -31,15 +32,15 @@ class UserTestController extends Controller
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function sendTest(Request $request, $id)
-    { 
-        
+    {
+
         $test_user_item = $request->except('_token');
-       
+
         $test_users = UserTest::find($id);
         $answers = [];
         $test_score = 0;
         $questions = 0;
-    
+
         if ($request->get('answers')) {
 
             foreach ($test_user_item['answers'] as $key  => $answer_id) {
@@ -109,14 +110,14 @@ class UserTestController extends Controller
         $test_users->save();
         return view('client.modules.user_test_result', compact('test_users'));
     }
-    
+
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function test_user()
     {
         $user = Sentinel::getUser();
-    
+
         $user_test_status = UserTest::select([
             'user_tests.id',
             'title',
@@ -125,7 +126,7 @@ class UserTestController extends Controller
         ->where('user_id', $user->id)->where('status', 1)
         ->join('tests', 'test_id', 'tests.id')
         ->get();
-       
+
          //dd($user_test_status);
         return view('client.modules.user_test', compact('user_test_status'));
     }
@@ -135,7 +136,7 @@ class UserTestController extends Controller
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function user_tests_detail($id)
-    {      
+    {
         $user_test_answers = UserTestAnswer::select([
             'questions.content',
             'questions.id',
@@ -147,7 +148,7 @@ class UserTestController extends Controller
             ->where('user_test_id', $id)
             ->join('questions', 'question_id', 'questions.id')
             ->get();
-        
+
         return view('client.modules.user_tests_detail', compact('user_test_answers'));
     }
 }
