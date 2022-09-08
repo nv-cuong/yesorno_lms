@@ -41,7 +41,7 @@
                         <div class="col-xl-12">
                             <div class="course-view-more">
                                 @if($test_users->score != Null)
-                                <h4>Điểm của bạn là : </h4>
+                                <h4>Điểm của bạn là : $test_users->score </h4>
                                 <a href="{{ route('user_tests_detail',$test_users->id)}}" class ="btn btn-primary" >Xem lại bài làm</a>
                                 @else
                                 <h4>Vui lòng đợi giáo viên chấm điểm: ! </h4>
