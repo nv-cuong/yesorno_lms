@@ -17,6 +17,9 @@ use Illuminate\Support\Str;
 
 class CourseController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index()
     {
         $courses = Course::select([
@@ -31,6 +34,10 @@ class CourseController extends Controller
         return view('admin.modules.courses.index', compact('courses'));
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function showCourse($id)
     {
         $course = Course::where('id', $id)
@@ -50,12 +57,20 @@ class CourseController extends Controller
         return view('admin.modules.courses.detail', compact('course', 'units'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function createCourse()
     {
         $course = new Course();
         return view('admin.modules.courses.create', compact('course'));
     }
 
+    /**
+     * @param CourseRequest $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function storeCourse(CourseRequest $request)
     {
         $course_item = $request->except('_token');
@@ -77,6 +92,11 @@ class CourseController extends Controller
             ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function editCourse(Request $request, $id)
     {
         $course = Course::find($id);
@@ -89,6 +109,11 @@ class CourseController extends Controller
             ->with('type_alert', "danger");
     }
 
+    /**
+     * @param CourseRequest $request
+     * @param int $id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function updateCourse(CourseRequest $request, $id)
     {
         $message = 'Khóa học không tồn tại';
@@ -117,6 +142,10 @@ class CourseController extends Controller
             ->with('type_alert', $type);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function destroyCourse(Request $request)
     {
         $course_id = $request->input('course_id', 0);
@@ -131,6 +160,10 @@ class CourseController extends Controller
                 ->with('type_alert', "danger");
     }
 
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function showTest($id)
     {
         $course = Course::find($id);
@@ -152,6 +185,11 @@ class CourseController extends Controller
             ->with('type_alert', "danger");
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function showStudent(Request $request, $id)
     {
         $course = Course::find($id);
@@ -174,6 +212,11 @@ class CourseController extends Controller
             ->with('type_alert', "danger");
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function activeStudent(Request $request, $id)
     {
         $user_id = $request->input('user_id', 0);

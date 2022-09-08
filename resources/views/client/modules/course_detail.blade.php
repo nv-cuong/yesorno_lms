@@ -150,7 +150,6 @@
 
                                                 @foreach ($units as $unit)
                                                     @php $n = $n + 1; @endphp
-                                                    <div class="panel panel-default panel-active">
                                                         <div class="panel-heading" role="tab" id="@if ($n == 1){{'headingOne'}}@elseif($n == 2){{'headingTwo'}}@else{{'heading'.$n}}@endif">
                                                             <h4 class="panel-title">
                                                                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="@if ($n == 1){{'#collapseOne'}}@elseif($n == 2){{'#collapseTwo'}}@else{{'#collapse'.$n}}@endif" aria-expanded="false" aria-controls="@if ($n == 1){{'collapseOne'}}@elseif($n == 2){{'collapseTwo'}}@else{{'collapse'.$n}}@endif" class="collapsed">
@@ -187,10 +186,10 @@
                                                                                             @if ($access->status == 0)
                                                                                                 <span style="color: red">Hãy đăng kí và đợi duyệt!</span>
                                                                                             @else
-                                                                                                <a href="{{ route('home') }}">Xem</a>
+                                                                                                <a href="{{ route('learning', ['id' => $lesson->id]) }}">Xem</a>
                                                                                             @endif
                                                                                         @elseif($course->status == 0)
-                                                                                            <a href="{{ route('home') }}">Xem</a>
+                                                                                            <a href="{{ route('learning', ['id' => $lesson->id]) }}">Xem</a>
                                                                                         @else
                                                                                             <span style="color: red">Hãy đăng kí!</span>
                                                                                         @endif
@@ -202,7 +201,6 @@
                                                                 </ul>
                                                             </div>
                                                         </div>
-                                                    </div>
                                                 @endforeach
                                             </div>
                                         </div>

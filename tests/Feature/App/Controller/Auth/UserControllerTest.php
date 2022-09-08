@@ -17,6 +17,9 @@ class UserControllerTest extends TestCase
      */
     private $user;
 
+    /**
+     *
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -24,6 +27,8 @@ class UserControllerTest extends TestCase
         $this->user = Sentinel::findUserById(1);
         Sentinel::login($this->user, true);
     }
+    
+  
     public function test_index()
     {
         $response = $this->get(route('users.index'));
@@ -58,11 +63,11 @@ class UserControllerTest extends TestCase
         $userData = [
             'first_name' =>    'tes',
             'email' =>       'thin@gmail.com',
-            'password' =>    't12345678',
+            'password' =>    'Thinat01@#',
             'phone' =>          '0906216933',
             'last_name' =>    'thin',
             'role' =>    '1',
-            'password_confirmation' => 't12345678',
+            'password_confirmation' => 'Thinat01@#',
         ];
 
         $response = $this->post(route('users.store'), $userData);
@@ -100,7 +105,6 @@ class UserControllerTest extends TestCase
             'last_name' =>    'thin',
             'phone' =>          '0906216933',
             'role' =>    '3',
-            'password_confirmation' => '12345678',
 
         ];
 
@@ -135,7 +139,6 @@ class UserControllerTest extends TestCase
     protected function set_user_data_test_is_invalid()
     {
         return [
-
             [
                 [
                     'first_name' =>    'test',
@@ -180,7 +183,7 @@ class UserControllerTest extends TestCase
                 [
                     'first_name' =>    '',
                     'email' =>       '',
-                    'password' =>    't1234567@',
+                    'password' =>    'Thinat01@#',
                     'phone' =>          '',
                     'last_name' =>    '',
                     'role' =>    '',

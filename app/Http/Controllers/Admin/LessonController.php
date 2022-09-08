@@ -14,6 +14,10 @@ use Illuminate\Support\Str;
 
 class LessonController extends Controller
 {
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function showLesson($id)
     {
         $lesson = Lesson::where('id', $id)
@@ -23,6 +27,10 @@ class LessonController extends Controller
         return view('admin.modules.courses.units.lessons.detail', compact('lesson', 'files'));
     }
 
+    /**
+     * @param int $unit_id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function createLesson($unit_id)
     {
         $lesson = new Lesson();
@@ -32,6 +40,11 @@ class LessonController extends Controller
         return view('admin.modules.courses.units.lessons.create', compact('lesson', 'file', 'unit'));
     }
 
+    /**
+     * @param LessonRequest $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function storeLesson(LessonRequest $request)
     {
         $lesson_item = $request->except('_token');
@@ -67,6 +80,11 @@ class LessonController extends Controller
         ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function editLesson(Request $request, $id)
     {
         $lesson = Lesson::find($id);
@@ -81,6 +99,11 @@ class LessonController extends Controller
             ->with('type_alert', "danger");
     }
 
+    /**
+     * @param LessonRequest $request
+     * @param int $id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function updateLesson(LessonRequest $request, $id)
     {
         $message = 'Bài học không tồn tại';
@@ -130,6 +153,11 @@ class LessonController extends Controller
         ->with('type_alert', $type);
     }
 
+    /**
+     * @param Request $request
+     * @param int $unit_id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function destroyLesson(Request $request, $unit_id)
     {
         $lesson_id = $request->input('lesson_id', 0);
@@ -144,6 +172,11 @@ class LessonController extends Controller
             ->with('type_alert', "danger");
     }
 
+    /**
+     * @param int $id
+     * @throws ModelNotFoundException
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
     public function downloadFile($id) {
         $file = File::find($id);
         $name = 'baihoc'.$id.'.zip';

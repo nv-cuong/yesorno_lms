@@ -12,6 +12,10 @@ class ClassControllerTest extends TestCase
 {
     private $user;
 
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Testing\TestCase::setUp()
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,6 +24,9 @@ class ClassControllerTest extends TestCase
         Sentinel::login($this->user, true);
     }
 
+    /**
+     * 
+     */
     public function test_index()
     {
         $response = $this->get(route('class.index'));
@@ -28,6 +35,9 @@ class ClassControllerTest extends TestCase
 
         $response->assertSee('<h1>Danh sách lớp học</h1>', false);
     }
+    /**
+     * 
+     */
     public function test_showDetail()
     {
         $response = $this->get(route('class.show',[

@@ -12,8 +12,15 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+/**
+ * @author DELL
+ *
+ */
 class TestController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index()
     {      
         $tests = Test::all();
@@ -25,6 +32,11 @@ class TestController extends Controller
         $question = Question::pluck('content', 'id');
         return view('admin.tests.create', compact('course', 'question'));
     }
+    /**
+     * @param TestRequest $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(TestRequest $request)
     {
         $k = 0;
@@ -86,6 +98,11 @@ class TestController extends Controller
         return redirect()->route('test.index');
 
     }
+    /**
+     * @param Request $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete(Request $request)
     {
     $id = $request->input('test_id', 'value');
@@ -103,6 +120,9 @@ class TestController extends Controller
                 }
 }
 
+    /**
+     * @param Request $request
+     */
     public function getQuestion(Request $request)
     {
         $select = $request->get('select');
@@ -128,6 +148,10 @@ class TestController extends Controller
             echo $output;
         }
     }
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function edit($id)
     {
         $tests  = Test::find($id);
@@ -136,6 +160,12 @@ class TestController extends Controller
 
         return view('admin.tests.edit', compact('course', 'question', 'tests'));
     }
+    /**
+     * @param Request $request
+     * @param int $id
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
@@ -156,6 +186,10 @@ class TestController extends Controller
         }
         return redirect()->route('test.index');
     }
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\RedirectResponse|unknown
+     */
     public function view($id)
     {
         $tests  = Test::find($id);
@@ -178,6 +212,12 @@ class TestController extends Controller
             return view('admin.tests.questions.view_question', compact('tests', 'question', 'arr_question', 'a'));
         }
     }
+    /**
+     * @param int $id
+     * @param int $id_test
+     * @param int $arr_quest
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function createquestion($id, $id_test, $arr_quest)
     {
         $arr_quest1 = explode(",", $arr_quest);
@@ -191,6 +231,12 @@ class TestController extends Controller
         $a[2] = "Trắc nhiệm đúng sai";
         return view('admin.tests.questions.create_question', compact('courses', 'question', 'id_test', 'a'));
     }
+    /**
+     * @param Request $request
+     * @param int $id_test
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store_question(Request $request, $id_test)
     {
         $validated = $request->validate([
@@ -287,6 +333,10 @@ class TestController extends Controller
         $tests->save();
 
     }
+    /**
+     * @param int $id_test
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete_test($id_test)
     {
         $test = Test::find($id_test);

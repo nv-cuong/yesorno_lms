@@ -52,8 +52,6 @@ Route::get('/attach', [CourseDetailController::class, 'attach'])
     ->name('post.attach');
 Route::get('/detach', [CourseDetailController::class, 'detach'])
     ->name('post.detach');
-Route::get('/courses/lesson/{id}', [CourseDetailController::class, 'showLesson'])
-    ->name('learning');
 Route::get('/attach-class', [CourseDetailController::class, 'attachClass'])
     ->name('post.attach.class');
 Route::get('/detach-class', [CourseDetailController::class, 'detachClass'])

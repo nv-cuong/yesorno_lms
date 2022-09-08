@@ -29,6 +29,10 @@ class UnitRequest extends FormRequest
         ];
     }
 
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
     public function messages()
     {
         return [

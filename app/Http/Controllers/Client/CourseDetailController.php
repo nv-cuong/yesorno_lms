@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\ClassStudy;
 use App\Models\Course;
+use App\Models\File;
 use App\Models\Lesson;
 use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -13,6 +14,10 @@ use PHPUnit\Framework\Constraint\Count;
 
 class CourseDetailController extends Controller
 {
+    /**
+     * @param string $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function courseDetail($slug)
     {
         $courses = Course::select([
@@ -50,6 +55,10 @@ class CourseDetailController extends Controller
         return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function attach(Request $request)
     {
         if ($getUser = Sentinel::getUser()) {
@@ -65,6 +74,10 @@ class CourseDetailController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function detach(Request $request)
     {
         $getUser = Sentinel::getUser();
@@ -86,6 +99,10 @@ class CourseDetailController extends Controller
             ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function attachClass(Request $request)
     {
         $user = Sentinel::getUser();
@@ -96,6 +113,10 @@ class CourseDetailController extends Controller
             ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function detachClass(Request $request)
     {
         // dd($request->class_id);
@@ -105,5 +126,21 @@ class CourseDetailController extends Controller
         return redirect(route('detail', $request->course_slug))
             ->with('message', "Bạn đã hủy đăng kí lớp thành công !")
             ->with('type_alert', "success");
+    }
+
+        
+    /**
+     * showLesson
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function showLesson($id)
+    {
+        $lesson = Lesson::where('id', $id)
+            ->first();
+        $files = File::all()
+            ->where('lesson_id', $lesson->id);
+        return view('client.modules.learning', compact('lesson', 'files'));
     }
 }

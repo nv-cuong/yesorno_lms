@@ -19,17 +19,26 @@ class Lesson extends Model
         'published',
     ];
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function unit()
     {
         return $this->belongsTo(Unit::class);
     }
 
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function files()
     {
         return $this->hasMany(File::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function questions()
     {
         return $this->belongsToMany(

@@ -11,11 +11,18 @@ use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
 class LoginController extends Controller
 {
     //
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function login()
     {
         return view('login');
     }
 
+    /**
+     * @param LoginRequest $request
+     * @return \Illuminate\Http\RedirectResponse|unknown
+     */
     public function postLogin(LoginRequest $request)
     {
         $credentials = $request->except('_token');
