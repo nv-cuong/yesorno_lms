@@ -97,7 +97,6 @@ class UserControllerTest extends TestCase
             
             'first_name' =>    'test',
             'email' =>       'thin2000@gmail.com',
-            'password' =>    '12345678',
             'last_name' =>    'thin',
             'phone' =>          '0906216933',
             'role' =>    '3',
@@ -120,7 +119,7 @@ class UserControllerTest extends TestCase
     }
 
     /**
-     * @dataProvider set_user_data_test_is_invalid
+     * @dataProvider set_users_data_test_is_invalid
      */
     public function test_update_is_invalid($datInvalid, $fieldsInvalid)
     {
@@ -137,7 +136,25 @@ class UserControllerTest extends TestCase
     {
         return [
            
-
+            [
+                [
+                    'first_name' =>    'test',
+                    'email' =>       '',
+                    'phone' =>          '',
+                    'password' =>    '',
+                    'last_name' =>    '',
+                    'role' =>    '',
+                   
+                ],
+                [
+                    'email' ,
+                    'phone' ,
+                    'password',
+                    'last_name',
+                    'role',
+                    
+                ]
+            ],
 
             [
                 [
@@ -234,6 +251,103 @@ class UserControllerTest extends TestCase
                             'phone' ,
                             'last_name',
                             
+                        ]
+                        ],
+                        
+
+        ];
+    }
+    protected function set_users_data_test_is_invalid()
+    {
+        return [
+           
+            [
+                [
+                    'first_name' =>    'test',
+                    'email' =>       '',
+                    'phone' =>          '',
+                    'last_name' =>    '',
+                    'role' =>    '',
+                   
+                ],
+                [
+                    'email' ,
+                    'phone' ,
+                    'last_name',
+                    'role',
+                    
+                ]
+            ],
+
+
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       'thintest@gmail.com',
+                    'phone' =>          '',
+                    'last_name' =>    '',
+                    'role' =>    '',
+                   
+                ],
+                [
+                    'first_name' ,
+                    'phone' ,
+                    'last_name',
+                    'role',
+                    
+                ]
+            ],
+
+           
+                [
+                    [
+                        'first_name' =>    '',
+                        'email' =>       '',
+                        'phone' =>         '0906216933',
+                        'last_name' =>    '',
+                        'role' =>    '',
+                        
+                    ],
+                    [
+                        'first_name' ,
+                        'email',
+                        'last_name',
+                        'role',
+                     
+                    ]
+                    ],
+                [
+                    [
+                        'first_name' =>    '',
+                        'email' =>       '',
+                        'phone' =>          '',
+                        'last_name' =>    'thin',
+                        'role' =>    '',
+                        
+                    ],
+                    [
+                        'first_name' ,
+                        'email',
+                        'phone' ,
+                        'role',
+                        
+    
+                    ]
+                    ],
+                    [
+                        [
+                            'first_name' =>    '',
+                            'email' =>       '',
+                            'phone' =>          '',
+                            'last_name' =>    '',
+                            'role' =>    '1',
+                           
+                        ],
+                        [
+                            'first_name' ,
+                            'email',
+                            'phone' ,
+                            'last_name',   
                         ]
                         ],
                         

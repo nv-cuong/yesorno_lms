@@ -85,7 +85,7 @@ class QuestionControllerTest extends TestCase
     public function test_edit()
     {
         $response = $this->get(route('question.edit', [
-            'id' => 6,
+            'id' => 90,
         ]));
 
         $response->assertStatus(200);

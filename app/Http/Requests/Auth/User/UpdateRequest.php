@@ -29,7 +29,7 @@ class UpdateRequest extends FormRequest
             'phone'      => 'required|min:10|numeric',
             'email'      => 'required|email',
             'role'       => 'required',
-            // 'password'   => 'required|confirmed|min:8',
+            //'password'   => 'required|confirmed|min:8',
         ];
 
        
@@ -54,7 +54,7 @@ class UpdateRequest extends FormRequest
             'role.required'     => 'Bạn chưa nhập role',
             'password.required'     => 'Bạn chưa nhập password',
             'password.min'     => 'Password phải từ 8 kí tự trở lên',
-            // 'password.confirmed'     => 'Password xác nhận không đúng',
+            //'password.confirmed'     => 'Password xác nhận không đúng',
         ];
     }
 }

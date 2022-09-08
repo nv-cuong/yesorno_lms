@@ -46,7 +46,7 @@ class ScoreControllerTest extends TestCase
     public function test_store_success()
     {
         $scoreData = [
-            'user_id' =>          '5',
+            'user_id' =>          '2',
             'test_id' =>       '1',
             
         ];
@@ -55,7 +55,7 @@ class ScoreControllerTest extends TestCase
 
         $response->assertStatus(302);
         $this->assertDatabaseHas('user_tests', [
-            'user_id' =>        '1',
+            'user_id' =>        '2',
             'test_id' =>       '1',
         ]);
 
