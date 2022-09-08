@@ -33,7 +33,7 @@ class TestCoursesController extends Controller
         $getUser = Sentinel::getUser();
         $id_user = $getUser->id;
         $user  = User::find($id_user);
-       // $user->tests()->attach($id_test);
+        $user->tests()->attach($id_test);
         return redirect()->route('index_make', [$id_test]);
     }
     public function make_again_test($id_test)
