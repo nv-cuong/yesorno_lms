@@ -32,13 +32,13 @@ class QuestionControllerTest extends TestCase
 
         $response->assertSee('<h1>Quản lý Câu hỏi</h1>', false);
     }
-    public function show_answser(){
-        $response = $this->get(route('student.course',[
-            'id'=> 8,
+    public function test_show_answser(){
+        $response = $this->get(route('question.answer',[
+            'id'=> 2,
         ]));
 
         $response->assertStatus(200);
-
+        $response->assertSee('', false);
         
     }
     public function test_create()
@@ -61,25 +61,22 @@ class QuestionControllerTest extends TestCase
         $response->assertStatus(302);
         $response->assertSessionHasErrors($fieldsInvalid);
     }
+    
     public function test_store_success()
     {
         $questionData = [
-            'content' =>           'Test create question',
-            'course_id' =>       '1',
-            'category' =>    '1',
-            'answer' =>          '1',
-            'score' =>    '10.00',
+            'content' =>           'Teteqwsssdsdd.',
+            'course_id' =>       '2',
+            'category' =>    '0',
+            'score' =>    '10',
         ];
 
         $response = $this->post(route('question.store'), $questionData);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('question.index'));
+        //$response->assertRedirect(route('question.index'));
         $this->assertDatabaseHas('questions', [
-            'content' =>           'Test create question',
-            'course_id' =>       '1',
-            'category' =>    '1',  
-            'answer' =>          '1',
+            'course_id' =>     '2',
             'score' =>    '10.00',
         ]);
 
@@ -131,9 +128,7 @@ class QuestionControllerTest extends TestCase
         $response->assertSessionHasErrors($fieldsInvalid);
     }
 
-     /**
-     * @dataProvider set_question_data_test_is_invalid
-     */
+    
     protected function set_question_data_test_is_invalid()
     {
         return [
@@ -142,6 +137,7 @@ class QuestionControllerTest extends TestCase
                     'course_id' => '',
                     'content' =>   '',
                     'score' =>     '',
+                    
                 ],
                 [
 
@@ -197,12 +193,12 @@ class QuestionControllerTest extends TestCase
     public function test_delete()
     {
         $response = $this->delete(route('question.delete'),[
-            'question_id'=> 20,
+            'question_id'=> 24,
         ]);
        
         $response->assertStatus(302);
         $this->assertDatabaseMissing('questions', [
-            'id' =>  20,
+            'id' =>  24,
         ]);
     }
 }

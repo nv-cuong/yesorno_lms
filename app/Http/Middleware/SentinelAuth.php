@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Sentinel\Hashing\BcryptHasher;
 
+
 class SentinelAuth
 {
     /**
@@ -17,7 +18,7 @@ class SentinelAuth
      * @param array $role
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle( $request, Closure $next, $role) {
+    public function handle( $request, Closure $next, $role=[]) {
 
         Sentinel::setHasher( new BcryptHasher() );
 
@@ -27,16 +28,18 @@ class SentinelAuth
             return redirect()->guest( 'login' );
         }
 
-        #This Is Root User?
+        #This Is Admin User?
         $roles = Sentinel::getRoles()->pluck('slug')->all();
+
         if ( is_array($roles) ) {
-            if ( in_array('admin', $roles,) || in_array('manager', $roles,) 
-            || in_array('teacher', $roles,) || in_array('classmanager', $roles,)) {
+            if ( in_array('admin', $roles,) )
+            {
                 return $next( $request );
             }
+
         }
 
-        #Check Access When User Is Not Root
+        #Check Access When User Is Not Admin
         if ( $user->hasAccess( $role ) ) {
             return $next( $request );
         }
@@ -46,5 +49,6 @@ class SentinelAuth
         }
 
         return abort(404, 'Unauthorized action.');
+
 	}
 }

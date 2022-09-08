@@ -36,22 +36,27 @@ class UserSeeder extends Seeder
             [
                 'name' => 'Admin',
                 'slug' => 'admin',
+                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
             ],
             [
                 'name' => 'Manager',
                 'slug' => 'manager',
+                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
             ],
             [
                 'name' => 'Teacher',
                 'slug' => 'teacher',
+                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
             ],
             [
                 'name' => 'Class Manager',
                 'slug' => 'class-manager',
+                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
             ],
             [
                 'name' => 'Student',
                 'slug' => 'student',
+                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
             ],
         ];
 
@@ -62,7 +67,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@example.com',
                 'first_name' => fake()->name(),
                 'last_name' => fake()->name(),
-                'phone' => fake()->phoneNumber(),
+                'phone' => '0906216933',
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
@@ -72,7 +77,7 @@ class UserSeeder extends Seeder
                 'email' => 'manager@example.com',
                 'first_name' => fake()->name(),
                 'last_name' => fake()->name(),
-                'phone' => fake()->phoneNumber(),
+                'phone' => '0906216933',
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
@@ -82,7 +87,7 @@ class UserSeeder extends Seeder
                 'email' => 'teacher@example.com',
                 'first_name' => fake()->name(),
                 'last_name' => fake()->name(),
-                'phone' => fake()->phoneNumber(),
+                'phone' => '0906216933',
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
@@ -92,7 +97,7 @@ class UserSeeder extends Seeder
                 'email' => 'student@example.com',
                 'first_name' => fake()->name(),
                 'last_name' => fake()->name(),
-                'phone' => fake()->phoneNumber(),
+                'phone' => '0906216933',
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
@@ -102,7 +107,7 @@ class UserSeeder extends Seeder
                 'email' => 'classmanager@example.com',
                 'first_name' => fake()->name(),
                 'last_name' => fake()->name(),
-                'phone' => fake()->phoneNumber(),
+                'phone' => '0906216933',
                 'birthday' => fake()->date(),
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
@@ -134,6 +139,7 @@ class UserSeeder extends Seeder
                 case 'student@example.com':
                     $role = Sentinel::findRoleBySlug('student');
                     $role->users()->attach($user);
+                    
                     break;
             }
         }

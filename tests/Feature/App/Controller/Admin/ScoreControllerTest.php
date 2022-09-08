@@ -20,7 +20,7 @@ class ScoreControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
+        //Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
         $this->user = Sentinel::findUserById(1);
         Sentinel::login($this->user, true);
     }
@@ -46,7 +46,7 @@ class ScoreControllerTest extends TestCase
     public function test_store_success()
     {
         $scoreData = [
-            'user_id' =>          '1',
+            'user_id' =>          '5',
             'test_id' =>       '1',
             
         ];
@@ -54,7 +54,6 @@ class ScoreControllerTest extends TestCase
         $response = $this->post(route('score.store'), $scoreData);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('score.index'));
         $this->assertDatabaseHas('user_tests', [
             'user_id' =>        '1',
             'test_id' =>       '1',
@@ -65,7 +64,7 @@ class ScoreControllerTest extends TestCase
     public function test_dots()
     {
         $response = $this->get(route('score.dots', [
-            'id' => 1,
+            'id' => 2,
         ]));
 
         $response->assertStatus(200);
@@ -75,9 +74,8 @@ class ScoreControllerTest extends TestCase
     public function test_point_success()
     {
         $scoreData = [
-            'user_id' =>         '1',
-            'test_id' =>       '1',
-            
+           'user_test_id' =>         '2',
+           'score' =>         '2'
         ];
 
         $response = $this->post(route('score.point'), $scoreData);
@@ -86,8 +84,7 @@ class ScoreControllerTest extends TestCase
         
 
         $this->assertDatabaseHas('user_tests', [
-            'user_id' =>         '1',
-            'test_id' =>       '1',
+            'status' =>         '1',
         ]);
     }
 }

@@ -71,7 +71,7 @@ Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
     ->name('post.personal.detach');
 Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])
     ->name('lesson.download');
-Route::get('/doTest/{id}', [HomeController::class, 'doTest'])
+Route::get('/doTest/{id}', [UserTestController::class, 'doTest'])
     ->name('doTest');
 
 Route::get('/show_makes', [TestCoursesController::class, 'show_make'])
@@ -111,24 +111,24 @@ Route::get('/course', function () {
 Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
-    
+   
     ->group(function () {
 
         Route::get('/dashboard', [IndexController::class, 'index'])
             ->name('dashboard');
 
         Route::prefix('/questions')->name('question.')->group(function () {
-            Route::get('index', [QuestionController::class, 'index'])->name('index');
-            Route::get('create', [QuestionController::class, 'create'])->name('create');
-            Route::post('store', [QuestionController::class, 'store'])->name('store');
+            Route::get('index', [QuestionController::class, 'index'])->name('index')->middleware('myweb.auth:questions.show');
+            Route::get('create', [QuestionController::class, 'create'])->name('create')->middleware('myweb.auth:questions.create');
+            Route::post('store', [QuestionController::class, 'store'])->name('store')->middleware('myweb.auth:questions.create');
             Route::get('/edit/{id}', [QuestionController::class, 'edit'])
-                ->name('edit');
+                ->name('edit')->middleware('myweb.auth:questions.edit');
             Route::post('/edit/{id}', [QuestionController::class, 'update'])
-                ->name('update');
+                ->name('update')->middleware('myweb.auth:questions.edit');
             Route::delete('/delete', [QuestionController::class, 'destroy'])
-                ->name('delete');
+                ->name('delete')->middleware('myweb.auth:questions.destroy');
             Route::get('/answer/{id}', [QuestionController::class, 'show_answser'])
-                ->name('answer');
+                ->name('answer')->middleware('myweb.auth:questions.show');
         });
         // Conflict thì để cái này lại nhé | Đức
         Route::resource('class', ClassController::class);
@@ -137,33 +137,33 @@ Route::prefix('admin')
         // Đức
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
-                ->name('students')->middleware('myweb.auth:student.show');
+                ->name('students')->middleware('myweb.auth:students.show');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])
-                ->name('student.edit');
+                ->name('student.edit')->middleware('myweb.auth:students.edit');
             Route::post('/edit/{id}', [StudentController::class, 'update'])
-                ->name('student.update');
+                ->name('student.update')->middleware('myweb.auth:students.edit');
             Route::delete('/delete', [StudentController::class, 'destroy'])
-                ->name('student.delete');
+                ->name('student.delete')->middleware('myweb.auth:students.destroy');
             Route::get('/class/{id}', [StudentController::class, 'showClass'])
-                ->name('student.class');
+                ->name('student.class')->middleware('myweb.auth:students.show');
             Route::get('/course/{id}', [StudentController::class, 'showCourse'])
-                ->name('student.course');
+                ->name('student.course')->middleware('myweb.auth:students.show');
             Route::get('/statistic/{id}', [StudentController::class, 'showStatistic'])
-                ->name('student.statistic');
+                ->name('student.statistic')->middleware('myweb.auth:students.show');
         });
 
         Route::prefix('/courses')->name('course.')->group(function () {
-            Route::get('index', [CourseController::class, 'index'])->name('index');
-            Route::get('/showCourse/{id}', [CourseController::class, 'showCourse'])->name('detail');
+            Route::get('index', [CourseController::class, 'index'])->name('index')->middleware('myweb.auth:courses.show');
+            Route::get('/showCourse/{id}', [CourseController::class, 'showCourse'])->name('detail')->middleware('myweb.auth:courses.show');
             // Route::get('getData', [CourseController::class, 'getData'])->name('getData');
-            Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create');
-            Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store');
-            Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit');
-            Route::post('/editCourse/{id}', [CourseController::class, 'updateCourse'])->name('update');
-            Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete');
-            Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test');
-            Route::get('/showStudent/{id}', [CourseController::class, 'showStudent'])->name('student');
-            Route::post('/activeStudent{id}', [CourseController::class, 'activeStudent'])->name('active');
+            Route::get('createCourse', [CourseController::class, 'createCourse'])->name('create')->middleware('myweb.auth:courses.create');
+            Route::post('storeCourse', [CourseController::class, 'storeCourse'])->name('store')->middleware('myweb.auth:courses.create');
+            Route::get('/editCourse/{id}', [CourseController::class, 'editCourse'])->name('edit')->middleware('myweb.auth:courses.edit');
+            Route::post('/editCourse/{id}', [CourseController::class, 'updateCourse'])->name('update')->middleware('myweb.auth:courses.edit');
+            Route::delete('/destroyCourse', [CourseController::class, 'destroyCourse'])->name('delete')->middleware('myweb.auth:courses.destroy');
+            Route::get('/showTest/{id}', [CourseController::class, 'showTest'])->name('test')->middleware('myweb.auth:courses.show');
+            Route::get('/showStudent/{id}', [CourseController::class, 'showStudent'])->name('student')->middleware('myweb.auth:courses.show');
+            Route::post('/activeStudent{id}', [CourseController::class, 'activeStudent'])->name('active')->middleware('myweb.auth:courses.show');
         });
 
         Route::prefix('/units')->name('unit.')->group(function () {
@@ -187,12 +187,12 @@ Route::prefix('admin')
         });
 
         Route::prefix('/test')->name('test.')->group(function () {
-            Route::get('/index', [TestController::class, 'index'])->name('index');
-            Route::get('/create', [TestController::class, 'create'])->name('create');
-            Route::post('/store', [TestController::class, 'store'])->name('store');
-            Route::DELETE('/delete', [TestController::class, 'delete'])->name('delete');
-            Route::get('/edit/{id}', [TestController::class, 'edit'])->name('edit');
-            Route::post('/update/{id}', [TestController::class, 'update'])->name('update');
+            Route::get('/index', [TestController::class, 'index'])->name('index')->middleware('myweb.auth:tests.show');
+            Route::get('/create', [TestController::class, 'create'])->name('create')->middleware('myweb.auth:tests.create');
+            Route::post('/store', [TestController::class, 'store'])->name('store')->middleware('myweb.auth:tests.create');
+            Route::DELETE('/delete', [TestController::class, 'delete'])->name('delete')->middleware('myweb.auth:tests.destroy');
+            Route::get('/edit/{id}', [TestController::class, 'edit'])->name('edit')->middleware('myweb.auth:tests.edit');
+            Route::post('/update/{id}', [TestController::class, 'update'])->name('update')->middleware('myweb.auth:tests.edit');
             Route::get('/view/{id}', [TestController::class, 'view'])->name('view');
             Route::get('/create/{id_course}/{id_test}/{arr_quest}', [TestController::class, 'createquestion'])->name('create_question');
             Route::post('/store/question/{id_test}', [TestController::class, 'store_question'])->name('store_question');
@@ -204,7 +204,8 @@ Route::prefix('admin')
         Route::prefix('/score')->name('score.')->group(function () {
             Route::get('index', [ScoreController::class, 'index'])->name('index')->middleware('myweb.auth:scores.show');
             Route::get('create', [ScoreController::class, 'create'])->name('create')->middleware('myweb.auth:scores.create');
-            Route::post('store', [ScoreController::class, 'store'])->name('store');
+            Route::post('store', [ScoreController::class, 'store'])->name('store')->middleware('myweb.auth:scores.create');
+            Route::get('/dots/{id}', [ScoreController::class, 'dots'])->name('dots')->middleware('myweb.auth:scores.point');
             Route::post('/point', [ScoreController::class, 'point'])
                 ->name('point')->middleware('myweb.auth:scores.point');
             Route::get('/getStudent/{id}', [ScoreController::class, 'getStudent'])->name('getStudent');
