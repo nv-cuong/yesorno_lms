@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\ClassStudy;
 use App\Models\Course;
+use App\Models\File;
 use App\Models\Lesson;
 use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -95,7 +96,13 @@ class CourseDetailController extends Controller
             ->with('message', "Bạn đã đăng kí lớp thành công !")
             ->with('type_alert', "success");
     }
-
+    
+    /**
+     * detachClass
+     *
+     * @param  mixed $request
+     * @return void
+     */
     public function detachClass(Request $request)
     {
         // dd($request->class_id);
@@ -105,5 +112,21 @@ class CourseDetailController extends Controller
         return redirect(route('detail', $request->course_slug))
             ->with('message', "Bạn đã hủy đăng kí lớp thành công !")
             ->with('type_alert', "success");
+    }
+
+        
+    /**
+     * showLesson
+     *
+     * @param  mixed $id
+     * @return void
+     */
+    public function showLesson($id)
+    {
+        $lesson = Lesson::where('id', $id)
+            ->first();
+        $files = File::all()
+            ->where('lesson_id', $lesson->id);
+        return view('client.modules.learning', compact('lesson', 'files'));
     }
 }
