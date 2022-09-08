@@ -31,7 +31,7 @@ class CreateRequest extends FormRequest
             'phone'      => 'required|min:10|numeric',
             'email'      => 'required|unique:users|email',
             'role'       => 'required',
-            'password'   => 'required|confirmed|min:8',
+            'password'   => 'required|confirmed|min:8|regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$#%]).*$/',
         ];
         
     }

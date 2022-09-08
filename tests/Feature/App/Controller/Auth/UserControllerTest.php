@@ -63,11 +63,11 @@ class UserControllerTest extends TestCase
         $userData = [
             'first_name' =>    'tes',
             'email' =>       'thin@gmail.com',
-            'password' =>    't12345678',
+            'password' =>    'Thinat01@#',
             'phone' =>          '0906216933',
             'last_name' =>    'thin',
             'role' =>    '1',
-            'password_confirmation' => 't12345678',
+            'password_confirmation' => 'Thinat01@#',
         ];
 
         $response = $this->post(route('users.store'), $userData);
@@ -77,9 +77,7 @@ class UserControllerTest extends TestCase
         $this->assertDatabaseHas('users', [
 
             'first_name' =>    'tes',
-            'email' =>       'thin@gmail.com',
-            'phone' =>          '0906216933',
-
+           
 
 
         ]);
@@ -105,7 +103,7 @@ class UserControllerTest extends TestCase
             'last_name' =>    'thin',
             'phone' =>          '0906216933',
             'role' =>    '3',
-            'password_confirmation' => '12345678',
+            
 
         ];
 
@@ -184,7 +182,7 @@ class UserControllerTest extends TestCase
                 [
                     'first_name' =>    '',
                     'email' =>       '',
-                    'password' =>    't1234567@',
+                    'password' =>    'Thinat01@#',
                     'phone' =>          '',
                     'last_name' =>    '',
                     'role' =>    '',
@@ -358,103 +356,7 @@ class UserControllerTest extends TestCase
 
         ];
     }
-    protected function set_users_data_test_is_invalid()
-    {
-        return [
-           
-            [
-                [
-                    'first_name' =>    'test',
-                    'email' =>       '',
-                    'phone' =>          '',
-                    'last_name' =>    '',
-                    'role' =>    '',
-                   
-                ],
-                [
-                    'email' ,
-                    'phone' ,
-                    'last_name',
-                    'role',
-                    
-                ]
-            ],
-
-
-            [
-                [
-                    'first_name' =>    '',
-                    'email' =>       'thintest@gmail.com',
-                    'phone' =>          '',
-                    'last_name' =>    '',
-                    'role' =>    '',
-                   
-                ],
-                [
-                    'first_name' ,
-                    'phone' ,
-                    'last_name',
-                    'role',
-                    
-                ]
-            ],
-
-           
-                [
-                    [
-                        'first_name' =>    '',
-                        'email' =>       '',
-                        'phone' =>         '0906216933',
-                        'last_name' =>    '',
-                        'role' =>    '',
-                        
-                    ],
-                    [
-                        'first_name' ,
-                        'email',
-                        'last_name',
-                        'role',
-                     
-                    ]
-                    ],
-                [
-                    [
-                        'first_name' =>    '',
-                        'email' =>       '',
-                        'phone' =>          '',
-                        'last_name' =>    'thin',
-                        'role' =>    '',
-                        
-                    ],
-                    [
-                        'first_name' ,
-                        'email',
-                        'phone' ,
-                        'role',
-                        
     
-                    ]
-                    ],
-                    [
-                        [
-                            'first_name' =>    '',
-                            'email' =>       '',
-                            'phone' =>          '',
-                            'last_name' =>    '',
-                            'role' =>    '1',
-                           
-                        ],
-                        [
-                            'first_name' ,
-                            'email',
-                            'phone' ,
-                            'last_name',   
-                        ]
-                        ],
-                        
-
-        ];
-    }
 
     public function test_delete()
     {
