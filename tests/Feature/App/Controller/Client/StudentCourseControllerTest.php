@@ -20,14 +20,14 @@ class StudentCourseControllerTest extends TestCase
     {
         parent::setUp();
         //Artisan::call('db:seed', ['--class'=>'DatabaseSeeder']);
-        $this->user = Sentinel::findUserById(1);
+        $this->user = Sentinel::findUserById(4);
         Sentinel::login($this->user, true);
     }
 
     public function test_personalCourse()
     {
         $response = $this->get(route('personal.course',[
-            'slug'=> 'qui-qui',
+            'slug'=> 'lap-trinh-html-css',
         ]));
         $response->assertStatus(200);
 
@@ -37,7 +37,7 @@ class StudentCourseControllerTest extends TestCase
     public function test_personalLesson()
     {
         $response = $this->get(route('personal.lesson',[
-            'slug'=> 'eveniet',
+            'slug'=> 'cau-truc-cua-mot-file-html',
         ]));
         $response->assertStatus(200);
 
@@ -47,7 +47,7 @@ class StudentCourseControllerTest extends TestCase
     public function test_lessonProgress()
     {
         $response = $this->get(route('lessonProgress',[
-            'slug'=> 'eveniet',
+            'slug'=> 'cau-truc-cua-mot-file-html',
         ]));
 
         $this->assertDatabaseHas('user_lessons', [
