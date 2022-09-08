@@ -53,6 +53,7 @@ class StudentControllerTest extends TestCase
         $response->assertSee('<meta charset="UTF-8" />',false);
     }
     
+    
     public function test_showCourse(){
         $response = $this->get(route('student.course',[
             'id'=> 4,
@@ -71,6 +72,7 @@ class StudentControllerTest extends TestCase
 
         $response->assertSee('<h3 class="page-title d-inline mb-0">Chi tiết học viên</h3>', false);
     }
+
     public function test_showStatistic_failed(){
         $response = $this->get(route('student.statistic',[
             'id'=> 1000,

@@ -81,6 +81,46 @@ class QuestionControllerTest extends TestCase
         ]);
 
     }
+    public function test_store_1_success()
+    {
+        $questionData = [
+            'content' =>           'Teteqwsssdsdd.',
+            'course_id' =>       '2',
+            'category' =>    '2',
+            'answer' =>    '1',
+            'score' =>    '10',
+        ];
+
+        $response = $this->post(route('question.store'), $questionData);
+
+        $response->assertStatus(302);
+        //$response->assertRedirect(route('question.index'));
+        $this->assertDatabaseHas('questions', [
+            'course_id' =>     '2',
+            'score' =>    '10.00',
+        ]);
+
+    }
+    public function test_store_2_success()
+    {
+        $questionData = [
+            'content' =>           'Teteqwsssdsdd.',
+            'course_id' =>       '2',
+            'category' =>    '3',
+            'answer' =>    '1',
+            'score' =>    '10',
+        ];
+
+        $response = $this->post(route('question.store'), $questionData);
+
+        $response->assertStatus(302);
+        //$response->assertRedirect(route('question.index'));
+        $this->assertDatabaseHas('questions', [
+            'course_id' =>     '2',
+            'score' =>    '10.00',
+        ]);
+
+    }
 
     public function test_edit()
     {
