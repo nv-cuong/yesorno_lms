@@ -88,6 +88,8 @@ Route::get('/index/make_again_test/{id_test}', [TestCoursesController::class, 'm
     ->name('make_again_test');
 Route::get('/index/random/{id_course}', [TestCoursesController::class, 'random_test'])
     ->name('random_test');
+Route::get('/list_test_maked', [TestCoursesController::class, 'list_test_maked'])
+    ->name('list_test_maked');
 
 Route::post('/sendTest/{id}', [UserTestController::class, 'sendTest'])
     ->name('send.test');
@@ -198,6 +200,7 @@ Route::prefix('admin')
             Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class, 'question_edit'])->name('question.edit');
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
+            Route::get('/update_category_test', [TestController::class, 'update_category_test'])->name('update_category_test');
         });
         Route::prefix('/score')->name('score.')->group(function () {
             Route::get('index', [ScoreController::class, 'index'])->name('index')->middleware('myweb.auth:scores.show');
