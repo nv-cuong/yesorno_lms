@@ -12,11 +12,17 @@ class Statistic extends Model
         'user_id',
         'progress',
     ];
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function course()
     {
         return $this->hasMany(Course::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function user()
     {
         return $this->belongsTo(User::class);

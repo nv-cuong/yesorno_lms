@@ -13,16 +13,25 @@ class Unit extends Model
         'title',
         'slug',
     ];
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function lessons()
     {
         return $this->hasMany(Lesson::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function course()
     {
         return $this->belongsTo(Course::class);
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function tests()
     {
         return $this->belongsToMany(

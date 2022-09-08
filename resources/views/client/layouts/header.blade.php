@@ -48,21 +48,21 @@
                                     <i class="far fa-bell"></i>
                                     Thông báo({{ $notifications->count() + $count_user_tests }}) </a>
                                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                    
+
                                     @forelse($notifications as $notification)
                                     <div class="dropdown-divider"></div>
                                     <a href="#" class="dropdown-item">
                                         <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
-                                       
+
                                     </a>
                                     @empty
-                                    
+
                                     @endforelse
                                     @forelse($user_tests as $user_test)
                                     <div class="dropdown-divider"></div>
                                     <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
                                         <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
-                                       
+
                                     </a>
                                     @empty
                                     @endforelse
@@ -78,7 +78,7 @@
                             @php
                             }
                             @endphp
-                           
+
                             <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('test_users') }}">Test </a>
                             </li>
@@ -125,7 +125,7 @@
                     _html += '<ul>';
                     for (var course of data) {
                         _html += '<li>';
-                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'"><img src="http://127.0.0.1:8000/'+ course.image +'"> ' + course.title + '</a>';
+                        _html += '<a href="{{route('detail', '')}}/'+course.slug+'">' + course.title + '</a>';
                         _html += '<hr>';
                         _html += '</li>';
                     }

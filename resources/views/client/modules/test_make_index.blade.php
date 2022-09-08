@@ -242,7 +242,9 @@ $answer=$answers->where('question_id', 'like', $question->id);
                 </label>
                 @endforeach
                 <button type="submit" class="btn btn-primary">Nộp bài</button>
-
+                <a id="btn" class="btn btn-primary" href="{{route('home')}}">
+                    Quay lại
+                </a>
     </form></BR></BR>
 
 
@@ -341,7 +343,7 @@ if ($u->status==1 && $u->score!=null) {
     <?php
     if ($u->status==1) {
         echo '<script>
-    
+
       $(document).ready(function(){
         $("#myForm :input").prop("disabled", true);
         $("#btn").prop("disabled", null);
@@ -349,7 +351,7 @@ if ($u->status==1 && $u->score!=null) {
 </script>';
     } else {
         echo '<script>
-    
+
         $(document).ready(function(){
           $("#btn").prop("disabled", true);
       });

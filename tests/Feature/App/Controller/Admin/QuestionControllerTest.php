@@ -81,16 +81,56 @@ class QuestionControllerTest extends TestCase
         ]);
 
     }
+    public function test_store_1_success()
+    {
+        $questionData = [
+            'content' =>           'Teteqwsssdsdd.',
+            'course_id' =>       '2',
+            'category' =>    '2',
+            'answer' =>    '1',
+            'score' =>    '10',
+        ];
+
+        $response = $this->post(route('question.store'), $questionData);
+
+        $response->assertStatus(302);
+        //$response->assertRedirect(route('question.index'));
+        $this->assertDatabaseHas('questions', [
+            'course_id' =>     '2',
+            'score' =>    '10.00',
+        ]);
+
+    }
+    public function test_store_2_success()
+    {
+        $questionData = [
+            'content' =>           'Teteqwsssdsdd.',
+            'course_id' =>       '2',
+            'category' =>    '3',
+            'answer' =>    '1',
+            'score' =>    '10',
+        ];
+
+        $response = $this->post(route('question.store'), $questionData);
+
+        $response->assertStatus(302);
+        //$response->assertRedirect(route('question.index'));
+        $this->assertDatabaseHas('questions', [
+            'course_id' =>     '2',
+            'score' =>    '10.00',
+        ]);
+
+    }
 
     public function test_edit()
     {
         $response = $this->get(route('question.edit', [
-            'id' => 6,
+            'id' => 90,
         ]));
 
-        $response->assertStatus(302);
+        $response->assertStatus(200);
 
-        $response->assertSee('<meta charset="UTF-8" />', false);
+        $response->assertSee('<h3 class="card-title">Sửa câu hỏi</h3>', false);
     }
 
     public function test_update_success()

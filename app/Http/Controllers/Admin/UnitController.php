@@ -13,6 +13,10 @@ use Illuminate\Support\Str;
 
 class UnitController extends Controller
 {
+    /**
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function showUnit($id)
     {
         $unit = Unit::where('id', $id)
@@ -27,11 +31,15 @@ class UnitController extends Controller
         ])
             ->join('units', 'lessons.unit_id', 'units.id')
             ->where('units.id', $id)
-            ->paginate();
+            ->paginate(1000);
 
         return view('admin.modules.courses.units.detail', compact('unit', 'lessons'));
     }
 
+    /**
+     * @param int $course_id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function createUnit($course_id)
     {
         $unit = new Unit();
@@ -40,6 +48,11 @@ class UnitController extends Controller
         return view('admin.modules.courses.units.create', compact('unit', 'course'));
     }
 
+    /**
+     * @param UnitRequest $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function storeUnit(UnitRequest $request)
     {
         $unit_item = $request->except('_token');
@@ -55,6 +68,11 @@ class UnitController extends Controller
         ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function editUnit(Request $request, $id)
     {
         $unit = Unit::find($id);
@@ -68,6 +86,11 @@ class UnitController extends Controller
         ->with('type_alert', "danger");
     }
 
+    /**
+     * @param UnitRequest $request
+     * @param int $id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function updateUnit(UnitRequest $request, $id)
     {
         $message = 'Chương không tồn tại';
@@ -87,6 +110,11 @@ class UnitController extends Controller
         ->with('type_alert', $type);
     }
 
+    /**
+     * @param Request $request
+     * @param int $course_id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function destroyUnit(Request $request, $course_id)
     {
         $unit_id = $request->input('unit_id', 0);

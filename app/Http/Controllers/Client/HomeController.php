@@ -16,6 +16,10 @@ use Illuminate\Contracts\View\View;
 
 class HomeController extends Controller
 {
+    /**
+     * {@inheritDoc}
+     * @see \App\Http\Controllers\Controller::compose()
+     */
     public function compose(View $view)
     {
         $user = Sentinel::getUser();
@@ -27,6 +31,9 @@ class HomeController extends Controller
         }
     }
 
+    /**
+     *  @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index() 
     {
         $courses = Course::select([
@@ -50,6 +57,10 @@ class HomeController extends Controller
         return view('client.modules.home', compact('courses', 'classes'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function courses(Request $request)
     {
         if ($request->sort == 'old') {
@@ -85,6 +96,10 @@ class HomeController extends Controller
         return view('client.modules.courses', compact('courses', 'courseTotal'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function courseFilter(Request $request)
     {
         if ($request->filter == 'free') {
@@ -111,6 +126,11 @@ class HomeController extends Controller
         return view('client.modules.courses', compact('courses', 'courseTotal'));
     }
 
+    
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function personal(Request $request)
     {
         $getUser = Sentinel::getUser();
@@ -131,11 +151,17 @@ class HomeController extends Controller
     }
 
 
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function contact()
     {
         return view('client.modules.contact');
     }
 
+    /**
+     * @param Request $request
+     */
     public function search(Request $request)
     {
         $output = '';

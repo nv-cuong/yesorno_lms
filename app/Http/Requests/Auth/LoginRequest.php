@@ -28,6 +28,10 @@ class LoginRequest extends FormRequest
             'password' => ['required'],
         ];
     }
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
     public function messages()
     {
         return[

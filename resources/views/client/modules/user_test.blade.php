@@ -24,12 +24,12 @@
         <div class="row csf align-items-center">
             <div class="col-xl-8">
                 <div class="site-title-left">
-                    <h2>Các khóa học tuyệt vời của chúng tôi</h2>
+
                 </div>
             </div>
             <div class="col-xl-4">
                 <div class="site-title-right">
-                    <h2>Course</h2>
+
                 </div>
             </div>
         </div>
@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-xl-12 portfolio-content">
                     <div class="row align-items-center">
-                        
+
                     </div>
                     <!-- End Mixitup Nav-->
                     <div class="magnific-mix-gallery masonary">
@@ -56,7 +56,7 @@
                                         <div class="course-2-text">
                                             <h5></h5>
                                             <p class="desciption_course">
-                                                Tên bài test : {{$uts->test->title}}
+                                                Tên bài test : {{$uts->title}}
                                             </p>
                                         </div>
                                         <div class="course-2-bottom">

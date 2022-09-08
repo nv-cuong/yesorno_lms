@@ -48,7 +48,7 @@
 
               <tr>
                 <th>
-                  {{ $loop->iteration + ($questions->currentPage() - 1) * $questions->perPage() }}
+                  {{ $loop->iteration  }}
                 </th>
                 <th>{{$question->content}}</th>
                 <th>{{$question->course->title}}</th>

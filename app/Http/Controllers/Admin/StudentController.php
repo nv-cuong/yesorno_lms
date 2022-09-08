@@ -13,6 +13,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StudentController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index()
     {
         $students = User::select([
@@ -30,9 +33,14 @@ class StudentController extends Controller
             ->with('roles', 'activations')
             ->orderBy('users.id', 'asc')
             ->search()
-            ->paginate();
+            ->paginate(1000);
         return view('admin.students.index', compact('students'));
     }
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function edit(Request $request, $id)
     {
         $student = User::find($id);
@@ -45,6 +53,11 @@ class StudentController extends Controller
             ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
+    /**
+     * @param StudentRequest $request
+     * @param int $id
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function update(StudentRequest $request, $id)
     {
         $msg = 'Học sinh chưa tồn tại!';
@@ -63,6 +76,11 @@ class StudentController extends Controller
             ->with('msg', $msg);
     }
 
+    /**
+     * @param Request $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function destroy(Request $request)
     {
         $student_id = $request->input('student_id', 0);
@@ -75,6 +93,11 @@ class StudentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function showClass(Request $request, $id)
     {
         $student = User::find($id);
@@ -86,6 +109,11 @@ class StudentController extends Controller
             ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function showCourse(Request $request, $id)
     {
         $student = User::find($id);
@@ -116,6 +144,11 @@ class StudentController extends Controller
             ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     */
     public function showStatistic(Request $request, $id)
     {
         $student = User::find($id);

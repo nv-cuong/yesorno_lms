@@ -12,6 +12,9 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 class IndexController extends Controller
 {
     //
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index(){
         $std = User::select([
             'users.id',
