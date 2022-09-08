@@ -10,17 +10,8 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class TestControllerTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     *
-     * @return void
-     */
-    public function test_example()
-    {
-        $response = $this->get('/');
+    private $user;
 
-        $response->assertStatus(200);
-    }
     protected function setUp(): void
     {
         parent::setUp();
@@ -191,7 +182,7 @@ class TestControllerTest extends TestCase
 
     $this->assertDatabaseHas('tests', [
         'title' =>   'Sponsors',
-        'category'=>'Trắc nhiệm đúng sai + Trắc nhiệm nhiều lựa chọn',
+        'category'=>'Tự luận',
         'time'=>'60',
         'description'=>'abcdefgh',
     ]);

@@ -46,8 +46,8 @@ class ScoreControllerTest extends TestCase
     public function test_store_success()
     {
         $scoreData = [
-            'user_id' =>          '5',
-            'test_id' =>       '1',
+            'user_id' =>        '5',
+            'test_id' =>        '1',
             
         ];
 
