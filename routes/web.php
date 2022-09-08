@@ -106,7 +106,7 @@ Route::get('/logout', [LogoutController::class, 'logout'])->name('logout');
 Route::get('/course', function () {
     return view('course');
 });
-Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
+// Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
     
