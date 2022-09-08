@@ -20,15 +20,20 @@ class TestCoursesController extends Controller
     {
         $course = Course::find($id_course);
         $test_course=$course->test;
+        $category='Tự luận';
         foreach ($test_course as $row) {
-            $id_tests[]=$row->id;
+            //if (strlen(strstr($row->category, $category)) <= 0) {
+                $id_tests[]=$row->id;
+            //}
         }
+       // dd($id_tests);
         $random=rand(0, count($id_tests)-1);
+        $random = 1;
         $id_test=$id_tests[$random];
         $getUser = Sentinel::getUser();
         $id_user = $getUser->id;
         $user  = User::find($id_user);
-        $user->tests()->attach($id_test);
+       // $user->tests()->attach($id_test);
         return redirect()->route('index_make', [$id_test]);
     }
     public function make_again_test($id_test)

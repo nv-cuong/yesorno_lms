@@ -81,16 +81,24 @@ class TestController extends Controller
         }
 
         return redirect()->route('test.index');
+
     }
     public function delete(Request $request)
     {
-        $id = $request->input('test_id', 'value');
-        $test = Test::find($id);
+    $id = $request->input('test_id', 'value');
+    $test = Test::find($id);
+    if ($test) {
         $test->course()->detach();
         $test->question()->detach();
         Test::destroy($id);
         return redirect()->action([TestController::class, 'index'])->with('success', 'Dữ liệu xóa thành công.');
     }
+    else {
+        
+                    throw new ModelNotFoundException();
+        
+                }
+}
 
     public function getQuestion(Request $request)
     {
@@ -145,7 +153,7 @@ class TestController extends Controller
         }
        return redirect()->route('test.index');
     }
-    public function view(Request $request, $id)
+    public function view($id)
     {
         $tests  = Test::find($id);
         $question1 = $tests->question;
@@ -274,6 +282,7 @@ class TestController extends Controller
         }
         $tests->category=$category_question;
         $tests->save();
+
     }
     public function delete_test($id_test)
     {
