@@ -152,7 +152,7 @@ h6 {
 
 <body>
     
-    <h1> Test 1</h1>
+    <h1> Bài test</h1>
     <form method="post" action="{{ route('send.test', $user_test) }}" id="do_test">
         @csrf
 

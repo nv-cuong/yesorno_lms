@@ -25,49 +25,49 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-           
+
           </div>
-           <form  method="post"action="{{route('score.point')}}">
+          <form method="post" action="{{route('score.point')}}">
             @csrf
-          <table class="table table-striped" id="example1">
-            <thead>
-              <tr>
-                <th>STT</th>
-                <th>Câu hỏi</th>
-                <th>Câu trả lời</th>
-                <th>Điểm</th>
-                <th>Hành động</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach ($user_test_answers as $uta)
+            <table class="table table-striped" id="example1">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Câu hỏi</th>
+                  <th>Câu trả lời</th>
+                  <th>Điểm</th>
+                  <th>Hành động</th>
+                </tr>
+              </thead>
+              <tbody>
+                @foreach ($user_test_answers as $uta)
 
+                <tr>
+                  <th>
 
+                  </th>
+                  <th>{{$uta->content}}</th>
+                  <th>{{$uta->answer}}</th>
+                  <th>
+                    {{$uta->score}}
+                    <input type="hidden" value="{{$uta->user_test_id}}" name="user_test_id">
+                  </th>
+                  <th>
+                    <input type="number" min="0" required name="true[{{$uta->id}}]" />
+                    @error('true'.'['.$uta->id.']')
+                    <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                  </th>
+
+                </tr>
+                @endforeach
+
+              </tbody>
               <tr>
-                <th>
-                  
-                </th>
-                <th>{{$uta->content}}</th>
-                <th>{{$uta->answer}}</th>
-                <th>
-                   {{$uta->score}}
-                </th>
-                <th>
-                <input type="number"  min="0" required name="true[{{$uta->id}}]" /> 
-                @error('true'.'['.$uta->id.']')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-                </th>
-               
+                <td colspan="5" class="text-center"> <button type="submit" class="btn btn-primary">Chấm điểm</button></td>
+
               </tr>
-              @endforeach
-            
-            </tbody>
-            <tr>
-            <td colspan="5" class="text-center"> <button type="submit" class="btn btn-primary">Chấm điểm</button></td>
-            <input type="hidden" value="{{$uta->user_test_id}}" name ="user_test_id">
-          </tr>
-          </table>
+            </table>
           </form>
 
         </div>
@@ -89,7 +89,5 @@
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
   });
-
-  
 </script>
 @stop

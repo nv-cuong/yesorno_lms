@@ -37,21 +37,7 @@
             <div class="row">
                 <div class="col-xl-12 portfolio-content">
                     <div class="row align-items-center">
-                        <div class="col-xl-8">
-                            <div class="mix-item-menu active-theme">
-                                <button class="active" data-filter="*">All</button>
-                                <button data-filter=".development" class="">Science</button>
-                                <button data-filter=".design" class="">Engineering</button>
-                                <button data-filter=".photography" class="">Diploma </button>
-                                <button data-filter=".branding" class="">Web Design</button>
-                                <button data-filter=".video" class="">Web Development</button>
-                            </div>
-                        </div>
-                        <div class="col-xl-4">
-                            <div class="course-view-more">
-                                <h6>Total Courses 6768 - <a href="#">View All</a></h6>
-                            </div>
-                        </div>
+                        
                     </div>
                     <!-- End Mixitup Nav-->
                     <div class="magnific-mix-gallery masonary">
@@ -76,7 +62,13 @@
                                         <div class="course-2-bottom">
                                             <div class="course-2-lesson">
                                                 <i class="fas fa-book-open"></i>
-                                                <p class="mb-0">Điểm : {{$uts->score}}</p>
+                                                <p class="mb-0">
+                                                    @if ($uts->score!='')
+                                                    Điểm : {{$uts->score}}
+                                                    @else
+                                                    Chưa có điểm
+                                                    @endif
+                                                </p>
                                             </div>
 
                                         </div>

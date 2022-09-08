@@ -20,7 +20,7 @@ class UserControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
+        Artisan::call('db:seed', ['--class' => 'UserSeeder']);
         $this->user = Sentinel::findUserById(1);
         Sentinel::login($this->user, true);
     }
@@ -56,23 +56,27 @@ class UserControllerTest extends TestCase
     public function test_store_success()
     {
         $userData = [
-            'first_name' =>    'doan',
-            'email' =>       'thintest@gmail.com',
-            'password' =>    't12345678@',
+            'first_name' =>    'tes',
+            'email' =>       'thin@gmail.com',
+            'password' =>    't12345678',
             'phone' =>          '0906216933',
             'last_name' =>    'thin',
+            'role' =>    '1',
+            'password_confirmation' => 't12345678',
         ];
 
         $response = $this->post(route('users.store'), $userData);
 
         $response->assertStatus(302);
-        $response->assertRedirect(route('users.index'));
+
         $this->assertDatabaseHas('users', [
-            'first_name' =>    'doan',
-            'email' =>       'thintest@gmail.com',
-            'password' =>    't12345678@',
+
+            'first_name' =>    'tes',
+            'email' =>       'thin@gmail.com',
             'phone' =>          '0906216933',
-            'last_name' =>    'thin',
+
+
+
         ]);
     }
 
@@ -90,81 +94,67 @@ class UserControllerTest extends TestCase
     public function test_update_success()
     {
         $userData = [
-            'first_name' =>    'doan',
-            'email' =>       'thintest@gmail.com',
-            'password' =>    't12345678@',
-            'phone' =>          '0906216933',
+
+            'first_name' =>    'test',
+            'email' =>       'thin2000@gmail.com',
             'last_name' =>    'thin',
+            'phone' =>          '0906216933',
+            'role' =>    '3',
+            'password_confirmation' => '12345678',
+
         ];
 
-        $response = $this->post(route('users.update', [
-            'user' => 1,
+        $response = $this->put(route('users.update', [
+            'user' => 2,
         ]), $userData);
 
         $response->assertStatus(302);
-       
+
 
         $this->assertDatabaseHas('users', [
-            'first_name' =>    'doan',
-            'email' =>       'thintest@gmail.com',
-            'password' =>    't12345678@',
-            'phone' =>          '0906216933',
-            'last_name' =>    'thin',
+
+            'first_name' =>    'test',
+
         ]);
     }
 
     /**
-     * @dataProvider set_user_data_test_is_invalid
+     * @dataProvider set_users_data_test_is_invalid
      */
     public function test_update_is_invalid($datInvalid, $fieldsInvalid)
     {
-        $response = $this->post(route('users.update', [
-            'user' => 1,
+        $response = $this->put(route('users.update', [
+            'user' => 4,
         ]), $datInvalid);
 
         $response->assertStatus(302);
         $response->assertSessionHasErrors($fieldsInvalid);
     }
 
-    /**
-     * @dataProvider set_user_data_test_is_invalid
-     */
+
     protected function set_user_data_test_is_invalid()
     {
         return [
+
             [
                 [
-                    'first_name' =>    '',
+                    'first_name' =>    'test',
                     'email' =>       '',
-                    'password' =>    '',
                     'phone' =>          '',
+                    'password' =>    '',
                     'last_name' =>    '',
+                    'role' =>    '',
+
                 ],
                 [
-
-                    'first_name' ,
-                    'email' ,
+                    'email',
+                    'phone',
                     'password',
-                    'phone' ,
                     'last_name',
+                    'role',
+
                 ]
             ],
-            [
-                [
-                    'first_name' =>    'thin',
-                    'email' =>       '',
-                    'password' =>    '',
-                    'phone' =>          '',
-                    'last_name' =>    '',
-                ],
-                [
-                    'email' ,
-                    'password',
-                    'phone' ,
-                    'last_name',
-                ]
-            ],
-
 
             [
                 [
@@ -173,12 +163,16 @@ class UserControllerTest extends TestCase
                     'password' =>    '',
                     'phone' =>          '',
                     'last_name' =>    '',
+                    'role' =>    '',
+
                 ],
                 [
-                    'first_name' ,
+                    'first_name',
                     'password',
-                    'phone' ,
+                    'phone',
                     'last_name',
+                    'role',
+
                 ]
             ],
 
@@ -189,61 +183,187 @@ class UserControllerTest extends TestCase
                     'password' =>    't1234567@',
                     'phone' =>          '',
                     'last_name' =>    '',
+                    'role' =>    '',
+
                 ],
                 [
-                    'first_name' ,
+                    'first_name',
                     'email',
-                    'phone' ,
+                    'phone',
+                    'last_name',
+                    'role',
+
+                ]
+            ],
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       '',
+                    'password' =>    '',
+                    'phone' =>         '0906216933',
+                    'last_name' =>    '',
+                    'role' =>    '',
+
+                ],
+                [
+                    'first_name',
+                    'email',
+                    'password',
+                    'last_name',
+                    'role',
+
+                ]
+            ],
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       '',
+                    'password' =>    '',
+                    'phone' =>          '',
+                    'last_name' =>    'thin',
+                    'role' =>    '',
+
+                ],
+                [
+                    'first_name',
+                    'email',
+                    'password',
+                    'phone',
+                    'role',
+
+
+                ]
+            ],
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       '',
+                    'password' =>    '',
+                    'phone' =>          '',
+                    'last_name' =>    '',
+                    'role' =>    '1',
+
+                ],
+                [
+                    'first_name',
+                    'email',
+                    'password',
+                    'phone',
                     'last_name',
 
                 ]
+            ],
+
+
+        ];
+    }
+    protected function set_users_data_test_is_invalid()
+    {
+        return [
+
+            [
+                [
+                    'first_name' =>    'test',
+                    'email' =>       '',
+                    'phone' =>          '',
+                    'last_name' =>    '',
+                    'role' =>    '',
+
                 ],
                 [
-                    [
-                        'first_name' =>    '',
-                        'email' =>       '',
-                        'password' =>    '',
-                        'phone' =>         '0906216933',
-                        'last_name' =>    '',
-                    ],
-                    [
-                        'first_name' ,
-                        'email',
-                        'password' ,
-                        'last_name',
-    
-                    ]
-                    ],
-                [
-                    [
-                        'first_name' =>    '',
-                        'email' =>       '',
-                        'password' =>    '',
-                        'phone' =>          '',
-                        'last_name' =>    'thin',
-                    ],
-                    [
-                        'first_name' ,
-                        'email',
-                        'password',
-                        'phone' ,
-                        
-    
-                    ]
+                    'email',
+                    'phone',
+                    'last_name',
+                    'role',
+
                 ]
+            ],
+
+
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       'thintest@gmail.com',
+                    'phone' =>          '',
+                    'last_name' =>    '',
+                    'role' =>    '',
+
+                ],
+                [
+                    'first_name',
+                    'phone',
+                    'last_name',
+                    'role',
+
+                ]
+            ],
+
+
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       '',
+                    'phone' =>         '0906216933',
+                    'last_name' =>    '',
+                    'role' =>    '',
+
+                ],
+                [
+                    'first_name',
+                    'email',
+                    'last_name',
+                    'role',
+
+                ]
+            ],
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       '',
+                    'phone' =>          '',
+                    'last_name' =>    'thin',
+                    'role' =>    '',
+
+                ],
+                [
+                    'first_name',
+                    'email',
+                    'phone',
+                    'role',
+
+
+                ]
+            ],
+            [
+                [
+                    'first_name' =>    '',
+                    'email' =>       '',
+                    'phone' =>          '',
+                    'last_name' =>    '',
+                    'role' =>    '1',
+
+                ],
+                [
+                    'first_name',
+                    'email',
+                    'phone',
+                    'last_name',
+                ]
+            ],
+
 
         ];
     }
 
-    // public function test_delete()
-    // {
-    //     $response = $this->delete(route('question.delete'),[
-    //         'question_id'=> 11,
-    //     ]);
+    public function test_delete()
+    {
+        $response = $this->delete(route('users.destroy'), [
+            'user_id' => 4,
+        ]);
 
-    //     $response->assertStatus(302);
-    //     $this->assertDatabaseMissing('questions', [
-    //         'id' =>  7,
-    //     ]);
-    // }
+        $response->assertStatus(302);
+        $this->assertDatabaseMissing('users', [
+            'id' =>  4,
+        ]);
+    }
 }
