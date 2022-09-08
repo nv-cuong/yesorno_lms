@@ -30,7 +30,7 @@ class QuestionController extends Controller
             'answer',
             'category',
             'score'
-        ])->paginate(100);
+        ])->get();
 
         return view('admin.questions.index', compact('questions'));
 
