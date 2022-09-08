@@ -13,7 +13,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class StudentController extends Controller
 {
-    public function index(){
+    public function index()
+    {
         $students = User::select([
             'users.id',
             'phone',
@@ -24,25 +25,24 @@ class StudentController extends Controller
             'first_name',
             'last_name'
         ])
-        ->leftJoin('role_users AS ru', 'user_id', 'users.id')
-        ->where('ru.role_id', 5)
-        ->with('roles', 'activations')
-        ->orderBy('users.id', 'asc')
-        ->search()
-        ->paginate();
+            ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+            ->where('ru.role_id', 5)
+            ->with('roles', 'activations')
+            ->orderBy('users.id', 'asc')
+            ->search()
+            ->paginate();
         return view('admin.students.index', compact('students'));
     }
     public function edit(Request $request, $id)
     {
         $student = User::find($id);
-        $classes = User::find($id)->classStudies()->where("user_id",$id)->get();
         if ($student) {
-
-            return view('admin.students.edit', compact('student','classes'));
+            $classes = User::find($id)->classStudies()->where("user_id", $id)->get();
+            return view('admin.students.edit', compact('student', 'classes'));
         }
 
         return redirect(route('students'))
-        ->with('msg', 'Học sinh chưa tồn tại!');
+            ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
     public function update(StudentRequest $request, $id)
@@ -50,7 +50,7 @@ class StudentController extends Controller
         $msg = 'Học sinh chưa tồn tại!';
         $student = User::find($id);
         if ($student) {
-            $student->phone= $request->input('phone');
+            $student->phone = $request->input('phone');
             $student->first_name = $request->input('first_name');
             $student->gender = $request->input('gender');
             $student->last_name = $request->input('last_name');
@@ -60,7 +60,7 @@ class StudentController extends Controller
             $msg = 'Thay đổi thành công!';
         }
         return redirect(route('students'))
-        ->with('msg', $msg);
+            ->with('msg', $msg);
     }
 
     public function destroy(Request $request)
@@ -69,7 +69,7 @@ class StudentController extends Controller
         if ($student_id) {
             User::destroy($student_id);
             return redirect(route('students'))
-            ->with('msg', "Xóa sinh viên {$student_id} thành công!");
+                ->with('msg', "Xóa sinh viên {$student_id} thành công!");
         } else {
             throw new ModelNotFoundException();
         }
@@ -78,12 +78,12 @@ class StudentController extends Controller
     public function showClass(Request $request, $id)
     {
         $student = User::find($id);
-        $classes = User::find($id)->classStudies()->where("user_id",$id)->get();
         if ($student) {
-            return view('admin.students.class', compact('student','classes'));
+            $classes = User::find($id)->classStudies()->where("user_id", $id)->get();
+            return view('admin.students.class', compact('student', 'classes'));
         }
         return redirect(route('students'))
-        ->with('msg', 'Học sinh chưa tồn tại!');
+            ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
     public function showCourse(Request $request, $id)
@@ -96,9 +96,9 @@ class StudentController extends Controller
                 'courses.slug',
                 'title',
             ])
-            ->leftJoin('user_courses AS uc','uc.course_id', 'courses.id')
-            ->where('uc.user_id',$id)
-            ->get();
+                ->leftJoin('user_courses AS uc', 'uc.course_id', 'courses.id')
+                ->where('uc.user_id', $id)
+                ->get();
 
             $lessons = Lesson::select([
                 'lessons.id',
@@ -107,37 +107,36 @@ class StudentController extends Controller
                 'unit_id',
                 'status',
             ])
-            ->leftJoin('user_lessons AS ul','ul.lesson_id', 'lessons.id')
-            ->where('ul.user_id',$id)
-            ->get();
-            return view('admin.students.course', compact('student','courses','lessons'));
+                ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
+                ->where('ul.user_id', $id)
+                ->get();
+            return view('admin.students.course', compact('student', 'courses', 'lessons'));
         }
         return redirect(route('students'))
-        ->with('msg', 'Học sinh chưa tồn tại!');
+            ->with('msg', 'Học sinh chưa tồn tại!');
     }
 
     public function showStatistic(Request $request, $id)
     {
         $student = User::find($id);
         if ($student) {
-            $classStudiesNumber=User::find($id)->classStudies()->where("user_id",$id)->count();
-            $courseLesson =Lesson::select()
-            ->leftJoin('units AS u','u.id', 'lessons.unit_id')
-            ->join('courses AS c', 'c.id', 'u.course_id')
-            ->where('c.status',1)
-            ->count();
+            $classStudiesNumber = User::find($id)->classStudies()->where("user_id", $id)->count();
+            $courseLesson = Lesson::select()
+                ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
+                ->join('courses AS c', 'c.id', 'u.course_id')
+                ->where('c.status', 1)
+                ->count();
             $lessonNumber = Lesson::select()
-            ->leftJoin('user_lessons AS ul','ul.lesson_id', 'lessons.id')
-            ->where('ul.user_id',$id)
-            ->where('status',1)
-            ->count();
-            if($courseLesson != 0){
-                $coursesNumber = ceil(($lessonNumber*100)/$courseLesson);
-            }
-            else $coursesNumber = 0;
-            return view('admin.students.statistic', compact('student','coursesNumber','classStudiesNumber'));
+                ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
+                ->where('ul.user_id', $id)
+                ->where('status', 1)
+                ->count();
+            if ($courseLesson != 0) {
+                $coursesNumber = ceil(($lessonNumber * 100) / $courseLesson);
+            } else $coursesNumber = 0;
+            return view('admin.students.statistic', compact('student', 'coursesNumber', 'classStudiesNumber'));
         }
         return redirect(route('students'))
-        ->with('msg', 'Học sinh chưa tồn tại!');
+            ->with('msg', 'Học sinh chưa tồn tại!');
     }
 }

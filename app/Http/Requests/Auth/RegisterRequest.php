@@ -30,4 +30,16 @@ class RegisterRequest extends FormRequest
             'password'              => 'required|confirmed|min:8',
         ];
     }
+
+    public function messages()
+    {
+        return[
+            'email.required' => 'Trường email không được để trống.',
+            'email.email' => 'Nhập đúng địa chỉ e-mail',
+            'password.required' => 'Trường mật khẩu không được để trống',
+            'first_name.required' => 'Trường tên không được để trống',
+            'last_name.required' => 'Trường họ không được để trống',
+            'email.unique' => 'E-mail đã đăng kí tài khoản',
+        ];
+    }
 }

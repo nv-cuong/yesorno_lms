@@ -25,9 +25,9 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header">
-           
+
           </div>
-           <form  method="post"action="{{route('score.point')}}">
+          <form method="post" action="{{route('score.point')}}">
             @csrf
           <table class="table table-striped" id="example1">
             <thead>
@@ -89,7 +89,5 @@
       "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
     }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
   });
-
-  
 </script>
 @stop

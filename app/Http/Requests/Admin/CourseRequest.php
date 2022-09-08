@@ -26,7 +26,7 @@ class CourseRequest extends FormRequest
         return [
             'title' =>          ['required', 'max:255'],
             'description' =>    ['required', 'min:20'],
-            'status' =>         ['required'],
+            'status' =>         ['required', 'boolean'],
             'begin_date' =>     ['required', 'date'],
             'end_date' =>       ['required', 'date'],
         ];
@@ -36,7 +36,7 @@ class CourseRequest extends FormRequest
     {
         return [
             'title.required'     => 'Bạn chưa nhập tên khóa học',
-            'title.max'     => 'Tên khóa học nhỏ hơn 255 kí tự',
+            'title.max'     => 'Tên khóa học phải ít 255 kí tự',
             'description.required'     => 'Bạn chưa nhập mô tả khóa học',
             'description.min'     => 'Mô tả phải nhiều hơn 20 ký tự',
             'status.required'     => 'Bạn chưa chọn loại khóa học',

@@ -27,7 +27,7 @@ class HomeController extends Controller
         }
     }
 
-    public function index()
+    public function index() 
     {
         $courses = Course::select([
             'id',
@@ -141,16 +141,4 @@ class HomeController extends Controller
         $output = '';
         $course = Course::where('title', 'LIKE', '%' . $request->keyword . '%')->get();
     }
-    public function notifications()
-    {
-        $user = Sentinel::getUser();
-        $notifications = Notification::select(
-            'notifications.id',
-            'content'
-        )
-            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
-            ->where('un.user_id', $user->id);
-        return view('client.modules.home', compact('notifications', 'user'));
-    }
-    
 }

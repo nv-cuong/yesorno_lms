@@ -90,7 +90,6 @@ class LessonController extends Controller
             $lesson->title = $request->input('title');
             $lesson->unit_id = $request->input('unit_id');
             $lesson->slug = Str::slug($lesson->title);
-            $lesson->config = $request->input('config');
             $lesson->content = $request->input('content');
             $lesson->published = $request->input('published');
             $lesson->save();
