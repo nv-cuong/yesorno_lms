@@ -103,7 +103,6 @@ class UserControllerTest extends TestCase
             'last_name' =>    'thin',
             'phone' =>          '0906216933',
             'role' =>    '3',
-            
 
         ];
 
@@ -356,7 +355,6 @@ class UserControllerTest extends TestCase
 
         ];
     }
-    
 
     public function test_delete()
     {

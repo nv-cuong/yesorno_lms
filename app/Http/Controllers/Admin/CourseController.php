@@ -30,7 +30,7 @@ class CourseController extends Controller
             'begin_date',
             'end_date',
         ])
-            ->paginate();
+            ->paginate(1000);
         return view('admin.modules.courses.index', compact('courses'));
     }
 
@@ -52,7 +52,7 @@ class CourseController extends Controller
         ])
             ->join('courses', 'units.course_id', 'courses.id')
             ->where('courses.id', $id)
-            ->paginate();
+            ->paginate(1000);
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
     }

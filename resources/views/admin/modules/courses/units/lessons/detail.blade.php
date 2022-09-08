@@ -49,7 +49,7 @@
                         <div class="table-responsive">
                             <strong>
                                 <span style="color: black">
-                                    <h4>Nội dung bài học</h4>
+                                    <h6>Nội dung bài học</h6>
                                 </span>
                                 {!! $lesson->content !!}
                             </strong>

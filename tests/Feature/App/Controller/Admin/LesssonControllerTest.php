@@ -33,7 +33,7 @@ class LesssonControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee('<h4>Nội dung bài học</h4>', false);
+        $response->assertSee('<h6>Nội dung bài học</h6>', false);
     }
 
     public function test_create()

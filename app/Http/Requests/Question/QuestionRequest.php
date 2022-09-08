@@ -23,16 +23,16 @@ class QuestionRequest extends FormRequest
      */
     public function rules()
     {
-      
-         
+
+
         if($this->category == 1)
         {
             if($this->correct_1 == '' && $this->correct_2 == '' && $this->correct_3 == '' && $this->correct_4 == '')
             {
                 return [
-                    'content' => ['required', 'max:50','unique:questions'],
+                    'content' => ['required', 'max:250','unique:questions'],
                     'course_id' => ['required'],
-                    'score' => ['required', 'integer' ,'min:1'],  
+                    'score' => ['required', 'integer' ,'min:1'],
                     'content_1' => ['required'],
                     'content_2' => ['required'],
                     'content_3' => ['required'],
@@ -44,29 +44,29 @@ class QuestionRequest extends FormRequest
             else
             {
                 return [
-                    'content' => ['required', 'max:50','unique:questions'],
+                    'content' => ['required', 'max:250','unique:questions'],
                     'course_id' => ['required'],
-                    'score' => ['required', 'integer' ,'min:1'],  
+                    'score' => ['required', 'integer' ,'min:1'],
                     'content_1' => ['required'],
                     'content_2' => ['required'],
                     'content_3' => ['required'],
                     'content_4' => ['required'],
-                    
+
                 ];
             }
-            
+
         }
         else{
             return [
                 'content' => ['required', 'max:50','unique:questions'],
-                'course_id' => ['required'],      
-                'score' => ['required', 'integer' ,'min:1'],  
-            
+                'course_id' => ['required'],
+                'score' => ['required', 'integer' ,'min:1'],
+
             ];
         }
-       
+
     }
-    
+
     /**
      * {@inheritDoc}
      * @see \Illuminate\Foundation\Http\FormRequest::messages()
@@ -74,7 +74,7 @@ class QuestionRequest extends FormRequest
     public function messages()
     {
         return [
-         
+
             'content.required'     => 'Bạn chưa nhập tên câu hỏi',
             'content.max'     => 'Câu hỏi quá dài',
             'content.unique'     => 'Câu hỏi đã tồn tại',

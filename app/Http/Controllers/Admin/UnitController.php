@@ -31,7 +31,7 @@ class UnitController extends Controller
         ])
             ->join('units', 'lessons.unit_id', 'units.id')
             ->where('units.id', $id)
-            ->paginate();
+            ->paginate(1000);
 
         return view('admin.modules.courses.units.detail', compact('unit', 'lessons'));
     }
