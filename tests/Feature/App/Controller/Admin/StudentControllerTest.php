@@ -41,10 +41,18 @@ class StudentControllerTest extends TestCase
         ]));
 
         $response->assertStatus(200);
-
         $response->assertSee('<h3 class="page-title d-inline mb-0">Thông tin lớp học của học viên</h3>', false);
     }
 
+    public function test_showClass_failed(){
+        $response = $this->get(route('student.class',[
+            'id'=> 1000,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSee('<meta charset="UTF-8" />',false);
+    }
+    
     public function test_showCourse(){
         $response = $this->get(route('student.course',[
             'id'=> 4,
@@ -52,7 +60,7 @@ class StudentControllerTest extends TestCase
 
         $response->assertStatus(200);
 
-        $response->assertSee('<span class="badge badge-danger navbar-badge">3</span>', false);
+        $response->assertSeeText('All rights reserved.');
     }
 
     public function test_showStatistic(){
@@ -63,7 +71,13 @@ class StudentControllerTest extends TestCase
 
         $response->assertSee('<h3 class="page-title d-inline mb-0">Chi tiết học viên</h3>', false);
     }
-
+    public function test_showStatistic_failed(){
+        $response = $this->get(route('student.statistic',[
+            'id'=> 1000,
+        ]));
+        $response->assertStatus(302);
+        $response->assertSee('<meta charset="UTF-8" />',false);
+    }
     public function test_edit(){
         $response = $this->get(route('student.edit',[
             'id'=> 4,
@@ -72,6 +86,15 @@ class StudentControllerTest extends TestCase
         $response->assertStatus(200);
 
         $response->assertSee('<h3 class="page-title d-inline">Sửa thông tin học viên</h3>', false);
+    }
+
+    public function test_edit_failed(){
+        $response = $this->get(route('student.edit',[
+            'id'=> 1000,
+        ]));
+
+        $response->assertStatus(302);
+        $response->assertSee('<meta charset="UTF-8" />',false);
     }
 
     public function test_update_success()

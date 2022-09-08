@@ -67,10 +67,19 @@ class CourseControllerTest extends TestCase
         $response->assertSee('<h4>Danh sách chương</h4>', false);
     }
 
+    public function test_create()
+    {
+        $response = $this->get(route('course.create'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('<h2 class="card-title" style="font-weight:bold">Tạo khóa học mới</h2>', false);
+    }
+
     public function test_edit()
     {
         $response = $this->get(route('course.edit', [
-            'id' => 5,
+            'id' => 4,
         ]));
 
         $response->assertStatus(200);
@@ -90,7 +99,7 @@ class CourseControllerTest extends TestCase
         ];
 
         $response = $this->post(route('course.update', [
-            'id' => 5,
+            'id' => 4,
         ]), $courseData);
 
         $response->assertStatus(302);
@@ -108,7 +117,7 @@ class CourseControllerTest extends TestCase
     public function test_update_is_invalid($dataInvalid, $fieldsInvalid)
     {
         $response = $this->post(route('course.update',[
-            'id'=> 5,
+            'id'=> 4,
         ]), $dataInvalid);
 
         $response->assertStatus(302);
@@ -130,6 +139,9 @@ class CourseControllerTest extends TestCase
                 [
                     'title',
                     'status',
+                    'begin_date',
+                    'end_date',
+                    'description'
                 ]
             ],
             [
@@ -143,6 +155,8 @@ class CourseControllerTest extends TestCase
                 ],
                 [
                     'status',
+                    'begin_date',
+                    'end_date',
                 ]
             ],
             [
@@ -173,6 +187,20 @@ class CourseControllerTest extends TestCase
                     'description',
                 ]
             ],
+            [
+                [
+                    'title' =>      '',
+                    'status' =>     'asd',
+                    'begin_date' => '2022-1-1',
+                    'end_date' =>   '2022-2-2',
+                    'image' =>      '',
+                    'description'=> 'test test test test test test test'
+                ],
+                [
+                    'title',
+                    'status',
+                ]
+            ],
         ];
     }
     
@@ -181,7 +209,6 @@ class CourseControllerTest extends TestCase
         $response = $this->delete(route('course.delete'),[
             'course_id'=> 5,
         ]);
-        // $response = $this->call('DELETE', 'student.delete',$studentData);
         $response->assertStatus(302);
         $this->assertDatabaseMissing('courses', [
             'id' =>  5,

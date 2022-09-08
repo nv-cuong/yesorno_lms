@@ -21,18 +21,42 @@ class HomeControllerTest extends TestCase
     {
         parent::setUp();
         Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
-        $this->user = Sentinel::findUserById(1);
+        $this->user = Sentinel::findUserById(4);
         Sentinel::login($this->user, true);
     }
-    public function test_doTest()
+    public function test_index()
     {
-        $response = $this->get(route('doTest', [
-            'id' => 2,
-        ]));
+        $response = $this->get(route('home'));
 
         $response->assertStatus(200);
 
-        $response->assertSee('<h1>Quản lý Câu hỏi</h1>', false);
+        $response->assertSee('<span class="sub-2">Khóa học mới</span>', false); 
     }
     
+    public function test_courses()
+    {
+        $response = $this->get(route('courses'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('<h2>Các khóa học tuyệt vời của chúng tôi</h2>', false); 
+    }
+
+    public function test_personal()
+    {
+        $response = $this->get(route('personal'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('<span class="sub-2">Find Perfect one</span>', false); 
+    }
+
+    public function test_contact()
+    {
+        $response = $this->get(route('contact'));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('<span class="sub-2">Có gì mới</span>', false); 
+    }
 }
