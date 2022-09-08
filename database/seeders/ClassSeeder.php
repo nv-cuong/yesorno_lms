@@ -17,11 +17,16 @@ class ClassSeeder extends Seeder
      */
     public function run()
     {
-        //
         DB::table('class_studies')->truncate();
 
-        $class = ClassStudy::factory()
-        ->count(15)
-        ->create();
+        // $class = ClassStudy::factory()
+        // ->count(15)
+        // ->create();
+        DB::table('class_studies')->insert([
+            'name' => 'html css',
+            'slug'=> 'html-css',
+            'description'=>'Học lập trình HTML CSS, Biết cách tạo giao diện trang web',
+            'schedule' => '1'
+        ]);
     }
 }

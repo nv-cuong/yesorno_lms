@@ -9,6 +9,8 @@ use App\Models\Lesson;
 use App\Models\Notification;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
@@ -34,5 +36,19 @@ class DatabaseSeeder extends Seeder
             ],
         ];
         Notification::insert($notifications);
+
+        Schema::disableForeignKeyConstraints();
+        DB::table('user_lessons')->truncate();
+        Schema::enableForeignKeyConstraints();
+        DB::table('user_lessons')->insert([
+            'user_id' => '4',
+            'lesson_id' => '1',
+            'status' => '1'
+        ]);
+        DB::table('user_courses')->insert([
+            'user_id' => '4',
+            'course_id' => '1',
+            'status' => '1'
+        ]);
     }
 }

@@ -31,7 +31,7 @@ class ClassControllerTest extends TestCase
     public function test_showDetail()
     {
         $response = $this->get(route('class.show',[
-            'class' => 'ex-ab-qui-inventore-dolores',
+            'class' => 'html-css',
         ]));
 
         $response->assertStatus(200);
@@ -67,7 +67,7 @@ class ClassControllerTest extends TestCase
         ];
 
         $response = $this->put(route('class.update', [
-            'class' => 5,
+            'class' => 1,
         ]), $classData);
 
         $response->assertStatus(302);
@@ -85,7 +85,7 @@ class ClassControllerTest extends TestCase
     public function test_update_is_invalid($dataInvalid, $fieldsInvalid)
     {
         $response = $this->put(route('class.update',[
-            'class'=> 5,
+            'class'=> 1,
         ]), $dataInvalid);
 
         $response->assertStatus(302);
@@ -146,12 +146,12 @@ class ClassControllerTest extends TestCase
     public function test_delete()
     {
         $response = $this->delete(route('class.delete'),[
-            'class_id'=> 4,
+            'class_id'=> 1,
         ]);
         // $response = $this->call('DELETE', 'student.delete',$studentData);
         $response->assertStatus(302);
         $this->assertDatabaseMissing('class_studies', [
-            'id' =>  5,
+            'id' =>  1,
         ]);
     }
 }
