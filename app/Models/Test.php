@@ -15,6 +15,9 @@ class Test extends Model
         'description',
     ];
     use HasFactory;
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function course()
     {
         return $this->belongsToMany(
@@ -24,6 +27,9 @@ class Test extends Model
             'course_id'
         );
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function question()
     {
         return $this->belongsToMany(
@@ -34,6 +40,9 @@ class Test extends Model
             
         );
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function user()
     {
         return $this->belongsToMany(

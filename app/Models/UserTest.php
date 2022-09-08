@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\UserTe
 class UserTest extends Model
 {
     use HasFactory;
@@ -16,6 +16,9 @@ class UserTest extends Model
     {
         return $this->hasMany(UserTestAnswer::class);
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function test()
     {
         return $this->belongsTo(Test::class);

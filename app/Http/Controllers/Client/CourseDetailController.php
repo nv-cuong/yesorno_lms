@@ -13,6 +13,10 @@ use PHPUnit\Framework\Constraint\Count;
 
 class CourseDetailController extends Controller
 {
+    /**
+     * @param string $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function courseDetail($slug)
     {
         $courses = Course::select([
@@ -50,6 +54,10 @@ class CourseDetailController extends Controller
         return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function attach(Request $request)
     {
         if ($getUser = Sentinel::getUser()) {
@@ -65,6 +73,10 @@ class CourseDetailController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function detach(Request $request)
     {
         $getUser = Sentinel::getUser();
@@ -86,6 +98,10 @@ class CourseDetailController extends Controller
             ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function attachClass(Request $request)
     {
         $user = Sentinel::getUser();
@@ -96,6 +112,10 @@ class CourseDetailController extends Controller
             ->with('type_alert', "success");
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function detachClass(Request $request)
     {
         // dd($request->class_id);

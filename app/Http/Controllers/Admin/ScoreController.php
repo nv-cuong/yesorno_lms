@@ -16,6 +16,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ScoreController extends Controller
 {
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index()
     {
         $test_users = User::select([
@@ -34,6 +37,9 @@ class ScoreController extends Controller
         return view('admin.score.index', compact('test_users'));
     }
 
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function create()
     {
         $tests = Test::select(['id', 'title'])->get();
@@ -42,6 +48,11 @@ class ScoreController extends Controller
         return view('admin.score.create', compact(['tests', 'users', 'classes']));
     }
 
+    /**
+     * @param ScoreRequest $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function store(ScoreRequest $request)
     {
         $test_user_item = $request->except('_token');
@@ -65,6 +76,11 @@ class ScoreController extends Controller
 
 
 
+    /**
+     * @param Request $request
+     * @param unknown $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function dots(Request $request, $id)
     {
         $user_test = UserTest::find($id);
@@ -89,13 +105,17 @@ class ScoreController extends Controller
         return view('admin.score.dots', compact('user_test_answers'));
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function point(Request $request)
     {
         $test_user_item = $request->except('_token');
 
         $score = 0;
         if ($request->get('true')) {
-            
+           
             foreach ($request->get('true')  as $question_id  => $answer_value) {
                 $question = Question::find($question_id);
                 if ($answer_value > $question->score) {
@@ -127,15 +147,11 @@ class ScoreController extends Controller
         return redirect(route('score.index'))->with('message', 'Chấm điểm thành công !')->with('type_alert', "success");
     }
 
-    // public function ajaxstudent($id)
-    // {
-
-
-    //     $users['data']=ClassStudy::find($id)->users;
-
-    //     return response()->json($users);
-
-    // }
+    
+    /**
+     * @param int $id
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
     public function getStudent($id)
     {
 

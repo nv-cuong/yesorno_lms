@@ -7,6 +7,9 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class LogoutController extends Controller
 {
+    /**
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
     public function logout()
     {
         Sentinel::logout();

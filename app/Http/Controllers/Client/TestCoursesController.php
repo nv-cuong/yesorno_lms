@@ -16,14 +16,23 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class TestCoursesController extends Controller
 {
+    /**
+     * @param int $id_course
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function random_test($id_course)
     {
         $course = Course::find($id_course);
         $test_course=$course->test;
+        $category='Tự luận';
         foreach ($test_course as $row) {
-            $id_tests[]=$row->id;
+            //if (strlen(strstr($row->category, $category)) <= 0) {
+                $id_tests[]=$row->id;
+            //}
         }
+       // dd($id_tests);
         $random=rand(0, count($id_tests)-1);
+        $random = 1;
         $id_test=$id_tests[$random];
         $getUser = Sentinel::getUser();
         $id_user = $getUser->id;
@@ -31,14 +40,11 @@ class TestCoursesController extends Controller
         $user->tests()->attach($id_test);
         return redirect()->route('index_make', [$id_test]);
     }
-    public function make_again_test($id_test)
-    {
-        $getUser = Sentinel::getUser();
-        $id_user = $getUser->id;
-        $user  = User::find($id_user);
-        $user->tests()->attach($id_test);
-        return redirect()->route('index_make', [$id_test]);
-    }
+    
+    /**
+     * @param int $id_test
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function index_make_test($id_test)
     {
         $getUser = Sentinel::getUser();
@@ -56,6 +62,12 @@ class TestCoursesController extends Controller
         $u = $users_test;
         return view('client.modules.test_make_index', compact('tests', 'question', 'answers', 'user', 'u', 'id_user_test'));
     }
+    /**
+     * @param Request $request
+     * @param int $id_test
+     * @param int $id_user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function save_maked(Request $request, $id_test, $id_user)
     {
         $user_test_answer = DB::table('user_test_answers');

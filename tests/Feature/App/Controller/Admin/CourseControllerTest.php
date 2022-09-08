@@ -12,6 +12,10 @@ class CourseControllerTest extends TestCase
 {
     private $user;
 
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Testing\TestCase::setUp()
+     */
     protected function setUp(): void
     {
         parent::setUp();

@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class LessonProgressController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return string
+     */
     public function lessonProgress(Request $request){
         Lesson::where('id', 3)
         ->update(['title' => "abc"]);

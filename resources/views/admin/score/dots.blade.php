@@ -41,6 +41,7 @@
               </thead>
               <tbody>
                 @foreach ($user_test_answers as $uta)
+
                 <tr>
                   <th>
 
@@ -49,19 +50,22 @@
                   <th>{{$uta->answer}}</th>
                   <th>
                     {{$uta->score}}
+                    <input type="hidden" value="{{$uta->user_test_id}}" name="user_test_id">
                   </th>
                   <th>
                     <input type="number" min="0" required name="true[{{$uta->id}}]" />
                     @error('true'.'['.$uta->id.']')
                     <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
-                    <input type="hidden" value="{{$uta->user_test_id}}" name="user_test_id">
                   </th>
+
                 </tr>
                 @endforeach
+
               </tbody>
               <tr>
                 <td colspan="5" class="text-center"> <button type="submit" class="btn btn-primary">Chấm điểm</button></td>
+
               </tr>
             </table>
           </form>

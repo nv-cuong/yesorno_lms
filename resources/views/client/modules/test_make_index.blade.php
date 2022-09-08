@@ -5,8 +5,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <style>
-.h1,
-h1 {
+.h2,
+h2 {
     color: #990000;
     font-size: 30px;
     margin: 0;
@@ -48,7 +48,7 @@ body {
     justify-content: space-around;
 }
 
-h1 {
+h2 {
     font-size: 28px;
     line-height: 28px;
     margin-bottom: 15px;
@@ -152,7 +152,7 @@ h6 {
 
 <body>
     <?php $q=1?>
-    <h1> BÀi TEST CUỐI KHÓA </h1>
+    <h2> BÀi TEST CUỐI KHÓA </h2>
     <form id="myForm" method="post" action="{{ route('save_maked',[$tests->id,$user->id]) }}">
         @csrf
         <div class="container">
@@ -242,10 +242,6 @@ $answer=$answers->where('question_id', 'like', $question->id);
                 </label>
                 @endforeach
                 <button type="submit" class="btn btn-primary">Nộp bài</button>
-
-                <a id="btn" class="btn btn-primary" href="{{route('make_again_test',$tests->id)}}">
-                    Làm lại
-                </a>
 
     </form></BR></BR>
 

@@ -128,9 +128,9 @@ class QuestionControllerTest extends TestCase
             'id' => 90,
         ]));
 
-        $response->assertStatus(200);
+        $response->assertStatus(302);
 
-        $response->assertSee('<h3 class="card-title">Sửa câu hỏi</h3>', false);
+        $response->assertSee('<meta charset="UTF-8" />', false);
     }
 
     public function test_update_success()

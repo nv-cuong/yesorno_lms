@@ -13,6 +13,11 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class StudentCoursesController extends Controller
 {
+    /**
+     * @param Request $request
+     * @param string $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function personalCourse(Request $request,$slug){
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
@@ -45,6 +50,11 @@ class StudentCoursesController extends Controller
         return view('client.modules.personal_course_detail',compact('course','courses','lessons','id','courseLesson','access'));
     }
 
+    /**
+     * @param Request $request
+     * @param string $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function personalLesson(Request $request,$slug){
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
@@ -63,6 +73,10 @@ class StudentCoursesController extends Controller
         return view('client.modules.lesson',compact('lesson','files','id','slug','status'));
     }
 
+    /**
+     * @param Request $request
+     * @param string $slug
+     */
     public function lessonProgress(Request $request,$slug){
         $getUser = Sentinel::getUser();
         $id = $getUser->id;

@@ -14,6 +14,9 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    /**
+     * @param View $view
+     */
     public function compose(View $view)
     {
         $user = Sentinel::getUser();

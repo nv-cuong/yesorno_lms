@@ -12,14 +12,21 @@ class ClassControllerTest extends TestCase
 {
     private $user;
 
+    /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Testing\TestCase::setUp()
+     */
     protected function setUp(): void
     {
         parent::setUp();
-        // Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
+        Artisan::call('db:seed', ['--class' => 'DatabaseSeeder']);
         $this->user = Sentinel::findUserById(1);
         Sentinel::login($this->user, true);
     }
 
+    /**
+     * 
+     */
     public function test_index()
     {
         $response = $this->get(route('class.index'));
@@ -28,6 +35,9 @@ class ClassControllerTest extends TestCase
 
         $response->assertSee('<h1>Danh sách lớp học</h1>', false);
     }
+    /**
+     * 
+     */
     public function test_showDetail()
     {
         $response = $this->get(route('class.show',[
@@ -146,12 +156,12 @@ class ClassControllerTest extends TestCase
     public function test_delete()
     {
         $response = $this->delete(route('class.delete'),[
-            'class_id'=> 1,
+            'class_id'=> 15,
         ]);
         // $response = $this->call('DELETE', 'student.delete',$studentData);
         $response->assertStatus(302);
         $this->assertDatabaseMissing('class_studies', [
-            'id' =>  1,
+            'id' =>  15,
         ]);
     }
 }
