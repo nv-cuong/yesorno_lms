@@ -30,11 +30,11 @@ class QuestionController extends Controller
             'answer',
             'category',
             'score'
-        ])->paginate(100);
+        ])->paginate(1000);
 
         return view('admin.questions.index', compact('questions'));
 
-       
+
     }
 
     /**
@@ -47,7 +47,7 @@ class QuestionController extends Controller
 
         return view('admin.questions.create', compact('course'));
 
-     
+
     }
 
     /**
@@ -63,7 +63,7 @@ class QuestionController extends Controller
         try {
             if ($question_item['category'] == 0) {
 
-      
+
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
@@ -73,7 +73,7 @@ class QuestionController extends Controller
 
             } elseif ($question_item['category'] == 1) {
 
-           
+
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
@@ -111,7 +111,7 @@ class QuestionController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id 
+     * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function edit(Request $request, $id)
@@ -140,7 +140,7 @@ class QuestionController extends Controller
 
     /**
      * @param EditQuestionRequest $request
-     * 
+     *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function update(EditQuestionRequest $request, $id)
@@ -192,7 +192,7 @@ class QuestionController extends Controller
 
     }
 
-   
+
     /**
      * @param Request $request
      * @throws ModelNotFoundException
@@ -236,10 +236,10 @@ class QuestionController extends Controller
                 }
 
                 $output .= '<tr>
-                   
+
                      <td class="text-center">' . $an->content . '</td>
                      <td class="text-center">' . $checked . '</td>
-               
+
                      </tr>';
             }
         }

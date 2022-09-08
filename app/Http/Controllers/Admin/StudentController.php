@@ -30,7 +30,7 @@ class StudentController extends Controller
             ->with('roles', 'activations')
             ->orderBy('users.id', 'asc')
             ->search()
-            ->paginate();
+            ->paginate(1000);
         return view('admin.students.index', compact('students'));
     }
     public function edit(Request $request, $id)

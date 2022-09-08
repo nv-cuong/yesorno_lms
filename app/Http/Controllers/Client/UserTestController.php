@@ -8,6 +8,7 @@ use App\Models\UserTest;
 use App\Models\UserTestAnswer;
 use Illuminate\Http\Request;
 use App\Models\Answer;
+use App\Models\Test;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 class UserTestController extends Controller
 {
@@ -21,15 +22,15 @@ class UserTestController extends Controller
     }
 
     public function sendTest(Request $request, $id)
-    { 
-        
+    {
+
         $test_user_item = $request->except('_token');
-       
+
         $test_users = UserTest::find($id);
         $answers = [];
         $test_score = 0;
         $questions = 0;
-    
+
         if ($request->get('answers')) {
 
             foreach ($test_user_item['answers'] as $key  => $answer_id) {
@@ -99,18 +100,17 @@ class UserTestController extends Controller
         $test_users->save();
         return view('client.modules.user_test_result', compact('test_users'));
     }
-    
+
     public function test_user()
     {
         $user = Sentinel::getUser();
 
         $user_test_status = UserTest::where('user_id', $user->id)->where('status', 1)->get();
-
         return view('client.modules.user_test', compact('user_test_status'));
     }
 
     public function user_tests_detail($id)
-    {      
+    {
         $user_test_answers = UserTestAnswer::select([
             'questions.content',
             'questions.id',
@@ -122,7 +122,7 @@ class UserTestController extends Controller
             ->where('user_test_id', $id)
             ->join('questions', 'question_id', 'questions.id')
             ->get();
-        
+
         return view('client.modules.user_tests_detail', compact('user_test_answers'));
     }
 }

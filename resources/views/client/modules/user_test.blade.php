@@ -37,7 +37,7 @@
             <div class="row">
                 <div class="col-xl-12 portfolio-content">
                     <div class="row align-items-center">
-                        
+
                     </div>
                     <!-- End Mixitup Nav-->
                     <div class="magnific-mix-gallery masonary">
@@ -56,7 +56,7 @@
                                         <div class="course-2-text">
                                             <h5></h5>
                                             <p class="desciption_course">
-                                                Tên bài test : {{$uts->test->title}}
+                                                Tên bài test : {{$uts->tests->title}}
                                             </p>
                                         </div>
                                         <div class="course-2-bottom">

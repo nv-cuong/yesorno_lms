@@ -34,7 +34,6 @@ use App\Http\Controllers\Admin\ScoreController;
 
 Route::get('/', [HomeController::class, 'index'])
     ->name('home');
-
 Route::get('/notifications', [HomeController::class, 'notifications'])
     ->name('notifications');
 Route::get('/courses', [HomeController::class, 'courses'])
@@ -53,7 +52,8 @@ Route::get('/attach', [CourseDetailController::class, 'attach'])
     ->name('post.attach');
 Route::get('/detach', [CourseDetailController::class, 'detach'])
     ->name('post.detach');
-
+Route::get('/courses/lesson/{id}', [CourseDetailController::class, 'showLesson'])
+    ->name('learning');
 Route::get('/attach-class', [CourseDetailController::class, 'attachClass'])
     ->name('post.attach.class');
 Route::get('/detach-class', [CourseDetailController::class, 'detachClass'])
@@ -109,7 +109,7 @@ Route::get('/course', function () {
 // Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
 Route::prefix('admin')
-   
+
     ->group(function () {
 
         Route::get('/dashboard', [IndexController::class, 'index'])
