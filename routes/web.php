@@ -56,8 +56,8 @@ Route::get('/attach-class', [CourseDetailController::class, 'attachClass'])
     ->name('post.attach.class');
 Route::get('/detach-class', [CourseDetailController::class, 'detachClass'])
     ->name('post.detach.class');
-
-
+Route::get('/courses/lesson/{id}', [CourseDetailController::class, 'showLesson'])
+    ->name('learning');
 
 Route::get('/personal/courses/{slug}', [StudentCoursesController::class, 'personalCourse'])
     ->name('personal.course');
@@ -215,4 +215,3 @@ Route::prefix('admin')
 
 require 'auth.php';
 Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
-
