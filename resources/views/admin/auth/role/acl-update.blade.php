@@ -253,7 +253,7 @@
     </tr>
     <!-- score -->
     <tr>
-        <td>Câu hỏi</td>
+        <td>Quản lý điểm</td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
@@ -275,7 +275,7 @@
                 <label></label>
             </div>
         </td>
-        
+
         <td>&nbsp;</td>
     </tr>
     </tbody>
