@@ -67,6 +67,7 @@ class StudentController extends Controller
             $student->first_name = $request->input('first_name');
             $student->gender = $request->input('gender');
             $student->last_name = $request->input('last_name');
+            $student->address = $request->input('address');
             $student->birthday = $request->input('birthday');
             $student->age = \Carbon\Carbon::parse($request->input('birthday'))->age;
             $student->save();
