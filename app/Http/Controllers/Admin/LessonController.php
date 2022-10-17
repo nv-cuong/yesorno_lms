@@ -12,14 +12,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class LessonController extends Controller
-{
+class LessonController extends Controller {
     /**
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function showLesson($id)
-    {
+    public function showLesson($id) {
         $lesson = Lesson::where('id', $id)
             ->first();
         $files = File::all()
@@ -31,8 +29,7 @@ class LessonController extends Controller
      * @param int $unit_id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function createLesson($unit_id)
-    {
+    public function createLesson($unit_id) {
         $lesson = new Lesson();
         $file = new File();
         $unit = Unit::where('id', $unit_id)
@@ -45,8 +42,7 @@ class LessonController extends Controller
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function storeLesson(LessonRequest $request)
-    {
+    public function storeLesson(LessonRequest $request) {
         $lesson_item = $request->except('_token');
         try {
             $lesson = Lesson::create([
@@ -62,12 +58,13 @@ class LessonController extends Controller
                 'type' => 'link',
                 'path' => $lesson_item['path_link'],
             ]);
-            $zip = $request->file('path_zip');
-            if ($zip) {
-                $path = Storage::putFile('files', $zip);
+            $file = $request->file('path_zip');
+            $file_name = $file->getClientOriginalName();
+            if ($file) {
+                $path = Storage::putFileAs('files', $file, $file_name);
                 File::create([
                     'lesson_id' => $lesson->id,
-                    'type' => 'zip',
+                    'type' => $file->getClientOriginalExtension(),
                     'path' => $path
                 ]);
             }
@@ -76,8 +73,8 @@ class LessonController extends Controller
         }
 
         return redirect(route('unit.detail', [$lesson_item['unit_id']]))
-        ->with('message', 'Thêm bài học mới thành công')
-        ->with('type_alert', "success");
+            ->with('message', 'Thêm bài học mới thành công')
+            ->with('type_alert', "success");
     }
 
     /**
@@ -85,8 +82,7 @@ class LessonController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function editLesson(Request $request, $id)
-    {
+    public function editLesson(Request $request, $id) {
         $lesson = Lesson::find($id);
         if ($lesson) {
             $unit = Unit::pluck('title', 'id');
@@ -104,8 +100,7 @@ class LessonController extends Controller
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function updateLesson(LessonRequest $request, $id)
-    {
+    public function updateLesson(LessonRequest $request, $id) {
         $message = 'Bài học không tồn tại';
         $type = 'danger';
         $lesson = Lesson::find($id);
@@ -135,12 +130,13 @@ class LessonController extends Controller
                     'path' => $request->input('path_link'),
                 ]);
             }
-            $zip = $request->file('path_zip');
-            if ($zip) {
-                $path = Storage::putFile('files', $zip);
+            $file = $request->file('path_zip');
+            $file_name = $file->getClientOriginalName();
+            if ($file) {
+                $path = Storage::putFileAs('files', $file, $file_name);
                 File::create([
                     'lesson_id' => $lesson->id,
-                    'type' => 'zip',
+                    'type' => $file->getClientOriginalExtension(),
                     'path' => $path
                 ]);
             }
@@ -149,8 +145,8 @@ class LessonController extends Controller
         }
 
         return redirect(route('unit.detail', [$lesson->unit_id]))
-        ->with('message', $message)
-        ->with('type_alert', $type);
+            ->with('message', $message)
+            ->with('type_alert', $type);
     }
 
     /**
@@ -158,18 +154,17 @@ class LessonController extends Controller
      * @param int $unit_id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function destroyLesson(Request $request, $unit_id)
-    {
+    public function destroyLesson(Request $request, $unit_id) {
         $lesson_id = $request->input('lesson_id', 0);
         if ($lesson_id) {
             Lesson::destroy($lesson_id);
             return redirect(route('unit.detail', [$unit_id]))
-            ->with('message', 'Bài học đã được xóa')
-            ->with('type_alert', "success");
+                ->with('message', 'Bài học đã được xóa')
+                ->with('type_alert', "success");
         } else
             return redirect(route('unit.detail', [$unit_id]))
-            ->with('message', 'Bài học không tồn tại')
-            ->with('type_alert', "danger");
+                ->with('message', 'Bài học không tồn tại')
+                ->with('type_alert', "danger");
     }
 
     /**
@@ -179,9 +174,9 @@ class LessonController extends Controller
      */
     public function downloadFile($id) {
         $file = File::find($id);
-        $name = 'baihoc'.$id.'.zip';
-        if ($file){
-            return Storage::download($file->path,$name);
+        $name = 'baihoc' . $id . '.zip';
+        if ($file) {
+            return Storage::download($file->path, $name);
         }
         throw new ModelNotFoundException();
     }
