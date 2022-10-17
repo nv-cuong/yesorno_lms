@@ -52,6 +52,7 @@
                             <div class="col-12 table-responsive">
                                 <table class="table table-striped">
                                     <label for="">Danh sách sinh viên trong lớp</label>
+                                    <a href="{{ route('class.add', $class->slug) }}" class="btn btn-success float-right">Thêm học viên</a>
                                     <thead>
                                         <tr>
                                             <th>STT</th>
@@ -77,9 +78,6 @@
                                             <td colspan="6">Chưa có sinh viên đăng kí lớp học</td>
                                         </tr>
                                         @endforelse
-
-
-
                                     </tbody>
                                 </table>
                             </div>
@@ -89,5 +87,4 @@
             </div>
         </div>
     </section>
-
 @endsection

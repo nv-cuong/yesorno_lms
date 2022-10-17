@@ -130,6 +130,8 @@ Route::prefix('admin')
         Route::resource('class', ClassController::class)->middleware('myweb.auth:class.show');
         Route::delete('/class/delete', [ClassController::class, 'destroy'])
             ->name('class.delete')->middleware('myweb.auth:class.delete');
+        Route::get('/class/add/{slug}', [ClassController::class, 'add'])
+        ->name('class.add');
 
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
