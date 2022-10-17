@@ -26,9 +26,9 @@ class CreateRequest extends FormRequest
     {
         
         return [
-            'first_name' => 'required|regex:/(^[A-Za-z0-9_-_ ]+$)+/',
-            'last_name'  => 'required|regex:/(^[A-Za-z0-9_-_ ]+$)+/',
-            'phone'      => 'required|min:10|numeric',
+            'first_name' => 'required',
+            'last_name'  => 'required',
+            'phone'      => 'required|digits:10',
             'email'      => 'required|unique:users|email',
             'role'       => 'required',
             'password'   => 'required|confirmed|min:8',
@@ -46,18 +46,17 @@ class CreateRequest extends FormRequest
         
         return [
          
-            'first_name.required'     => 'Bạn chưa nhập first_name',
-            'last_name.required'     => 'Bạn chưa nhập last_name',
-            'phone.required'     => 'Bạn chưa nhập phone',
-            'phone.min'     => 'Phone phải nhỏ hơn 10 số',
-            'phone.numeric'     => 'Bạn phải nhập dạng số',
+            'first_name.required'     => 'Bạn chưa nhập tên',
+            'last_name.required'     => 'Bạn chưa nhập họ và tên đệm',
+            'phone.required'     => 'Bạn chưa nhập số điện thoại',
+            'phone.digits'     => 'Số điện thoại phải có 10 chữ số',
             'email.required'     => 'Bạn chưa nhập email',
-            'email.unique'     => 'email đã tồn tại',
-            'email.email'     => 'email chưa đúng định dạng',
-            'role.required'     => 'Bạn chưa nhập role',
-            'password.required'     => 'Bạn chưa nhập password',
-            'password.min'     => 'Password phải từ 8 kí tự trở lên',
-            'password.confirmed'     => 'Password xác nhận không đúng',
+            'email.unique'     => 'Email đã tồn tại',
+            'email.email'     => 'Email chưa đúng định dạng',
+            'role.required'     => 'Bạn chưa nhập role - phân quyền',
+            'password.required'     => 'Bạn chưa nhập mật khẩu',
+            'password.min'     => 'Mật khẩu phải từ 8 kí tự trở lên',
+            'password.confirmed'     => 'Mật khẩu xác nhận không đúng',
         ];
     }
     

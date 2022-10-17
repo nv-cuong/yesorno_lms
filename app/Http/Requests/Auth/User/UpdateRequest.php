@@ -24,12 +24,12 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|regex:/(^[A-Za-z0-9_-_ ]+$)+/',
-            'last_name'  => 'required|regex:/(^[A-Za-z0-9_-_ ]+$)+/',
-            'phone'      => 'required|min:10|numeric',
+            'first_name' => 'required',
+            'last_name'  => 'required',
+            'phone'      => 'required|digits:10|numeric',
             'email'      => 'required|email',
+            'address'    => 'required',
             'role'       => 'required',
-            //'password'   => 'required|confirmed|min:8',
         ];
 
        
@@ -43,18 +43,17 @@ class UpdateRequest extends FormRequest
     {
         return [
          
-            'first_name.required'     => 'Bạn chưa nhập first_name',
-            'last_name.required'     => 'Bạn chưa nhập last_name',
+            'first_name.required'     => 'Bạn chưa nhập tên',
+            'last_name.required'     => 'Bạn chưa nhập họ và tên đệm',
             'phone.required'     => 'Bạn chưa nhập phone',
-            'phone.min'     => 'Phone phải nhỏ hơn 10 số',
-            'phone.numeric'     => 'Bạn phải nhập dạng số',
+            'phone.digits'     => 'Số điện thoại có 10 số',
+            'phone.numeric'     => 'Số điện thoại phải nhập dạng số',
             'email.required'     => 'Bạn chưa nhập email',
-           
-            'email.email'     => 'email chưa đúng định dạng',
+            'email.email'     => 'Email chưa đúng định dạng',
+            'address.required'     => 'Bạn chưa nhập địa chỉ',
             'role.required'     => 'Bạn chưa nhập role',
-            'password.required'     => 'Bạn chưa nhập password',
-            'password.min'     => 'Password phải từ 8 kí tự trở lên',
-            //'password.confirmed'     => 'Password xác nhận không đúng',
+            'password.required'     => 'Bạn chưa nhập mật khẩu',
+            'password.min'     => 'Mật khẩu phải từ 8 kí tự trở lên',
         ];
     }
 }
