@@ -53,7 +53,6 @@ class LessonController extends Controller
                 'unit_id' => $lesson_item['unit_id'],
                 'title' => $lesson_item['title'],
                 'slug' => Str::slug($lesson_item['title']),
-                // 'config' => $lesson_item['config'],
                 'published' => $lesson_item['published'],
                 'content' => $lesson_item['content'],
             ]);

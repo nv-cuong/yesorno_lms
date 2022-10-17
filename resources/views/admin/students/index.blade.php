@@ -14,6 +14,10 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-md-12">
+                                <div class="card-header">
+                                    <a href="{{ route('student.create') }}" class="btn btn-success float-right">+ Thêm học
+                                        viên</a>
+                                </div>
                                 @include('admin/_alert')
                                 <div class="card">
                                     <table class="table table-striped" id="example1">
@@ -40,23 +44,24 @@
                                                     <td class="text-center col-2">{{ $student->birthday }}</td>
                                                     <td class="text-center col-2">
                                                         <a href="{{ route('student.statistic', [$student->id]) }}"
-                                                            class="btn btn-sm btn-info mb-1">
+                                                            class="btn btn-sm btn-info mb-1" title="Thông tin">
                                                             <i class="far fa-eye"></i>
                                                         </a>
                                                         <a href="{{ route('student.edit', [$student->id]) }}"
-                                                            class="btn btn-sm btn-primary mb-1">
+                                                            class="btn btn-sm btn-primary mb-1" title="Sửa">
                                                             <i class="fas fa-edit"></i>
                                                         </a>
                                                         <a class="btn btn-sm btn-danger mb-1" data-toggle="modal"
                                                             data-target="#deleteModalStudent"
-                                                            onclick="javascript:student_delete({{ $student->id }})">
+                                                            onclick="javascript:student_delete({{ $student->id }})"
+                                                            title="Xóa">
                                                             <i class="far fa-trash-alt"></i></a><br>
                                                         <a href="{{ route('student.course', [$student->id]) }}"
-                                                            class="btn btn-sm btn-warning mb-1">
+                                                            class="btn btn-sm btn-warning mb-1" title="Khóa học">
                                                             Khóa học
                                                         </a>
                                                         <a href="{{ route('student.class', [$student->id]) }}"
-                                                            class="btn btn-sm btn-success mb-1">
+                                                            class="btn btn-sm btn-success mb-1" title="Lớp học">
                                                             Lớp học
                                                         </a>
                                                 </tr>
