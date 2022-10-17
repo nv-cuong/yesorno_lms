@@ -87,7 +87,6 @@ class StudentController extends Controller
 
             DB::commit();
 
-            // Session::flash('success', __('auth.account_creation_successful'));
             return redirect()->route('students')
             ->with('msg', 'Học sinh thêm thành công!');
         } catch (\Exception $exception) {
