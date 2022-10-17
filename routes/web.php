@@ -131,7 +131,9 @@ Route::prefix('admin')
         Route::delete('/class/delete', [ClassController::class, 'destroy'])
             ->name('class.delete')->middleware('myweb.auth:class.delete');
         Route::get('/class/add/{slug}', [ClassController::class, 'add'])
-        ->name('class.add');
+            ->name('class.add');
+        Route::post('/class/add/{id}', [ClassController::class, 'join'])
+            ->name('class.join');
 
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])

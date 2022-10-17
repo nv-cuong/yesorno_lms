@@ -115,7 +115,7 @@ class ClassController extends Controller
         $class = ClassStudy::find($id);
         if ($class) {
             $course = $class->courses()->get();
-            return view('admin.modules.classes.edit', compact('class','courses', 'course'));
+            return view('admin.modules.classes.edit', compact('class', 'courses', 'course'));
         }
         return redirect(route('class.index'))
             ->with('message', 'Không tìm thấy lớp học này')
@@ -159,8 +159,8 @@ class ClassController extends Controller
             dd($t);
         }
         return redirect(route('class.index'))
-        ->with('message', $message)
-        ->with('type_alert', $type);
+            ->with('message', $message)
+            ->with('type_alert', $type);
     }
 
     /**
@@ -172,25 +172,23 @@ class ClassController extends Controller
     public function destroy(Request $request)
     {
         $class_id = $request->input('class_id', 0);
-        if ($class_id)
-        {
+        if ($class_id) {
             $data = ClassStudy::find($class_id);
             $name = $data->name;
 
-            if($data->users->count() > 0){
+            if ($data->users->count() > 0) {
                 return redirect(route('class.index'))
-                ->with('message', "Không thể xóa! Đang có học sinh đăng kí lớp")
-                ->with('type_alert', "danger");
-            }
-            else{
+                    ->with('message', "Không thể xóa! Đang có học sinh đăng kí lớp")
+                    ->with('type_alert', "danger");
+            } else {
                 $class_dettach = ClassStudy::find($class_id);
                 ClassStudy::destroy($class_id);
                 $class_dettach->courses()->detach();
                 return redirect(route('class.index'))
-                ->with('message', "Xóa thành công: ". $name )
-                ->with('type_alert', "success");
+                    ->with('message', "Xóa thành công: " . $name)
+                    ->with('type_alert', "success");
             }
-        }else {
+        } else {
             throw new ModelNotFoundException();
         }
     }
@@ -221,7 +219,42 @@ class ClassController extends Controller
         return view('admin.modules.classes.add_student', compact('class', 'std', 'stds'));
     }
 
-    public function join(Request $request) {
+    public function join($id)
+    {
+        $message = 'Học viên không tồn tại!';
+        $type = 'danger';
+        $class = ClassStudy::find($id);
+        $courses = $class->courses()->get();
+        try {
+            if (isset($_POST['std_id'])) {
 
+                $class_dettach = ClassStudy::find($class->id);
+                $class_dettach->users()->detach();
+                foreach($courses as $course) {
+                    $course->users()->detach();
+                }
+                foreach ($_POST['std_id'] as $value) {
+                    //Xử lý các phần tử được chọn
+                    $student = User::find($value);
+                    $class->users()->attach($student->id);
+                    foreach($courses as $course) {
+                        $student->courses()->attach($course->id);
+                    }
+                }
+                $message    = 'Thêm học viên mới thành công';
+                $type       = 'success';
+            } else {
+                $class_dettach = ClassStudy::find($class->id);
+                $class_dettach->users()->detach();
+                foreach($courses as $course) {
+                    $course->users()->detach();
+                }
+            }
+        } catch (\Throwable $t) {
+            dd($t);
+        }
+        return redirect(route('class.show', $class->slug))
+            ->with('message', $message)
+            ->with('type_alert', $type);
     }
 }
