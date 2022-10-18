@@ -202,6 +202,10 @@ class CourseController extends Controller {
             ->with('type_alert', "danger");
     }
 
+    public function addStudent(Request $request, $id) {
+        
+    }
+
     /**
      * @param Request $request
      * @param int $id

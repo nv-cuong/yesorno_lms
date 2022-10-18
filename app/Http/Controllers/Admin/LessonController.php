@@ -12,12 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class LessonController extends Controller {
+class LessonController extends Controller
+{
     /**
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function showLesson($id) {
+    public function showLesson($id)
+    {
         $lesson = Lesson::where('id', $id)
             ->first();
         $files = File::all()
@@ -29,7 +31,8 @@ class LessonController extends Controller {
      * @param int $unit_id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function createLesson($unit_id) {
+    public function createLesson($unit_id)
+    {
         $lesson = new Lesson();
         $file = new File();
         $unit = Unit::where('id', $unit_id)
@@ -37,12 +40,39 @@ class LessonController extends Controller {
         return view('admin.modules.courses.units.lessons.create', compact('lesson', 'file', 'unit'));
     }
 
+    public function saveLink(Lesson $lesson, $lesson_item) {
+        File::create([
+            'lesson_id' => $lesson->id,
+            'type' => 'link',
+            'path' => $lesson_item['path_link'],
+        ]);
+    }
+
+    /**
+     * @param LessonRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public static function saveZip(Request $request, Lesson $lesson, $id)
+    {
+        $file = $request->file($id);
+        $file_name = $file->getClientOriginalName();
+        if ($file) {
+            $path = Storage::putFileAs('files', $file, $file_name);
+            File::create([
+                'lesson_id' => $lesson->id,
+                'type' => $file->extension(),
+                'path' => $path
+            ]);
+        }
+    }
+
     /**
      * @param LessonRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function storeLesson(LessonRequest $request) {
+    public function storeLesson(LessonRequest $request)
+    {
         $lesson_item = $request->except('_token');
         try {
             $lesson = Lesson::create([
@@ -52,21 +82,8 @@ class LessonController extends Controller {
                 'published' => $lesson_item['published'],
                 'content' => $lesson_item['content'],
             ]);
-            File::create([
-                'lesson_id' => $lesson->id,
-                'type' => 'link',
-                'path' => $lesson_item['path_link'],
-            ]);
-            $file = $request->file('path_zip');
-            $file_name = $file->getClientOriginalName();
-            if ($file) {
-                $path = Storage::putFileAs('files', $file, $file_name);
-                File::create([
-                    'lesson_id' => $lesson->id,
-                    'type' => $file->getClientOriginalExtension(),
-                    'path' => $path
-                ]);
-            }
+            $this->saveLink($lesson, $lesson_item);
+            $this->saveZip($request, $lesson, 'path_zip');
         } catch (\Throwable $th) {
             throw new ModelNotFoundException();
         }
@@ -81,7 +98,8 @@ class LessonController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function editLesson(Request $request, $id) {
+    public function editLesson(Request $request, $id)
+    {
         $lesson = Lesson::find($id);
         if ($lesson) {
             $unit = Unit::pluck('title', 'id');
@@ -99,7 +117,8 @@ class LessonController extends Controller {
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function updateLesson(LessonRequest $request, $id) {
+    public function updateLesson(LessonRequest $request, $id)
+    {
         $message = 'Bài học không tồn tại';
         $type = 'danger';
         $lesson = Lesson::find($id);
@@ -123,22 +142,9 @@ class LessonController extends Controller {
                     }
                 }
             } else {
-                File::create([
-                    'lesson_id' => $lesson->id,
-                    'type' => 'link',
-                    'path' => $request->input('path_link'),
-                ]);
+                $this->saveLink($lesson, $request->all());
             }
-            $file = $request->file('path_zip');
-            $file_name = $file->getClientOriginalName();
-            if ($file) {
-                $path = Storage::putFileAs('files', $file, $file_name);
-                File::create([
-                    'lesson_id' => $lesson->id,
-                    'type' => $file->getClientOriginalExtension(),
-                    'path' => $path
-                ]);
-            }
+            $this->saveZip($request, $lesson, 'path_zip');
             $message = 'Cập nhật bài học thành công';
             $type = 'success';
         }
@@ -153,7 +159,8 @@ class LessonController extends Controller {
      * @param int $unit_id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function destroyLesson(Request $request, $unit_id) {
+    public function destroyLesson(Request $request, $unit_id)
+    {
         $lesson_id = $request->input('lesson_id', 0);
         if ($lesson_id) {
             Lesson::destroy($lesson_id);
@@ -171,7 +178,8 @@ class LessonController extends Controller {
      * @throws ModelNotFoundException
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function downloadFile($id) {
+    public function downloadFile($id)
+    {
         $file = File::find($id);
         $name = 'baihoc' . $id . '.zip';
         if ($file) {
