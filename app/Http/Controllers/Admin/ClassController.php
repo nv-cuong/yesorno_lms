@@ -19,7 +19,7 @@ class ClassController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -38,7 +38,7 @@ class ClassController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -54,8 +54,8 @@ class ClassController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  \App\Http\Requests\Admin\Class\CreateRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateRequest $request)
     {
@@ -89,8 +89,8 @@ class ClassController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  string  $slug
+     * @return \Illuminate\View\View
      */
     public function show($slug)
     {
@@ -104,7 +104,7 @@ class ClassController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function edit($id)
     {
@@ -125,14 +125,15 @@ class ClassController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\Admin\Class\UpdateRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, $id)
     {
         //
         $message = 'Lớp học không tồn tại!';
+        $type    = 'danger';
         $class = ClassStudy::find($id);
         if ($class) {
             $class->name        = $request->input('name');
@@ -166,8 +167,7 @@ class ClassController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
@@ -196,7 +196,8 @@ class ClassController extends Controller
     /**
      * Show the form for adding a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param  string  $slug
+     * @return \Illuminate\View\View
      */
     public function add($slug)
     {
@@ -219,6 +220,12 @@ class ClassController extends Controller
         return view('admin.modules.classes.add_student', compact('class', 'std', 'stds'));
     }
 
+    /**
+     * Show the form for adding a new resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function join($id)
     {
         $message = 'Học viên không tồn tại!';
