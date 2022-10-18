@@ -8,6 +8,7 @@ use App\Http\Requests\Admin\Class\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
+use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -22,7 +23,6 @@ class ClassController extends Controller
      */
     public function index()
     {
-
         $classes = ClassStudy::select([
             'id',
             'slug',
@@ -193,5 +193,35 @@ class ClassController extends Controller
         }else {
             throw new ModelNotFoundException();
         }
+    }
+
+    /**
+     * Show the form for adding a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function add($slug)
+    {
+        $class = ClassStudy::where('slug', $slug)->first();
+        $std = $class->users()->get();
+        $stds = User::select([
+            'users.id',
+            'email',
+            'birthday',
+            'gender',
+            'first_name',
+            'last_name'
+        ])
+            ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+            ->where('ru.role_id', 5)
+            ->with('roles', 'activations')
+            ->orderBy('users.id', 'asc')
+            ->search()
+            ->paginate(1000);
+        return view('admin.modules.classes.add_student', compact('class', 'std', 'stds'));
+    }
+
+    public function join(Request $request) {
+
     }
 }
