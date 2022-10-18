@@ -49,7 +49,7 @@
                                                 $vid_id = $vid_code[0];
                                             @endphp
                                             <div class="d-flex justify-content-center">
-                                                <iframe src="@php echo'https://youtube.com/embed/'. $vid_id .'' @endphp"
+                                                <iframe src="https://youtube.com/embed/{{ $vid_id }}"
                                                     width="700" height="415" allowfullscreen>
                                                 </iframe>
                                             </div>
