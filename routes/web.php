@@ -130,10 +130,16 @@ Route::prefix('admin')
         Route::resource('class', ClassController::class)->middleware('myweb.auth:class.show');
         Route::delete('/class/delete', [ClassController::class, 'destroy'])
             ->name('class.delete')->middleware('myweb.auth:class.delete');
+        Route::get('/class/add/{slug}', [ClassController::class, 'add'])
+        ->name('class.add');
 
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
                 ->name('students')->middleware('myweb.auth:student.show');
+            Route::get('/create', [StudentController::class, 'create'])
+                ->name('student.create')->middleware('myweb.auth:student.create');
+            Route::post('/store', [StudentController::class, 'store'])
+                ->name('student.store')->middleware('myweb.auth:student.store');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])
                 ->name('student.edit')->middleware('myweb.auth:student.edit');
             Route::post('/edit/{id}', [StudentController::class, 'update'])
