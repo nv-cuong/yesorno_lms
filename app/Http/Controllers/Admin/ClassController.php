@@ -157,7 +157,7 @@ class ClassController extends Controller
                 }
             }
         } catch (\Throwable $t) {
-            dd($t);
+            throw new ModelNotFoundException();
         }
         return redirect(route('class.index'))
             ->with('message', $message)
@@ -258,7 +258,7 @@ class ClassController extends Controller
                 }
             }
         } catch (\Throwable $t) {
-            dd($t);
+            throw new ModelNotFoundException();
         }
         return redirect(route('class.show', $class->slug))
             ->with('message', $message)
