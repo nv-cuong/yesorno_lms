@@ -11,9 +11,10 @@
                     <div class="card-header">
                         <h3 class="card-title" style="font-weight:bold">Thêm học viên mới</h3>
                     </div>
-                    <form action="" method="POST">
+                    <form action="{{ route('class.join', $class->id) }}" method="POST">
                         <div class="card-body">
-                            <table class="table table-striped">
+                            @csrf
+                            <table class="table table-striped" id="example1">
                                 <thead>
                                     <tr>
                                         <th>ID</th>
@@ -22,8 +23,7 @@
                                         <th>E-mail</th>
                                         <th>Ngày sinh</th>
                                         <th>Giới tính</th>
-                                        <th></th>
-                                        <th>Tùy chọn</th>
+                                        <th>-</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -36,12 +36,9 @@
                                         <td>{{ $item->birthday }}</td>
                                         <td>{{ $item->gender }}</td>
                                         <td>
-                                            <input type="checkbox" id="" name="" value=""
+                                            <input class="form-check-input" type="checkbox" id="student" name="std_id[]" value="{{ $item->id }}" 
                                             @foreach ($std as $item2) @if ($item->id == $item2->id) checked
                                             @endif @endforeach >
-                                        </td>
-                                        <td>
-                                            <button type="submit" class="btn btn-primary">Thêm</button>
                                         </td>
                                     </tr>
                                     @empty
@@ -51,7 +48,7 @@
                                     @endforelse
                                 </tbody>
                             </table>
-                            <button type="submit" class="btn btn-primary">Thêm hết</button>
+                            <button type="submit" class="btn btn-primary">Thêm</button>
                         </div>
                     </form>
                 </div>
@@ -59,4 +56,17 @@
         </div>
     </div>
 </section>
+@endsection
+
+
+@section('scripts')
+<script>
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+</script>
 @endsection
