@@ -3,13 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Class\CreateRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StudentRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\ClassStudy;
+use App\Models\Role;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class StudentController extends Controller
 {
@@ -36,12 +41,71 @@ class StudentController extends Controller
             ->paginate(1000);
         return view('admin.students.index', compact('students'));
     }
+
+    /**
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function create()
+    {
+        $roleDb = Role::select('id', 'name')
+            ->get();
+
+        return view('admin.students.create', array(
+            'roleDb' => $roleDb,
+        ));
+    }
+
+    /**
+     * @param QuestionRequest $request
+     * @throws ModelNotFoundException
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
+     */
+    public function store(CreateRequest $request)
+    {
+        $email = $request->email;
+        $user  = Sentinel::getUser()->first_name;
+
+        DB::beginTransaction();
+        try {
+            $data = [
+                'first_name' => $request->first_name,
+                'last_name'  => $request->last_name,
+                'email'      => strtolower($email),
+                'password'   => $request->password,
+                'phone'   => $request->phone,
+                'created_by' => $user,
+                'updated_by' => $user,
+            ];
+
+            //Create a new user
+            $user = Sentinel::registerAndActivate($data);
+
+            //Attach the user to the role
+            $role = Sentinel::findRoleById($request->role);
+            $role->users()
+                ->attach($user);
+
+            DB::commit();
+
+            return redirect()->route('students')
+            ->with('msg', 'Học sinh thêm thành công!');
+        } catch (\Exception $exception) {
+            DB::rollBack();
+
+            Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
+
+            return redirect()
+                ->back()
+                ->withInput($request->all());
+        }
+    }
+
     /**
      * @param Request $request
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $student = User::find($id);
         if ($student) {
@@ -67,6 +131,7 @@ class StudentController extends Controller
             $student->first_name = $request->input('first_name');
             $student->gender = $request->input('gender');
             $student->last_name = $request->input('last_name');
+            $student->address = $request->input('address');
             $student->birthday = $request->input('birthday');
             $student->age = \Carbon\Carbon::parse($request->input('birthday'))->age;
             $student->save();

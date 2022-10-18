@@ -3,7 +3,6 @@
 
 @section('content')
     <div class="card">
-
         <div class="card-header">
             <h3 class="page-title d-inline mb-0">Chi tiết học viên</h3>
         </div>
@@ -27,7 +26,7 @@
 
                             <tr>
                                 <th>Họ và tên</th>
-                                <td>{{ $student->first_name }} {{ $student->last_name }}</td>
+                                <td>{{ $student->last_name }} {{ $student->first_name }}</td>
                             </tr>
 
                             <tr>
@@ -57,31 +56,42 @@
 
                             <tr>
                                 <th>Giới tính</th>
-                                <td>{{ $student->gender }}</td>
+                                <td>
+                                    @if ($student->gender == 'male')
+                                        Nam
+                                    @elseif ($student->gender == 'female')
+                                        Nữ
+                                    @else
+                                        Khác
+                                    @endif
+                                </td>
                             </tr>
 
                             <tr>
                                 <th>Lần cuối đăng nhập</th>
                                 <td>{{ $student->last_login }}</td>
                             </tr>
+
                             <tr>
                                 <th>Số lớp học đang tham gia</th>
                                 <td>{{ $classStudiesNumber }}</td>
                             </tr>
+
                             <tr>
                                 <th>Tiến độ</th>
                                 <td>
                                     <div class="progress" style="width: 50%">
                                         <div class="progress-bar progress-bar-striped progress-bar-animated"
-                                            role="progressbar" aria-valuenow={{ $coursesNumber }} aria-valuemin="0" aria-valuemax="100"
-                                            style="width: {{ $coursesNumber }}%">{{ $coursesNumber }}%</div>
+                                            role="progressbar" aria-valuenow={{ $coursesNumber }} aria-valuemin="0"
+                                            aria-valuemax="100" style="width: {{ $coursesNumber }}%">{{ $coursesNumber }}%
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-            </div><!-- Nav tabs -->
+            </div>
         </div>
     </div>
 @stop

@@ -138,6 +138,10 @@ Route::prefix('admin')
         Route::prefix('students')->group(function () {
             Route::get('/', [StudentController::class, 'index'])
                 ->name('students')->middleware('myweb.auth:student.show');
+            Route::get('/create', [StudentController::class, 'create'])
+                ->name('student.create')->middleware('myweb.auth:student.create');
+            Route::post('/store', [StudentController::class, 'store'])
+                ->name('student.store')->middleware('myweb.auth:student.store');
             Route::get('/edit/{id}', [StudentController::class, 'edit'])
                 ->name('student.edit')->middleware('myweb.auth:student.edit');
             Route::post('/edit/{id}', [StudentController::class, 'update'])
