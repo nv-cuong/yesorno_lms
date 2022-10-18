@@ -3,13 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Class\CreateRequest;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StudentRequest;
+use App\Http\Requests\Auth\User\CreateRequest as UserCreateRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lesson;
-use App\Models\ClassStudy;
 use App\Models\Role;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
@@ -60,7 +59,7 @@ class StudentController extends Controller
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(CreateRequest $request)
+    public function store(UserCreateRequest $request)
     {
         $email = $request->email;
         $user  = Sentinel::getUser()->first_name;
@@ -91,7 +90,7 @@ class StudentController extends Controller
             ->with('msg', 'Học sinh thêm thành công!');
         } catch (\Exception $exception) {
             DB::rollBack();
-
+            dd('abc');
             Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
 
             return redirect()

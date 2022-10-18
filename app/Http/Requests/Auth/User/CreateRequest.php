@@ -46,12 +46,12 @@ class CreateRequest extends FormRequest
         
         return [
          
-            'first_name.required'     => 'Bạn chưa nhập tên',
-            'last_name.required'     => 'Bạn chưa nhập họ và tên đệm',
-            'phone.required'     => 'Bạn chưa nhập số điện thoại',
-            'phone.digits'     => 'Số điện thoại phải có 10 chữ số',
-            'email.required'     => 'Bạn chưa nhập email',
-            'email.unique'     => 'Email đã tồn tại',
+            'first_name.required'   => 'Bạn chưa nhập tên',
+            'last_name.required'    => 'Bạn chưa nhập họ và tên đệm',
+            'phone.required'        => 'Bạn chưa nhập số điện thoại',
+            'phone.digits'          => 'Số điện thoại phải có 10 chữ số',
+            'email.required'        => 'Bạn chưa nhập email',
+            'email.unique'          => 'Email đã tồn tại',
             'email.email'     => 'Email chưa đúng định dạng',
             'role.required'     => 'Bạn chưa nhập role - phân quyền',
             'password.required'     => 'Bạn chưa nhập mật khẩu',
