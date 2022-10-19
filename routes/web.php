@@ -20,6 +20,8 @@ use App\Http\Controllers\Client\StudentCoursesController;
 use App\Http\Controllers\Client\TestCoursesController;
 use App\Http\Controllers\Client\UserTestController;
 use App\Http\Controllers\Admin\ScoreController;
+use App\Http\Controllers\MyController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -124,6 +126,10 @@ Route::prefix('admin')->middleware('myweb.auth:admin')
                 ->name('delete')->middleware('myweb.auth:question.destroy');
             Route::get('/answer/{id}', [QuestionController::class, 'show_answser'])
                 ->name('answer')->middleware('myweb.auth:question.show');
+
+                Route::get('export', [MyController::class, 'export' ])->name('export');
+                Route::get('importExportView', [MyController::class, 'importExportView']);
+                Route::post('import', [MyController::class, 'import'])->name('import');
         });
 
         Route::resource('class', ClassController::class)->middleware('myweb.auth:class.show');

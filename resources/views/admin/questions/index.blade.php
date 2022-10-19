@@ -28,12 +28,12 @@
             <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo câu hỏi</a>
           </div>
           <div class="card-body">
-            <form action="" method="POST" enctype="multipart/form-data">
+            <form action="{{ route('question.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <input type="file" name="file" class="form-control">
                 <br>
                 <button class="btn btn-success">Import User Data</button>
-                <a class="btn btn-warning" href="">Export User Data</a>
+                <a class="btn btn-warning" href="{{ route('question.export') }}">Export User Data</a>
             </form>
         </div>
 

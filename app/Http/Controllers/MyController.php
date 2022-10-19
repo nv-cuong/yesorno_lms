@@ -14,7 +14,7 @@ class MyController extends Controller
     */
     public function importExportView()
     {
-       return view('import');
+       return view('admin.questions.index');
     }
    
     /**
