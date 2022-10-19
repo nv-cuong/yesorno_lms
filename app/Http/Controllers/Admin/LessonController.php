@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use function PHPUnit\Framework\exactly;
+
 class LessonController extends Controller
 {
     /**
@@ -42,6 +44,27 @@ class LessonController extends Controller
 
     /**
      * @param LessonRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    private static function saveDocument(Request $request, Lesson $lesson, $docType)
+    {
+        $lesson_item = $request->except('_token');
+        if ($docType == 'path_link') {
+            $type = 'link';
+            $path = $lesson_item[$docType];
+        } else {
+            $type = $request->file($docType)->extension();
+            $path = Storage::putFileAs('files', $request->file($docType), $request->file($docType)->getClientOriginalName());
+        }
+        File::create([
+            'lesson_id' => $lesson->id,
+            'type' => $type,
+            'path' => $path,
+        ]);
+    }
+
+    /**
+     * @param LessonRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -56,27 +79,15 @@ class LessonController extends Controller
                 'published' => $lesson_item['published'],
                 'content' => $lesson_item['content'],
             ]);
-            File::create([
-                'lesson_id' => $lesson->id,
-                'type' => 'link',
-                'path' => $lesson_item['path_link'],
-            ]);
-            $zip = $request->file('path_zip');
-            if ($zip) {
-                $path = Storage::putFile('files', $zip);
-                File::create([
-                    'lesson_id' => $lesson->id,
-                    'type' => 'zip',
-                    'path' => $path
-                ]);
-            }
+            $this->saveDocument($request, $lesson, 'path_link');
+            $this->saveDocument($request, $lesson, 'path_zip');
         } catch (\Throwable $th) {
             throw new ModelNotFoundException();
         }
 
         return redirect(route('unit.detail', [$lesson_item['unit_id']]))
-        ->with('message', 'Thêm bài học mới thành công')
-        ->with('type_alert', "success");
+            ->with('message', 'Thêm bài học mới thành công')
+            ->with('type_alert', "success");
     }
 
     /**
@@ -128,28 +139,18 @@ class LessonController extends Controller
                     }
                 }
             } else {
-                File::create([
-                    'lesson_id' => $lesson->id,
-                    'type' => 'link',
-                    'path' => $request->input('path_link'),
-                ]);
+                $this->saveDocument($request, $lesson, 'path_link');
             }
-            $zip = $request->file('path_zip');
-            if ($zip) {
-                $path = Storage::putFile('files', $zip);
-                File::create([
-                    'lesson_id' => $lesson->id,
-                    'type' => 'zip',
-                    'path' => $path
-                ]);
+            if ($request->file('path_zip') != null) {
+                $this->saveDocument($request, $lesson, 'path_zip');
             }
             $message = 'Cập nhật bài học thành công';
             $type = 'success';
         }
 
         return redirect(route('unit.detail', [$lesson->unit_id]))
-        ->with('message', $message)
-        ->with('type_alert', $type);
+            ->with('message', $message)
+            ->with('type_alert', $type);
     }
 
     /**
@@ -163,12 +164,12 @@ class LessonController extends Controller
         if ($lesson_id) {
             Lesson::destroy($lesson_id);
             return redirect(route('unit.detail', [$unit_id]))
-            ->with('message', 'Bài học đã được xóa')
-            ->with('type_alert', "success");
+                ->with('message', 'Bài học đã được xóa')
+                ->with('type_alert', "success");
         } else
             return redirect(route('unit.detail', [$unit_id]))
-            ->with('message', 'Bài học không tồn tại')
-            ->with('type_alert', "danger");
+                ->with('message', 'Bài học không tồn tại')
+                ->with('type_alert', "danger");
     }
 
     /**
@@ -176,11 +177,12 @@ class LessonController extends Controller
      * @throws ModelNotFoundException
      * @return \Symfony\Component\HttpFoundation\StreamedResponse
      */
-    public function downloadFile($id) {
+    public function downloadFile($id)
+    {
         $file = File::find($id);
-        $name = 'baihoc'.$id.'.zip';
-        if ($file){
-            return Storage::download($file->path,$name);
+        $name = 'baihoc' . $id . '.zip';
+        if ($file) {
+            return Storage::download($file->path, $name);
         }
         throw new ModelNotFoundException();
     }
