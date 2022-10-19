@@ -73,8 +73,8 @@
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">
-                    @if ($count_user_tests && Sentinel::inRole('teacher'))
-                        1
+                    @if (Sentinel::inRole('teacher'))
+                        {{ $user_test->count() }}
                     @else
                         0
                     @endif

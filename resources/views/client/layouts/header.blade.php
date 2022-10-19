@@ -46,7 +46,7 @@
                             @endphp
                             <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
                                     <i class="far fa-bell"></i>
-                                    Thông báo({{ $notifications->count() + $count_user_tests }}) </a>
+                                    Thông báo({{ $notifications->count() + $user_test->count() }}) </a>
                                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
                                     @forelse($notifications as $notification)

@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\User;
+use App\Models\Lesson;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -76,6 +77,8 @@ class ClassController extends Controller
                     $class->courses()->attach($course->id);
                 }
             }
+            $message            = 'Tạo lớp học thành công';
+            $type               = 'success';
             DB::commit();
         } catch (\Throwable $t) {
             DB::rollback();
@@ -83,7 +86,9 @@ class ClassController extends Controller
             throw new ModelNotFoundException();
         }
 
-        return redirect(route('class.index'));
+        return redirect(route('class.index'))
+            ->with('message', $message)
+            ->with('type_alert', $type);;
     }
 
     /**
@@ -234,28 +239,35 @@ class ClassController extends Controller
         $courses = $class->courses()->get();
         try {
             if (isset($_POST['std_id'])) {
-
-                $class_dettach = ClassStudy::find($class->id);
-                $class_dettach->users()->detach();
-                foreach($courses as $course) {
-                    $course->users()->detach();
-                }
                 foreach ($_POST['std_id'] as $value) {
                     //Xử lý các phần tử được chọn
                     $student = User::find($value);
-                    $class->users()->attach($student->id);
-                    foreach($courses as $course) {
-                        $student->courses()->attach($course->id);
+                    if (DB::table('class_study_users')
+                        ->where('class_study_id', $class->id)
+                        ->where('user_id', $student->id)->first()
+                    )  continue;
+                    else {
+                        $class->users()->attach($student->id);
+                        foreach ($courses as $course) {
+                            $student->courses()->attach($course->id);
+                            DB::table('user_courses')
+                                ->where('user_id', $student->id)
+                                ->where('course_id', $course->id)
+                                ->update(['status' => 1]);
+                            $units = DB::table('units')->where('course_id', $course->id)->get();
+                            foreach ($units as $unit) {
+                                $lessons = DB::table('lessons')->where('unit_id', $unit->id)->get();
+                                foreach ($lessons as $lesson) {
+                                    $student->lessons()->attach($lesson->id);
+                                }
+                            }
+                        }
                     }
                 }
                 $message    = 'Thêm học viên mới thành công';
                 $type       = 'success';
             } else {
-                $class_dettach = ClassStudy::find($class->id);
-                $class_dettach->users()->detach();
-                foreach($courses as $course) {
-                    $course->users()->detach();
-                }
+                return redirect(route('class.show', $class->slug));
             }
         } catch (\Throwable $t) {
             throw new ModelNotFoundException();
