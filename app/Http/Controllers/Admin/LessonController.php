@@ -12,6 +12,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
+use function PHPUnit\Framework\exactly;
+
 class LessonController extends Controller
 {
     /**
@@ -40,30 +42,25 @@ class LessonController extends Controller
         return view('admin.modules.courses.units.lessons.create', compact('lesson', 'file', 'unit'));
     }
 
-    public function saveLink(Lesson $lesson, $lesson_item) {
-        File::create([
-            'lesson_id' => $lesson->id,
-            'type' => 'link',
-            'path' => $lesson_item['path_link'],
-        ]);
-    }
-
     /**
      * @param LessonRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public static function saveZip(Request $request, Lesson $lesson, $id)
+    private static function saveDocument(Request $request, Lesson $lesson, $docType)
     {
-        $file = $request->file($id);
-        $file_name = $file->getClientOriginalName();
-        if ($file) {
-            $path = Storage::putFileAs('files', $file, $file_name);
-            File::create([
-                'lesson_id' => $lesson->id,
-                'type' => $file->extension(),
-                'path' => $path
-            ]);
+        $lesson_item = $request->except('_token');
+        if ($docType == 'path_link') {
+            $type = 'link';
+            $path = $lesson_item[$docType];
+        } else {
+            $type = $request->file($docType)->extension();
+            $path = Storage::putFileAs('files', $request->file($docType), $request->file($docType)->getClientOriginalName());
         }
+        File::create([
+            'lesson_id' => $lesson->id,
+            'type' => $type,
+            'path' => $path,
+        ]);
     }
 
     /**
@@ -82,8 +79,8 @@ class LessonController extends Controller
                 'published' => $lesson_item['published'],
                 'content' => $lesson_item['content'],
             ]);
-            $this->saveLink($lesson, $lesson_item);
-            $this->saveZip($request, $lesson, 'path_zip');
+            $this->saveDocument($request, $lesson, 'path_link');
+            $this->saveDocument($request, $lesson, 'path_zip');
         } catch (\Throwable $th) {
             throw new ModelNotFoundException();
         }
@@ -142,9 +139,11 @@ class LessonController extends Controller
                     }
                 }
             } else {
-                $this->saveLink($lesson, $request->all());
+                $this->saveDocument($request, $lesson, 'path_link');
             }
-            $this->saveZip($request, $lesson, 'path_zip');
+            if ($request->file('path_zip') != null) {
+                $this->saveDocument($request, $lesson, 'path_zip');
+            }
             $message = 'Cập nhật bài học thành công';
             $type = 'success';
         }
