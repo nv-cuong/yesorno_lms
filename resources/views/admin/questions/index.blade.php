@@ -27,6 +27,15 @@
           <div class="card-header">
             <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo câu hỏi</a>
           </div>
+          <div class="card-body">
+            <form action="" method="POST" enctype="multipart/form-data">
+                @csrf
+                <input type="file" name="file" class="form-control">
+                <br>
+                <button class="btn btn-success">Import User Data</button>
+                <a class="btn btn-warning" href="">Export User Data</a>
+            </form>
+        </div>
 
           <table class="table table-striped" id="table_question">
             <thead>

@@ -106,8 +106,7 @@ Route::get('/course', function () {
 });
 // Route::post('/lessonProgress', [LessonProgressController::class, 'lessonProgress'])->name('lesson.progress');
 
-Route::prefix('admin')
-
+Route::prefix('admin')->middleware('myweb.auth:admin')
     ->group(function () {
 
         Route::get('/dashboard', [IndexController::class, 'index'])

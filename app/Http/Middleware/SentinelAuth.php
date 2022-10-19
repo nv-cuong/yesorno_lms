@@ -32,7 +32,7 @@ class SentinelAuth
         $roles = Sentinel::getRoles()->pluck('slug')->all();
 
         if ( is_array($roles) ) {
-            if ( in_array('admin', $roles,) )
+            if ( in_array('admin', $roles) )
             {
                 return $next( $request );
             }
