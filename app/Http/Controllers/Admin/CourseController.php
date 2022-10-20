@@ -9,17 +9,22 @@ use App\Models\Notification;
 use App\Models\Test;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Lesson;
+use App\Models\Question;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class CourseController extends Controller {
+class CourseController extends Controller
+{
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function index() {
+    public function index()
+    {
         $courses = Course::select([
             'id',
             'title',
@@ -36,7 +41,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function showCourse($id) {
+    public function showCourse($id)
+    {
         $course = Course::where('id', $id)
             ->first();
 
@@ -57,7 +63,8 @@ class CourseController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function createCourse() {
+    public function createCourse()
+    {
         $course = new Course();
         return view('admin.modules.courses.create', compact('course'));
     }
@@ -67,7 +74,8 @@ class CourseController extends Controller {
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function storeCourse(CourseRequest $request) {
+    public function storeCourse(CourseRequest $request)
+    {
         $course_item = $request->except('_token');
 
         $course_item['slug'] = Str::slug($course_item['title']);
@@ -92,7 +100,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function editCourse(Request $request, $id) {
+    public function editCourse(Request $request, $id)
+    {
         $course = Course::find($id);
 
         if ($course) {
@@ -108,7 +117,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function updateCourse(CourseRequest $request, $id) {
+    public function updateCourse(CourseRequest $request, $id)
+    {
         $message = 'Khóa học không tồn tại';
         $type = 'danger';
         $course = Course::find($id);
@@ -139,16 +149,31 @@ class CourseController extends Controller {
      * @param Request $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function destroyCourse(Request $request) {
-        $course_id = $request->input('course_id', 0);
+    public function destroyCourse(Request $request)
+    {
+        $course_id      = $request->input('course_id', 0);
+        $questions      = Question::where('course_id', $course_id)
+            ->get();
+        $user_courses   = DB::table('user_courses')
+            ->where('course_id', $course_id)
+            ->count();
+
         if ($course_id) {
-            Course::destroy($course_id);
-            return redirect(route('course.index'))
-                ->with('message', 'Khóa học đã được xóa')
-                ->with('type_alert', "success");
+            if ($user_courses > 0) {
+                return redirect(route('course.index'))
+                    ->with('message', 'Khóa học đã có người tham gia, không thể xóa!')
+                    ->with('type_alert', "danger");
+            } else {
+                Course::destroy($course_id);
+                Question::destroy($questions);
+
+                return redirect(route('course.index'))
+                    ->with('message', 'Khóa học đã được xóa!')
+                    ->with('type_alert', "success");
+            }
         } else
             return redirect(route('course.index'))
-                ->with('message', 'Khóa học không tồn tại')
+                ->with('message', 'Khóa học không tồn tại!')
                 ->with('type_alert', "danger");
     }
 
@@ -156,7 +181,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function showTest($id) {
+    public function showTest($id)
+    {
         $course = Course::find($id);
         if ($course) {
             $tests = Test::select([
@@ -181,7 +207,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function showStudent(Request $request, $id) {
+    public function showStudent(Request $request, $id)
+    {
         $course = Course::find($id);
         if ($course) {
             $users = User::select([
@@ -202,8 +229,8 @@ class CourseController extends Controller {
             ->with('type_alert', "danger");
     }
 
-    public function addStudent(Request $request, $id) {
-        
+    public function addStudent(Request $request, $id)
+    {
     }
 
     /**
@@ -211,7 +238,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function activeStudent(Request $request, $id) {
+    public function activeStudent(Request $request, $id)
+    {
         $user_id = $request->input('user_id', 0);
         if ($user_id) {
             $user_course = DB::table('user_courses')

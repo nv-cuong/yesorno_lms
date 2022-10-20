@@ -20,14 +20,14 @@
     <!-- Main content -->
     <section class="content">
         <div class="container-fluid">
-
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('question.create') }}" class="btn btn-success float-right">+ Tạo câu hỏi</a>
+                            <a href="{{ route('question.create') }}" class="btn btn-success float-right">
+                                Tạo câu hỏi
+                            </a>
                         </div>
-
                         <table class="table table-striped" id="table_question">
                             <thead>
                                 <tr>
@@ -37,21 +37,21 @@
                                     <th>Loại câu hỏi</th>
                                     <th>Câu trả lời</th>
                                     <th>Điểm</th>
-
-
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($questions as $question)
-
-
+                                @forelse ($questions as $question)
                                     <tr>
                                         <th>
                                             {{ $loop->iteration }}
                                         </th>
-                                        <th>{{ $question->content }}</th>
-                                        <th>{{ $question->course->title }}</th>
+                                        <th>
+                                            {{ $question->content }}
+                                        </th>
+                                        <th>
+                                            {{ $question->course->title }}
+                                        </th>
                                         <th>
                                             @if ($question->category == 0)
                                                 Tự luận
@@ -66,8 +66,10 @@
                                         <th>
                                             @if ($question->category == 1)
                                                 <a onclick="event.preventDefault();answer_qu('{{ $question->id }}')"
-                                                    href="" class="btn btn-primary btn-sm "><i
-                                                        class="fa fa-plus-circle"></i> Xem </a>
+                                                    href="" class="btn btn-primary btn-sm ">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    Xem
+                                                </a>
                                             @else
                                                 @if ($question->answer == 1 && $question->category == 2)
                                                     Đúng
@@ -80,21 +82,26 @@
                                             @endif
 
                                         </th>
-                                        <th>{{ $question->score }}</th>
+                                        <th>
+                                            {{ $question->score }}
+                                        </th>
 
                                         <th>
                                             <a href="{{ route('question.edit', $question->id) }} "
-                                                class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i>
+                                            </a>
                                             <a class="btn btn-sm btn-danger delete_question" data-toggle="modal"
                                                 data-target="#deleteModalQuestion" value="{{ $question->id }}"
-                                                onclick="javascript:question_delete('{{ $question->id }}')"><i
-                                                    class="fas fa-backspace"></i></a>
+                                                onclick="javascript:question_delete('{{ $question->id }}')">
+                                                <i class="fas fa-backspace"></i>
+                                            </a>
                                         </th>
                                     </tr>
-                                @endforeach
-
-
-
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">Không có dữ liệu</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -108,9 +115,13 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Xóa câu hỏi</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">
+                        Xóa câu hỏi
+                    </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <span aria-hidden="true">
+                            &times;
+                        </span>
                     </button>
                 </div>
                 <form method="post" action="{{ route('question.delete') }}">
@@ -118,11 +129,15 @@
                     @method('DELETE')
                     <input type="hidden" name="question_id" id="question_id" value="0">
                     <div class="modal-body">
-                        Bạn có muốn xóa không ?
+                        Bạn có chắc chắn muốn xoá không?
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-                        <button type="submit" class="btn btn-primary">Có</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Không
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            Có
+                        </button>
                     </div>
                 </form>
             </div>
@@ -136,8 +151,12 @@
 
                 <!-- Modal Header -->
                 <div class="modal-header text-center">
-                    <h2>Danh sách Câu trả lời</h2>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h2>
+                        Danh sách Câu trả lời
+                    </h2>
+                    <button type="button" class="close" data-dismiss="modal">
+                        &times;
+                    </button>
                 </div>
 
                 <!-- Modal body -->
@@ -146,18 +165,17 @@
                         <table class="table table-striped" id="show_answer">
                             <thead>
                                 <tr>
-                                    <th class="th-sortable text-center" data-toggle="class">Câu trả lời
+                                    <th class="th-sortable text-center" data-toggle="class">
+                                        Câu trả lời
                                     </th>
-                                    <th class="th-sortable text-center" data-toggle="class">Check
+                                    <th class="th-sortable text-center" data-toggle="class">
+                                        Check
                                     </th>
-
                                 </tr>
                             </thead>
                             <tbody>
                             </tbody>
                         </table>
-
-
                     </div>
                 </div>
             </div>
@@ -165,8 +183,6 @@
     </div>
 @stop
 @section('scripts')
-
-
     <script type="text/javascript">
         $(function() {
             $("#table_question").DataTable({
