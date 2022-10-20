@@ -41,14 +41,8 @@
                                 </td>
                                 <td>{{ $class->name }}</td>
                                 <td>
-                                    @foreach($class_courses as $class_course)
-                                    @if($class_course->class_study_id == $class->id)
-                                    @foreach($courses as $course)
-                                    @if($course->id == $class_course->course_id)
+                                    @foreach($class->courses as $course)
                                     {{ $course->title }} <br>
-                                    @endif
-                                    @endforeach
-                                    @endif
                                     @endforeach
                                 </td>
                                 <td class="text">

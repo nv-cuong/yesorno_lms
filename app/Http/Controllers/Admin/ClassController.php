@@ -30,18 +30,10 @@ class ClassController extends Controller
             'name',
             'schedule'
         ])
-            ->with('users')
+            ->with(['users', 'courses'])
             ->search()
-            ->paginate(1000);
-        $courses = Course::select([
-            'id',
-            'title'
-        ])->paginate(1000);
-        $class_courses = DB::table('class_study_courses')->select([
-            'class_study_id',
-            'course_id'
-        ])->paginate(1000);
-        return view('admin.modules.classes.index', compact('classes', 'courses', 'class_courses'));
+            ->paginate(100);
+        return view('admin.modules.classes.index', compact('classes'));
     }
 
     /**
