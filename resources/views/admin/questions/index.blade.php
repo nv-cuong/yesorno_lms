@@ -62,8 +62,8 @@
                                                     Đúng sai
                                                 @endif
                                             @endif
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             @if ($question->category == 1)
                                                 <a onclick="event.preventDefault();answer_qu('{{ $question->id }}')"
                                                     href="" class="btn btn-primary btn-sm ">
