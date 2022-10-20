@@ -37,22 +37,19 @@
                                     <th>Loại câu hỏi</th>
                                     <th>Câu trả lời</th>
                                     <th>Điểm</th>
-
-
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($questions as $question)
 
-
                                     <tr>
                                         <th>
                                             {{ $loop->iteration }}
                                         </th>
-                                        <th>{{ $question->content }}</th>
-                                        <th>{{ $question->course->title }}</th>
-                                        <th>
+                                        <td>{{ $question->content }}</td>
+                                        <td>{{ $question->course->title }}</td>
+                                        <td>
                                             @if ($question->category == 0)
                                                 Tự luận
                                             @else
@@ -62,8 +59,8 @@
                                                     Đúng sai
                                                 @endif
                                             @endif
-                                        </th>
-                                        <th>
+                                        </td>
+                                        <td>
                                             @if ($question->category == 1)
                                                 <a onclick="event.preventDefault();answer_qu('{{ $question->id }}')"
                                                     href="" class="btn btn-primary btn-sm "><i
@@ -79,21 +76,19 @@
                                                 @endif
                                             @endif
 
-                                        </th>
-                                        <th>{{ $question->score }}</th>
+                                        </td>
+                                        <td>{{ $question->score }}</td>
 
                                         <th>
-                                            <a href="{{ route('question.edit', $question->id) }} "
+                                            <a href="{{ route('question.edit', $question->id) }} " title="Sửa câu hỏi"
                                                 class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
                                             <a class="btn btn-sm btn-danger delete_question" data-toggle="modal"
-                                                data-target="#deleteModalQuestion" value="{{ $question->id }}"
+                                                data-target="#deleteModalQuestion" value="{{ $question->id }}" title="Xóa câu hỏi"
                                                 onclick="javascript:question_delete('{{ $question->id }}')"><i
                                                     class="fas fa-backspace"></i></a>
                                         </th>
                                     </tr>
                                 @endforeach
-
-
 
                             </tbody>
                         </table>
