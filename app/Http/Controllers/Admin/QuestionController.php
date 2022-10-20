@@ -8,7 +8,6 @@ use App\Http\Requests\Question\QuestionRequest;
 use App\Http\Requests\Question\EditQuestionRequest;
 use App\Models\Answer;
 use App\Models\Course;
-
 use Illuminate\Http\Request;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -33,8 +32,6 @@ class QuestionController extends Controller
         ])->get();
 
         return view('admin.questions.index', compact('questions'));
-
-
     }
 
     /**
@@ -46,8 +43,6 @@ class QuestionController extends Controller
 
 
         return view('admin.questions.create', compact('course'));
-
-
     }
 
     /**
@@ -58,35 +53,31 @@ class QuestionController extends Controller
     public function store(QuestionRequest $request)
     {
         $question_item = $request->except('_token');
-
-
         try {
             if ($question_item['category'] == 0) {
-
-
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
                     'category' => $question_item['category'],
                     'score' => $question_item['score']
                 ]);
-
             } elseif ($question_item['category'] == 1) {
 
-
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
                     'category' => $question_item['category'],
                     'score' => $question_item['score']
                 ]);
-                for ($q = 1; $q <= 4; $q++) {
-                    $option = $request->input('content_' . $q, '');
-                    if ($option != '') {
+
+                $option = $request->input('answer1');
+                $isCorrect = $request->input('is_correct');
+                for ($idx = 0; $idx < 4; $idx++) {
+                    if ($option[$idx] != '') {
                         Answer::create([
                             'question_id' => $question->id,
-                            'content' => $option,
-                            'checked' => $request->input('correct_' . $q) ? 1 : 0
+                            'content' => $option[$idx],
+                            'checked' => isset($isCorrect[$idx]) ? 1 : 0
                         ]);
                     }
                 }
@@ -96,11 +87,10 @@ class QuestionController extends Controller
                     'course_id' => $question_item['course_id'],
                     'category' => $question_item['category'],
                     'score' => $question_item['score'],
-                    'answer' => $question_item['answer']
+                    'answer' => $question_item['answer2']
                 ]);
             }
         } catch (\Throwable $t) {
-
             throw new ModelNotFoundException();
         }
 
@@ -133,7 +123,6 @@ class QuestionController extends Controller
                     'answers',
                     'course'
                 ]));
-
             }
         }
     }
@@ -169,7 +158,6 @@ class QuestionController extends Controller
             }
 
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
-
         } elseif ($question->category == 2) {
             $question->content = $request->input('content');
             $question->course_id = $request->input('course_id');
@@ -178,7 +166,6 @@ class QuestionController extends Controller
             $question->save();
 
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
-
         } else {
             $question->content = $request->input('content');
             $question->course_id = $request->input('course_id');
@@ -189,7 +176,6 @@ class QuestionController extends Controller
         }
 
         return redirect(route('question.index'))->with('message', $msg)->with('type_alert', "success");
-
     }
 
 
@@ -232,7 +218,6 @@ class QuestionController extends Controller
                     $checked = 'Đúng';
                 } else {
                     $checked = 'Sai';
-
                 }
 
                 $output .= '<tr>
@@ -245,5 +230,4 @@ class QuestionController extends Controller
         }
         return Response($output);
     }
-
 }
