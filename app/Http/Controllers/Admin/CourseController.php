@@ -154,12 +154,12 @@ class CourseController extends Controller
         $course_id      = $request->input('course_id', 0);
         $questions      = Question::where('course_id', $course_id)
             ->get();
-        $user_courses   = DB::table('user_courses')
-            ->where('course_id', $course_id)
-            ->count();
+        $check_user     = Course::find($course_id)
+            ->users()
+            ->exists();
 
         if ($course_id) {
-            if ($user_courses > 0) {
+            if ($check_user) {
                 return redirect(route('course.index'))
                     ->with('message', 'Khóa học đã có người tham gia, không thể xóa!')
                     ->with('type_alert', "danger");
