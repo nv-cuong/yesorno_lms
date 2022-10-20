@@ -30,10 +30,18 @@ class ClassController extends Controller
             'name',
             'schedule'
         ])
-            ->with('courses', 'users')
+            ->with('users')
             ->search()
             ->paginate(1000);
-        return view('admin.modules.classes.index', compact('classes'));
+        $courses = Course::select([
+            'id',
+            'title'
+        ])->paginate(1000);
+        $class_courses = DB::table('class_study_courses')->select([
+            'class_study_id',
+            'course_id'
+        ])->paginate(1000);
+        return view('admin.modules.classes.index', compact('classes', 'courses', 'class_courses'));
     }
 
     /**
@@ -249,16 +257,22 @@ class ClassController extends Controller
                     else {
                         $class->users()->attach($student->id);
                         foreach ($courses as $course) {
-                            $student->courses()->attach($course->id);
-                            DB::table('user_courses')
-                                ->where('user_id', $student->id)
+                            if (DB::table('user_courses')
                                 ->where('course_id', $course->id)
-                                ->update(['status' => 1]);
-                            $units = DB::table('units')->where('course_id', $course->id)->get();
-                            foreach ($units as $unit) {
-                                $lessons = DB::table('lessons')->where('unit_id', $unit->id)->get();
-                                foreach ($lessons as $lesson) {
-                                    $student->lessons()->attach($lesson->id);
+                                ->where('user_id', $student->id)->first()
+                            )  continue;
+                            else {
+                                $student->courses()->attach($course->id);
+                                DB::table('user_courses')
+                                    ->where('user_id', $student->id)
+                                    ->where('course_id', $course->id)
+                                    ->update(['status' => 1]);
+                                $units = DB::table('units')->where('course_id', $course->id)->get();
+                                foreach ($units as $unit) {
+                                    $lessons = DB::table('lessons')->where('unit_id', $unit->id)->get();
+                                    foreach ($lessons as $lesson) {
+                                        $student->lessons()->attach($lesson->id);
+                                    }
                                 }
                             }
                         }
