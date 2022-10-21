@@ -28,6 +28,7 @@ class QuestionRequest extends FormRequest
                 'content' => ['required', 'max:250', 'unique:questions'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
+                'is_correct' => ['required'],
             ];
 
             for ($idx = 0; $idx < 4; $idx++) {
@@ -53,6 +54,7 @@ class QuestionRequest extends FormRequest
     {
         $rule = [
             'content.required'     => 'Bạn chưa nhập tên câu hỏi',
+            'is_correct.required' => 'Bạn chưa chọn câu trả lời đúng',
             'content.max'     => 'Câu hỏi quá dài',
             'content.unique'     => 'Câu hỏi đã tồn tại',
             'score.required'     => 'Bạn chưa nhập điểm',

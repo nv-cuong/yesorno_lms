@@ -25,22 +25,23 @@ class EditQuestionRequest extends FormRequest
     {
 
         if ($this->category == 1) {
-            return [
-                'content' => ['required', 'max:250'],
+            $rules = [
+                'content' => ['required', 'max:250', 'unique:questions'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
-                'content_1' => ['required'],
-                'content_2' => ['required'],
-                'content_3' => ['required'],
-                'content_4' => ['required'],
-
+                'is_correct' => ['required'],
             ];
+
+            for ($idx = 0; $idx < 4; $idx++) {
+                $rules['answer1.' . $idx] = "required";
+            }
+
+            return $rules;
         } else {
             return [
                 'content' => ['required', 'max:250'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
-
             ];
         }
     }
@@ -51,17 +52,16 @@ class EditQuestionRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-
+        $rule =  [
             'content.required'     => 'Bạn chưa nhập tên câu hỏi',
+            'is_correct.required' => 'Bạn chưa chọn câu trả lời đúng',
             'content.max'     => 'Câu hỏi quá dài',
             'score.required'     => 'Bạn chưa nhập điểm',
             'score.integer'     => 'Điểm phải dạng số nguyên',
             'score.min'     => 'Điểm phải lớn hơn 1',
-            'content_1.required'     => 'Bạn chưa nhập câu trả lời',
-            'content_2.required'     => 'Bạn chưa nhập câu trả lời',
-            'content_3.required'     => 'Bạn chưa nhập câu trả lời',
-            'content_4.required'     => 'Bạn chưa nhập câu trả lời',
+            'answer1.*.required'     => 'Bạn chưa nhập câu trả lời',
         ];
+
+        return $rule;
     }
 }
