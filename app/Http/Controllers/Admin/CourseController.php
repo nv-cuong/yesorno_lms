@@ -112,21 +112,23 @@ class CourseController extends Controller
         $type = 'danger';
         $course = Course::find($id);
         if ($course) {
-            $course->title = $request->input('title');
-            $course->statistic_id = $course->statistic_id;
-            $course->slug = Str::slug($course->title);
-            $course->status = $request->input('status');
-            $course->begin_date = $request->input('begin_date');
-            $course->end_date = $request->input('end_date');
-            $photo = $request->file('image');
+            $course->title          = $request->input('title');
+            $course->statistic_id   = $course->statistic_id;
+            $course->slug           = Str::slug($course->title);
+            $course->status         = $request->input('status');
+            $course->begin_date     = $request->input('begin_date');
+            $course->end_date       = $request->input('end_date');
+            $photo                  = $request->file('image');
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
-            } else $course->image = $course->image;
-            $course->description = $request->input('description');
-            $course->save();
-            $message = 'Cập nhật khóa học thành công';
-            $type = 'success';
+            } else {
+                $course->image          = $course->image;
+                $course->description    = $request->input('description');
+                $course->save();
+                $message                = 'Cập nhật khóa học thành công';
+                $type                   = 'success';
+            }
         }
 
         return redirect(route('course.index'))
@@ -170,16 +172,7 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
-            $tests = Test::select([
-                'tests.id',
-                'ct.course_id',
-                'category',
-                'title',
-            ])
-                ->leftJoin('course_tests AS ct', 'ct.test_id', 'tests.id')
-                ->where('ct.course_id', $id)
-                ->get();
-
+            $tests = $course->tests()->paginate(100);
             return view('admin.modules.courses.test', compact('course', 'tests'));
         }
         return redirect(route('course.index'))
@@ -196,17 +189,7 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
-            $users = User::select([
-                'users.id',
-                'uc.course_id as course_id',
-                'first_name',
-                'last_name',
-                'email',
-                'uc.status as status'
-            ])
-                ->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
-                ->where('uc.course_id', $id)
-                ->get();
+            $users = $course->users()->paginate(10);
             return view('admin.modules.courses.student', compact('users', 'course'));
         }
         return redirect(route('course.index'))

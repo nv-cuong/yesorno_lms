@@ -19,19 +19,8 @@ class UnitController extends Controller
      */
     public function showUnit($id)
     {
-        $unit = Unit::where('id', $id)
-            ->first();
-
-        $lessons = Lesson::select([
-            'lessons.id',
-            'lessons.title',
-            'lessons.slug',
-            'lessons.config',
-            'published'
-        ])
-            ->join('units', 'lessons.unit_id', 'units.id')
-            ->where('units.id', $id)
-            ->paginate(1000);
+        $unit = Unit::where('id', $id)->first();
+        $lessons = $unit->lessons()->paginate(100);
 
         return view('admin.modules.courses.units.detail', compact('unit', 'lessons'));
     }
@@ -43,8 +32,7 @@ class UnitController extends Controller
     public function createUnit($course_id)
     {
         $unit = new Unit();
-        $course = Course::where('id', $course_id)
-            ->pluck('title', 'id');
+        $course = Course::where('id', $course_id)->pluck('title', 'id');
         return view('admin.modules.courses.units.create', compact('unit', 'course'));
     }
 
@@ -64,8 +52,8 @@ class UnitController extends Controller
         }
 
         return redirect(route('course.detail', [$unit_item['course_id']]))
-        ->with('message', 'Thêm chương mới thành công')
-        ->with('type_alert', "success");
+            ->with('message', 'Thêm chương mới thành công')
+            ->with('type_alert', "success");
     }
 
     /**
@@ -82,8 +70,8 @@ class UnitController extends Controller
             return view('admin.modules.courses.units.edit', compact('unit', 'course'));
         }
         return redirect(route('course.detail', [$unit->course_id]))
-        ->with('message', 'Chương không tồn tại')
-        ->with('type_alert', "danger");
+            ->with('message', 'Chương không tồn tại')
+            ->with('type_alert', "danger");
     }
 
     /**
@@ -106,8 +94,8 @@ class UnitController extends Controller
         }
 
         return redirect(route('course.detail', [$unit->course_id]))
-        ->with('message', $message)
-        ->with('type_alert', $type);
+            ->with('message', $message)
+            ->with('type_alert', $type);
     }
 
     /**
@@ -121,11 +109,11 @@ class UnitController extends Controller
         if ($unit_id) {
             Unit::destroy($unit_id);
             return redirect(route('course.detail', [$course_id]))
-            ->with('message', 'Chương đã được xóa')
-            ->with('type_alert', "success");
+                ->with('message', 'Chương đã được xóa')
+                ->with('type_alert', "success");
         } else
             return redirect(route('course.detail', [$course_id]))
-            ->with('message', 'Chương không tồn tại')
-            ->with('type_alert', "danger");
+                ->with('message', 'Chương không tồn tại')
+                ->with('type_alert', "danger");
     }
 }

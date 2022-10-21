@@ -18,7 +18,7 @@ class Course extends Model {
         'image',
     ];
 
-    public function test() {
+    public function tests() {
         return $this->belongsToMany(
             Test::class,
             'course_tests',
