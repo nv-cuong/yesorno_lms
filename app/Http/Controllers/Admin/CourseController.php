@@ -44,17 +44,7 @@ class CourseController extends Controller
     public function showCourse($id)
     {
         $course = Course::find($id);
-
-        $units = Unit::select([
-            'units.id',
-            'units.title',
-            'units.slug',
-            'units.created_at',
-            'units.updated_at',
-        ])
-            ->join('courses', 'units.course_id', 'courses.id')
-            ->where('courses.id', $id)
-            ->paginate(1000);
+        $units  = $course->units()->paginate(1000);
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
     }
@@ -160,7 +150,7 @@ class CourseController extends Controller
                     ->with('type_alert', "danger");
             } else {
                 $course->questions()->delete();
-                $course->destroy();
+                $course->destroy($course_id);
 
                 return redirect(route('course.index'))
                     ->with('message', 'Khóa học đã được xóa!')
