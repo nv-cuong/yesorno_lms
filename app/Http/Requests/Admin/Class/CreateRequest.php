@@ -27,7 +27,7 @@ class CreateRequest extends FormRequest
             'name'          => ['required', 'max:255', 'unique:class_studies'],
             'course_id'     => ['required'],
             'description'   => ['required', 'min:20'],
-            'schedule'    => ['required'],
+            'schedule'      => ['required'],
         ];
     }
 }

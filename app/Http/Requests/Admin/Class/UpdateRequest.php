@@ -24,10 +24,10 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' =>           ['required', 'max:255'],
-            'course_id' =>      ['required'],
-            'description' =>    ['required', 'min:20'],
-            'schedule' =>         ['required'],
+            'name'          => ['required', 'max:255'],
+            'course_id'     => ['required'],
+            'description'   => ['required', 'min:20'],
+            'schedule'      => ['required'],
         ];
     }
 }

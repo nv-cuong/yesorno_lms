@@ -41,11 +41,8 @@
                                 </td>
                                 <td>{{ $class->name }}</td>
                                 <td>
-                                    @php
-                                    $course = $class->courses()->get();
-                                    @endphp
-                                    @foreach ($course as $item)
-                                    {{ $item->title }} <br>
+                                    @foreach($class->courses as $course)
+                                    {{ $course->title }} <br>
                                     @endforeach
                                 </td>
                                 <td class="text">
