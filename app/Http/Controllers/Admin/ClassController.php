@@ -10,6 +10,7 @@ use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\User;
 use App\Models\Lesson;
+use App\Models\Unit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -99,17 +100,15 @@ class ClassController extends Controller
      */
     public function show($slug)
     {
-        $class = ClassStudy::where('slug', $slug)->first();
-        $course = $class->courses()->get();
-        $std = $class->users()->get();
-        return view('admin.modules.classes.show', compact('class', 'course', 'std'));
+        $class = ClassStudy::where('slug', $slug)->with('courses', 'users')->first();
+        return view('admin.modules.classes.show', compact('class'));
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
@@ -140,11 +139,16 @@ class ClassController extends Controller
         $message = 'Lớp học không tồn tại!';
         $type    = 'danger';
         $class = ClassStudy::find($id);
+        if ($class->users->count() > 0) {
+            return redirect(route('class.index'))
+                ->with('message', "Không thể sửa! Đã có học viên đăng kí lớp")
+                ->with('type_alert', "danger");
+        } 
         if ($class) {
             $class->name        = $request->input('name');
             $class->slug        = Str::slug($class->name);
             $class->description = $request->input('description');
-            $class->schedule  = $request->input('schedule');
+            $class->schedule    = $request->input('schedule');
             $class->save();
             $message            = 'Cập nhật lớp học thành công';
             $type               = 'success';
@@ -152,7 +156,6 @@ class ClassController extends Controller
 
         try {
             if (isset($_POST['course_id'])) {
-
                 $class_dettach = ClassStudy::find($class->id);
                 $class_dettach->courses()->detach();
                 foreach ($_POST['course_id'] as $value) {
@@ -219,7 +222,6 @@ class ClassController extends Controller
             ->leftJoin('role_users AS ru', 'user_id', 'users.id')
             ->where('ru.role_id', 5)
             ->with('roles', 'activations')
-            ->orderBy('users.id', 'asc')
             ->search()
             ->paginate(1000);
         return view('admin.modules.classes.add_student', compact('class', 'std', 'stds'));
@@ -242,27 +244,16 @@ class ClassController extends Controller
                 foreach ($_POST['std_id'] as $value) {
                     //Xử lý các phần tử được chọn
                     $student = User::find($value);
-                    if (DB::table('class_study_users')
-                        ->where('class_study_id', $class->id)
-                        ->where('user_id', $student->id)->first()
-                    )  continue;
+                    if ($student->hasClass($class->id)) continue;
                     else {
                         $class->users()->attach($student->id);
                         foreach ($courses as $course) {
-                            if (DB::table('user_courses')
-                                ->where('course_id', $course->id)
-                                ->where('user_id', $student->id)->first()
-                            )  continue;
+                            if ($student->hasCourse($course->id)) continue;
                             else {
-                                $student->courses()->attach($course->id);
-                                DB::table('user_courses')
-                                    ->where('user_id', $student->id)
-                                    ->where('course_id', $course->id)
-                                    ->update(['status' => 1]);
-                                $units = DB::table('units')->where('course_id', $course->id)->get();
+                                $student->courses()->attach($course->id, ['status' => 1]);
+                                $units = Unit::where('course_id', $course->id)->with('lessons')->get();
                                 foreach ($units as $unit) {
-                                    $lessons = DB::table('lessons')->where('unit_id', $unit->id)->get();
-                                    foreach ($lessons as $lesson) {
+                                    foreach ($unit->lessons as $lesson) {
                                         $student->lessons()->attach($lesson->id);
                                     }
                                 }
