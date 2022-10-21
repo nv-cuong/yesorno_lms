@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
   
 use Illuminate\Http\Request;
-use App\Exports\UsersExport;
-use App\Imports\UsersImport;
+use App\Exports\QuestionsExport;
+use App\Imports\QuestionsImport;
 use Maatwebsite\Excel\Facades\Excel;
   
 class MyController extends Controller
@@ -22,16 +22,15 @@ class MyController extends Controller
     */
     public function export() 
     {
-        return Excel::download(new UsersExport, 'users.xlsx');
+        return Excel::download(new QuestionsExport, 'Question.xlsx');
     }
    
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function import() 
+    public function import(Request $request) 
     {
-        Excel::import(new UsersImport,request()->file('file'));
-           
-        return back();
+        Excel::import(new QuestionsImport(), $request->file('import_question'));
+        return redirect()->back()->with('success', 'Success!!!');
     }
 }

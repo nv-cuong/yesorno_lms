@@ -30,10 +30,10 @@
           <div class="card-body">
             <form action="{{ route('question.import') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                <input type="file" name="file" class="form-control">
+                <input type="file" name="import_question" class="form-control">
                 <br>
-                <button class="btn btn-success">Import User Data</button>
-                <a class="btn btn-warning" href="{{ route('question.export') }}">Export User Data</a>
+                <button type="submit" class="btn btn-success">Import Question Data</button>
+                <a class="btn btn-warning" href="{{ route('question.export') }}">Export Question Data</a>
             </form>
         </div>
 
