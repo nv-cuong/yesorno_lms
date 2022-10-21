@@ -43,8 +43,7 @@ class CourseController extends Controller
      */
     public function showCourse($id)
     {
-        $course = Course::where('id', $id)
-            ->first();
+        $course = Course::find($id);
 
         $units = Unit::select([
             'units.id',
@@ -151,21 +150,17 @@ class CourseController extends Controller
      */
     public function destroyCourse(Request $request)
     {
-        $course_id      = $request->input('course_id', 0);
-        $questions      = Question::where('course_id', $course_id)
-            ->get();
-        $check_user     = Course::find($course_id)
-            ->users()
-            ->exists();
+        $course_id  = $request->input('course_id', 0);
+        $course     = Course::find($course_id);
 
-        if ($course_id) {
-            if ($check_user) {
+        if ($course) {
+            if ($course->users()->exists()) {
                 return redirect(route('course.index'))
                     ->with('message', 'Khóa học đã có người tham gia, không thể xóa!')
                     ->with('type_alert', "danger");
             } else {
-                Course::destroy($course_id);
-                Question::destroy($questions);
+                $course->questions()->delete();
+                $course->destroy();
 
                 return redirect(route('course.index'))
                     ->with('message', 'Khóa học đã được xóa!')
