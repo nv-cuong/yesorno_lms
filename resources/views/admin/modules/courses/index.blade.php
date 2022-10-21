@@ -88,15 +88,11 @@
                                             <a href="{{ route('course.student', [$course->id]) }}" class="btn btn-success">
                                                 Học viên
                                             </a>
-                                            @php
-                                                $count = \DB::table('user_courses')
-                                                    ->where('course_id', $course->id)
-                                                    ->where('status', '=', 0)
-                                                    ->count();
-                                                if ($count > 0) {
-                                                    echo "<button class='btn btn-danger'>" . $count . '</button>';
-                                                }
-                                            @endphp
+                                            @if ($course->users_count > 0)
+                                                <button class='btn btn-danger'>
+                                                    {{ $course->users_count }}
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
