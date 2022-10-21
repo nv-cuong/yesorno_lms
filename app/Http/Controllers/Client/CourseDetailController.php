@@ -11,6 +11,8 @@ use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
 use PHPUnit\Framework\Constraint\Count;
+use Ramsey\Collection\Map\AbstractMap;
+use Termwind\Components\Dd;
 
 class CourseDetailController extends Controller
 {
@@ -25,34 +27,42 @@ class CourseDetailController extends Controller
             'slug',
             'image',
         ])
-        ->take(4)
-        ->get();
-        $course = Course::where('slug', $slug)->with('classStudies', 'users')->first();
-        $units = Unit::where('course_id', $course->id)->get();
-        $user = Sentinel::getUser();
-        $access = '';
-        $class_of_user = '';
-        if ($user) {
-            $access = Course::select([
-                'courses.id',
-                'uc.status',
-            ])
-                ->join('user_courses AS uc', 'uc.course_id', 'courses.id')
-                ->where('courses.id', $course->id)
-                ->where('uc.user_id', $user->id)
-                ->first();
-            $class_of_user = ClassStudy::select([
-                'class_studies.id'
-            ])
-                ->join('class_study_users AS cu', 'cu.class_study_id', 'class_studies.id')
-                ->join('class_study_courses as cc', 'cc.class_study_id', 'class_studies.id')
-                ->where('cu.user_id', $user->id)
-                ->where('cc.course_id', $course->id)
-                ->pluck('id')
-                ->toArray();
+            ->take(4)
+            ->get();
+        $course = Course::where('slug', $slug)
+            ->with('classStudies', 'users')
+            ->first();
 
+        if ($course) {
+            $units = Unit::where('course_id', $course->id)
+                ->get();
+            $user = Sentinel::getUser();
+            $access = '';
+            $class_of_user = '';
+            if ($user) {
+                $access = Course::select([
+                    'courses.id',
+                    'uc.status',
+                ])
+                    ->join('user_courses AS uc', 'uc.course_id', 'courses.id')
+                    ->where('courses.id', $course->id)
+                    ->where('uc.user_id', $user->id)
+                    ->first();
+                $class_of_user = ClassStudy::select([
+                    'class_studies.id'
+                ])
+                    ->join('class_study_users AS cu', 'cu.class_study_id', 'class_studies.id')
+                    ->join('class_study_courses as cc', 'cc.class_study_id', 'class_studies.id')
+                    ->where('cu.user_id', $user->id)
+                    ->where('cc.course_id', $course->id)
+                    ->pluck('id')
+                    ->toArray();
+            }
+            return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
+        } else {
+            abort(404);
+            // return view('client.modules.404');
         }
-        return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
     }
 
     /**
@@ -128,7 +138,6 @@ class CourseDetailController extends Controller
             ->with('type_alert', "success");
     }
 
-        
     /**
      * showLesson
      *
@@ -139,8 +148,13 @@ class CourseDetailController extends Controller
     {
         $lesson = Lesson::where('id', $id)
             ->first();
-        $files = File::all()
-            ->where('lesson_id', $lesson->id);
-        return view('client.modules.learning', compact('lesson', 'files'));
+
+        if ($lesson) {
+            $files = File::all()
+                ->where('lesson_id', $lesson->id);
+            return view('client.modules.learning', compact('lesson', 'files'));
+        } else {
+            abort(404);
+        }
     }
 }

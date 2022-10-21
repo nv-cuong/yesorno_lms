@@ -7,8 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Auth\Authenticatable;
 
-class User extends EloquentUser
-{
+class User extends EloquentUser {
     use HasFactory;
     use Notifiable;
     use Authenticatable;
@@ -35,8 +34,7 @@ class User extends EloquentUser
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function tests()
-    {
+    public function tests() {
         return $this->belongsToMany(
             Test::class,
             'user_tests',
@@ -48,8 +46,7 @@ class User extends EloquentUser
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function classStudies()
-    {
+    public function classStudies() {
         return $this->belongsToMany(
             ClassStudy::class,
             'class_study_users',
@@ -61,8 +58,7 @@ class User extends EloquentUser
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function courses()
-    {
+    public function courses() {
         return $this->belongsToMany(
             Course::class,
             'user_courses',
@@ -72,8 +68,7 @@ class User extends EloquentUser
     }
 
 
-    public function lessons()
-    {
+    public function lessons() {
         return $this->belongsToMany(
             Lesson::class,
             'user_lessons',
@@ -82,8 +77,7 @@ class User extends EloquentUser
         );
     }
 
-    public function notifications()
-    {
+    public function notifications() {
         return $this->belongsToMany(
             Notification::class,
             'user_notifications',
@@ -91,12 +85,10 @@ class User extends EloquentUser
             'notification_id'
         );
     }
-    public function scopeSearch($query)
-    {
+    public function scopeSearch($query) {
         if ($key = request()->key) {
             $query = $query->where('first_name', 'like', '%' . $key . '%')
                 ->orWhere('last_name', 'like', '%' . $key . '%');
-
         }
         return $query;
     }
