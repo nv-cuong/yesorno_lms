@@ -98,7 +98,11 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                                 <input type="checkbox" name="is_correct[{{ $idx }}]"
-                                                    value="1" {{ old('is_correct.' . $idx) ? 'checked' : '' }}>
+                                                   class="@error('is_correct') is-invalid @enderror" value="1"
+                                                    {{ old('is_correct.' . $idx) ? 'checked' : '' }}>
+                                                @error('is_correct')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                             </div>
                                         @endfor
                                     </div>

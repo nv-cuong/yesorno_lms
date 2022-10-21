@@ -8,9 +8,12 @@ use App\Http\Requests\Question\QuestionRequest;
 use App\Http\Requests\Question\EditQuestionRequest;
 use App\Models\Answer;
 use App\Models\Course;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
 {
@@ -53,6 +56,7 @@ class QuestionController extends Controller
     public function store(QuestionRequest $request)
     {
         $question_item = $request->except('_token');
+        DB::beginTransaction();
         try {
             if ($question_item['category'] == 0) {
                 $question = Question::create([
@@ -62,7 +66,6 @@ class QuestionController extends Controller
                     'score' => $question_item['score']
                 ]);
             } elseif ($question_item['category'] == 1) {
-
                 $question = Question::create([
                     'content' => $question_item['content'],
                     'course_id' => $question_item['course_id'],
@@ -90,10 +93,12 @@ class QuestionController extends Controller
                     'answer' => $question_item['answer2']
                 ]);
             }
-        } catch (\Throwable $t) {
-            throw new ModelNotFoundException();
+        } catch (Exception $t) {
+            DB::rollBack();
+            // log error
+            throw new Exception($t->getMessage());
         }
-
+        DB::commit(); 
         return redirect(route('question.index'))->with('message', 'Thêm câu hỏi thành công !')->with('type_alert', "success");
     }
 
@@ -143,20 +148,15 @@ class QuestionController extends Controller
             $question->course_id = $request->input('course_id');
             $question->score = $request->input('score');
             $question->save();
-
             $answers = Answer::where('question_id', $id)->get();
-
-            foreach ($answers as $q => $ans) {
-
-                $option = $request->input('content_' . $q, '');
-                if ($option != '') {
-
-                    $ans->content = $option;
-                    $ans->checked = $request->input('correct_' . $q) ? 1 : 0;
+            $option = $request->input('answer1');
+            foreach ($answers as $key => $ans) {
+                if ($option[$key] != '') {
+                    $ans->content = $option[$key];
+                    $ans->checked = $request->input('is_correct' . $key) ? 1 : 0;
                     $ans->save();
                 }
             }
-
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
         } elseif ($question->category == 2) {
             $question->content = $request->input('content');
@@ -164,13 +164,11 @@ class QuestionController extends Controller
             $question->score = $request->input('score');
             $question->answer = $request->input('answer');
             $question->save();
-
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
         } else {
             $question->content = $request->input('content');
             $question->course_id = $request->input('course_id');
             $question->score = $request->input('score');
-
             $question->save();
             $msg = 'Sửa thành công câu hỏi :' . $question->content;
         }
