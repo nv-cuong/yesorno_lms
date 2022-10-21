@@ -9,17 +9,22 @@ use App\Models\Notification;
 use App\Models\Test;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Lesson;
+use App\Models\Question;
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class CourseController extends Controller {
+class CourseController extends Controller
+{
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function index() {
+    public function index()
+    {
         $courses = Course::select([
             'id',
             'title',
@@ -28,6 +33,7 @@ class CourseController extends Controller {
             'begin_date',
             'end_date',
         ])
+            ->withCount('users')
             ->paginate(1000);
         return view('admin.modules.courses.index', compact('courses'));
     }
@@ -36,20 +42,10 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function showCourse($id) {
-        $course = Course::where('id', $id)
-            ->first();
-
-        $units = Unit::select([
-            'units.id',
-            'units.title',
-            'units.slug',
-            'units.created_at',
-            'units.updated_at',
-        ])
-            ->join('courses', 'units.course_id', 'courses.id')
-            ->where('courses.id', $id)
-            ->paginate(1000);
+    public function showCourse($id)
+    {
+        $course = Course::find($id);
+        $units  = $course->units()->paginate(1000);
 
         return view('admin.modules.courses.detail', compact('course', 'units'));
     }
@@ -57,7 +53,8 @@ class CourseController extends Controller {
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function createCourse() {
+    public function createCourse()
+    {
         $course = new Course();
         return view('admin.modules.courses.create', compact('course'));
     }
@@ -67,7 +64,8 @@ class CourseController extends Controller {
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function storeCourse(CourseRequest $request) {
+    public function storeCourse(CourseRequest $request)
+    {
         $course_item = $request->except('_token');
 
         $course_item['slug'] = Str::slug($course_item['title']);
@@ -92,7 +90,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function editCourse(Request $request, $id) {
+    public function editCourse(Request $request, $id)
+    {
         $course = Course::find($id);
 
         if ($course) {
@@ -108,26 +107,29 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function updateCourse(CourseRequest $request, $id) {
+    public function updateCourse(CourseRequest $request, $id)
+    {
         $message = 'Khóa học không tồn tại';
         $type = 'danger';
         $course = Course::find($id);
         if ($course) {
-            $course->title = $request->input('title');
-            $course->statistic_id = $course->statistic_id;
-            $course->slug = Str::slug($course->title);
-            $course->status = $request->input('status');
-            $course->begin_date = $request->input('begin_date');
-            $course->end_date = $request->input('end_date');
-            $photo = $request->file('image');
+            $course->title          = $request->input('title');
+            $course->statistic_id   = $course->statistic_id;
+            $course->slug           = Str::slug($course->title);
+            $course->status         = $request->input('status');
+            $course->begin_date     = $request->input('begin_date');
+            $course->end_date       = $request->input('end_date');
+            $photo                  = $request->file('image');
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
-            } else $course->image = $course->image;
-            $course->description = $request->input('description');
-            $course->save();
-            $message = 'Cập nhật khóa học thành công';
-            $type = 'success';
+            } else {
+                $course->image          = $course->image;
+                $course->description    = $request->input('description');
+                $course->save();
+                $message                = 'Cập nhật khóa học thành công';
+                $type                   = 'success';
+            }
         }
 
         return redirect(route('course.index'))
@@ -139,16 +141,27 @@ class CourseController extends Controller {
      * @param Request $request
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function destroyCourse(Request $request) {
-        $course_id = $request->input('course_id', 0);
-        if ($course_id) {
-            Course::destroy($course_id);
-            return redirect(route('course.index'))
-                ->with('message', 'Khóa học đã được xóa')
-                ->with('type_alert', "success");
+    public function destroyCourse(Request $request)
+    {
+        $course_id  = $request->input('course_id', 0);
+        $course     = Course::find($course_id);
+
+        if ($course) {
+            if ($course->users()->exists()) {
+                return redirect(route('course.index'))
+                    ->with('message', 'Khóa học đã có người tham gia, không thể xóa!')
+                    ->with('type_alert', "danger");
+            } else {
+                $course->questions()->delete();
+                $course->destroy($course_id);
+
+                return redirect(route('course.index'))
+                    ->with('message', 'Khóa học đã được xóa!')
+                    ->with('type_alert', "success");
+            }
         } else
             return redirect(route('course.index'))
-                ->with('message', 'Khóa học không tồn tại')
+                ->with('message', 'Khóa học không tồn tại!')
                 ->with('type_alert', "danger");
     }
 
@@ -156,19 +169,11 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function showTest($id) {
+    public function showTest($id)
+    {
         $course = Course::find($id);
         if ($course) {
-            $tests = Test::select([
-                'tests.id',
-                'ct.course_id',
-                'category',
-                'title',
-            ])
-                ->leftJoin('course_tests AS ct', 'ct.test_id', 'tests.id')
-                ->where('ct.course_id', $id)
-                ->get();
-
+            $tests = $course->tests()->paginate(100);
             return view('admin.modules.courses.test', compact('course', 'tests'));
         }
         return redirect(route('course.index'))
@@ -181,20 +186,11 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
      */
-    public function showStudent(Request $request, $id) {
+    public function showStudent(Request $request, $id)
+    {
         $course = Course::find($id);
         if ($course) {
-            $users = User::select([
-                'users.id',
-                'uc.course_id as course_id',
-                'first_name',
-                'last_name',
-                'email',
-                'uc.status as status'
-            ])
-                ->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
-                ->where('uc.course_id', $id)
-                ->get();
+            $users = $course->users()->paginate(10);
             return view('admin.modules.courses.student', compact('users', 'course'));
         }
         return redirect(route('course.index'))
@@ -202,8 +198,8 @@ class CourseController extends Controller {
             ->with('type_alert', "danger");
     }
 
-    public function addStudent(Request $request, $id) {
-        
+    public function addStudent(Request $request, $id)
+    {
     }
 
     /**
@@ -211,7 +207,8 @@ class CourseController extends Controller {
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function activeStudent(Request $request, $id) {
+    public function activeStudent(Request $request, $id)
+    {
         $user_id = $request->input('user_id', 0);
         if ($user_id) {
             $user_course = DB::table('user_courses')

@@ -88,15 +88,11 @@
                                             <a href="{{ route('course.student', [$course->id]) }}" class="btn btn-success">
                                                 Học viên
                                             </a>
-                                            <?php
-                                                $count = \DB::table('user_courses')
-                                                    ->where('course_id', $course->id)
-                                                    ->where('status', '=', 0)
-                                                    ->count();
-                                                if ($count > 0) {
-                                                    echo "<button class='btn btn-danger'>" . $count . "</button>";
-                                                }
-                                            ?>
+                                            @if ($course->users_count > 0)
+                                                <button class='btn btn-danger'>
+                                                    {{ $course->users_count }}
+                                                </button>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
@@ -134,11 +130,17 @@
                     @method('DELETE')
                     <input type="hidden" name="course_id" id="course_id" value="0">
                     <div class="modal-body">
-                        <p>Bạn có chắc muốn xóa khóa học này?</p>
+                        <p>
+                            Bạn có chắc muốn xóa khóa học này?
+                        </p>
                     </div>
                     <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
-                        <button type="submit" class="btn btn-danger">Đồng ý</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">
+                            Đóng
+                        </button>
+                        <button type="submit" class="btn btn-danger">
+                            Đồng ý
+                        </button>
                     </div>
                 </form>
             </div>
