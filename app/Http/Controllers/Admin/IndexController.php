@@ -15,12 +15,18 @@ class IndexController extends Controller
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function index(){
+    public function index()
+    {
+        $user = Sentinel::getUser();
+        if (!$user) {
+            return view('login');
+        }
+        
         $std = User::select([
             'users.id',
         ])
-        ->leftJoin('role_users AS ru', 'user_id', 'users.id')
-        ->where('ru.role_id', 5);
+            ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+            ->where('ru.role_id', 5);
         $course = Course::select('id');
         $class = ClassStudy::select('id');
         $question = Question::select('id');
