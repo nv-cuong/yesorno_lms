@@ -204,7 +204,7 @@ Route::prefix('admin')
             Route::get('/edit_question/{id_question}/{id_test}/{id_course}', [TestController::class, 'question_edit'])->name('question.edit');
             Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])->name('question.update');
             Route::post('/search', [TestController::class, 'search'])->name('search');
-            Route::get('/update_category_test', [TestController::class, 'update_category_test'])->name('update_category_test');
+            Route::get('/updateTestCategory', [TestController::class, 'updateTestCategory'])->name('updateTestCategory');
         });
         Route::prefix('/score')->name('score.')->group(function () {
             Route::get('index', [ScoreController::class, 'index'])->name('index')->middleware('myweb.auth:score.show');
@@ -222,4 +222,4 @@ Route::prefix('admin')
     });
 
 require 'auth.php';
-Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
+Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getQuestion');
