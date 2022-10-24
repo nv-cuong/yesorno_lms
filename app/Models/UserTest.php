@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\UserTestAnswer;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class UserTest extends Model
 {
@@ -13,14 +14,18 @@ class UserTest extends Model
 
     protected $fillable = ['test_id', 'user_id', 'score','status'];
 
-    public function answers()
+    /**
+     * user_test_anwsers relation
+     * @return HasMany
+     */
+    public function answers(): HasMany
     {
         return $this->hasMany(UserTestAnswer::class);
     }
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
-    public function test()
+    public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class);
     }

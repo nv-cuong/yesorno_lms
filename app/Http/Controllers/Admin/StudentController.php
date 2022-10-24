@@ -14,6 +14,9 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -22,6 +25,15 @@ class StudentController extends Controller
      */
     public function index()
     {
+        return view('admin.students.index');
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getStudentData()
+    {
         $students = User::select([
             'users.id',
             'phone',
@@ -29,16 +41,26 @@ class StudentController extends Controller
             'address',
             'age',
             'gender',
+            DB::raw("CONCAT(first_name,' ', last_name) as fullname"),
             'first_name',
             'last_name'
         ])
-            ->leftJoin('role_users AS ru', 'user_id', 'users.id')
-            ->where('ru.role_id', 5)
-            ->with('roles', 'activations')
-            ->orderBy('users.id', 'asc')
-            ->search()
-            ->paginate(1000);
-        return view('admin.students.index', compact('students'));
+        ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+        ->where('ru.role_id', 5)
+        ->with('roles', 'activations')
+        ->orderBy('users.id', 'DESC');
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($students)
+        ->filterColumn('fullname', function($query, $keyword) {
+            $sql = "CONCAT(first_name,' ',last_name)  like ?";
+            $query->whereRaw($sql, ["%{$keyword}%"]);
+        })
+        ->addColumn('actions', function ($student) {
+            return view('admin.students.actions', ['row' => $student])->render();
+        })
+        ->rawColumns(['name', 'actions'])
+        ->make(true);
     }
 
     /**
@@ -55,21 +77,21 @@ class StudentController extends Controller
     }
 
     /**
-     * @param QuestionRequest $request
+     * @param UserCreateRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function store(UserCreateRequest $request)
     {
-        $email = $request->email;
-        $user  = Sentinel::getUser()->first_name;
+        $email = $request->input('email', '');
+        $user  = Sentinel::getUser()->first_name; // @phpstan-ignore-line
 
         DB::beginTransaction();
         try {
             $data = [
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                'email'      => strtolower($email),
+                'email'      => Str::lower($email),
                 'password'   => $request->password,
                 'phone'   => $request->phone,
                 'created_by' => $user,
@@ -80,7 +102,7 @@ class StudentController extends Controller
             $user = Sentinel::registerAndActivate($data);
 
             //Attach the user to the role
-            $role = Sentinel::findRoleById($request->role);
+            $role = Sentinel::findRoleById($request->role); // @phpstan-ignore-line
             $role->users()
                 ->attach($user);
 
@@ -88,10 +110,10 @@ class StudentController extends Controller
 
             return redirect()->route('students')
             ->with('msg', 'Học sinh thêm thành công!');
-        } catch (\Exception $exception) {
+        } catch (\Exception $e) {
             DB::rollBack();
-            dd('abc');
-            Session::flash('failed', $exception->getMessage() . ' ' . $exception->getLine());
+            Log::info($e->getFile() . ':'. $e->getFile(). ' : ' . $e->getMessage());
+            Session::flash('failed', $e->getMessage() . ' ' . $e->getLine());
 
             return redirect()
                 ->back()
@@ -102,13 +124,13 @@ class StudentController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $student = User::find($id);
         if ($student) {
-            $classes = User::find($id)->classStudies()->where("user_id", $id)->get();
+            $classes = $student->classStudies()->where("user_id", $id)->get();
             return view('admin.students.edit', compact('student', 'classes'));
         }
 
@@ -132,7 +154,7 @@ class StudentController extends Controller
             $student->last_name = $request->input('last_name');
             $student->address = $request->input('address');
             $student->birthday = $request->input('birthday');
-            $student->age = \Carbon\Carbon::parse($request->input('birthday'))->age;
+            $student->age = \Carbon\Carbon::parse($request->input('birthday', ''))->age;
             $student->save();
             $msg = 'Thay đổi thành công!';
         }
@@ -160,13 +182,13 @@ class StudentController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function showClass(Request $request, $id)
     {
         $student = User::find($id);
         if ($student) {
-            $classes = User::find($id)->classStudies()->where("user_id", $id)->get();
+            $classes = $student->classStudies()->where("user_id", $id)->get();
             return view('admin.students.class', compact('student', 'classes'));
         }
         return redirect(route('students'))
@@ -176,7 +198,7 @@ class StudentController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function showCourse(Request $request, $id)
     {
@@ -211,13 +233,13 @@ class StudentController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function showStatistic(Request $request, $id)
     {
         $student = User::find($id);
         if ($student) {
-            $classStudiesNumber = User::find($id)->classStudies()->where("user_id", $id)->count();
+            $classStudiesNumber = $student->classStudies()->where("user_id", $id)->count();
             $courseLesson = Lesson::select()
                 ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
                 ->join('courses AS c', 'c.id', 'u.course_id')
@@ -228,9 +250,11 @@ class StudentController extends Controller
                 ->where('ul.user_id', $id)
                 ->where('status', 1)
                 ->count();
-            if ($courseLesson != 0) {
+
+            $coursesNumber = 0;
+            if ($courseLesson > 0) {
                 $coursesNumber = ceil(($lessonNumber * 100) / $courseLesson);
-            } else $coursesNumber = 0;
+            }
             return view('admin.students.statistic', compact('student', 'coursesNumber', 'classStudiesNumber'));
         }
         return redirect(route('students'))
