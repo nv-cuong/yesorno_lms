@@ -74,7 +74,7 @@
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">
                     @if (Sentinel::inRole('teacher'))
-                        {{ $user_test->count() }}
+                        {{ $user_tests->count() }}
                     @else
                         0
                     @endif
