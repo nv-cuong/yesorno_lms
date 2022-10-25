@@ -188,7 +188,6 @@ class TestController extends Controller
             return redirect()->route('test.index');
         } else {
             $arr_question = implode('-', $arr_question);
-            // dd($arr_question);
             $a = [];
             $a[0] = "Tự luận";
             $a[1] = "Trắc nhiệm nhiều lựa chọn";
