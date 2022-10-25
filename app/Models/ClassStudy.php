@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class ClassStudy extends Model
 {
@@ -16,7 +17,7 @@ class ClassStudy extends Model
         'schedule',
     ];
 
-    public function courses()
+    public function courses(): BelongsToMany
     {
         return $this->belongsToMany(
             Course::class,
@@ -26,7 +27,7 @@ class ClassStudy extends Model
         );
     }
 
-    public function users()
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(
             User::class,
@@ -36,6 +37,12 @@ class ClassStudy extends Model
         );
     }
 
+    /**
+     * Scope a query request key.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeSearch($query){
         if($key = request()->key){
             $query = $query-> where('name', 'like', '%'.$key.'%');

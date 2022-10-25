@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Collection;
 
 class User extends EloquentUser
 {
@@ -33,9 +35,9 @@ class User extends EloquentUser
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function tests()
+    public function tests(): BelongsToMany
     {
         return $this->belongsToMany(
             Test::class,
@@ -46,9 +48,9 @@ class User extends EloquentUser
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function classStudies()
+    public function classStudies(): BelongsToMany
     {
         return $this->belongsToMany(
             ClassStudy::class,
@@ -59,9 +61,9 @@ class User extends EloquentUser
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     * @return BelongsToMany
      */
-    public function courses()
+    public function courses(): BelongsToMany
     {
         return $this->belongsToMany(
             Course::class,
@@ -72,7 +74,7 @@ class User extends EloquentUser
     }
 
 
-    public function lessons()
+    public function lessons(): BelongsToMany
     {
         return $this->belongsToMany(
             Lesson::class,
@@ -82,7 +84,7 @@ class User extends EloquentUser
         );
     }
 
-    public function notifications()
+    public function notifications(): BelongsToMany
     {
         return $this->belongsToMany(
             Notification::class,
@@ -92,6 +94,11 @@ class User extends EloquentUser
         );
     }
 
+    /**
+     *
+     * @param int $class_id
+     * @return mixed
+     */
     public function hasClass($class_id)
     {
         return $this->classStudies()
@@ -99,6 +106,11 @@ class User extends EloquentUser
             ->exists();
     }
 
+    /**
+     *
+     * @param int $course_id
+     * @return mixed
+     */
     public function hasCourse($course_id)
     {
         return $this->courses()
@@ -106,6 +118,12 @@ class User extends EloquentUser
             ->exists();
     }
 
+    /**
+     * Scope a query request key.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public function scopeSearch($query)
     {
         if ($key = request()->key) {

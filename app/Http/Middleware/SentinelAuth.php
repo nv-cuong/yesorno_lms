@@ -28,7 +28,7 @@ class SentinelAuth
             return redirect()->guest( 'login' );
         }
 
-        #This Is Admin User?
+        // This Is Admin User?
         $roles = Sentinel::getRoles()->pluck('slug')->all();
 
         if ( is_array($roles) ) {
@@ -39,7 +39,8 @@ class SentinelAuth
 
         }
 
-        #Check Access When User Is Not Admin
+        // Check Access When User Is Not Admin
+        // @phpstan-ignore-next-line
         if ( $user->hasAccess( $role ) ) {
             return $next( $request );
         }
