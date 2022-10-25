@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Test extends Model
 {
+    use HasFactory;
     protected $fillable = [
         'category',
         'amount',
@@ -14,7 +15,7 @@ class Test extends Model
         'published',
         'description',
     ];
-    use HasFactory;
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -27,6 +28,7 @@ class Test extends Model
             'course_id'
         );
     }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -37,9 +39,10 @@ class Test extends Model
             'test_questions',
             'test_id',
             'question_id'
-            
+
         );
     }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

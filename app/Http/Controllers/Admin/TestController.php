@@ -24,11 +24,7 @@ class TestController extends Controller
     public function index()
     {
         $tests = Test::all();
-        $categories = array();
-        foreach ($tests as $test) {
-            $categories[$test->id] = $this->decodeTestCategory($test->category);
-        }
-        return view('admin.tests.index', compact('tests', 'categories'));
+        return view('admin.tests.index', compact('tests'));
     }
 
     /**
@@ -53,10 +49,7 @@ class TestController extends Controller
         $test = new Test();
 
         try {
-            for ($i = 0; $i < (count($request->question)); $i++) {
-                $questions  = Question::where('id', $request->question[$i])->get();
-            }
-            $category = $this->encodeTestCategory($questions);
+            $category = $request->category;
             $course_id = $request->course;
 
             $test->category = $category;
@@ -311,45 +304,6 @@ class TestController extends Controller
      * @param int $id_test
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function updateTestCategory($id)
-    {
-        $tests = Test::find($id);
-        $questions = $tests->question;
-        $category = $this->encodeTestCategory($questions);
-        $tests->category = $category;
-        $tests->save();
-    }
-
-    /**
-     * @param int $id_test
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function encodeTestCategory($questions)
-    {
-        // dd($questions->toArray());
-        $essayQuest = false; //true if there is an essay question
-        $multiChoiceQuest = false; //true if there is a multiple choice question
-        $tfQuest = false; //true if there is a true/false question
-
-        foreach ($questions as $question) {
-            $category = $question->category;
-            if ($category == 0) {
-                $essayQuest = true;
-            } else if ($category == 1) {
-                $multiChoiceQuest = true;
-            } else if ($category == 2) {
-                $tfQuest = true;
-            }
-        }
-        $category = json_encode([$essayQuest, $multiChoiceQuest, $tfQuest]);
-
-        return $category;
-    }
-
-    /**
-     * @param int $id_test
-     * @return \Illuminate\Http\RedirectResponse
-     */
     private function decodeTestCategory($category)
     {
         $type = '';
@@ -374,7 +328,7 @@ class TestController extends Controller
                 $type = 'Trắc nghiệm';
             }
         }
-        
+
         return $type;
     }
 

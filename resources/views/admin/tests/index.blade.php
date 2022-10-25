@@ -65,7 +65,7 @@
                                             {{ $test->id }}
                                         </td>
                                         <td>
-                                            {{ $categories[$test->id] }}
+                                            {{ $test->category == 0 ? 'Bài thi' : 'Khảo sát' }}
                                         </td>
                                         @foreach ($test->question as $question)
                                             <td>

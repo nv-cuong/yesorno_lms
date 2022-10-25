@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->string('category')->nullable();
+            $table->integer('category')->nullable();
             $table->integer('amount')->nullable();
             $table->string('title')->nullable();
             $table->integer('time')->nullable();
