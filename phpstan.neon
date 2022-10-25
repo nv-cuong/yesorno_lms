@@ -10,8 +10,16 @@ parameters:
     level: 9
 
     ignoreErrors:
+        - '#Call to an undefined static method .*setHasher\(\)#'
+        - '#Call to an undefined static method .*getRoles\(\)#'
+        - '#Call to an undefined static method .*findRoleBySlug\(\)#'
+        - '#Call to an undefined static method .*findByCredentials\(\)#'
+        - '#Call to an undefined static method .*findById\(\)#'
+        - '#Cannot call method save\(\)#'
 
     excludePaths:
 
     checkGenericClassInNonGenericObjectType: false
-#    checkMissingIterableValueType: false
+    checkMissingIterableValueType: false
+    checkModelProperties: false
+    checkOctaneCompatibility: true
