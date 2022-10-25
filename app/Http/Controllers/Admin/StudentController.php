@@ -47,8 +47,7 @@ class StudentController extends Controller
         ])
         ->leftJoin('role_users AS ru', 'user_id', 'users.id')
         ->where('ru.role_id', 5)
-        ->with('roles', 'activations')
-        ->orderBy('users.id', 'DESC');
+        ->with('roles', 'activations');
 
         // @phpstan-ignore-next-line
         return DataTables::of($students)
