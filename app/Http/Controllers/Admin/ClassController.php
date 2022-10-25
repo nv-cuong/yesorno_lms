@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\User;
-use App\Models\Lesson;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;

@@ -54,7 +54,7 @@ class Course extends Model {
             'user_courses',
             'course_id',
             'user_id'
-        );
+        )->withPivot('status');
     }
 
     public function scopeSearch($query) {

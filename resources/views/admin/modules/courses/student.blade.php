@@ -49,7 +49,7 @@
                                         <td>
                                             {{ $user->email }}
                                         </td>
-                                        @if ($user->status == 0)
+                                        @if ($user->pivot->status == 0)
                                             <td>
                                                 <a href="" data-toggle="modal" data-target="#activeModal"
                                                     onclick="javascript:user_active('{{ $user->id }}')">
@@ -58,10 +58,7 @@
                                             </td>
                                         @else
                                             <td>
-                                                <a href="" data-toggle="modal" data-target="#activeModal"
-                                                    onclick="javascript:user_active('{{ $user->id }}')">
-                                                    Hủy chấp nhận
-                                                </a>
+                                                Đã chấp nhận
                                             </td>
                                         @endif
                                     </tr>

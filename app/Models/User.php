@@ -68,7 +68,7 @@ class User extends EloquentUser
             'user_courses',
             'user_id',
             'course_id'
-        );
+        )->withPivot('status');
     }
 
 
