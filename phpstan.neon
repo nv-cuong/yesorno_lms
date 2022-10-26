@@ -2,7 +2,13 @@ includes:
     - ./vendor/nunomaduro/larastan/extension.neon
 
 parameters:
-
+    universalObjectCratesClasses:
+        - Illuminate\Http\Request
+        - Illuminate\Support\Optional
+        - Illuminate\Support\Str
+    earlyTerminatingFunctionCalls:
+        - abort
+        - dd
     paths:
         - app
 
@@ -15,11 +21,40 @@ parameters:
         - '#Call to an undefined static method .*findRoleBySlug\(\)#'
         - '#Call to an undefined static method .*findByCredentials\(\)#'
         - '#Call to an undefined static method .*findById\(\)#'
-        - '#Cannot call method save\(\)#'
+        - '#Call to an undefined static method .*findRoleById\(\)#'
+        - '#Call to an undefined static method .*update\(\)#'
+        - '#Call to an undefined static method .*findUserById\(\)#'
+        - '#Property App\\Models*#'
+        - '#Access to an undefined property Cartalyst\\Sentinel*#'
+        - '#Cannot access property*#'
+        - '#Cannot call method .*save\(\)#'
+        - '#Call to an undefined method Cartalyst\\Sentinel*#'
+        - '#Cannot call method .*answers\(\)#'
+        - '#Cannot call method .*users\(\)#'
+        - '#Cannot call method .*courses\(\)#'
+        - '#Cannot call method .*course\(\)#'
+        - '#Cannot call method .*question\(\)#'
+        - '#Cannot call method .*lessons\(\)#'
+        - '#Cannot call method .*tests\(\)#'
+        - '#Cannot call method .*test\(\)#'
+        - '#Cannot call method .*units\(\)#'
+        - '#Cannot call method .*inRole\(\)#'
+        - '#Cannot call method .*delete\(\)#'
 
     excludePaths:
+        - *.blade.php
+    mixinExcludeClasses:
+        - Eloquent
 
+    noModelMake: true
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
     checkModelProperties: false
     checkOctaneCompatibility: true
+    checkMissingCallableSignature: true
+    noUnnecessaryCollectionCall: true
+    noUnnecessaryCollectionCallOnly: []
+    noUnnecessaryCollectionCallExcept: []
+    squashedMigrationsPath: []
+    databaseMigrationsPath: []
+    reportUnmatchedIgnoredErrors: false
