@@ -31,6 +31,8 @@ Route::prefix('admin')->group(function () {
     });
 
     Route::resource('class', ClassController::class)->middleware('myweb.auth:class.show');
+    Route::get('/data', [ClassController::class, 'getClassData'])
+            ->name('class.data')->middleware('myweb.auth:class.show');
     Route::delete('/class/delete', [ClassController::class, 'destroy'])
         ->name('class.delete')->middleware('myweb.auth:class.delete');
     Route::get('/class/add/{slug}', [ClassController::class, 'add'])

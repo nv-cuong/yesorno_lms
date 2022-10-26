@@ -9,12 +9,12 @@ use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\User;
-use App\Models\Lesson;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class ClassController extends Controller
 {
@@ -25,16 +25,42 @@ class ClassController extends Controller
      */
     public function index()
     {
-        $classes = ClassStudy::select([
-            'id',
-            'slug',
+        // $classes = ClassStudy::select([
+        //     'id',
+        //     'slug',
+        //     'name',
+        //     'schedule'
+        // ])
+        //     ->with(['users', 'courses'])
+        //     ->search()
+        //     ->paginate(100);
+        // return view('admin.modules.classes.index', compact('classes'));
+        return view('admin.modules.classes.index');
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getClassData()
+    {
+        $class = ClassStudy::select([
+            'class.id',
             'name',
-            'schedule'
-        ])
-            ->with(['users', 'courses'])
-            ->search()
-            ->paginate(100);
-        return view('admin.modules.classes.index', compact('classes'));
+            'description',
+            'schedule',
+        ]);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($class)
+        // ->addColumn('actions', function ($class) {
+        //     return view('admin.classes.actions', ['row' => $class])->render();
+        // })->addColumn('total_stu', function ($class) {
+        //     $total = $class->user->count();
+        //     return $total;
+        // })
+        // ->rawColumns(['total_stu', 'actions'])
+        ->make(true);
     }
 
     /**

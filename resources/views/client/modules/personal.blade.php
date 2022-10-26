@@ -46,8 +46,6 @@
         </div>
         <div class="container">
             <div class="author-bio-wrapper grid-2">
-            <strong>Thông tin cá nhân</strong>
-
                 <div class="auhtor-pic">
                     @if (empty($student->name_img))
                         <img src="{{ asset('user/img/team/team-1.jpg') }}" alt="Chưa có ảnh" class="mb-3">
