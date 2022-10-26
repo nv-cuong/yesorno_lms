@@ -46,6 +46,8 @@
         </div>
         <div class="container">
             <div class="author-bio-wrapper grid-2">
+            <strong>Thông tin cá nhân</strong>
+
                 <div class="auhtor-pic">
                     @if (empty($student->name_img))
                         <img src="{{ asset('user/img/team/team-1.jpg') }}" alt="Chưa có ảnh" class="mb-3">
@@ -66,20 +68,20 @@
 
                 <div class="auhtor-con">
                     <ul class="author-list">
-                        <li> <b>Họ và tên:</b> {{ $student->first_name }} {{ $student->last_name }}</li>
-                        <li> <b>Giới tính:</b>
+                        <li> <strong>Họ và tên:</strong> {{ $student->first_name }} {{ $student->last_name }}</li>
+                        <li> <strong>Giới tính:</strong>
                             @if ($student->gender == 'male')
                                 Nam
                             @else
                                 Nữ
                             @endif
                         </li>
-                        <li> <b>Số điện thoại:</b> {{ $student->phone }}</li>
-                        <li> <b>E-mail:</b> {{ $student->email }}</li>
+                        <li> <strong>Số điện thoại:</strong> {{ $student->phone }}</li>
+                        <li> <strong>E-mail:</strong> {{ $student->email }}</li>
                         @if (empty($student->address))
                             Chưa cập nhật
                         @else
-                            <li> <b>Địa chỉ:</b> {{ $student->address }}</li>
+                            <li> <strong>Địa chỉ:</strong> {{ $student->address }}</li>
                         @endif
                     </ul>
                 </div>
