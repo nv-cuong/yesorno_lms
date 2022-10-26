@@ -174,12 +174,11 @@ class TestController extends Controller
     public function view($id)
     {
         $tests  = Test::find($id);
-        $question1 = $tests->question;
-        $question = $tests->question;
+        $questions = $tests->question;
         $arr_question = [];
 
-        foreach ($question1 as $row) {
-            $arr_question[] = $row->pivot->question_id;
+        foreach ($questions as $question) {
+            $arr_question[] = $question->pivot->question_id;
         }
 
         if ($arr_question == []) {
@@ -188,11 +187,11 @@ class TestController extends Controller
             return redirect()->route('test.index');
         } else {
             $arr_question = implode('-', $arr_question);
-            $a = [];
-            $a[0] = "Tự luận";
-            $a[1] = "Trắc nhiệm nhiều lựa chọn";
-            $a[2] = "Trắc nhiệm đúng sai";
-            return view('admin.tests.questions.view_question', compact('tests', 'question', 'arr_question', 'a'));
+            $categories = [];
+            $categories[0] = "Tự luận";
+            $categories[1] = "Trắc nhiệm nhiều lựa chọn";
+            $categories[2] = "Trắc nhiệm đúng sai";
+            return view('admin.tests.questions.view_question', compact('tests', 'questions', 'arr_question', 'categories'));
         }
     }
 
@@ -261,22 +260,22 @@ class TestController extends Controller
      * @param int $id_test
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function question_edit($id_question, $id_test, $id_course)
+    public function question_edit($questionId, $testId, $courseId)
     {
-        $question = Question::find($id_question);
-        $tests  = Test::find($id_test);
-        $question1 = $tests->question;
-        foreach ($question1 as $row) {
-            $arr_question1[] = $row->pivot->question_id;
+        $question = Question::find($questionId);
+        $tests  = Test::find($testId);
+        $questions = $tests->question;
+        foreach ($questions as $quest) {
+            $questArray[] = $quest->pivot->question_id;
         }
-        $question_old = Question::where('course_id', $id_course)
-            ->WhereNotIn('id', $arr_question1)
+        $question_old = Question::where('course_id', $courseId)
+            ->WhereNotIn('id', $questArray)
             ->select('id', 'content', 'category')->get();
-        $b = [];
-        $b[0] = "Tự luận";
-        $b[1] = "Trắc nhiệm nhiều lựa chọn";
-        $b[2] = "Trắc nhiệm đúng sai";
-        return view('admin.tests.questions.edit_question', compact('tests', 'question', 'question_old', 'b'));
+        $categories = [];
+        $categories[0] = "Tự luận";
+        $categories[1] = "Trắc nhiệm nhiều lựa chọn";
+        $categories[2] = "Trắc nhiệm đúng sai";
+        return view('admin.tests.questions.edit_question', compact('tests', 'question', 'question_old', 'categories'));
     }
 
     /**
@@ -297,38 +296,6 @@ class TestController extends Controller
         }
         $this->updateTestCategory($id);
         return redirect()->route('test.view', $id);
-    }
-
-    /**
-     * @param int $id_test
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private function decodeTestCategory($category)
-    {
-        $type = '';
-        $categories = json_decode($category);
-        if ($categories[0] == $categories[1] && $categories[0] == $categories[2]) {
-            $type = 'Hỗn hợp';
-        } else {
-            if ($categories[0] == true) {
-                $type = 'Tự luận';
-                if ($categories[1] == true) {
-                    $type = $type . ', Trắc nghiệm nhiều câu hỏi';
-                }
-                if ($categories[2] == true) {
-                    $type = $type . ', Trắc nghiệm';
-                }
-            } elseif ($categories[1] == true) {
-                $type = 'Trắc nghiệm nhiều câu hỏi';
-                if ($categories[2] == true) {
-                    $type = $type . ', Trắc nghiệm';
-                }
-            } else {
-                $type = 'Trắc nghiệm';
-            }
-        }
-
-        return $type;
     }
 
     /**
