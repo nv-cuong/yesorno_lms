@@ -49,7 +49,7 @@
                                         <td>
                                             {{ $user->email }}
                                         </td>
-                                        @if ($user->status == 0)
+                                        @if ($user->courses[0]->status == 0)
                                             <td>
                                                 <a href="" data-toggle="modal" data-target="#activeModal"
                                                     onclick="javascript:user_active('{{ $user->id }}')">

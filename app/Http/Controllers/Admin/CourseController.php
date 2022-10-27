@@ -33,8 +33,10 @@ class CourseController extends Controller
             'begin_date',
             'end_date',
         ])
-            ->withCount('users')
-            ->paginate(1000);
+            ->withCount(['users' => function ($query) {
+                return $query->where('status', 0);
+            }])
+            ->paginate(100);
         return view('admin.modules.courses.index', compact('courses'));
     }
 
