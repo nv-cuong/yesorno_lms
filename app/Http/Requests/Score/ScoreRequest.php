@@ -27,20 +27,5 @@ class ScoreRequest extends FormRequest
         return [    
             'student_id' => ['required'],   
         ];
-       
     }
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return [
-
-            'student_id.required'     => 'Bạn chưa chọn học viên !',    
-        ];
-    }
-
-   
-    
 }

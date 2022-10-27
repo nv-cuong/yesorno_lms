@@ -27,18 +27,4 @@ class ResetPasswordRequest extends FormRequest
             'password' => 'required|confirmed|min:8',
         ];
     }
-
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return [
-         
-            'password.required'     => 'Bạn chưa nhập password',
-            'email.confirmed'     => 'Xác nhận password không đúng',
-            'email.min'     => 'password phải lớn hơn 8 kí tự',
-        ];
-    }
 }

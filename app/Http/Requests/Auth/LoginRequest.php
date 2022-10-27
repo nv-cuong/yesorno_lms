@@ -28,16 +28,4 @@ class LoginRequest extends FormRequest
             'password' => ['required'],
         ];
     }
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return[
-            'email.required' => 'Trường email không được để trống.',
-            'email.email' => 'Nhập đúng địa chỉ e-mail',
-            'password' => 'Trường mật khẩu không được để trống'
-        ];
-    }
 }

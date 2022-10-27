@@ -41,27 +41,14 @@ class QuestionRequest extends FormRequest
                 'content' => ['required', 'max:50', 'unique:questions'],
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
-
             ];
         }
     }
-
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
+    
     public function messages()
     {
-        $rule = [
-            'content.required'     => 'Bạn chưa nhập tên câu hỏi',
-            'is_correct.required' => 'Bạn chưa chọn câu trả lời đúng',
-            'content.max'     => 'Câu hỏi quá dài',
-            'content.unique'     => 'Câu hỏi đã tồn tại',
-            'score.required'     => 'Bạn chưa nhập điểm',
-            'score.integer'     => 'Điểm phải dạng số nguyên',
-            'score.min'     => 'Điểm phải lớn hơn 1',
-            'answer1.*.required'     => 'Bạn chưa nhập câu trả lời',
+        return [
+            'answer1.*.required' => 'Trường tên đáp án không được bỏ trống',
         ];
-        return $rule;
     }
 }

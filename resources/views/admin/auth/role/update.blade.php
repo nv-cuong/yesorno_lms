@@ -38,7 +38,7 @@
                         {!! csrf_field() !!}
 
                         <div class="form-group">
-                            <label for="name">@lang('global.name') <span style="color: red">*</span></label>
+                            <label for="name">Name <span style="color: red">*</span></label>
                             <input type="text" name="name" class="form-control input-sm " placeholder="@lang('global.name')" value="{{ old('name') ?? $dataDb->name }}">
                             {!! $errors->first('name', '<em for="name" class="help-block" style="color: red">:message</em>') !!}
                         </div>
@@ -61,7 +61,7 @@
                         
                         <div class="pull-right">
                             <button type="submit" class="btn ladda-button btn-flat btn-success btn-sm" data-style="zoom-in">
-                                <span class="ladda-label"><i class="fa fa-save"></i> @lang('auth.edit_role_submit_btn')</span>
+                                <span class="ladda-label"><i class="fa fa-save"></i> Sửa</span>
                                 <span class="ladda-spinner"><div class="ladda-progress" style="width: 0px;"></div></span></button>
                         </div>
 

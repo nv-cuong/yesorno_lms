@@ -30,11 +30,11 @@
                                 <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>@lang('auth.index_name_th')</th>
-                                    <th>@lang('auth.index_slug_th')</th>
-                                    <th>@lang('auth.index_created_at')</th>
-                                    <th>@lang('auth.index_updated_at')</th>
-                                    <th>@lang('auth.index_action_th')</th>
+                                    <th>Name</th>
+                                    <th>Slug</th>
+                                    <th>Created at</th>
+                                    <th>Updated at</th>
+                                    <th>Action</th>
                                 </tr>
                                 </thead>
                                 <tbody>
