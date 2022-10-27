@@ -28,20 +28,4 @@ class ChangePasswordRequest extends FormRequest
             'password'     => 'required|confirmed|min:8',
         ];
     }
-
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return [
-         
-            'old_password.required'     => 'Bạn chưa nhập mật khẩu cũ',
-            'password.required'     => 'Bạn nhập nhập mật khẩu mới',
-            'old_password.min'     => 'password phải lớn hơn 8 kí tự',
-            'password.min'     => 'password phải lớn hơn 8 kí tự',
-            
-        ];
-    }
 }

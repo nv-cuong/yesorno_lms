@@ -31,24 +31,4 @@ class StudentRequest extends FormRequest
             'gender'=>['required']
         ];
     }
-
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return [
-        'phone.required' => 'Số điện thoại không được bỏ trống',
-        'phone.digits'=> 'Số điện thoại phải có đủ 10 số',
-        'first_name.required' => 'Họ và tên đệm không được bỏ trống',
-        'first_name.max' => 'Họ và tên đệm quá dài',
-        'last_name.required' => 'Tên không được bỏ trống',
-        'last_name.max' => 'Tên quá dài',
-        'birthday.required'=>'Ngày sinh không được bỏ trống',
-        'birthday.date-format'=>'Ngày tháng năm sinh sai định dạng',
-        'birthday.before'=>'Tuổi phải lớn hơn 6',
-        'gender.required'=>'Giới tính không được bỏ trống',
-        ];
-    }
 }

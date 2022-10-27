@@ -98,7 +98,7 @@ class QuestionController extends Controller
             // log error
             throw new Exception($t->getMessage());
         }
-        DB::commit(); 
+        DB::commit();
         return redirect(route('question.index'))->with('message', 'Thêm câu hỏi thành công !')->with('type_alert', "success");
     }
 
@@ -115,7 +115,9 @@ class QuestionController extends Controller
 
 
         if ($question_test->test()->count() > 0) {
-            return redirect(route('question.index'))->with('message', "Câu hỏi có trong bài test không thể sửa !")->with('type_alert', "danger");
+            return redirect(route('question.index'))
+                ->with('message', "Câu hỏi có trong bài test không thể sửa !")
+                ->with('type_alert', "danger");
         } else {
             $question = Question::find($id);
             if ($question) {
@@ -141,7 +143,6 @@ class QuestionController extends Controller
     {
 
         $msg = 'Câu hỏi không tồn tại !';
-
         $question = Question::find($id);
         if ($question->category == 1) {
             $question->content = $request->input('content');
@@ -150,10 +151,11 @@ class QuestionController extends Controller
             $question->save();
             $answers = Answer::where('question_id', $id)->get();
             $option = $request->input('answer1');
+            $isCorrect = $request->input('is_correct');
             foreach ($answers as $key => $ans) {
                 if ($option[$key] != '') {
                     $ans->content = $option[$key];
-                    $ans->checked = $request->input('is_correct' . $key) ? 1 : 0;
+                    $ans->checked = isset($isCorrect[$key]) ? 1 : 0;
                     $ans->save();
                 }
             }

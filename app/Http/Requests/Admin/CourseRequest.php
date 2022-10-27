@@ -31,21 +31,4 @@ class CourseRequest extends FormRequest
             'end_date' =>       ['required', 'date'],
         ];
     }
-
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return [
-            'title.required'     => 'Bạn chưa nhập tên khóa học',
-            'title.max'     => 'Tên khóa học phải ít 255 kí tự',
-            'description.required'     => 'Bạn chưa nhập mô tả khóa học',
-            'description.min'     => 'Mô tả phải nhiều hơn 20 ký tự',
-            'status.required'     => 'Bạn chưa chọn loại khóa học',
-            'begin_date.required'     => 'Bạn chưa chọn ngày bắt đầu',
-            'end_date.required'     => 'Bạn chưa chọn ngày kết thúc',
-        ];
-    }
 }
