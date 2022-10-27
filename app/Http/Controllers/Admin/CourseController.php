@@ -192,7 +192,9 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
-            $users = $course->users()->paginate(10);
+            $users = $course
+                ->users()
+                ->paginate(10);
             return view('admin.modules.courses.student', compact('users', 'course'));
         }
         return redirect(route('course.index'))

@@ -44,26 +44,28 @@
                                             {{ $user->id }}
                                         </td>
                                         <td>
-                                            {{ $user->first_name }} {{ $user->last_name }}
+                                            {{ $user->first_name . ' ' . $user->last_name }}
                                         </td>
                                         <td>
                                             {{ $user->email }}
                                         </td>
-                                        @if ($user->courses[0]->status == 0)
-                                            <td>
-                                                <a href="" data-toggle="modal" data-target="#activeModal"
-                                                    onclick="javascript:user_active('{{ $user->id }}')">
-                                                    Chấp nhận
-                                                </a>
-                                            </td>
-                                        @else
-                                            <td>
-                                                <a href="" data-toggle="modal" data-target="#activeModal"
-                                                    onclick="javascript:user_active('{{ $user->id }}')">
-                                                    Hủy chấp nhận
-                                                </a>
-                                            </td>
-                                        @endif
+                                        @php
+                                            for ($i = 0; $i < count($user->courses); $i++) {
+                                                if ($user->courses[$i]->id == $course->id) {
+                                                    if ($user->courses[$i]->pivot->status == 0) {
+                                                        $message = 'Chấp nhận';
+                                                    } else {
+                                                        $message = 'Huỷ chấp nhận';
+                                                    }
+                                                }
+                                            }
+                                        @endphp
+                                        <td>
+                                            <a href="" data-toggle="modal" data-target="#activeModal"
+                                                onclick="javascript:user_active('{{ $user->id }}')">
+                                                {{ $message }}
+                                            </a>
+                                        </td>
                                     </tr>
                                 @empty
                                     <tr>
