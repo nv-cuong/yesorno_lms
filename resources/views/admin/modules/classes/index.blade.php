@@ -28,55 +28,14 @@
                                 <tr>
                                     <th>STT</th>
                                     <th>Tên lớp</th>
-                                    <th>Tên khóa học</th>
+                                    <th>Khóa học trong lớp</th>
                                     <th>Thời gian học</th>
-                                    {{-- <th>Học viên</th> --}}
-                                    <th>Thao tác</th>
+                                    <th>Học viên trong lớp</th>
+                                    <th>Tùy chọn</th>
                                 </tr>
                             </thead>
                             <tbody id="load">
-                                {{-- @forelse ($classes as $class)
-                                    <tr>
-                                        <td>
-                                            {{ $loop->iteration + ($classes->currentPage() - 1) * $classes->perPage() }}
-                                        </td>
-                                        <td>{{ $class->name }}</td>
-                                        <td>
-                                            @foreach ($class->courses as $course)
-                                                {{ $course->title }} <br>
-                                            @endforeach
-                                        </td>
-                                        <td class="text">
-                                            @if ($class->schedule == 0)
-                                                Sáng
-                                            @elseif ($class->schedule == 1)
-                                                Chiều
-                                            @else
-                                                Cả ngày
-                                            @endif
-                                        </td>
-                                        <td class="text-end">{{ $class->users->count() }}</td>
-                                        <td>
-                                            <a href="{{ route('class.edit', $class->id) }}" class="btn btn-success"
-                                                title="Chỉnh sửa thông tin lớp học">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <a href="#" class="btn btn-danger" data-toggle="modal"
-                                                data-target="#modal-sm"
-                                                onclick="javascript:class_delete({{ $class->id }})" title="Xóa lớp học">
-                                                <i class="far fa-trash-alt"></i>
-                                            </a>
-                                            <a href="{{ route('class.show', $class->slug) }}" class="btn btn-primary"
-                                                title="Xem chi tiết lớp học">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6">Không có dữ liệu</td>
-                                    </tr>
-                                @endforelse --}}
+                                
                             </tbody>
                         </table>
                     </div>
@@ -101,12 +60,16 @@
                         name: 'name'
                     },
                     {
-                        data: 'description',
-                        name: 'description'
+                        data: 'course',
+                        name: 'course'
                     },
                     {
                         data: 'schedule',
                         name: 'schedule'
+                    },
+                    {
+                        data: 'users_count',
+                        name: 'users_count'
                     },
                     {
                         data: 'actions',

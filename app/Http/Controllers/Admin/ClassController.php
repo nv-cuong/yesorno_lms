@@ -23,18 +23,8 @@ class ClassController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
-        // $classes = ClassStudy::select([
-        //     'id',
-        //     'slug',
-        //     'name',
-        //     'schedule'
-        // ])
-        //     ->with(['users', 'courses'])
-        //     ->search()
-        //     ->paginate(100);
-        // return view('admin.modules.classes.index', compact('classes'));
         return view('admin.modules.classes.index');
     }
 
@@ -45,18 +35,31 @@ class ClassController extends Controller
     public function getClassData()
     {
         $class = ClassStudy::select([
-            'class.id',
+            'id',
             'name',
-            'description',
             'schedule',
-        ]);
+        ])->with(['courses'])
+        ->withCount('users');
 
         // @phpstan-ignore-next-line
         return DataTables::of($class)
+        ->addColumn('course', function ($class) {
+            $courseName = '';
+            foreach($class->courses as $course)
+            {
+                $courseName .= $course->title . '<br/>';
+            }
+            return $courseName;
+        })
+        ->editColumn('schedule', function ($class) {
+            if($class->schedule == 0) return 'Sáng';
+            if($class->schedule == 1) return 'Chiều';
+            return 'Cả ngày';
+        })
         ->addColumn('actions', function ($class) {
             return view('admin.modules.classes.actions', ['row' => $class])->render();
         })
-        ->rawColumns('actions')
+        ->rawColumns(['course', 'actions'])
         ->make(true);
     }
 
@@ -120,11 +123,9 @@ class ClassController extends Controller
      * @param  string  $slug
      * @return \Illuminate\View\View
      */
-    public function show($slug)
+    public function show($id)
     {
-        $class = ClassStudy::where('slug', $slug)
-        ->with(['courses', 'users'])
-        ->first();
+        $class = ClassStudy::find($id);
         return view('admin.modules.classes.show', compact('class'));
     }
 

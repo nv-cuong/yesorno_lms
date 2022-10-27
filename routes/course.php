@@ -8,8 +8,11 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/courses')->name('course.')->group(function () {
     Route::get('index', [CourseController::class, 'index'])
         ->name('index')->middleware('myweb.auth:course.show');
+        
     Route::get('/showCourse/{id}', [CourseController::class, 'showCourse'])
         ->name('detail')->middleware('myweb.auth:course.show');
+    Route::get('/data', [CourseController::class, 'getCourseData'])
+        ->name('data')->middleware('myweb.auth:course.show');
     Route::get('createCourse', [CourseController::class, 'createCourse'])
         ->name('create')->middleware('myweb.auth:course.create');
     Route::post('storeCourse', [CourseController::class, 'storeCourse'])
