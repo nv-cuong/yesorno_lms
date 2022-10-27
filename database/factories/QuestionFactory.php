@@ -17,7 +17,7 @@ class QuestionFactory extends Factory
     public function definition()
     {
         return [
-            'category'=> $this->faker->randomElement([0]),
+            'category'=> $this->faker->randomElement([0, 1, 2]),
             'content'=>$this->faker->text(10),
             'course_id' =>$this -> faker->numberBetween(1,10),
             'score'=>$this -> faker->numberBetween(1, 100),

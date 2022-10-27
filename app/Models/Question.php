@@ -16,8 +16,8 @@ class Question extends Model
         'category',
         'score',
     ];
-       
-   
+
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
@@ -29,7 +29,7 @@ class Question extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function test()
+    public function tests()
     {
         return $this->belongsToMany(
             Test::class,

@@ -64,7 +64,6 @@
     </div>
 </div>
 
-
 <div id="portfolio" class="portfolio-area course-2 de-pb">
     <div class="container">
         <div class="row align-items-center">
