@@ -23,15 +23,15 @@
                             <a href="{{ route('class.create') }}" class="btn btn-success float-right"
                                 title="Thêm một lớp học mới">Tạo lớp học mới</a>
                         </div>
-                        <table class="table table-striped" id="class-study">
+                        <table class="table table-striped" id="class">
                             <thead>
                                 <tr>
                                     <th>STT</th>
                                     <th>Tên lớp</th>
                                     <th>Tên khóa học</th>
                                     <th>Thời gian học</th>
-                                    {{-- <th>Học viên</th>
-                                    <th>Thao tác</th> --}}
+                                    {{-- <th>Học viên</th> --}}
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody id="load">
@@ -88,7 +88,7 @@
 @section('scripts')
     <script>
         $(function() {
-            var table = $('#class-study').DataTable({
+            var table = $('#class').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax: '/admin/class/data',
@@ -108,16 +108,12 @@
                         data: 'schedule',
                         name: 'schedule'
                     },
-                    // {
-                    //     data: 'total_stu',
-                    //     name: 'total_stu'
-                    // },
-                    // {
-                    //     data: 'actions',
-                    //     name: 'actions',
-                    //     orderable: false,
-                    //     searchable: false
-                    // }
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
+                    }
                 ]
             });
             table.on('draw', function() {

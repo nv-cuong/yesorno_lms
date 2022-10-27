@@ -53,13 +53,10 @@ class ClassController extends Controller
 
         // @phpstan-ignore-next-line
         return DataTables::of($class)
-        // ->addColumn('actions', function ($class) {
-        //     return view('admin.classes.actions', ['row' => $class])->render();
-        // })->addColumn('total_stu', function ($class) {
-        //     $total = $class->user->count();
-        //     return $total;
-        // })
-        // ->rawColumns(['total_stu', 'actions'])
+        ->addColumn('actions', function ($class) {
+            return view('admin.modules.classes.actions', ['row' => $class])->render();
+        })
+        ->rawColumns('actions')
         ->make(true);
     }
 
