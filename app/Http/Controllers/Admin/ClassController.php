@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\Class\CreateRequest;
-use App\Http\Requests\Admin\Class\UpdateRequest;
+use App\Http\Requests\Admin\ClassStudy\CreateRequest;
+use App\Http\Requests\Admin\ClassStudy\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
@@ -23,7 +23,7 @@ class ClassController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index()
+    public function index(Request $request)
     {
         // $classes = ClassStudy::select([
         //     'id',
@@ -65,7 +65,7 @@ class ClassController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function create()
+    public function create(Request $request)
     {
         $course = [];
         $class = new ClassStudy();
@@ -79,7 +79,7 @@ class ClassController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\Admin\Class\CreateRequest  $request
+     * @param  CreateRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(CreateRequest $request)
@@ -94,13 +94,12 @@ class ClassController extends Controller
                 'description'   => $class_item['description'],
                 'schedule'    => $class_item['schedule'],
             ]);
-            if (isset($_POST['course_id'])) {
-                foreach ($_POST['course_id'] as $value) {
-                    //Xử lý các phần tử được chọn
-                    $course = Course::find($value);
-                    $class->courses()->attach($course->id);
-                }
+
+            $courseIds = $request->input('course_id');
+            if ($courseIds) {
+                $class->courses()->attach($courseIds);
             }
+
             $message            = 'Tạo lớp học thành công';
             $type               = 'success';
             DB::commit();
@@ -123,7 +122,9 @@ class ClassController extends Controller
      */
     public function show($slug)
     {
-        $class = ClassStudy::where('slug', $slug)->with('courses', 'users')->first();
+        $class = ClassStudy::where('slug', $slug)
+        ->with(['courses', 'users'])
+        ->first();
         return view('admin.modules.classes.show', compact('class'));
     }
 
@@ -133,17 +134,19 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function edit($id)
+    public function edit(Request $request, $id)
     {
         $courses = Course::select([
             'id',
             'title',
         ])->get();
+
         $class = ClassStudy::find($id);
         if ($class) {
             $course = $class->courses()->get();
             return view('admin.modules.classes.edit', compact('class', 'courses', 'course'));
         }
+
         return redirect(route('class.index'))
             ->with('message', 'Không tìm thấy lớp học này')
             ->with('type_alert', "danger");
@@ -152,24 +155,24 @@ class ClassController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\Admin\Class\UpdateRequest  $request
+     * @param  UpdateRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UpdateRequest $request, $id)
     {
-        //
         $message = 'Lớp học không tồn tại!';
         $type    = 'danger';
         $class = ClassStudy::find($id);
-        if ($class->users->count() > 0) {
+        if ($class->users()->exists()) {
             return redirect(route('class.index'))
                 ->with('message', "Không thể sửa! Đã có học viên đăng kí lớp")
                 ->with('type_alert', "danger");
-        } 
+        }
         if ($class) {
-            $class->name        = $request->input('name');
-            $class->slug        = Str::slug($class->name);
+            $className = $request->input('name', '');
+            $class->name        = $className;
+            $class->slug        = Str::slug($className); // @phpstan-ignore-line
             $class->description = $request->input('description');
             $class->schedule    = $request->input('schedule');
             $class->save();
@@ -178,15 +181,11 @@ class ClassController extends Controller
         }
 
         try {
-            if (isset($_POST['course_id'])) {
-                $class_dettach = ClassStudy::find($class->id);
-                $class_dettach->courses()->detach();
-                foreach ($_POST['course_id'] as $value) {
-                    //Xử lý các phần tử được chọn
-                    $course = Course::find($value);
-                    $class->courses()->attach($course->id);
-                }
+            $courseIds = $request->input('course_id');
+            if ($courseIds){
+                $class->courses()->sync($courseIds); // @phpstan-ignore-line
             }
+
         } catch (\Throwable $t) {
             throw new ModelNotFoundException();
         }
@@ -207,14 +206,15 @@ class ClassController extends Controller
             $data = ClassStudy::find($class_id);
             $name = $data->name;
 
-            if ($data->users->count() > 0) {
+            if ($data->users()->exists()) {
                 return redirect(route('class.index'))
                     ->with('message', "Không thể xóa! Đang có học sinh đăng kí lớp")
                     ->with('type_alert', "danger");
             } else {
                 $class_dettach = ClassStudy::find($class_id);
-                ClassStudy::destroy($class_id);
                 $class_dettach->courses()->detach();
+                $class_dettach->delete();
+
                 return redirect(route('class.index'))
                     ->with('message', "Xóa thành công: " . $name)
                     ->with('type_alert', "success");
