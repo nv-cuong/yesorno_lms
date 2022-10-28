@@ -28,16 +28,4 @@ class UnitRequest extends FormRequest
             'course_id' =>      ['required', 'numeric'],
         ];
     }
-
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
-    public function messages()
-    {
-        return [
-            'title.required'     => 'Bạn chưa nhập tên chương',
-            'title.max'     => 'Tên chương phải ít hơn 255 kí tự',
-        ];
-    }
 }

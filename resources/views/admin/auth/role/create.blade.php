@@ -37,7 +37,7 @@
                     <div class="card-body">
                         {!! csrf_field() !!}
                         <div class="form-group">
-                            <label for="name">@lang('global.name') <span style="color: red">*</span></label>
+                            <label for="name">Name <span style="color: red">*</span></label>
                             <input type="text" name="name" class="form-control input-sm " placeholder="@lang('global.name')" value="{{ old('name') }}">
                             {!! $errors->first('name', '<em for="name" class="help-block" style="color: red">:message</em>') !!}
                         </div>
@@ -61,7 +61,7 @@
 
                         
                             <button type="submit" class="btn ladda-button btn-success btn-sm" data-style="zoom-in">
-                                <span class="ladda-label"><i class="fa fa-save"></i> @lang('auth.create_role_submit_btn')</span>
+                                <span class="ladda-label"><i class="fa fa-save"></i> Tạo</span>
                                 <span class="ladda-spinner"><div class="ladda-progress" style="width: 0px;"></div></span></button>
                        
 

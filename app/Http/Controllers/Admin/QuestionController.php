@@ -10,10 +10,10 @@ use App\Models\Answer;
 use App\Models\Course;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class QuestionController extends Controller
 {
@@ -24,17 +24,56 @@ class QuestionController extends Controller
      */
     public function index()
     {
+        return view('admin.questions.index');
+    }
 
+    /**
+     *
+     * @return DataTables
+     */
+    public function getQuestionData()
+    {
         $questions = Question::select([
             'id',
-            'course_id',
             'content',
-            'answer',
             'category',
-            'score'
-        ])->get();
+            'score',
+            'course_id'
+        ])->with('course');
 
-        return view('admin.questions.index', compact('questions'));
+        // @phpstan-ignore-next-line
+        return DataTables::of($questions)
+        ->editColumn('course_id', function ($question) {
+            $courseName = $question->course->title;
+            return $courseName;
+        })
+        ->editColumn('category', function ($question) {
+            if($question->category == 0) return 'Câu hỏi tự luận';
+            if($question->category == 1) return 'Câu hỏi trắc nghiệm';
+            return 'Câu hỏi đúng sai';
+        })
+        ->addColumn('answers', function ($question) {
+            if ($question->category == 1){
+                $var = <<<EOD
+                <a onclick="event.preventDefault();answer_qu($question->id)" 
+                    href="" class="btn btn-primary btn-sm ">
+                    <i class="fa fa-plus-circle"></i>Xem</a>
+                EOD;
+                return $var;
+            }
+            else 
+            if ($question->category == 2){
+                if($question->answer == 1) return 'Đúng';
+                return 'Sai';
+            }
+            else return 'Tự luận';
+
+        })
+        ->addColumn('actions', function ($question) {
+            return view('admin.questions.actions', ['row' => $question])->render();
+        })
+        ->rawColumns(['actions', 'answers'])
+        ->make(true);
     }
 
     /**
@@ -98,7 +137,7 @@ class QuestionController extends Controller
             // log error
             throw new Exception($t->getMessage());
         }
-        DB::commit(); 
+        DB::commit();
         return redirect(route('question.index'))->with('message', 'Thêm câu hỏi thành công !')->with('type_alert', "success");
     }
 
@@ -115,7 +154,9 @@ class QuestionController extends Controller
 
 
         if ($question_test->test()->count() > 0) {
-            return redirect(route('question.index'))->with('message', "Câu hỏi có trong bài test không thể sửa !")->with('type_alert', "danger");
+            return redirect(route('question.index'))
+                ->with('message', "Câu hỏi có trong bài test không thể sửa !")
+                ->with('type_alert', "danger");
         } else {
             $question = Question::find($id);
             if ($question) {
@@ -141,7 +182,6 @@ class QuestionController extends Controller
     {
 
         $msg = 'Câu hỏi không tồn tại !';
-
         $question = Question::find($id);
         if ($question->category == 1) {
             $question->content = $request->input('content');
@@ -150,10 +190,11 @@ class QuestionController extends Controller
             $question->save();
             $answers = Answer::where('question_id', $id)->get();
             $option = $request->input('answer1');
+            $isCorrect = $request->input('is_correct');
             foreach ($answers as $key => $ans) {
                 if ($option[$key] != '') {
                     $ans->content = $option[$key];
-                    $ans->checked = $request->input('is_correct' . $key) ? 1 : 0;
+                    $ans->checked = isset($isCorrect[$key]) ? 1 : 0;
                     $ans->save();
                 }
             }

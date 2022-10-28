@@ -50,7 +50,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('class.index') }}" class="nav-link {{  url()->current() == route('class.index')  ? 'active' : '' }}">
+                    <a href="{{ route('class') }}" class="nav-link {{  url()->current() == route('class')  ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list"></i>
                         <p>
                             Lớp học

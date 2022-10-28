@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
-use App\Http\Requests\Auth\Role\createRequest;
-use App\Http\Requests\Auth\Role\updateRequest;
+use App\Http\Requests\Auth\Role\CreateRequest;
+use App\Http\Requests\Auth\Role\UpdateRequest;
 use App\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -40,7 +40,7 @@ class RoleController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param createRequest $request
+     * @param CreateRequest $request
      *
      * @return \Illuminate\Http\Response
      * @throws \Exception

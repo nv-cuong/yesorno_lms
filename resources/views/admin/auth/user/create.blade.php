@@ -84,7 +84,7 @@
                                     </div>
 
                                     <div class="form-group @if ($errors->has('role')) has-error @endif">
-                                        <label for="role" class="control-label">@lang('auth.form_user_role_label') <span
+                                        <label for="role" class="control-label">Phân quyền<span
                                                 style="color: red">*</span></label>
 
                                         <select name="role" class="form-control" data-placeholder="@lang('auth.form_user_role_select')"
@@ -110,7 +110,7 @@
                                     <div class="pull-right">
                                         <button type="submit" class="btn btn-flat ladda-button btn-success btn-sm"
                                             data-style="zoom-in">
-                                            <span class="ladda-label"><i class="fa fa-save"></i> @lang('auth.form_user_submit_btn')</span>
+                                            <span class="ladda-label"><i class="fa fa-save"></i> Lưu</span>
                                             <span class="ladda-spinner">
                                                 <div class="ladda-progress" style="width: 0px;"></div>
                                             </span>

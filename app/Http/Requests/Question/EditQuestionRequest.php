@@ -23,10 +23,9 @@ class EditQuestionRequest extends FormRequest
      */
     public function rules()
     {
-
         if ($this->category == 1) {
             $rules = [
-                'content' => ['required', 'max:250', 'unique:questions'],
+                'content' => "required|max:250|unique:questions,id," . $this->id,
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
                 'is_correct' => ['required'],
@@ -39,29 +38,17 @@ class EditQuestionRequest extends FormRequest
             return $rules;
         } else {
             return [
-                'content' => ['required', 'max:250'],
+                'content' => "required|max:250|unique:questions,id," . $this->id,
                 'course_id' => ['required'],
                 'score' => ['required', 'integer', 'min:1'],
             ];
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see \Illuminate\Foundation\Http\FormRequest::messages()
-     */
     public function messages()
     {
-        $rule =  [
-            'content.required'     => 'Bạn chưa nhập tên câu hỏi',
-            'is_correct.required' => 'Bạn chưa chọn câu trả lời đúng',
-            'content.max'     => 'Câu hỏi quá dài',
-            'score.required'     => 'Bạn chưa nhập điểm',
-            'score.integer'     => 'Điểm phải dạng số nguyên',
-            'score.min'     => 'Điểm phải lớn hơn 1',
-            'answer1.*.required'     => 'Bạn chưa nhập câu trả lời',
+        return [
+            'answer1.*.required' => 'Trường tên đáp án không được bỏ trống',
         ];
-
-        return $rule;
     }
 }

@@ -28,7 +28,7 @@
                                 Tạo câu hỏi
                             </a>
                         </div>
-                        <table class="table table-striped" id="table_question">
+                        <table class="table table-striped" id="question">
                             <thead>
                                 <tr>
                                     <th>STT</th>
@@ -39,69 +39,9 @@
                                     <th>Điểm</th>
                                     <th>Hành động</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                @forelse ($questions as $question)
-                                    <tr>
-                                        <th>
-                                            {{ $loop->iteration }}
-                                        </th>
-                                        <th>
-                                            {{ $question->content }}
-                                        </th>
-                                        <th>
-                                            {{ $question->course->title }}
-                                        </th>
-                                        <th>
-                                            @if ($question->category == 0)
-                                                Tự luận
-                                            @else
-                                                @if ($question->category == 1)
-                                                    Trắc nghiệm
-                                                @else
-                                                    Đúng sai
-                                                @endif
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($question->category == 1)
-                                                <a onclick="event.preventDefault();answer_qu('{{ $question->id }}')"
-                                                    href="" class="btn btn-primary btn-sm ">
-                                                    <i class="fa fa-plus-circle"></i>
-                                                    Xem
-                                                </a>
-                                            @else
-                                                @if ($question->answer == 1 && $question->category == 2)
-                                                    Đúng
-                                                @else
-                                                    @if ($question->answer == 0 && $question->category == 2)
-                                                        Sai
-                                                    @else
-                                                    @endif
-                                                @endif
-                                            @endif
-
-                                        </th>
-                                        <th>
-                                            {{ $question->score }}
-                                        </th>
-
-                                        <th>
-                                            <a href="{{ route('question.edit', $question->id) }} "
-                                                class="edit btn btn-success btn-sm"><i class="fas fa-edit"></i>
-                                            </a>
-                                            <a class="btn btn-sm btn-danger delete_question" data-toggle="modal"
-                                                data-target="#deleteModalQuestion" value="{{ $question->id }}"
-                                                onclick="javascript:question_delete('{{ $question->id }}')">
-                                                <i class="fas fa-backspace"></i>
-                                            </a>
-                                        </th>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center">Không có dữ liệu</td>
-                                    </tr>
-                                @endforelse
+                            </thead> 
+                            <tbody id="load">
+                                
                             </tbody>
                         </table>
                     </div>
@@ -185,20 +125,47 @@
 @section('scripts')
     <script type="text/javascript">
         $(function() {
-            $("#table_question").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                "oLanguage": {
-                    "sInfo": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ câu hỏi", // text you want show for info section
-                    "sSearch": "Tìm kiếm",
-                    "oPaginate": {
-                        "sPrevious": "Trước",
-                        "sNext": "Tiếp",
+            var table = $('#question').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/admin/questions/data',
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'content',
+                        name: 'content'
+                    },
+                    {
+                        data: 'course_id',
+                        name: 'course_id'
+                    },
+                    {
+                        data: 'category',
+                        name: 'category'
+                    },
+                    {
+                        data: 'answers',
+                        name: 'answers'
+                    },
+                    {
+                        data: 'score',
+                        name: 'score'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
                     }
-                },
-            }).buttons().container().appendTo('#table_question_wrapper .col-md-6:eq(0)');
+                ]
+            });
+            table.on('draw', function() {
+                $('.livicon').each(function() {
+                    $(this).updateLivicon();
+                });
+            });
         });
 
         function question_delete(id) {
@@ -207,10 +174,9 @@
         }
 
         function answer_qu(an) {
-            var url = "{{ route('question.answer', ':an') }}",
+            var url = "{!! route('question.answer', ':an') !!}",
                 url = url.replace(':an', an);
             $.ajax({
-
                 type: 'GET',
                 url: url,
                 success: function(data) {

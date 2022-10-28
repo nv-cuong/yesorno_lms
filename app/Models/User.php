@@ -32,6 +32,8 @@ class User extends EloquentUser
         'last_name',
         'last_login',
         'permissions',
+        'name_img',
+        'path',
     ];
 
     /**

@@ -6,12 +6,12 @@
 <table class="table table-bordered table-hover table-striped table-condensed" id="acl-table" cellspacing="0" width="100%">
     <thead>
     <tr>
-        <th class="text-center" style="vertical-align: middle">@lang('global.module_name')</th>
-        <th class="text-center" width="80">@lang('global.create')</th>
-        <th class="text-center" width="80">@lang('global.update')</th>
-        <th class="text-center" width="80">@lang('global.view')</th>
-        <th class="text-center" width="80" style="color: red">@lang('global.delete')</th>
-        <th class="text-center">@lang('global.miscellaneous')</th>
+        <th class="text-center" style="vertical-align: middle">Name</th>
+        <th class="text-center" width="80">Create</th>
+        <th class="text-center" width="80">Update</th>
+        <th class="text-center" width="80">View</th>
+        <th class="text-center" width="80" style="color: red">Delete</th>
+        <th class="text-center"></th>
     </tr>
     </thead>
 
@@ -19,7 +19,7 @@
 
     <!-- Users -->
     <tr>
-        <td>{{(trans('auth.form_user_heading'))}}</td>
+        <td>User</td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl" name="user_create" {{ old('user_create') || array_key_exists('user.create', $permissions) ? 'checked' : ''}}>
@@ -47,14 +47,14 @@
         <td>
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" id="user_status" class="styled acl" name="user_status" {{ old('user_status') || array_key_exists('user.status', $permissions) ? 'checked' : ''}}>
-                <label for="user_status">@lang('auth.index_status_th')</label>
+                <label for="user_status">Status</label>
             </div>
         </td>
     </tr>
 
     <!-- Roles -->
     <tr>
-        <td>{{trans('auth.index_roles')}}</td>
+        <td>Role</td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl" name="role_create" {{ old('role_create') || array_key_exists('role.create', $permissions) ? 'checked' : ''}}>

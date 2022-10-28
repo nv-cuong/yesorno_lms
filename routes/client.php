@@ -19,7 +19,8 @@ Route::get('/search', [SearchController::class, 'search'])
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
 Route::get('/personal', [HomeController::class, 'personal'])
-    ->name('personal');
+    ->name('personal')
+    ->middleware('myweb.auth');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
 Route::get('/attach', [CourseDetailController::class, 'attach'])
@@ -67,3 +68,6 @@ Route::get('/user_tests', [UserTestController::class, 'test_user'])
     ->name('test_users')->middleware('myweb.auth');
 Route::get('/user_tests/detail/{id}', [UserTestController::class, 'user_tests_detail'])
     ->name('user_tests_detail');
+
+Route::post('/uploadImg', [HomeController::class, 'uploadImg'])
+    ->name('uploadImg');

@@ -55,7 +55,7 @@
                                                     if ($user->courses[$i]->pivot->status == 0) {
                                                         $message = 'Chấp nhận';
                                                     } else {
-                                                        $message = 'Huỷ chấp nhận';
+                                                        $message = 'Đã chấp nhận';
                                                     }
                                                 }
                                             }
