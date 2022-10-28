@@ -3,7 +3,6 @@
 @section('content')
     @foreach ($questions as $row1)
     @endforeach
-    {{-- {{ dd($row1) }} --}}
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -21,7 +20,6 @@
                     <div class="card">
                         <div class="card-header" style="">
                             Test: {{ $tests->id }}
-                            {{-- {{ dd($questions) }} --}}
                             <a href="{{ route('test.create_question', [$row1->course->id, $tests->id, $arr_question]) }}"
                                 class="btn btn-success float-right">
                                 <i class="nav-icon fas fa-solid fa-plus">
