@@ -207,13 +207,7 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
-<<<<<<< app/Http/Controllers/Admin/CourseController.php
-            $users = $course
-                ->users()
-                ->paginate(10);
-=======
             $users = $course->users()->get();
->>>>>>> app/Http/Controllers/Admin/CourseController.php
             return view('admin.modules.courses.student', compact('users', 'course'));
         }
         return redirect(route('course.index'))
