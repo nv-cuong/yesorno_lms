@@ -19,7 +19,8 @@ Route::get('/search', [SearchController::class, 'search'])
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
 Route::get('/personal', [HomeController::class, 'personal'])
-    ->name('personal');
+    ->name('personal')
+    ->middleware('myweb.auth');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
 Route::get('/attach', [CourseDetailController::class, 'attach'])

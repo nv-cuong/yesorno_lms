@@ -11,6 +11,7 @@ use App\Models\Question;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Yajra\DataTables\Facades\DataTables;
 
 /**
  * @author sant1ago
@@ -23,8 +24,44 @@ class TestController extends Controller
      */
     public function index()
     {
-        $tests = Test::all();
-        return view('admin.tests.index', compact('tests'));
+        return view('admin.tests.index');
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getTestData()
+    {
+        $tests = Test::select([
+            'id',
+            'category',
+            'amount',
+            'time',
+            'title',
+            'description',
+        ])->with('course')
+        ->withCount('question');
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($tests)
+        ->editColumn('category', function ($test) {
+            if($test->category == 0) return 'Bài thi';
+            return 'Khảo sát';
+        })
+        ->addColumn('category_name', function ($test) {
+            $course_name = '';
+            foreach($test->course as $courseItem){
+                $course_name .= $courseItem->title .'<br/>';
+            }
+            return $course_name;
+
+        })
+        ->addColumn('actions', function ($test) {
+            return view('admin.tests.actions', ['row' => $test])->render();
+        })
+        ->rawColumns(['actions', 'category_name'])
+        ->make(true);
     }
 
     /**

@@ -135,18 +135,11 @@ class HomeController extends Controller
     {
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
-        $student = User::where('id', $id)->first();;
-        $courses = User::find($id)->courses()->where("user_id", $id)->paginate(3);
-        $lessons = User::find($id)->lessons()->where([["user_id", $id], ['status', 1]])->count();
-        $courseLesson = Lesson::select()
-            ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
-            ->join('courses AS c', 'c.id', 'u.course_id')
-            ->where('c.status', 1)
-            ->count();
-        if ($courseLesson != 0) {
-            $progress = ceil(($lessons * 100) / $courseLesson);
-        } else $progress = 0;
-        return view('client.modules.personal', compact('student', 'progress', 'courses'));
+        $student = User::withCount(['courses', 'lessons' => function($query){
+            return $query->where('status', 1);
+        }])->find($id);
+       
+        return view('client.modules.personal', compact('student'));
     }
 
 

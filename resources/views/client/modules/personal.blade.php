@@ -30,11 +30,11 @@
                     </div>
                 </div>
             </div>
-            <span> Tiến độ các khóa học : {{ $progress }}%</span>
+            <span> Tiến độ các khóa học : {{ 0 }}%</span>
             <div class="progress" style="height: 30px">
                 <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
-                    aria-valuenow={{ $progress }} aria-valuemin="0" aria-valuemax="100"
-                    style="width: {{ $progress }}%"></div>
+                    aria-valuenow={{0  }} aria-valuemin="0" aria-valuemax="100"
+                    style="width: {{ 0 }}%"></div>
             </div>
             <br>
         </div>
@@ -124,6 +124,9 @@
                         <!-- End Mixitup Nav-->
                         <div class="magnific-mix-gallery masonary">
                             <div id="portfolio-grid" class="portfolio-items" style="position: relative; height: 1285.32px;">
+                                @php
+                                    $courses = $student->courses()->paginate(3);
+                                @endphp
                                 @foreach ($courses as $course)
                                     <div class="pf-item video photography" style="position: absolute; left: 0%; top: 0px;">
                                         <div class="course-2-box">

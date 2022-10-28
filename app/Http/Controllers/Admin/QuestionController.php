@@ -33,17 +33,18 @@ class QuestionController extends Controller
      */
     public function getQuestionData()
     {
-        $question = Question::select([
+        $questions = Question::select([
             'id',
             'content',
             'category',
             'score',
-        ])->with(['course']);
+            'course_id'
+        ])->with('course');
 
         // @phpstan-ignore-next-line
-        return DataTables::of($question)
-        ->addColumn('course', function ($question) {
-            $courseName = $question->course_id;
+        return DataTables::of($questions)
+        ->editColumn('course_id', function ($question) {
+            $courseName = $question->course->title;
             return $courseName;
         })
         ->editColumn('category', function ($question) {
@@ -53,13 +54,12 @@ class QuestionController extends Controller
         })
         ->addColumn('answers', function ($question) {
             if ($question->category == 1){
-                <<<EOD
-                <a onclick="event.preventDefault();answer_qu('{{ $question->id }}')"
+                $var = <<<EOD
+                <a onclick="event.preventDefault();answer_qu($question->id)" 
                     href="" class="btn btn-primary btn-sm ">
-                    <i class="fa fa-plus-circle"></i>
-                    Xem
-                </a>
+                    <i class="fa fa-plus-circle"></i>Xem</a>
                 EOD;
+                return $var;
             }
             else 
             if ($question->category == 2){
@@ -72,7 +72,7 @@ class QuestionController extends Controller
         ->addColumn('actions', function ($question) {
             return view('admin.questions.actions', ['row' => $question])->render();
         })
-        ->rawColumns(['course', 'actions', 'answers'])
+        ->rawColumns(['actions', 'answers'])
         ->make(true);
     }
 
