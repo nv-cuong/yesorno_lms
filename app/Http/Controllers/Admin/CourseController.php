@@ -37,7 +37,10 @@ class CourseController extends Controller
             'status',
             'begin_date',
             'end_date',
-        ])->withCount('users');
+        ])
+            ->withCount(['users' => function ($query) {
+                return $query->where('status', 0);
+            }])
 
         // @phpstan-ignore-next-line
         return DataTables::of($course)

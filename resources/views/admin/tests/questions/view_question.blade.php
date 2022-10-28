@@ -1,7 +1,7 @@
 @extends('admin.layouts.master')
 @section('title', 'View Question')
 @section('content')
-    @foreach ($question as $row1)
+    @foreach ($questions as $row1)
     @endforeach
     <div class="content-header">
         <div class="container-fluid">
@@ -22,7 +22,9 @@
                             Test: {{ $tests->id }}
                             <a href="{{ route('test.create_question', [$row1->course->id, $tests->id, $arr_question]) }}"
                                 class="btn btn-success float-right">
-                                <i class="nav-icon fas fa-solid fa-plus">Thêm câu hỏi</i>
+                                <i class="nav-icon fas fa-solid fa-plus">
+                                    Thêm câu hỏi
+                                </i>
                             </a>
                         </div>
                         <table class="table table-striped" id="example1">
@@ -37,7 +39,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($question as $row)
+                                @foreach ($questions as $row)
                                     <tr>
                                         <td>
                                             {{ $row->id }}
@@ -46,13 +48,13 @@
                                             {{ $tests->id }}
                                         </td>
                                         <td>
-                                            {{ $row->course->id . ". " . $row->course->title }}
+                                            {{ $row->course->id . '. ' . $row->course->title }}
                                         </td>
                                         <td>
                                             {{ $row->content }}
                                         </td>
                                         <td>
-                                            {{ $a[$row->category] }}
+                                            {{ $categories[$row->category] }}
                                         </td>
                                         <td>
                                             <a href="{{ route('test.question.edit', [$row->id, $tests->id, $row->course->id]) }}"

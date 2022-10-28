@@ -47,7 +47,61 @@
                                 </tr>
                             </thead>
                             <tbody id="load">
-
+                                @forelse($courses as $course)
+                                    <tr>
+                                        <td>
+                                            {{ $loop->iteration + ($courses->currentPage() - 1) * $courses->perPage() }}
+                                        </td>
+                                        <td>
+                                            {{ $course->title }}
+                                        </td>
+                                        @if ($course->status == 0)
+                                            <td>
+                                                Miễn phí
+                                            </td>
+                                        @else
+                                            <td>
+                                                Tính phí
+                                            </td>
+                                        @endif
+                                        <td>
+                                            {{ $course->begin_date }}
+                                        </td>
+                                        <td>
+                                            {{ $course->end_date }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('course.detail', ['id' => $course->id]) }}"
+                                                class="btn btn-primary">
+                                                <i class="far fa-eye"></i>
+                                            </a>
+                                            <a href="{{ route('course.edit', [$course->id]) }}" class="btn btn-success">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                            <a class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
+                                                onclick="javascript:course_delete('{{ $course->id }}')">
+                                                <i class="far fa-trash-alt"></i>
+                                            </a>
+                                            <a href="{{ route('course.test', [$course->id]) }}" class="btn btn-warning">
+                                                Test
+                                            </a>
+                                            <a href="{{ route('course.student', [$course->id]) }}" class="btn btn-success">
+                                                Học viên
+                                            </a>
+                                            @if ($course->users_count > 0)
+                                                <button class='btn btn-danger'>
+                                                    {{ $course->users_count }}
+                                                </button>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @empty
+                                    <tr>
+                                        <td colspan="6">
+                                            Không có khóa học
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
