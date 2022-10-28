@@ -48,7 +48,6 @@
                             </thead>
                             <tbody id="load">
                                 @forelse($courses as $course)
-                                    {{-- {{ dd($course) }} --}}
                                     <tr>
                                         <td>
                                             {{ $loop->iteration + ($courses->currentPage() - 1) * $courses->perPage() }}
