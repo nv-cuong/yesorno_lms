@@ -52,57 +52,70 @@
                                     {!! $lesson->content !!}
                                 </div>
                             </div>
+                            <div>
+                                <div class="d-flex justify-content-center">
+                                    <button class="">
+                                        <a href="{{ route('personal.lesson', [$nextLesson->slug]) }}">
+                                            <i class="fa fa-arrow-right">
+                                                <span>BÀI TIẾP THEO</span>
+                                            </i>
+                                        </a>
+                                    </button>
+                                </div>
+                            </div>
                             @endif
                         </div>
                     </div>
                 </div>
             </div>
-            <script type="text/javascript">
-                var tag = document.createElement('script');
-                tag.id = 'iframe-demo';
-                tag.src = 'https://www.youtube.com/iframe_api';
-                var firstScriptTag = document.getElementsByTagName('script')[0];
-                firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+        </div>
+        <script type="text/javascript">
+            var tag = document.createElement('script');
+            tag.id = 'iframe-demo';
+            tag.src = 'https://www.youtube.com/iframe_api';
+            var firstScriptTag = document.getElementsByTagName('script')[0];
+            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-                var player;
+            var player;
 
-                function onYouTubeIframeAPIReady() {
-                    player = new YT.Player('existing-iframe-example', {
-                        events: {
-                            'onReady': onPlayerReady,
-                            'onStateChange': onPlayerStateChange
-                        }
+            function onYouTubeIframeAPIReady() {
+                player = new YT.Player('existing-iframe-example', {
+                    events: {
+                        'onReady': onPlayerReady,
+                        'onStateChange': onPlayerStateChange
+                    }
+                });
+            }
+
+            function onPlayerReady(event) {
+                document.getElementById('existing-iframe-example');
+            }
+
+            function changeStatus(playerStatus) {
+                if (playerStatus == 1) {
+                    $(document).ready(function() {
+                        $.ajaxSetup({
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                            }
+                        });
+                        $.ajax({
+                            url: 'http://lms-sample.local.com/personal/lessonprogress/' + "{{ $slug }}",
+                            method: "POST",
+                            data: {},
+                        })
                     });
                 }
 
-                function onPlayerReady(event) {
-                    document.getElementById('existing-iframe-example');
-                }
+                // } else if (playerStatus == 3) {
+                //     color = "#AA00FF"; // buffering = purple
+                // }
+            }
 
-                function changeStatus(playerStatus) {
-                    if (playerStatus == 1) {
-                        $(document).ready(function() {
-                            $.ajaxSetup({
-                                headers: {
-                                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
-                                }
-                            });
-                            $.ajax({
-                                url: 'http://localhost/personal/lessonprogress/' + "{{ $slug }}",
-                                method: "POST",
-                                data: {},
-                            })
-                        });
-                    }
-
-                    // } else if (playerStatus == 3) {
-                    //     color = "#AA00FF"; // buffering = purple
-                    // }
-                }
-
-                function onPlayerStateChange(event) {
-                    changeStatus(event.data);
-                }
-            </script>
-        </div>
-        @endsection
+            function onPlayerStateChange(event) {
+                changeStatus(event.data);
+            }
+        </script>
+    </section>
+    @endsection
+</div>
