@@ -23,7 +23,7 @@
                                 Tạo khóa học mới
                             </a>
                         </div>
-                        <table class="table table-striped" id="example1">
+                        <table class="table table-striped" id="course">
                             <thead>
                                 <tr>
                                     <th>
@@ -104,9 +104,6 @@
                                 @endforelse
                             </tbody>
                         </table>
-                        <div class="card-footer clearfix">
-                            {{-- {!! $courses->appends(Request::all())->links() !!} --}}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -151,16 +148,45 @@
 @section('scripts')
     <script>
         $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            var table = $('#course').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/admin/courses/data',
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'begin_date',
+                        name: 'begin_date'
+                    },
+                    {
+                        data: 'end_date',
+                        name: 'end_date'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+            table.on('draw', function() {
+                $('.livicon').each(function() {
+                    $(this).updateLivicon();
+                });
+            });
         });
-    </script>
 
-    <script>
         function course_delete(id) {
             var course_id = document.getElementById('course_id');
             course_id.value = id;

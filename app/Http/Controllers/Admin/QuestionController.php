@@ -10,10 +10,10 @@ use App\Models\Answer;
 use App\Models\Course;
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Yajra\DataTables\Facades\DataTables;
 
 class QuestionController extends Controller
 {
@@ -24,17 +24,56 @@ class QuestionController extends Controller
      */
     public function index()
     {
+        return view('admin.questions.index');
+    }
 
+    /**
+     *
+     * @return DataTables
+     */
+    public function getQuestionData()
+    {
         $questions = Question::select([
             'id',
-            'course_id',
             'content',
-            'answer',
             'category',
-            'score'
-        ])->get();
+            'score',
+            'course_id'
+        ])->with('course');
 
-        return view('admin.questions.index', compact('questions'));
+        // @phpstan-ignore-next-line
+        return DataTables::of($questions)
+        ->editColumn('course_id', function ($question) {
+            $courseName = $question->course->title;
+            return $courseName;
+        })
+        ->editColumn('category', function ($question) {
+            if($question->category == 0) return 'Câu hỏi tự luận';
+            if($question->category == 1) return 'Câu hỏi trắc nghiệm';
+            return 'Câu hỏi đúng sai';
+        })
+        ->addColumn('answers', function ($question) {
+            if ($question->category == 1){
+                $var = <<<EOD
+                <a onclick="event.preventDefault();answer_qu($question->id)" 
+                    href="" class="btn btn-primary btn-sm ">
+                    <i class="fa fa-plus-circle"></i>Xem</a>
+                EOD;
+                return $var;
+            }
+            else 
+            if ($question->category == 2){
+                if($question->answer == 1) return 'Đúng';
+                return 'Sai';
+            }
+            else return 'Tự luận';
+
+        })
+        ->addColumn('actions', function ($question) {
+            return view('admin.questions.actions', ['row' => $question])->render();
+        })
+        ->rawColumns(['actions', 'answers'])
+        ->make(true);
     }
 
     /**

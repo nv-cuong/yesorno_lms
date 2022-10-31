@@ -13,6 +13,7 @@ use App\Models\UserTest;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
@@ -34,7 +35,7 @@ class HomeController extends Controller
     /**
      *  @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function index() 
+    public function index()
     {
         $courses = Course::select([
             'id',
@@ -126,28 +127,19 @@ class HomeController extends Controller
         return view('client.modules.courses', compact('courses', 'courseTotal'));
     }
 
-    
+
     /**
-     * @param Request $request
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function personal(Request $request)
+    public function personal()
     {
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
-        $student = User::where('id', $id)->first();;
-        $courses = User::find($id)->courses()->where("user_id", $id)->paginate(3);
-        $lessons = User::find($id)->lessons()->where([["user_id", $id], ['status', 1]])->count();
-        $courseLesson = Lesson::select()
-            ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
-            ->join('courses AS c', 'c.id', 'u.course_id')
-            ->where('c.status', 1)
-            ->count();
-            if($courseLesson != 0){
-                $progress = ceil(($lessons*100)/$courseLesson);
-            }
-            else $progress = 0;
-        return view('client.modules.personal', compact('student', 'progress', 'courses'));
+        $student = User::withCount(['courses', 'lessons' => function($query){
+            return $query->where('status', 1);
+        }])->find($id);
+       
+        return view('client.modules.personal', compact('student'));
     }
 
 
@@ -166,5 +158,25 @@ class HomeController extends Controller
     {
         $output = '';
         $course = Course::where('title', 'LIKE', '%' . $request->keyword . '%')->get();
+    }
+
+    public function uploadImg(Request $request)
+    {
+        $user = User::find($request['student_id']);
+
+        $file_image = $request->file('name_img');
+        $path_old = $user->path;
+        $path = Storage::putFile('public/images', $file_image);
+        $name = Storage::url($path);
+        if ($path_old != NULL) {
+            Storage::delete($path_old);
+        }
+
+
+        $user->name_img = $name;
+        $user->path = $path;
+        $user->save();
+
+        return redirect(route('personal'));
     }
 }

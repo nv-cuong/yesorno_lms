@@ -6,17 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
 use App\Models\Notification;
-use App\Models\Test;
-use App\Models\Unit;
 use App\Models\User;
-use App\Models\Lesson;
-use App\Models\Question;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class CourseController extends Controller
 {
@@ -25,17 +22,37 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::select([
+        return view('admin.modules.courses.index');
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getCourseData()
+    {
+        $course = Course::select([
             'id',
             'title',
-            'slug',
             'status',
             'begin_date',
             'end_date',
         ])
-            ->withCount('users')
-            ->paginate(1000);
-        return view('admin.modules.courses.index', compact('courses'));
+            ->withCount(['users' => function ($query) {
+                return $query->where('status', 0);
+            }])
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($course)
+            ->editColumn('status', function ($course) {
+                if ($course->status == 0) return 'Miễn phí';
+                if ($course->status == 1) return 'Tính phí';
+            })
+            ->addColumn('actions', function ($course) {
+                return view('admin.modules.courses.actions', ['row' => $course])->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     /**
