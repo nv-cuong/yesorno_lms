@@ -68,8 +68,7 @@ class StudentCoursesController extends Controller
         $nextLesson = Lesson::where('id', '>', $lesson->id)->where('unit_id', $lesson->unit_id)->first();
         $files = File::all()
             ->where('lesson_id', $lesson->id);
-        $urlLesson = route('lessonProgress', $slug);
-        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'urlLesson'));
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files'));
     }
 
     /**

@@ -104,7 +104,7 @@
                             }
                         });
                         $.ajax({
-                            url: "{!! $urlLesson !!}",
+                            url: "{!! route('lessonProgress', $lesson->slug) !!}",
                             method: "POST",
                             data: {},
                         })
