@@ -10,13 +10,7 @@ use App\Http\Requests\Question\ImportQuestionRequest;
   
 class ImportQuestionController extends Controller
 {
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function indexx()
-    {
-       return view('admin.questions.index');
-    }
+
    
     /**
     * @return \Illuminate\Support\Collection
