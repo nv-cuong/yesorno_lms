@@ -22,27 +22,39 @@ class StudentCoursesController extends Controller
     {
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
-        $course = Course::where('slug', $slug)->with(['users', 'units'])->first();
+        $course = Course::where('slug', $slug)->with(['units' => function ($q) {
+            return $q->withCount('lessons');
+        }])->first();
+        $courseLesson = 0;
+        foreach($course->units as $unit) {
+            $courseLesson += $unit->lessons_count;
+        }
         $access = $course->users()->where('user_id', $id)->first()->pivot;
+        $courses = Course::inRandomOrder()
+            ->paginate(3)
+            ->onEachSide(1);
 
-        $courses = Course::select()->paginate(3);
         $lessons = Lesson::select([
-            'lessons.id',
-            'ul.user_id',
-            'title',
+            'ul.status',
             'unit_id',
-            'status',
+            'lessons.title',
             'lessons.slug'
         ])
             ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
-            ->where('ul.user_id', $id)
-            ->get();
-        $courseLesson = Lesson::select()
-            ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
+            ->Join('units AS u', 'u.id', 'lessons.unit_id')
             ->join('courses AS c', 'c.id', 'u.course_id')
             ->where('c.id', $course->id)
-            ->count();
-        return view('client.modules.personal_course_detail', compact('course', 'courses','access', 'lessons', 'id', 'courseLesson'));
+            ->where('ul.user_id', $id)
+            ->get();
+        $countLesson = $lessons->where('status', 1)->count();
+
+        if($countLesson != 0){
+            $progress = ceil(($countLesson*100)/$courseLesson);
+        }
+        else $progress = 0;
+
+        return view('client.modules.personal_course_detail', 
+        compact('course', 'courses', 'access', 'courseLesson', 'countLesson', 'lessons', 'progress'));
     }
 
     /**

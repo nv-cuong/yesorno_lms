@@ -83,7 +83,7 @@ class User extends EloquentUser
             'user_lessons',
             'user_id',
             'lesson_id'
-        );
+        )->withPivot('status');
     }
 
     public function notifications(): BelongsToMany
