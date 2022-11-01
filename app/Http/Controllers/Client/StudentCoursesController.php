@@ -22,7 +22,7 @@ class StudentCoursesController extends Controller
     {
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
-        $course = Course::where('slug', $slug)->with(['units' => function ($q) {
+        $course = Course::where('slug', $slug)->with(['classStudies', 'units' => function ($q) {
             return $q->withCount('lessons');
         }])->first();
         $courseLesson = 0;
@@ -42,8 +42,7 @@ class StudentCoursesController extends Controller
         ])
             ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
             ->Join('units AS u', 'u.id', 'lessons.unit_id')
-            ->join('courses AS c', 'c.id', 'u.course_id')
-            ->where('c.id', $course->id)
+            ->where('u.course_id', $course->id)
             ->where('ul.user_id', $id)
             ->get();
         $countLesson = $lessons->where('status', 1)->count();

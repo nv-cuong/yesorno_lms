@@ -89,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                @foreach ($course->classStudies()->get() as $class)
+                                @foreach ($course->classStudies as $class)
                                 <div class="course-ovr-wrp">
                                     <div class="course-over-fet">
                                         <div class="course-over-bio">
