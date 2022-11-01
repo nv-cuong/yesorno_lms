@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class UserTest extends Model
 {
@@ -22,11 +23,20 @@ class UserTest extends Model
     {
         return $this->hasMany(UserTestAnswer::class);
     }
+
     /**
      * @return BelongsTo
      */
     public function test(): BelongsTo
     {
         return $this->belongsTo(Test::class);
+    }
+    
+    /**
+     * @return BelongsTo
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

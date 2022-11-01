@@ -10,9 +10,30 @@ use App\Models\Unit;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class UnitController extends Controller
 {
+    /**
+     *
+     * @return DataTables
+     */
+    public function getUnitData($id)
+    {
+        $lessons = Lesson::select([
+            'id',
+            'title',
+            'content',
+        ])->where('unit_id', $id);
+        // @phpstan-ignore-next-line
+        return DataTables::of($lessons)
+            ->addColumn('actions', function ($lesson) {
+                return view('admin.modules.courses.units.actions', ['row' => $lesson])->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
+
     /**
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory

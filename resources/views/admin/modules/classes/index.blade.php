@@ -69,7 +69,8 @@
                     },
                     {
                         data: 'users_count',
-                        name: 'users_count'
+                        name: 'users_count',
+                        searchable: false
                     },
                     {
                         data: 'actions',
