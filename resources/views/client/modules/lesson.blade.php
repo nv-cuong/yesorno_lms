@@ -54,6 +54,7 @@
                             </div>
                             <div>
                                 <div class="d-flex justify-content-center">
+                                    @if($nextLesson)
                                     <button class="">
                                         <a href="{{ route('personal.lesson', [$nextLesson->slug]) }}">
                                             <i class="fa fa-arrow-right">
@@ -61,6 +62,9 @@
                                             </i>
                                         </a>
                                     </button>
+                                    @else
+                                    <h5>KẾT THÚC KHÓA HỌC</h5>
+                                    @endif
                                 </div>
                             </div>
                             @endif
@@ -100,7 +104,7 @@
                             }
                         });
                         $.ajax({
-                            url: 'http://lms-sample.local.com/personal/lessonprogress/' + "{{ $slug }}",
+                            url: "{!! $urlLesson !!}",
                             method: "POST",
                             data: {},
                         })

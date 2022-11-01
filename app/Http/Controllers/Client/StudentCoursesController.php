@@ -26,7 +26,7 @@ class StudentCoursesController extends Controller
             return $q->withCount('lessons');
         }])->first();
         $courseLesson = 0;
-        foreach($course->units as $unit) {
+        foreach ($course->units as $unit) {
             $courseLesson += $unit->lessons_count;
         }
         $access = $course->users()->where('user_id', $id)->first()->pivot;
@@ -47,13 +47,14 @@ class StudentCoursesController extends Controller
             ->get();
         $countLesson = $lessons->where('status', 1)->count();
 
-        if($countLesson != 0){
-            $progress = ceil(($countLesson*100)/$courseLesson);
-        }
-        else $progress = 0;
+        if ($countLesson != 0) {
+            $progress = ceil(($countLesson * 100) / $courseLesson);
+        } else $progress = 0;
 
-        return view('client.modules.personal_course_detail', 
-        compact('course', 'courses', 'access', 'courseLesson', 'countLesson', 'lessons', 'progress'));
+        return view(
+            'client.modules.personal_course_detail',
+            compact('course', 'courses', 'access', 'courseLesson', 'countLesson', 'lessons', 'progress')
+        );
     }
 
     /**
@@ -63,29 +64,18 @@ class StudentCoursesController extends Controller
      */
     public function personalLesson(Request $request, $slug)
     {
-        $getUser = Sentinel::getUser();
-        $id = $getUser->id;
         $lesson = Lesson::where('slug', $slug)->first();
-        $nextLesson = Lesson::where('id', $lesson->id + 1)->first();
-        $slCount = Lesson::select()
-            ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
-            ->where('ul.user_id', $id)
-            ->where('status', 1)
-            ->count();
-        $unitCount = Lesson::select()
-            ->where('unit_id', $lesson->unit_id)
-            ->count();
-        $status = $slCount == $unitCount;
+        $nextLesson = Lesson::where('id', '>', $lesson->id)->where('unit_id', $lesson->unit_id)->first();
         $files = File::all()
             ->where('lesson_id', $lesson->id);
-        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'id', 'slug', 'status'));
+        $urlLesson = route('lessonProgress', $slug);
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'urlLesson'));
     }
 
     /**
-     * @param Request $request
      * @param string $slug
      */
-    public function lessonProgress(Request $request, $slug)
+    public function lessonProgress($slug)
     {
         $getUser = Sentinel::getUser();
         $lesson = Lesson::where('slug', $slug)->first();
