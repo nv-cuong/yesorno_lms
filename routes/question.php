@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\QuestionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ExcelController;
 
 Route::prefix('/questions')->name('question.')->group(function () {
 
@@ -28,4 +29,9 @@ Route::prefix('/questions')->name('question.')->group(function () {
 
     Route::get('/answer/{id}', [QuestionController::class, 'show_answser'])
         ->name('answer')->middleware('myweb.auth:question.show');
+
+            Route::get('export', [ExcelController::class, 'export' ])->name('export');
+            Route::get('importExportView', [ExcelController::class, 'importExportView']);
+            Route::post('import', [ExcelController::class, 'import'])->name('import');
+
 });
