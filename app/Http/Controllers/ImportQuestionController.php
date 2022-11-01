@@ -8,12 +8,12 @@ use App\Imports\QuestionsImport;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Http\Requests\Question\ImportQuestionRequest;
   
-class ExcelController extends Controller
+class ImportQuestionController extends Controller
 {
     /**
     * @return \Illuminate\Support\Collection
     */
-    public function importExportView()
+    public function indexx()
     {
        return view('admin.questions.index');
     }
@@ -31,7 +31,7 @@ class ExcelController extends Controller
     */
     public function import(ImportQuestionRequest $request) 
     {
-        Excel::import(new QuestionsImport(), $request->file('import_question'));
+        Excel::import(new QuestionsImport(), $request->file('import'));
         return redirect()->back()->with('success', 'Success!!!');
     }
 }

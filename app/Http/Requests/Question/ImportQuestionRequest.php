@@ -23,11 +23,12 @@ class ImportQuestionRequest extends FormRequest
      */
     public function rules()
     {
-            $rules = [
-                'import' => ['required'],
-            ];
-        return $rules;
+
+        return [
+            'import' => ['required'],
+        ];;
     }
+
 
      /**
      * {@inheritDoc}
