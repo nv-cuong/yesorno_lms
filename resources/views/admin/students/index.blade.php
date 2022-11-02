@@ -20,7 +20,7 @@
                                 </div>
                                 @include('admin/_alert')
                                 <div class="card">
-                                    <table class="table table-striped" id="students">
+                                    <table class="table table-striped table-bordered table-hover table-condensed" id="students">
                                         <thead>
                                             <tr>
                                                 <th class="text-center">ID</th>
@@ -51,10 +51,15 @@
             var table = $('#students').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/students/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'fullname',
@@ -85,6 +90,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function student_delete(id) {

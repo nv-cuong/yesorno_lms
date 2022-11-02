@@ -26,7 +26,7 @@
                         <div class="table-responsive">
                             {!! $course->description !!}
                         </div>
-                        <table class="table table-striped">
+                        <table class="table table-striped table-bordered table-hover table-condensed">
                             <thead>
                                 <tr>
                                     <th>Ngày bắt đầu</th>
@@ -100,10 +100,15 @@
             var table = $('#unit_table').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/courses/unit/data/{{ $course->id }}',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'title',
@@ -122,6 +127,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function unit_delete(id) {

@@ -7,7 +7,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>
-                        Quản lý khóa học
+                        Quản lý học viên trong khóa học 
                     </h1>
                 </div>
             </div>

@@ -17,6 +17,9 @@ Route::prefix('roles')->group(function () {
         ->name('roles.create')
         ->middleware('myweb.auth:roles.create');
 
+    Route::get('/data', [RoleController::class, 'getRolesData'])
+        ->name('data')->middleware('myweb.auth:roles.show');
+
     Route::post('', [RoleController::class, 'store'])
         ->name('roles.store')
         ->middleware('myweb.auth:roles.create');
@@ -29,7 +32,7 @@ Route::prefix('roles')->group(function () {
         ->name('roles.edit')
         ->middleware('myweb.auth:roles.edit');
 
-    Route::put('/{role}',[RoleController::class, 'update'])
+    Route::put('/{role}', [RoleController::class, 'update'])
         ->name('roles.update')
         ->middleware('myweb.auth:roles.edit');
 
