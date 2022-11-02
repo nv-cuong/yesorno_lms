@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\QuestionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImportQuestionController;
 
 Route::prefix('/questions')->name('question.')->group(function () {
 
@@ -28,4 +29,8 @@ Route::prefix('/questions')->name('question.')->group(function () {
 
     Route::get('/answer/{id}', [QuestionController::class, 'show_answser'])
         ->name('answer')->middleware('myweb.auth:question.show');
+
+            Route::get('export', [ImportQuestionController::class, 'export' ])->name('export');
+            Route::post('import', [ImportQuestionController::class, 'import'])->name('import');
+
 });
