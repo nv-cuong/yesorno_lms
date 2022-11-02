@@ -186,7 +186,7 @@
                                                                                             @if ($access->status == 0)
                                                                                                 <span style="color: red">Hãy đăng kí và đợi duyệt!</span>
                                                                                             @else
-                                                                                                <a href="{{ route('learning', ['id' => $lesson->id]) }}">Xem</a>
+                                                                                                <a href="{{ route('personal.lesson', [$lesson->slug]) }}">Xem</a>
                                                                                             @endif
                                                                                         @elseif($course->status == 0)
                                                                                             <a href="{{ route('learning', ['id' => $lesson->id]) }}">Xem</a>

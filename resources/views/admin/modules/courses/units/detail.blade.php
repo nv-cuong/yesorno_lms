@@ -19,7 +19,7 @@
             <div class="row">
                 <div class="col-md-12">
                     @if ($unit)
-                        <h2>{{ $unit->title }}</h2>
+                        <h3>Tên khóa học: <strong>{{ $unit->title }}</strong></h3>
                     @endif
                     <h4>Danh sách bài học</h4>
                     <div class="card">
@@ -27,61 +27,27 @@
                             <a href="{{ route('lesson.create', ['unit_id' => $unit->id]) }}"
                                 class="btn btn-success float-right">Thêm bài học mới</a>
                         </div>
-                        <table class="table table-striped" id="example1">
+                        <table class="table table-striped" id="lesson_table">
                             <thead>
                                 <tr>
                                     <th>
                                         STT
                                     </th>
                                     <th>
-                                        Tên bài
+                                        Tên bài học
                                     </th>
                                     <th>
-                                        Ngày xuất
+                                        Nội dung
                                     </th>
-                                    <th>
+                                    <th style="width: 20%;">
                                         Tùy chọn
                                     </th>
                                 </tr>
                             </thead>
                             <tbody id="load">
-                                @forelse($lessons as $lesson)
-                                    <tr>
-                                        <td>
-                                            {{ $loop->iteration + ($lessons->currentPage() - 1) * $lessons->perPage() }}
-                                        </td>
-                                        <td>
-                                            {{ $lesson->title }}
-                                        </td>
-                                        <td>
-                                            {{ $lesson->published }}
-                                        </td>
-                                        <td>
-                                            <a href="{{ route('lesson.detail', ['id' => $lesson->id]) }}"
-                                                class="btn btn-primary">
-                                                <i class="far fa-eye"></i>
-                                            </a>
-                                            <a href="{{ route('lesson.edit', [$lesson->id]) }}" class="btn btn-success">
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-                                            <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal"
-                                                onclick="javascript:lesson_delete('{{ $lesson->id }}')">
-                                                <i class="far fa-trash-alt"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6">
-                                            Chương chưa có bài!
-                                        </td>
-                                    </tr>
-                                @endforelse
+
                             </tbody>
                         </table>
-                        <div class="card-footer clearfix">
-                            {{-- {!! $lessons->appends(Request::all())->links() !!} --}}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -120,16 +86,37 @@
 @section('scripts')
     <script>
         $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            var table = $('#lesson_table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/admin/units/data/{{ $unit->id }}',
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'title',
+                        name: 'title'
+                    },
+                    {
+                        data: 'content',
+                        name: 'content'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
+                    }
+                ]
+            });
+            table.on('draw', function() {
+                $('.livicon').each(function() {
+                    $(this).updateLivicon();
+                });
+            });
         });
-    </script>
 
-    <script>
         function lesson_delete(id) {
             var lesson_id = document.getElementById('lesson_id');
             lesson_id.value = id;

@@ -89,7 +89,8 @@
                     },
                     {
                         data: 'question_count',
-                        name: 'question_count'
+                        name: 'question_count',
+                        searchable: false
                     },
                     {
                         data: 'title',

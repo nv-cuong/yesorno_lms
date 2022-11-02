@@ -21,7 +21,7 @@
                     <h5 class="course-left-title">Những khóa học khác</h5>
                     @foreach ($courses as $courseItem)
                     <div class="course-post-wrp">
-                        <img style="width : 80px; height : 80px" src="{{ $courseItem->image }}" alt="thumb">
+                        <img style="width : 80px; height : 80px" src="{{ asset($courseItem->image) }}" alt="thumb">
                         <div class="course-post-text">
                             <h6>{{ $courseItem->title }}</h6>
                             <span>Begindate: {{ $course->begin_date }}</span>
@@ -53,6 +53,13 @@
                             </li>
                         </ul>
                     </div>
+                    <span> Tiến độ khóa học : {{ $progress }}%</span>
+                    <div class="progress" style="height: 30px">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                            aria-valuenow={{ $progress }} aria-valuemin="0" aria-valuemax="100"
+                            style="width: {{ $progress }}%"></div>
+                    </div>
+                    <br>
                     <div class="course-course-pic cr-mb">
                         <img src="{{ asset('/user/img/details-page/imagesss.jpg') }}" alt="thumb">
                     </div>
@@ -82,7 +89,7 @@
                                 </div>
                             </div>
                             <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                                @foreach ($course->classStudies()->get() as $class)
+                                @foreach ($course->classStudies as $class)
                                 <div class="course-ovr-wrp">
                                     <div class="course-over-fet">
                                         <div class="course-over-bio">
@@ -117,29 +124,25 @@
                                     </div>
                                     <div class="ask">
                                         @php
-                                        $countCourse = 0
+                                        $sttUnit = 0
                                         @endphp
                                         <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="margin-bottom : 50px">
-                                        @forelse ($course->units()->get() as $unit )
-
+                                            @forelse ($course->units as $unit )
+                                            @php
+                                            $sttUnit ++;
+                                            $stt = 0;
+                                            @endphp
                                             <div class="panel-heading" role="tab" id="heading{{ $unit->id }}">
                                                 <h4 class="panel-title">
                                                     <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse{{ $unit->id }}" aria-expanded="false" aria-controls="collapse{{ $unit->id }}" class="collapsed">
-                                                        {{ $unit->title }}
+                                                        Chương {{ $sttUnit}}: {{ $unit->title }}
                                                     </a>
                                                 </h4>
                                             </div>
-                                            @php
-                                            $stt = 0;
-                                            $countLesson = 0;
-                                            @endphp
                                             @foreach ($lessons as $lessonItem)
-                                            @if ($lessonItem['unit_id'] == $unit->getOriginal('id'))
-                                            @if ($lessonItem['status'] == 1)
+                                            @if ($lessonItem['unit_id'] == $unit->id)
                                             @php
                                             $stt ++;
-                                            $countLesson ++;
-                                            $countCourse ++;
                                             @endphp
                                             <div id="collapse{{ $unit->id }}" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="heading{{ $unit->id }}">
                                                 <div class="panel-body">
@@ -148,10 +151,14 @@
                                                             <div class="course-video-wrp">
                                                                 <div class="course-item-name">
                                                                     <div>
+                                                                        @if ($lessonItem->status == 1)
                                                                         <i class="fas fa-play"></i>
+                                                                        @else
+                                                                        <i class="fas fa-play text-muted"></i>
+                                                                        @endif
                                                                         <span>bài {{ $stt }}:</span>
                                                                     </div>
-                                                                    <h5>{{ $lessonItem['title'] }}</h5>
+                                                                    <h5>{{ $lessonItem->title }}</h5>
                                                                 </div>
                                                                 <div class="course-time-preview">
                                                                     <div class="course-item-info">
@@ -163,34 +170,6 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            @else
-                                            @php
-                                                $stt ++;
-                                            @endphp
-                                            <div id="collapse{{ $unit->id }}" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="heading{{ $unit->id }}">
-                                                <div class="panel-body">
-                                                    <ul class="course-video-list">
-                                                        <li>
-                                                            <div class="course-video-wrp">
-                                                                <div class="course-item-name">
-                                                                    <div>
-                                                                        <i class="fas fa-play text-muted"></i>
-                                                                        <span>bài:
-                                                                            {{ $stt }}</span>
-                                                                    </div>
-                                                                    <h5>{{ $lessonItem['title'] }}</h5>
-                                                                </div>
-                                                                <div class="course-time-preview">
-                                                                    <div class="course-item-info">
-                                                                        <a href="{{ route('personal.lesson', [$lessonItem->slug]) }}">Xem</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            @endif
                                             @endif
                                             @endforeach
                                             @empty
@@ -201,21 +180,21 @@
                                                     </a>
                                                 </h4>
                                             </div>
+                                            @endforelse
                                         </div>
-                                        @endforelse
-                                            @if($countCourse == $courseLesson)
-                                            <div class="ask">
-                                                <div class="panel-group" id="accordion">
-                                                    <div class="panel-heading" role="tab" id="headingOne">
-                                                        <h4 class="panel-title">
-                                                            <a role="button" href="{{route('random_test',[$course->id])}}">
-                                                                Làm bài kiểm tra cuối khóa
-                                                            </a>
-                                                        </h4>
-                                                    </div>
+                                        @if($countLesson == $courseLesson)
+                                        <div class="ask">
+                                            <div class="panel-group" id="accordion">
+                                                <div class="panel-heading" role="tab" id="headingOne">
+                                                    <h4 class="panel-title">
+                                                        <a role="button" href="{{route('random_test',[$course->id])}}">
+                                                            Làm bài kiểm tra cuối khóa
+                                                        </a>
+                                                    </h4>
                                                 </div>
                                             </div>
-                                            @endif
+                                        </div>
+                                        @endif
                                     </div>
                                 </div>
 
@@ -232,14 +211,14 @@
                                     </div>
                                 </div>
                             </div>
-                            </div>
-                            @endif
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 @stop
