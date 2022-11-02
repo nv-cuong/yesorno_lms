@@ -56,8 +56,8 @@ class QuestionController extends Controller
             if ($question->category == 1){
                 $var = <<<EOD
                 <a onclick="event.preventDefault();answer_qu($question->id)" 
-                    href="" class="btn btn-primary btn-sm ">
-                    <i class="fa fa-plus-circle"></i>Xem</a>
+                    href="" class="btn btn-primary btn-sm " title="Xem câu trả lời">
+                    <i class="fa fa-plus-circle"></i></a>
                 EOD;
                 return $var;
             }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
 use App\Models\Notification;
+use App\Models\Unit;
 use App\Models\User;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -37,10 +38,9 @@ class CourseController extends Controller
             'status',
             'begin_date',
             'end_date',
-        ])
-            ->withCount(['users' => function ($query) {
-                return $query->where('status', 0);
-            }])
+        ])->withCount(['users' => function ($query) {
+            return $query->where('status', 0);
+        }]);
 
         // @phpstan-ignore-next-line
         return DataTables::of($course)
@@ -54,6 +54,27 @@ class CourseController extends Controller
             ->rawColumns(['actions'])
             ->make(true);
     }
+    
+    /**
+     *
+     * @return DataTables
+     */
+    public function getUnitData($id)
+    {
+        $units = Unit::select([
+            'id',
+            'course_id',
+            'title',
+        ])->where('course_id', $id);
+            
+        // @phpstan-ignore-next-line
+        return DataTables::of($units)
+            ->addColumn('actions_unit', function ($unit) {
+                return view('admin.modules.courses.actions_unit', ['row' => $unit])->render();
+            })
+            ->rawColumns(['actions_unit'])
+            ->make(true);
+    }
 
     /**
      * @param int $id
@@ -62,9 +83,7 @@ class CourseController extends Controller
     public function showCourse($id)
     {
         $course = Course::find($id);
-        $units  = $course->units()->paginate(1000);
-
-        return view('admin.modules.courses.detail', compact('course', 'units'));
+        return view('admin.modules.courses.detail', compact('course'));
     }
 
     /**
