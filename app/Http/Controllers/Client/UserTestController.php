@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\UserTest;
 use App\Models\UserTestAnswer;
-use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Test;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Carbon\Carbon;
+
 class UserTestController extends Controller
 {
     /**
@@ -19,11 +21,17 @@ class UserTestController extends Controller
      */
     public function doTest(Request $request, $id)
     {
-        $test = UserTest::find($id)->test;
-        $user_test = $id;
-        $questions = $test->question;
-        $score = UserTest::find($id)->score;
-        return view('client.modules.do_tests', compact('questions', 'user_test', 'test', 'score'));
+        $userTest = UserTest::find($id);
+        if ($userTest->started_at == null) {
+            $userTest->started_at = now();
+            $userTest->save();
+        }
+
+        $test       = $userTest->test;
+        $score      = $userTest->score;
+        $questions  = $test->question;
+        $time       = $userTest->started_at;
+        return view('client.modules.do_tests', compact('questions', 'id', 'test', 'score', 'time'));
     }
 
     /**

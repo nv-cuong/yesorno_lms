@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('test_id');
             $table->string('score')->nullable();
             $table->integer('status')->default(0);
+            $table->timestamp('started_at')->nullable();
             $table->timestamps();
         });
     }
