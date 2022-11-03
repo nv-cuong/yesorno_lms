@@ -13,6 +13,8 @@ Route::prefix('/courses')->name('course.')->group(function () {
         ->name('detail')->middleware('myweb.auth:course.show');
     Route::get('/course/data', [CourseController::class, 'getCourseData'])
         ->name('dataCourse')->middleware('myweb.auth:course.show');
+    Route::get('/test/data/{id}', [CourseController::class, 'getTestData'])
+        ->name('dataTest')->middleware('myweb.auth:course.show');
     Route::get('/unit/data/{id}', [CourseController::class, 'getUnitData'])
         ->name('dataUnit')->middleware('myweb.auth:course.show');
     Route::get('create', [CourseController::class, 'createCourse'])

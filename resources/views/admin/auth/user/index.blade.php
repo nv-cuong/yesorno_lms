@@ -28,9 +28,8 @@
                         <table class="table table-striped table-bordered table-hover table-condensed" id="users-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Tên</th>
-                                    <th>Họ và tên đệm</th>
+                                    <th>STT</th>
+                                    <th>Họ và tên</th>
                                     <th>Email</th>
                                     <th>Role - chức năng</th>
                                     <th>Lần cuối đăng nhập</th>
@@ -39,60 +38,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($users as $user)
-                                    <tr>
-                                        <td>{{ $loop->iteration + ($users->currentPage() - 1) * $users->perPage() }}</td>
-                                        <td>{{ $user->first_name }}</td>
-                                        <td>{{ $user->last_name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>
-                                            @if ($user->roles->isNotEmpty())
-                                                {{ implode(', ',collect($user->roles)->pluck('name')->all()) }}
-                                            @endif
-                                        </td>
-                                        <td>{{ $user->last_login }}</td>
-                                        <td>
-                                            @if ($user->activations->isNotEmpty())
-                                                @if ($user->activations[0]->completed == 1)
-                                                    <a href="#"
-                                                        data-message="{{ __('auth.deactivate_subheading', ['name' => $user->email]) }}"
-                                                        data-href="{{ route('users.status', $user->id) }}" id="tooltip"
-                                                        data-method="PUT" data-title="{{ __('auth.deactivate_this_user') }}"
-                                                        data-title-modal="{{ __('auth.deactivate_heading') }}"
-                                                        data-toggle="modal" data-target="#delete"
-                                                        title="{{ __('auth.deactivate_this_user') }}">
-                                                        <span
-                                                            class="label label-success label-sm">Hoạt động</span></a>
-                                                @endif
-                                            @else
-                                                <a href="#"
-                                                    data-message="{{ __('auth.activate_subheading', ['name' => $user->email]) }}"
-                                                    data-href="{{ route('users.status', $user->id) }}" id="tooltip"
-                                                    data-method="PUT" data-title="{{ __('auth.activate_this_user') }}"
-                                                    data-title-modal="{{ __('auth.deactivate_heading') }}"
-                                                    data-toggle="modal" data-target="#delete"
-                                                    title="{{ __('auth.activate_this_user') }}">
-                                                    <span
-                                                        class="label label-danger label-sm">Không hoạt động</span></a>
-                                            @endif
-                                        </td>
 
-                                        <td>
-                                            <a href="{{ route('users.edit', [$user->id]) }}"
-                                                class="btn btn-sm btn-success"> 
-                                                <i class="fas fa-edit"></i>
-                                            </a>
-
-                                            @if ($user->roles[0]->name != 'Admin')
-                                                <a class="btn btn-sm btn-danger" data-toggle="modal"
-                                                    data-target="#deleteModalUser"
-                                                    onclick="javascript:user_delete('{{ $user->id }}')"><i
-                                                        class="fas fa-backspace"></i></a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @empty
-                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -129,22 +75,49 @@
 @stop
 @section('scripts')
 
-    <script>
+    <script type="text/javascript">
         $(function() {
-            $("#users-table").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                "oLanguage": {
-                    "sInfo": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ user", // text you want show for info section
-                    "sSearch": "Tìm kiếm",
-                    "oPaginate": {
-                        "sPrevious": "Trước",
-                        "sNext": "Tiếp",
+            var table = $('#users-table').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '/admin/users/data',
+                columns: [{
+                        data: 'id',
+                        name: 'id'
+                    },
+                    {
+                        data: 'fullname',
+                        name: 'fullname'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'role',
+                        name: 'role'
+                    },
+                    {
+                        data: 'last_login',
+                        name: 'last_login'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                    {
+                        data: 'actions',
+                        name: 'actions',
+                        orderable: false,
+                        searchable: false
                     }
-                },
-            }).buttons().container().appendTo('#users-table_wrapper .col-md-6:eq(0)');
+                ]
+            });
+            table.on('draw', function() {
+                $('.livicon').each(function() {
+                    $(this).updateLivicon();
+                });
+            });
         });
 
         function user_delete(id) {

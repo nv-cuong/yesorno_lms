@@ -114,7 +114,7 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-striped" id="show_answer">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="show_answer">
                             <thead>
                                 <tr>
                                     <th class="th-sortable text-center" data-toggle="class">
@@ -140,10 +140,15 @@
             var table = $('#question').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/questions/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'content',
@@ -178,6 +183,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function question_delete(id) {

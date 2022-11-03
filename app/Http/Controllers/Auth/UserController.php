@@ -15,31 +15,56 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\User\CreateRequest;
 use App\Http\Requests\Auth\User\UpdateRequest;
+use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
 {
-    
+
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function index()
     {
-        $users = User::select([
-            'users.id',
-            'first_name',
-            'last_name',
-            'email',
-            'last_login',
-            'users.created_at',
-            'users.updated_at',
-        ])
-        ->with('roles', 'activations')
-        ->paginate();
-       
-        return view('admin.auth.user.index', compact('users'));
+        return view('admin.auth.user.index');
     }
 
-    
+    /**
+     *
+     * @return DataTables
+     */
+    public function getUsersData()
+    {
+        $users = User::select([
+            'id',
+            'email',
+            'last_login',
+            DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
+            'first_name',
+            'last_name'
+        ])->with('roles', 'activations');
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($users)
+            ->filterColumn('fullname', function ($user, $keyword) {
+                $sql = "CONCAT(last_name,' ',first_name)  like ?";
+                $user->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->addColumn('role', function ($user) {
+                if ($user->roles->isNotEmpty()) {
+                    $var = implode(', ',collect($user->roles)->pluck('name')->all());
+                    return $var;
+                }
+            })
+            ->addColumn('status', function ($user) {
+                return view('admin.auth.user.status', ['row' => $user])->render();
+            })
+            ->addColumn('actions', function ($user) {
+                return view('admin.auth.user.actions', ['row' => $user])->render();
+            })
+            ->rawColumns(['fullname', 'actions', 'role', 'status'])
+            ->make(true);
+    }
+
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -104,7 +129,7 @@ class UserController extends Controller
         }
     }
 
-    
+
     /**
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
@@ -131,7 +156,7 @@ class UserController extends Controller
         ));
     }
 
-   
+
     /**
      * @param UpdateRequest $request
      * @param int $id
@@ -214,7 +239,7 @@ class UserController extends Controller
     public function destroy(Request $request)
     {
         $id = $request->input('user_id', 0);
-        
+
         $user = Sentinel::findById($id);
 
         if (empty($user)) {
@@ -230,7 +255,7 @@ class UserController extends Controller
         return redirect()->route('users.index');
     }
 
-    
+
     /**
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse

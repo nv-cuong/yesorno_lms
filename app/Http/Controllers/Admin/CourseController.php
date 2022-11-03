@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
 use App\Models\Notification;
+use App\Models\Test;
 use App\Models\Unit;
 use App\Models\User;
 
@@ -54,7 +55,7 @@ class CourseController extends Controller
             ->rawColumns(['actions'])
             ->make(true);
     }
-    
+
     /**
      *
      * @return DataTables
@@ -66,7 +67,7 @@ class CourseController extends Controller
             'course_id',
             'title',
         ])->where('course_id', $id);
-            
+
         // @phpstan-ignore-next-line
         return DataTables::of($units)
             ->addColumn('actions_unit', function ($unit) {
@@ -208,13 +209,36 @@ class CourseController extends Controller
     public function showTest($id)
     {
         $course = Course::find($id);
-        if ($course) {
-            $tests = $course->tests()->paginate(100);
-            return view('admin.modules.courses.test', compact('course', 'tests'));
+        if ($course){
+            return view('admin.modules.courses.test', compact('course'));
         }
-        return redirect(route('course.index'))
-            ->with('message', 'Khóa học không tồn tại')
-            ->with('type_alert', "danger");
+        return abort(404);
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getTestData($id)
+    {
+        $tests = Test::select([
+            'tests.id',
+            'title',
+            'category',
+        ])->leftJoin('course_tests AS ct', 'ct.test_id', 'tests.id')
+        ->where('ct.course_id', $id);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($tests)
+            ->addColumn('seq', function($test){
+                return '';
+            })
+            ->editColumn('category', function ($test) {
+                if ($test->category == 0) return 'Bài thi';
+                return 'Khảo sát';
+            })
+            ->rawColumns(['category'])
+            ->make(true);
     }
 
     /**

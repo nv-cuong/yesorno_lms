@@ -27,7 +27,7 @@
                             <a href="{{ route('lesson.create', ['unit_id' => $unit->id]) }}"
                                 class="btn btn-success float-right">Thêm bài học mới</a>
                         </div>
-                        <table class="table table-striped" id="lesson_table">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="lesson_table">
                             <thead>
                                 <tr>
                                     <th>
@@ -89,10 +89,15 @@
             var table = $('#lesson_table').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/units/data/{{ $unit->id }}',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'title',
@@ -115,6 +120,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function lesson_delete(id) {

@@ -23,7 +23,7 @@
                             <a href="{{ route('class.create') }}" class="btn btn-success float-right"
                                 title="Thêm một lớp học mới">Tạo lớp học mới</a>
                         </div>
-                        <table class="table table-striped" id="class">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="class">
                             <thead>
                                 <tr>
                                     <th>STT</th>

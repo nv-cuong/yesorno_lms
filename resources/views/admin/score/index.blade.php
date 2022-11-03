@@ -29,7 +29,7 @@
                                 vào</a>
                         </div>
 
-                        <table class="table table-striped" id="score_table">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="score_table">
                             <thead>
                                 <tr>
                                     <th>STT</th>
@@ -56,10 +56,15 @@
             var table = $('#score_table').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/score/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'user_id',
@@ -90,6 +95,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function question_delete(id) {

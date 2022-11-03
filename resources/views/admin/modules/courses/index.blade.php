@@ -23,7 +23,7 @@
                                 Tạo khóa học mới
                             </a>
                         </div>
-                        <table class="table table-striped" id="course">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="course">
                             <thead>
                                 <tr>
                                     <th>
@@ -97,10 +97,15 @@
             var table = $('#course').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/courses/course/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'title',
@@ -131,6 +136,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function course_delete(id) {
