@@ -36,7 +36,9 @@
                                 $vid_id = $vid_code[0];
                                 @endphp
                                 <div style="text-align: center; margin : 50px">
-                                    <iframe id="existing-iframe-example" width="1280" height="720" src="https://www.youtube.com/embed/{{ $vid_id }}?enablejsapi=1" frameborder="0" style="border: solid 4px rgb(247, 174, 38)" method="POST">
+                                    <iframe id="existing-iframe-example" width="1280" height="720" 
+                                        src="https://www.youtube.com/embed/{{ $vid_id }}?enablejsapi=1" 
+                                        frameborder="0" style="border: solid 4px rgb(247, 174, 38)" method="POST">
                                         csrf_token()</iframe>
                                 </div>
                                 @else
@@ -63,7 +65,7 @@
                                         </a>
                                     </button>
                                     @else
-                                    <h5>KẾT THÚC KHÓA HỌC</h5>
+                                    <h5>KẾT THÚC CHƯƠNG</h5>
                                     @endif
                                 </div>
                             </div>
@@ -79,7 +81,7 @@
             tag.src = 'https://www.youtube.com/iframe_api';
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
+            var skip = 0;
             var player;
 
             function onYouTubeIframeAPIReady() {
@@ -92,11 +94,13 @@
             }
 
             function onPlayerReady(event) {
-                document.getElementById('existing-iframe-example');
+                document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
             }
 
             function changeStatus(playerStatus) {
-                if (playerStatus == 1) {
+                var color;
+                if (playerStatus == 0) {
+                    color = "#FFFF00"; // ended = yellow
                     $(document).ready(function() {
                         $.ajaxSetup({
                             headers: {
@@ -104,16 +108,23 @@
                             }
                         });
                         $.ajax({
-                            url: "{!! route('lessonProgress', $lesson->slug) !!}",
+                            url: "{!! route('lessonProgress', [$lesson->slug]) !!}",
                             method: "POST",
                             data: {},
                         })
                     });
+                } else if (playerStatus == 2) {
+                    skip = 2;
+                    color = "#DD2C00"; // paused = red
+                } else if (playerStatus == 3) {
+                    color = "#AA00FF"; // buffering = purple
+                    if (skip == 2) location.reload()
+                } else if (playerStatus == 1) {
+                    color = "#33691E"; // playing = green
                 }
-
-                // } else if (playerStatus == 3) {
-                //     color = "#AA00FF"; // buffering = purple
-                // }
+                if (color) {
+                    document.getElementById('existing-iframe-example').style.borderColor = color;
+                }
             }
 
             function onPlayerStateChange(event) {
