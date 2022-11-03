@@ -209,7 +209,7 @@ class CourseController extends Controller
     public function showTest($id)
     {
         $course = Course::find($id);
-        if ($course){
+        if ($course) {
             return view('admin.modules.courses.test', compact('course'));
         }
         return abort(404);
@@ -226,13 +226,10 @@ class CourseController extends Controller
             'title',
             'category',
         ])->leftJoin('course_tests AS ct', 'ct.test_id', 'tests.id')
-        ->where('ct.course_id', $id);
+            ->where('ct.course_id', $id);
 
         // @phpstan-ignore-next-line
         return DataTables::of($tests)
-            ->addColumn('seq', function($test){
-                return '';
-            })
             ->editColumn('category', function ($test) {
                 if ($test->category == 0) return 'Bài thi';
                 return 'Khảo sát';
@@ -251,6 +248,7 @@ class CourseController extends Controller
         $course = Course::find($id);
         if ($course) {
             $users = $course->users()->get();
+            // dd($users);
             return view('admin.modules.courses.student', compact('users', 'course'));
         }
         return redirect(route('course.index'))
@@ -258,8 +256,41 @@ class CourseController extends Controller
             ->with('type_alert', "danger");
     }
 
-    public function addStudent(Request $request, $id)
+    /**
+     *
+     * @return DataTables
+     */
+    public function getStudentData($id)
     {
+        $users = User::select([
+            'users.id',
+            'email',
+            'status',
+            DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
+            'first_name',
+            'last_name'
+        ])->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
+            ->where('uc.course_id', $id);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($users)
+            ->editColumn('status', function ($user) {
+                if ($user->status == 0) {
+                    $message = 'Chấp nhận';
+                } else {
+                    $message = 'Đã chấp nhận';
+                }
+                return '<a href="" data-toggle="modal" data-target="#activeModal"
+                    onclick="javascript:user_active(' . $user->id . ')">' .
+                    $message . '
+                </a>';
+            })
+            ->filterColumn('fullname', function ($user, $keyword) {
+                $sql = "CONCAT(last_name,' ',first_name)  like ?";
+                $user->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->rawColumns(['fullname', 'status'])
+            ->make(true);
     }
 
     /**
