@@ -10,6 +10,8 @@ use App\Http\Requests\Auth\Role\UpdateRequest;
 use App\Models\Role;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
+
 class RoleController extends Controller
 {
 
@@ -18,16 +20,31 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::select([
-            'id',
-            'slug',
-            'name',
-            'created_at',
-            'updated_at',
-        ])->paginate();
-        return view('admin.auth.role.index', compact('roles'));
+        return view('admin.auth.role.index');
     }
 
+    /**
+     *
+     * @return DataTables
+     */
+    public function getRolesData()
+    {
+        $roles = Role::select([
+            'id',
+            'name',
+            'slug',
+            'created_at',
+            'updated_at',
+        ]);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($roles)
+            ->addColumn('actions', function ($role) {
+                return view('admin.auth.role.actions', ['row' => $role])->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
+    }
 
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
@@ -61,9 +78,6 @@ class RoleController extends Controller
 
         return redirect()->route('roles.index');
     }
-
-
-
 
     /**
      * @param int $id

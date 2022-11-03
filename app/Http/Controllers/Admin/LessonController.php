@@ -11,8 +11,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-
-use function PHPUnit\Framework\exactly;
+use Yajra\DataTables\Facades\DataTables;
 
 class LessonController extends Controller
 {
@@ -27,6 +26,27 @@ class LessonController extends Controller
         $files = File::all()
             ->where('lesson_id', $lesson->id);
         return view('admin.modules.courses.units.lessons.detail', compact('lesson', 'files'));
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getLessonData()
+    {
+        $lessons = Lesson::select([
+            'id',
+            'title',
+            'content'
+        ]);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($lessons)
+            ->addColumn('actions', function ($lesson) {
+                return view('admin.modules.courses.units.lessons.detail', ['row' => $lesson])->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     /**
