@@ -20,4 +20,6 @@ Route::prefix('/score')->name('score.')->group(function () {
         ->name('dots');
     Route::get('/data', [ScoreController::class, 'getScoreData'])
         ->name('data')->middleware('myweb.auth:scores.show');
+    Route::get('/mark/data/{id}', [ScoreController::class, 'getMarkData'])
+        ->name('dataMark')->middleware('myweb.auth:scores.show');
 });

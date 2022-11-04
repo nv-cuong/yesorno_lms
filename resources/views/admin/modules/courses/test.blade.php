@@ -44,13 +44,6 @@
                 order: [
                     [1, 'asc']
                 ],
-                columnDefs: [
-                    {
-                        searchable: false,
-                        orderable: false,
-                        targets: 0,
-                    },
-                ],
                 ajax: '{{ route('course.dataTest', $course->id) }}',
                 columns: [{
                         data: 'id',

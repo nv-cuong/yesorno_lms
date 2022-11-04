@@ -38,16 +38,24 @@
                                 {!! csrf_field() !!}
                                 <div class="col-md-12">
                                     <div class="form-group @if ($errors->has('first_name')) has-error @endif">
-                                        <label for="first_name" class="control-label">@lang('auth.form_user_fname_label') <span
+                                        <label for="first_name" class="control-label">Tên chính <span
                                                 style="color: red">*</span></label>
                                         <input type="text" name="first_name" class="form-control input-sm"
-                                            placeholder="@lang('auth.form_user_fname_label')"
-                                            value="{{ old('first_name') ?? $data->first_name }}" tabindex="1">
+                                            placeholder="Nhập tên..." value="{{ old('first_name') ?? $data->first_name }}"
+                                            tabindex="1">
                                         {!! $errors->first('first_name', '<em for="first_name" class="help-block" style="color: red">:message</em>') !!}
                                     </div>
 
+                                    <div class="form-group @if ($errors->has('last_name')) has-error @endif">
+                                        <label for="last_name" class="control-label">Họ và tên đệm</label>
+                                        <input type="text" name="last_name" class="form-control input-sm"
+                                            placeholder="Nhập họ và tên đệm ..."
+                                            value="{{ old('last_name') ?? $data->last_name }}" tabindex="2">
+                                        {!! $errors->first('last_name', '<em for="last_name" class="help-block" style="color: red">:message</em>') !!}
+                                    </div>
+
                                     <div class="form-group @if ($errors->has('email')) has-error @endif">
-                                        <label for="email" class="control-label">@lang('auth.form_user_email_label') <span
+                                        <label for="email" class="control-label">Email <span
                                                 style="color: red">*</span></label>
                                         <input type="text" name="email" class="form-control input-sm"
                                             placeholder="user@risetproduk.com" value="{{ old('email') ?? $data->email }}"
@@ -56,21 +64,20 @@
                                     </div>
 
                                     <div class="form-group @if ($errors->has('password')) has-error @endif">
-                                        <label for="password" class="control-label">@lang('auth.form_user_password_label') </label>
-                                        <input type="password" name="password" class="form-control input-sm"
-                                            placeholder="@lang('auth.form_user_password_label')" value="{{ old('password') }}" tabindex="5">
-                                        <span
-                                            class="help-block margin-top-sm">{{ trans('auth.form_user_password_long') }}</span>
+                                        <label for="password" class="control-label">Mật khẩu </label>
+                                        <input type="password" name="password" class="form-control input-sm" placeholder=""
+                                            value="{{ $data->password }}" tabindex="5" disabled>
                                         {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
                                     </div>
-                                
-                                    <div class="form-group @if ($errors->has('last_name')) has-error @endif">
-                                        <label for="last_name" class="control-label">@lang('auth.form_user_lname_label')</label>
-                                        <input type="text" name="last_name" class="form-control input-sm"
-                                            placeholder="@lang('auth.form_user_lname_label')"
-                                            value="{{ old('last_name') ?? $data->last_name }}" tabindex="2">
-                                        {!! $errors->first('last_name', '<em for="last_name" class="help-block" style="color: red">:message</em>') !!}
+
+                                    <div class="form-group @if ($errors->has('password')) has-error @endif">
+                                        <label for="password_confirmation" class="control-label">Nhập lại mật khẩu </label>
+                                        <input type="password" name="password_confirmation" class="form-control input-sm"
+                                            placeholder="Nhập lại mật khẩu..." value="{{ $data->password }}" disabled
+                                            tabindex="6">
+                                        {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
                                     </div>
+
                                     <div class="form-group @if ($errors->has('phone')) has-error @endif">
                                         <label for="last_name" class="control-label">Phone</label>
                                         <input type="number" name="phone" class="form-control input-sm"
@@ -79,10 +86,10 @@
                                     </div>
 
                                     <div class="form-group @if ($errors->has('role')) has-error @endif">
-                                        <label for="role" class="control-label">@lang('auth.form_user_role_label') <span
+                                        <label for="role" class="control-label">Role - Phân quyền <span
                                                 style="color: red">*</span></label>
 
-                                        <select name="role" class="form-control" data-placeholder="@lang('auth.form_user_role_select')"
+                                        <select name="role" class="form-control" data-placeholder="Role - Phân quyền"
                                             tabindex="4">
 
                                             <option value="" {{ old('role') ? 'selected="selected"' : '' }}></option>
@@ -98,29 +105,17 @@
                                         {!! $errors->first('role', '<em for="ro,e" class="help-block" style="color: red">:message</em>') !!}
 
                                     </div>
-
-                                    <div class="form-group @if ($errors->has('password')) has-error @endif">
-                                        <label for="password_confirmation" class="control-label">@lang('auth.form_user_password_confirm_label') </label>
-                                        <input type="password" name="password_confirmation" class="form-control input-sm"
-                                            placeholder="@lang('auth.form_user_password_confirm_label')" value="{{ old('password_confirmation') }}"
-                                            tabindex="6">
-                                        <span class="help-block margin-top-sm">@lang('auth.form_user_password_type_again')</span>
-                                        {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
-                                    </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-
-
                                 <div class="pull-right">
                                     <button type="submit" class="btn ladda-button btn-success btn-flat btn-sm"
                                         data-style="zoom-in">
-                                        <span class="ladda-label"><i class="fa fa-save"></i> @lang('auth.edit_user_submit_btn')</span>
+                                        <span class="ladda-label"><i class="fa fa-save"></i> Cập nhật</span>
                                         <span class="ladda-spinner">
                                             <div class="ladda-progress" style="width: 0px;"></div>
                                         </span></button>
                                 </div>
-
                                 <div class="clearfix"></div>
                             </div>
                         </form>
@@ -128,11 +123,6 @@
                     <!-- /.card -->
                 </div>
                 <!--/.col (left) -->
-                <!-- right column -->
-                <div class="col-md-6">
-
-                </div>
-                <!--/.col (right) -->
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->

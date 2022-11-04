@@ -108,8 +108,6 @@ class ScoreController extends Controller
     public function dots(Request $request, $id)
     {
         $user_test = UserTest::find($id);
-        // $user_test_answers =  $user_test->answers->where('answer_essay','')->groupBy('question_id');
-        // dd($user_test_answers);
 
         $user_test_answers = UserTestAnswer::select([
 

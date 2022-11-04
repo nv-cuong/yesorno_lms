@@ -7,7 +7,7 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1>
-                        Quản lý học viên trong khóa học 
+                        Quản lý học viên trong khóa học
                     </h1>
                 </div>
             </div>
@@ -20,7 +20,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <table class="table table-striped" id="example1">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="student-of-course">
                             <thead>
                                 <tr>
                                     <th>
@@ -38,47 +38,8 @@
                                 </tr>
                             </thead>
                             <tbody id="load">
-                                @forelse($users as $user)
-                                    <tr>
-                                        <td>
-                                            {{ $user->id }}
-                                        </td>
-                                        <td>
-                                            {{ $user->first_name . ' ' . $user->last_name }}
-                                        </td>
-                                        <td>
-                                            {{ $user->email }}
-                                        </td>
-                                        @php
-                                            for ($i = 0; $i < count($user->courses); $i++) {
-                                                if ($user->courses[$i]->id == $course->id) {
-                                                    if ($user->courses[$i]->pivot->status == 0) {
-                                                        $message = 'Chấp nhận';
-                                                    } else {
-                                                        $message = 'Đã chấp nhận';
-                                                    }
-                                                }
-                                            }
-                                        @endphp
-                                        <td>
-                                            <a href="" data-toggle="modal" data-target="#activeModal"
-                                                onclick="javascript:user_active('{{ $user->id }}')">
-                                                {{ $message }}
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="6">
-                                            Không có học viên!
-                                        </td>
-                                    </tr>
-                                @endforelse
                             </tbody>
                         </table>
-                        <div class="card-footer clearfix">
-                            {{-- {!! $users->appends(Request::all())->links() !!} --}}
-                        </div>
                     </div>
                 </div>
             </div>
@@ -114,14 +75,49 @@
 @stop
 
 @section('scripts')
-    <script>
+    <script type="text/javascript">
         $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            var table = $('#student-of-course').DataTable({
+                processing: true,
+                serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
+                ajax: '{{ route('course.dataStudent', $course->id) }}',
+                columns: [{
+                        data: 'id',
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'fullname',
+                        name: 'fullname'
+                    },
+                    {
+                        data: 'email',
+                        name: 'email'
+                    },
+                    {
+                        data: 'status',
+                        name: 'status'
+                    },
+                ]
+            });
+            table.on('draw', function() {
+                $('.livicon').each(function() {
+                    $(this).updateLivicon();
+                });
+            });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
     </script>
 
