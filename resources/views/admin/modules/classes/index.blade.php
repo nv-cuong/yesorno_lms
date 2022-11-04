@@ -50,10 +50,15 @@
             var table = $('#class').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/class/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'name',
@@ -85,6 +90,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function class_delete(id) {

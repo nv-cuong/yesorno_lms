@@ -17,6 +17,8 @@ Route::prefix('/courses')->name('course.')->group(function () {
         ->name('dataTest')->middleware('myweb.auth:course.show');
     Route::get('/unit/data/{id}', [CourseController::class, 'getUnitData'])
         ->name('dataUnit')->middleware('myweb.auth:course.show');
+    Route::get('/student/data/{id}', [CourseController::class, 'getStudentData'])
+        ->name('dataStudent')->middleware('myweb.auth:course.show');
     Route::get('create', [CourseController::class, 'createCourse'])
         ->name('create')->middleware('myweb.auth:course.create');
     Route::post('store', [CourseController::class, 'storeCourse'])
