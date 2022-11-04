@@ -156,17 +156,18 @@ class CourseController extends Controller
             $course->status         = $request->input('status');
             $course->begin_date     = $request->input('begin_date');
             $course->end_date       = $request->input('end_date');
+            $course->description    = $request->input('description');
             $photo                  = $request->file('image');
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
             } else {
                 $course->image          = $course->image;
-                $course->description    = $request->input('description');
-                $course->save();
-                $message                = 'Cập nhật khóa học thành công';
-                $type                   = 'success';
             }
+            
+            $course->save();
+            $message                = 'Cập nhật khóa học thành công';
+            $type                   = 'success';
         }
 
         return redirect(route('course.index'))
@@ -248,7 +249,6 @@ class CourseController extends Controller
         $course = Course::find($id);
         if ($course) {
             $users = $course->users()->get();
-            // dd($users);
             return view('admin.modules.courses.student', compact('users', 'course'));
         }
         return redirect(route('course.index'))
@@ -267,8 +267,6 @@ class CourseController extends Controller
             'email',
             'status',
             DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
-            'first_name',
-            'last_name'
         ])->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
             ->where('uc.course_id', $id);
 
