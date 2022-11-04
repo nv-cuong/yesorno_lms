@@ -14,7 +14,7 @@
                         </div>
                         <form action="{{ route('class.update', $class->id) }}" method="POST" enctype="multipart/form-data">
                             <div class="card-body">
-                                @method("PUT")
+                                @method("POST")
                                 @include('admin.modules.classes._form')
                                 <button type="submit" class="btn btn-primary">Cập nhật</button>
                             </div>
