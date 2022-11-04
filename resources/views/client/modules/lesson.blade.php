@@ -81,8 +81,10 @@
             tag.src = 'https://www.youtube.com/iframe_api';
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-            var skip = 0;
             var player;
+            var status = '{{ $user_lesson->status }}';
+            var previousAction;
+            var previousTime = 0;
 
             function onYouTubeIframeAPIReady() {
                 player = new YT.Player('existing-iframe-example', {
@@ -95,12 +97,13 @@
 
             function onPlayerReady(event) {
                 document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
+                alert("Bạn không được phép tua!\nNếu tua sẽ xem lại từ đầu!");
             }
 
-            function changeStatus(playerStatus) {
-                var color;
-                if (playerStatus == 0) {
-                    color = "#FFFF00"; // ended = yellow
+            function onPlayerStateChange({target, data}) {
+
+                const currentTime = target.getCurrentTime();
+                if (data == 0) {
                     $(document).ready(function() {
                         $.ajaxSetup({
                             headers: {
@@ -113,22 +116,23 @@
                             data: {},
                         })
                     });
-                } else if (playerStatus == 2) {
-                    skip = 2;
-                    color = "#DD2C00"; // paused = red
-                } else if (playerStatus == 3) {
-                    color = "#AA00FF"; // buffering = purple
-                    if (skip == 2) location.reload()
-                } else if (playerStatus == 1) {
-                    color = "#33691E"; // playing = green
+                } 
+                else if (previousAction == 1 && data == 3) {
+                    if (status == 0) {
+                        return player.seekTo(previousTime);
+                    }
                 }
-                if (color) {
-                    document.getElementById('existing-iframe-example').style.borderColor = color;
+                else if (!previousAction || previousAction != 2) {
+                    previousAction = data;
+                    return data;
+                } 
+                else if (Math.abs(previousTime - currentTime) > 1 && data == 3) {
+                    if (status == 0) {
+                        return player.seekTo(previousTime);
+                    }
                 }
-            }
-
-            function onPlayerStateChange(event) {
-                changeStatus(event.data);
+                previousTime = currentTime;
+                previousAction = data;
             }
         </script>
     </section>
