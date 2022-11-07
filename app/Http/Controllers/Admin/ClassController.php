@@ -189,7 +189,7 @@ class ClassController extends Controller
         } catch (\Throwable $t) {
             throw new ModelNotFoundException();
         }
-        return redirect(route('class'))
+        return redirect(route('class.index'))
             ->with('message', $message)
             ->with('type_alert', $type);
     }

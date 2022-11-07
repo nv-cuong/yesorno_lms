@@ -9,7 +9,7 @@ Route::post('/class/add/{id}', [ClassController::class, 'join'])
     ->name('class.join');
 Route::prefix('class')->group(function () {
     Route::get('/', [ClassController::class, 'index'])
-        ->name('class')->middleware('myweb.auth:class.show');
+        ->name('class.index')->middleware('myweb.auth:class.show');
 
     Route::get('/data', [ClassController::class, 'getClassData'])
         ->name('class.data')->middleware('myweb.auth:class.show');
@@ -23,7 +23,7 @@ Route::prefix('class')->group(function () {
     Route::get('/edit/{id}', [ClassController::class, 'edit'])
         ->name('class.edit')->middleware('myweb.auth:class.edit');
 
-    Route::post('/update/{id}', [ClassController::class, 'update'])
+    Route::put('/update/{id}', [ClassController::class, 'update'])
         ->name('class.update')->middleware('myweb.auth:class.update');
 
     Route::delete('/delete', [ClassController::class, 'destroy'])
