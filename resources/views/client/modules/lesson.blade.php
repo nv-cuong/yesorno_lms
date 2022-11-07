@@ -36,7 +36,9 @@
                                 $vid_id = $vid_code[0];
                                 @endphp
                                 <div style="text-align: center; margin : 50px">
-                                    <iframe id="existing-iframe-example" width="1280" height="720" src="https://www.youtube.com/embed/{{ $vid_id }}?enablejsapi=1" frameborder="0" style="border: solid 4px rgb(247, 174, 38)" method="POST">
+                                    <iframe id="existing-iframe-example" width="1280" height="720" 
+                                        src="https://www.youtube.com/embed/{{ $vid_id }}?enablejsapi=1" 
+                                        frameborder="0" style="border: solid 4px rgb(247, 174, 38)" method="POST">
                                         csrf_token()</iframe>
                                 </div>
                                 @else
@@ -63,7 +65,7 @@
                                         </a>
                                     </button>
                                     @else
-                                    <h5>KẾT THÚC KHÓA HỌC</h5>
+                                    <h5>KẾT THÚC CHƯƠNG</h5>
                                     @endif
                                 </div>
                             </div>
@@ -79,8 +81,10 @@
             tag.src = 'https://www.youtube.com/iframe_api';
             var firstScriptTag = document.getElementsByTagName('script')[0];
             firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
             var player;
+            var status = '{{ $user_lesson->status }}';
+            var previousAction;
+            var previousTime = 0;
 
             function onYouTubeIframeAPIReady() {
                 player = new YT.Player('existing-iframe-example', {
@@ -92,11 +96,14 @@
             }
 
             function onPlayerReady(event) {
-                document.getElementById('existing-iframe-example');
+                document.getElementById('existing-iframe-example').style.borderColor = '#FF6D00';
+                alert("Bạn không được phép tua!\nNếu tua sẽ xem lại từ đầu!");
             }
 
-            function changeStatus(playerStatus) {
-                if (playerStatus == 1) {
+            function onPlayerStateChange({target, data}) {
+
+                const currentTime = target.getCurrentTime();
+                if (data == 0) {
                     $(document).ready(function() {
                         $.ajaxSetup({
                             headers: {
@@ -104,20 +111,28 @@
                             }
                         });
                         $.ajax({
-                            url: "{!! route('lessonProgress', $lesson->slug) !!}",
+                            url: "{!! route('lessonProgress', [$lesson->slug]) !!}",
                             method: "POST",
                             data: {},
                         })
                     });
+                } 
+                else if (previousAction == 1 && data == 3) {
+                    if (status == 0) {
+                        return player.seekTo(previousTime);
+                    }
                 }
-
-                // } else if (playerStatus == 3) {
-                //     color = "#AA00FF"; // buffering = purple
-                // }
-            }
-
-            function onPlayerStateChange(event) {
-                changeStatus(event.data);
+                else if (!previousAction || previousAction != 2) {
+                    previousAction = data;
+                    return data;
+                } 
+                else if (Math.abs(previousTime - currentTime) > 1 && data == 3) {
+                    if (status == 0) {
+                        return player.seekTo(previousTime);
+                    }
+                }
+                previousTime = currentTime;
+                previousAction = data;
             }
         </script>
     </section>

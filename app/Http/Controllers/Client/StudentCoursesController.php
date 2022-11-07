@@ -64,11 +64,13 @@ class StudentCoursesController extends Controller
      */
     public function personalLesson(Request $request, $slug)
     {
+        $getUser = Sentinel::getUser();
         $lesson = Lesson::where('slug', $slug)->first();
+        $user_lesson = $getUser->lessons()->where('lesson_id', $lesson->id)->first()->pivot;
         $nextLesson = Lesson::where('id', '>', $lesson->id)->where('unit_id', $lesson->unit_id)->first();
         $files = File::all()
             ->where('lesson_id', $lesson->id);
-        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files'));
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'user_lesson'));
     }
 
     /**
