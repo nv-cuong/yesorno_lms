@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Admin\ClassStudy\CreateRequest;
-use App\Http\Requests\Admin\ClassStudy\UpdateRequest;
+use App\Http\Requests\Admin\ClassRequest;
 use Illuminate\Http\Request;
 use App\Models\ClassStudy;
 use App\Models\Course;
@@ -82,10 +81,10 @@ class ClassController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateRequest $request
+     * @param  ClassRequest $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(CreateRequest $request)
+    public function store(ClassRequest $request)
     {
 
         $class_item = $request->except('_token');
@@ -156,11 +155,11 @@ class ClassController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateRequest  $request
+     * @param  ClassRequest  $request
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(ClassRequest $request, $id)
     {
         $message = 'Lớp học không tồn tại!';
         $type    = 'danger';

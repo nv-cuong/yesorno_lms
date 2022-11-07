@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Http\Requests\Auth\User\CreateRequest;
 use App\Http\Requests\Auth\User\UpdateRequest;
+use App\Http\Requests\Auth\User\UserRequest;
 use Yajra\DataTables\Facades\DataTables;
 
 class UserController extends Controller
@@ -81,15 +82,14 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CreateRequest $request
+     * @param UserRequest $request
      *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Http\Response
      * @throws \Exception
      * @throws \Throwable
      */
-    public function store(CreateRequest $request)
+    public function store(UserRequest $request)
     {
-        //dd($request);
         $email = $request->email;
         $user  = Sentinel::getUser()->first_name;
 
@@ -158,11 +158,11 @@ class UserController extends Controller
 
 
     /**
-     * @param UpdateRequest $request
+     * @param UserRequest $request
      * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(UpdateRequest $request, $id)
+    public function update(UserRequest $request, $id)
     {
         $user = Sentinel::findById($id);
 
@@ -180,22 +180,6 @@ class UserController extends Controller
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
             ];
-
-            #If User Input Password
-            if ($request->password) {
-                $validator = Validator::make($request->all(), [
-                    'password' => 'min:8',
-                ]);
-
-                if ($validator->fails()) {
-                    return redirect()
-                        ->back()
-                        ->withErrors($validator)
-                        ->withInput();
-                }
-
-                $credentials['password'] = $request->password;
-            }
 
             #Valid User For Update
             $role = Sentinel::findRoleById($request->role);
