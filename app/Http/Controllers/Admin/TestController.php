@@ -227,6 +227,7 @@ class TestController extends Controller
         if ($arr_question == []) {
             $arr_question = "";
             $this->delete_test($id);
+            return redirect()->route('test.index');
         } else {
             $arr_question = implode('-', $arr_question);
             $q_categories = [];
