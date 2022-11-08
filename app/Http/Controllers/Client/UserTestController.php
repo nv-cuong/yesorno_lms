@@ -140,8 +140,6 @@ class UserTestController extends Controller
             ->where('user_id', $user->id)->where('status', 1)
             ->join('tests', 'test_id', 'tests.id')
             ->get();
-
-        //dd($user_test_status);
         return view('client.modules.user_test', compact('user_test_status'));
     }
 
