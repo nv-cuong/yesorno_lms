@@ -46,7 +46,7 @@ class User extends EloquentUser
             'user_tests',
             'user_id',
             'test_id',
-        );
+        )->withTimestamps();
     }
 
     /**

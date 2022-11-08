@@ -83,7 +83,7 @@ class StudentController extends Controller
     public function store(UserCreateRequest $request)
     {
         $email = $request->input('email', '');
-        $user  = Sentinel::getUser()->first_name; // @phpstan-ignore-line
+        $user  = Sentinel::getUser()->first_name;
 
         DB::beginTransaction();
         try {
@@ -101,7 +101,7 @@ class StudentController extends Controller
             $user = Sentinel::registerAndActivate($data);
 
             //Attach the user to the role
-            $role = Sentinel::findRoleById($request->role); // @phpstan-ignore-line
+            $role = Sentinel::findRoleById($request->role);
             $role->users()
                 ->attach($user);
 

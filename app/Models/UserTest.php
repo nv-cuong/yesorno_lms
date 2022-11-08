@@ -13,7 +13,14 @@ class UserTest extends Model
     use HasFactory;
     use HasFactory;
 
-    protected $fillable = ['test_id', 'user_id', 'score','status'];
+    protected $fillable = [
+        'test_id',
+        'user_id',
+        'score',
+        'status',
+        'started_at',
+        'submitted_at',
+    ];
 
     /**
      * user_test_anwsers relation
