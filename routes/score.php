@@ -16,8 +16,6 @@ Route::prefix('/score')->name('score.')->group(function () {
         ->name('point')->middleware('myweb.auth:scores.point');
     Route::get('/student/{id}', [ScoreController::class, 'getStudent'])
         ->name('getStudent');
-    Route::get('/dots/{id}', [ScoreController::class, 'dots'])
-        ->name('dots');
     Route::get('/data', [ScoreController::class, 'getScoreData'])
         ->name('data')->middleware('myweb.auth:scores.show');
     Route::get('/mark/data/{id}', [ScoreController::class, 'getMarkData'])

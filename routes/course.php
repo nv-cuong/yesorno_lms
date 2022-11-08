@@ -39,32 +39,32 @@ Route::prefix('/courses')->name('course.')->group(function () {
 
 Route::prefix('/units')->name('unit.')->group(function () {
     Route::get('/show/{id}', [UnitController::class, 'showUnit'])
-        ->name('detail');
+        ->name('detail')->middleware('myweb.auth:unit.show');
     Route::get('/data/{id}', [UnitController::class, 'getUnitData'])
-        ->name('data');
+        ->name('data')->middleware('myweb.auth:unit.show');
     Route::get('/create/{course_id}', [UnitController::class, 'createUnit'])
-        ->name('create');
+        ->name('create')->middleware('myweb.auth:unit.show');
     Route::post('/store', [UnitController::class, 'storeUnit'])
-        ->name('store');
+        ->name('store')->middleware('myweb.auth:unit.show');
     Route::get('/edit/{id}', [UnitController::class, 'editUnit'])
-        ->name('edit');
+        ->name('edit')->middleware('myweb.auth:unit.show');
     Route::post('/edit/{id}', [UnitController::class, 'updateUnit'])
-        ->name('update');
+        ->name('update')->middleware('myweb.auth:unit.show');
     Route::delete('/destroy/{course_id}', [UnitController::class, 'destroyUnit'])
-        ->name('delete');
+        ->name('delete')->middleware('myweb.auth:unit.show');
 });
 
 Route::prefix('/lessons')->name('lesson.')->group(function () {
     Route::get('/show/{id}', [LessonController::class, 'showLesson'])
-        ->name('detail');
+        ->name('detail')->middleware('myweb.auth:lesson.show');
     Route::get('/create/{unit_id}', [LessonController::class, 'createLesson'])
-        ->name('create');
+        ->name('create')->middleware('myweb.auth:lesson.show');
     Route::post('/store', [LessonController::class, 'storeLesson'])
-        ->name('store');
+        ->name('store')->middleware('myweb.auth:lesson.show');
     Route::get('/edit/{id}', [LessonController::class, 'editLesson'])
-        ->name('edit');
+        ->name('edit')->middleware('myweb.auth:lesson.show');
     Route::post('/edit/{id}', [LessonController::class, 'updateLesson'])
-        ->name('update');
+        ->name('update')->middleware('myweb.auth:lesson.show');
     Route::delete('/destroy/{unit_id}', [LessonController::class, 'destroyLesson'])
-        ->name('delete');
+        ->name('delete')->middleware('myweb.auth:lesson.show');
 });
