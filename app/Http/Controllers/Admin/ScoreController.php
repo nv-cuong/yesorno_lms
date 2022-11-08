@@ -62,7 +62,9 @@ class ScoreController extends Controller
             foreach ($student_id as $user_id) {
 
                 $user  = User::find($user_id);
+                // dd($user);
 
+                // $user->tests()->attach();
                 $user->tests()->attach($test_user_item['test_id']);
             }
         } catch (\Throwable $t) {

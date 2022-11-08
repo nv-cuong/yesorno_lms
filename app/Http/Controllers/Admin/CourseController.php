@@ -40,9 +40,8 @@ class CourseController extends Controller
         ])
             ->withCount(['users' => function ($query) {
                 return $query->where('status', 0);
-            }])
+            }]);
 
-        // @phpstan-ignore-next-line
         return DataTables::of($course)
             ->editColumn('status', function ($course) {
                 if ($course->status == 0) return 'Miễn phí';
