@@ -65,7 +65,6 @@ class TestController extends Controller
     }
 
     /**
-     * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function create()
@@ -86,17 +85,16 @@ class TestController extends Controller
         $test = new Test();
 
         try {
-            $category = $request->category;
-            $course_id = $request->course;
-
-            $test->category = $category;
+            $test->category = $request->category;
             $test->title = $request->title;
             $test->time = $request->time;
             $test->description = $request->description;
             $test->save();
 
-            for ($i = 0; $i < (count($request->question)); $i++) {
-                $question  = Question::find($request->question[$i]);
+            $course_id = $request->course;
+            $questions = $request->question;
+            foreach ($questions as $id) {
+                $question  = Question::find($id);
                 $question->tests()->attach($test->id);
             }
 
@@ -119,8 +117,14 @@ class TestController extends Controller
      */
     public function delete(Request $request)
     {
-        $id = $request->input('test_id', 'value');
+        $id = $request->input('test_id');
         $test = Test::find($id);
+        if ($test->user()->exists()) {
+            return redirect()
+                ->action([TestController::class, 'index'])
+                ->with('message', 'Không thể xóa! Đã có học viên làm bài kiểm tra!')
+                ->with('type_alert', 'danger');
+        }
         if ($test) {
             $test->course()->detach();
             $test->question()->detach();
@@ -135,11 +139,11 @@ class TestController extends Controller
 
     /**
      * @param Request $request
+     * @return NULL
      */
     public function getQuestion(Request $request)
     {
         $select = $request->get('select');
-
         $value = $request->get('value');
         $dependent = $request->get('dependent');
         if ($value == "#") {
@@ -150,6 +154,7 @@ class TestController extends Controller
                 ->get();
         }
         $k = 1;
+        $category = "";
         foreach ($questions as $row) {
             if ($row->category == 0) {
                 $category = "Tự luận";
@@ -166,11 +171,17 @@ class TestController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
         $tests  = Test::find($id);
+        if ($tests->user()->exists()) {
+            return redirect()
+                ->action([TestController::class, 'index'])
+                ->with('message', 'Không thể sửa! Đã có học viên làm bài kiểm tra!')
+                ->with('type_alert', 'danger');
+        }
         $course = Course::pluck('title', 'id');
         $question = Question::pluck('content', 'id');
 
@@ -183,13 +194,8 @@ class TestController extends Controller
      * @throws ModelNotFoundException
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, $id)
+    public function update(TestRequest $request, $id)
     {
-        $validated = $request->validate([
-            'title' => ['required'],
-            'time' => ['required', 'numeric'],
-            'description' => ['required', 'min:5'],
-        ]);
         $test  = Test::find($id);
         try {
             $test->title = $request->title;
@@ -206,7 +212,7 @@ class TestController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function view($id)
     {
@@ -221,36 +227,41 @@ class TestController extends Controller
         if ($arr_question == []) {
             $arr_question = "";
             $this->delete_test($id);
-            return redirect()->route('test.index');
         } else {
             $arr_question = implode('-', $arr_question);
-            $categories = [];
-            $categories[0] = "Tự luận";
-            $categories[1] = "Trắc nhiệm nhiều lựa chọn";
-            $categories[2] = "Trắc nhiệm đúng sai";
-            return view('admin.tests.questions.view_question', compact('tests', 'questions', 'arr_question', 'categories'));
+            $q_categories = [];
+            $q_categories[0] = "Tự luận";
+            $q_categories[1] = "Trắc nhiệm nhiều lựa chọn";
+            $q_categories[2] = "Trắc nhiệm đúng sai";
+            return view('admin.tests.questions.view_question', compact('tests', 'questions', 'arr_question', 'q_categories'));
         }
     }
 
     /**
      * @param int $id
-     * @param int $id_test
-     * @param int $arr_quest
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     * @param int $testId
+     * @param string $arr_quest
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function createquestion($id, $testId, $arr_quest)
     {
+        $test = Test::find($testId);
+        if ($test->user()->exists()) {
+            return redirect(route('test.view', $testId))
+                ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
+                ->with('type_alert', 'danger');
+        }
         $arr = explode("-", $arr_quest);
         $courses = Course::find($id);
         $questions = Question::where('course_id', $id)
             ->WhereNotIn('id', $arr)
             ->select('id', 'content', 'category')
             ->get();
-        $a = [];
-        $a[0] = "Tự luận";
-        $a[1] = "Trắc nhiệm nhiều lựa chọn";
-        $a[2] = "Trắc nhiệm đúng sai";
-        return view('admin.tests.questions.create_question', compact('courses', 'questions', 'testId', 'a'));
+        $q_categories = [];
+        $q_categories[0] = "Tự luận";
+        $q_categories[1] = "Trắc nhiệm nhiều lựa chọn";
+        $q_categories[2] = "Trắc nhiệm đúng sai";
+        return view('admin.tests.questions.create_question', compact('courses', 'questions', 'testId', 'q_categories'));
     }
 
     /**
@@ -276,7 +287,6 @@ class TestController extends Controller
             throw new ModelNotFoundException();
         }
         $tests->save();
-        $a = $this->updateTestCategory($id_test);
         return redirect()->route('test.view', $id_test);
     }
 
@@ -286,22 +296,36 @@ class TestController extends Controller
      */
     public function delete_question(Request $request, $id_test)
     {
+        $test = Test::find($id_test);
+        if ($test->user()->exists()) {
+            return redirect(route('test.view', $id_test))
+                ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
+                ->with('type_alert', 'danger');
+        }
         $id = $request->input('question_id', 'value');
         $question = Question::find($id);
         $question->tests()->detach($id_test);
-        $a = $this->updateTestCategory($id_test);
         return redirect()->route('test.view', $id_test);
     }
 
     /**
-     * @param int $id_test
-     * @return \Illuminate\Http\RedirectResponse
+     * @param int $questionId
+     * @param int $testId
+     * @param int $courseId
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
     public function question_edit($questionId, $testId, $courseId)
     {
+        $test = Test::find($testId);
+        if ($test->user()->exists()) {
+            return redirect(route('test.view', $testId))
+                ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
+                ->with('type_alert', 'danger');
+        }
         $question = Question::find($questionId);
         $tests  = Test::find($testId);
         $questions = $tests->question;
+        $questArray[] = "";
         foreach ($questions as $quest) {
             $questArray[] = $quest->pivot->question_id;
         }
@@ -317,7 +341,8 @@ class TestController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id_test
+     * @param int $id, $id_question_old
+     * @param int $id_question_old
      * @throws ModelNotFoundException
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -331,12 +356,11 @@ class TestController extends Controller
                 $row->pivot->save();
             }
         }
-        $this->updateTestCategory($id);
         return redirect()->route('test.view', $id);
     }
 
     /**
-     * @param int $id_test
+     * @param int $id
      * @return \Illuminate\Http\RedirectResponse
      */
     public function delete_test($id)

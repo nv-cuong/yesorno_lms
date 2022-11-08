@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    @include('Admin/_alert')
+                    @include('admin/_alert')
                 </div>
             </div>
         </div>
@@ -19,7 +19,6 @@
                     <h2>Quản lí câu hỏi</h2>
                     <div class="card">
                         <div class="card-header" style="">
-                            Test: {{ $tests->id }}
                             <a href="{{ route('test.create_question', [$row1->course->id, $tests->id, $arr_question]) }}"
                                 class="btn btn-success float-right">
                                 <i class="nav-icon fas fa-solid fa-plus">
@@ -31,7 +30,7 @@
                             <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Test</th>
+                                    <th>Tên bài</th>
                                     <th>Chương</th>
                                     <th>Nội dung câu hỏi</th>
                                     <th>Loại câu hỏi</th>
@@ -45,7 +44,7 @@
                                             {{ $row->id }}
                                         </td>
                                         <td>
-                                            {{ $tests->id }}
+                                            {{ $tests->title }}
                                         </td>
                                         <td>
                                             {{ $row->course->id . '. ' . $row->course->title }}
@@ -54,7 +53,7 @@
                                             {{ $row->content }}
                                         </td>
                                         <td>
-                                            {{ $categories[$row->category] }}
+                                            {{ $q_categories[$row->category] }}
                                         </td>
                                         <td>
                                             <a href="{{ route('test.question.edit', [$row->id, $tests->id, $row->course->id]) }}"

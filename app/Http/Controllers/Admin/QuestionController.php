@@ -153,7 +153,7 @@ class QuestionController extends Controller
         $question_test = Question::find($id);
 
 
-        if ($question_test->test()->count() > 0) {
+        if ($question_test->tests()->count() > 0) {
             return redirect(route('question.index'))
                 ->with('message', "Câu hỏi có trong bài test không thể sửa !")
                 ->with('type_alert', "danger");
@@ -228,12 +228,16 @@ class QuestionController extends Controller
         $question_id = $request->input('question_id', 0);
         $question = Question::find($question_id);
 
-        if ($question->test()->count() > 0) {
-            return redirect(route('question.index'))->with('message', "Câu hỏi có trong bài test không thể sửa !")->with('type_alert', "danger");
+        if ($question->tests()->count() > 0) {
+            return redirect(route('question.index'))
+                ->with('message', "Câu hỏi có trong bài test không thể sửa !")
+                ->with('type_alert', "danger");
         } else {
             if ($question_id) {
                 Question::destroy($question_id);
-                return redirect(route('question.index'))->with('message', "Xóa câu hỏi {$question_id} thành công !")->with('type_alert', "success");
+                return redirect(route('question.index'))
+                    ->with('message', "Xóa câu hỏi {$question_id} thành công !")
+                    ->with('type_alert', "success");
             } else {
                 throw new ModelNotFoundException();
             }
