@@ -163,16 +163,16 @@
                     </h3>
                     @if ($question->category == 2)
                         <label>
-                            <input name="true[{{ $question->id }}]" type="radio" value="1" checked /> A) Đúng
+                            <input name="tfQuest[{{ $question->id }}]" type="radio" value="1" checked /> A) Đúng
                             </BR>
                         </label>
                         <label>
-                            <input name="true[{{ $question->id }}]" type="radio" value="0" /> B) Sai
+                            <input name="tfQuest[{{ $question->id }}]" type="radio" value="0" /> B) Sai
                             </BR>
                         </label>
                     @endif
                     @if ($question->category == 0)
-                        <textarea class="form-control " value="" name="essay[{{ $question->id }}]" id="exampleFormControlTextarea1"
+                        <textarea class="form-control " value="" name="essayQuest[{{ $question->id }}]" id="exampleFormControlTextarea1"
                             placeholder="nhập câu trả lời" rows="3"></textarea>
                     @else
                         @foreach ($question->answers as $option)
@@ -209,7 +209,7 @@
             /*BƯỚC 1: LẤY GIÁ TRỊ BAN ĐẦU*/
             if (h === null) {
                 @php
-                    $passedSeconds = Carbon\Carbon::now()->diffInSeconds($time);
+                    $passedSeconds = Carbon\Carbon::now()->diffInSeconds($startedTime);
                     
                     $hours = 0;
                     $minutes = 0;

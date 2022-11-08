@@ -17,6 +17,8 @@ class UserTest extends Model
         'user_id',
         'score',
         'status',
+        'started_at',
+        'submitted_at',
     ];
 
     /**
