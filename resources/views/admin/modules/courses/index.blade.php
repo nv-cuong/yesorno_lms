@@ -41,7 +41,7 @@
                                     <th>
                                         Ngày kết thúc
                                     </th>
-                                    <th>
+                                    <th style="width: 25%;">
                                         Tùy chọn
                                     </th>
                                 </tr>

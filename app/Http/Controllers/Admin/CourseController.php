@@ -39,11 +39,11 @@ class CourseController extends Controller
             'status',
             'begin_date',
             'end_date',
-        ])->withCount(['users' => function ($query) {
-            return $query->where('status', 0);
-        }]);
+        ])
+            ->withCount(['users' => function ($query) {
+                return $query->where('status', 0);
+            }]);
 
-        // @phpstan-ignore-next-line
         return DataTables::of($course)
             ->editColumn('status', function ($course) {
                 if ($course->status == 0) return 'Miễn phí';

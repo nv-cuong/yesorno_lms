@@ -3,13 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use App\Models\Question;
 use App\Models\UserTest;
 use App\Models\UserTestAnswer;
-use Illuminate\Http\Request;
 use App\Models\Answer;
 use App\Models\Test;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Carbon\Carbon;
+
 class UserTestController extends Controller
 {
     /**
@@ -19,11 +21,29 @@ class UserTestController extends Controller
      */
     public function doTest(Request $request, $id)
     {
-        $test = UserTest::find($id)->test;
-        $user_test = $id;
-        $questions = $test->question;
-        $score = UserTest::find($id)->score;
-        return view('client.modules.do_tests', compact('questions', 'user_test', 'test', 'score'));
+        $userTest       = UserTest::find($id);
+        $test           = $userTest->test;
+        $score          = $userTest->score;
+        $startedTime    = $userTest->started_at;
+        $submittedTime  = $userTest->submitted_at;
+        $status         = $userTest->status;
+        $questions      = $test->question;
+        $time           = $test->time;
+
+        if ($submittedTime || $status == 1) {
+            return view('client.modules.user_test_result', compact('userTest'));
+        }
+
+        if ($startedTime == null) {
+            $startedTime = now();
+            $userTest->save();
+        } else {
+            $passedSeconds  = now()->diffInSeconds($startedTime);
+            if ($passedSeconds >= $test->time * 60) {
+                return view('client.modules.user_test_result', compact('userTest'));
+            }
+        }
+        return view('client.modules.do_tests', compact('questions', 'id', 'test', 'score', 'startedTime', 'time'));
     }
 
     /**
@@ -33,21 +53,19 @@ class UserTestController extends Controller
      */
     public function sendTest(Request $request, $id)
     {
+        $submittedTime  = now();
+        $testUserItems = $request->except('_token');
 
-        $test_user_item = $request->except('_token');
-
-        $test_users = UserTest::find($id);
-        $answers = [];
-        $test_score = 0;
-        $questions = 0;
+        $userTest       = UserTest::find($id);
+        $answers        = [];
+        $test_score     = 0;
+        $questions      = 0;
 
         if ($request->get('answers')) {
-
-            foreach ($test_user_item['answers'] as $key  => $answer_id) {
-
-                $question_id = Answer::find($answer_id)->question->id;
-                $question = Answer::find($answer_id)->question;
-                $answers_item = Answer::find($answer_id);
+            foreach ($testUserItems['answers'] as $key  => $answer_id) {
+                $question_id    = Answer::find($answer_id)->question->id;
+                $question       = Answer::find($answer_id)->question;
+                $answers_item   = Answer::find($answer_id);
 
                 if ($answers_item->checked == 0) {
                     $check = 0;
@@ -55,11 +73,10 @@ class UserTestController extends Controller
                     $check = 1;
                 }
                 if ($questions != $question_id) {
-
                     $answers[$question_id] = [
-                        'question_id' => $question_id,
-                        'answer' =>  $answers_item->id,
-                        'correct' => $check
+                        'question_id'   => $question_id,
+                        'answer'        => $answers_item->id,
+                        'correct'       => $check
                     ];
                 } else {
                     if ($answers[$question_id]['answer']) {
@@ -70,45 +87,42 @@ class UserTestController extends Controller
                     }
                 }
                 if ($check == 1) {
-
                     $test_score += $question->score;
                 }
                 $questions = $question_id;
             }
         }
-        if ($request->get('true')) {
-            foreach ($request->get('true') as $question_id => $answer_id) {
-                $question = Question::find($question_id);
-
-                $correct = Question::where('id', $question_id)
+        if ($request->get('tfQuest')) {
+            foreach ($request->get('tfQuest') as $question_id => $answer_id) {
+                $question   = Question::find($question_id);
+                $correct    = Question::where('id', $question_id)
                     ->where('answer', $answer_id)
                     ->count() > 0;
-
-                $answers[] = [
-                    'question_id' => $question_id,
-                    'answer' => $answer_id,
-                    'correct' =>  $correct
+                $answers[]  = [
+                    'question_id'   => $question_id,
+                    'answer'        => $answer_id,
+                    'correct'       =>  $correct
                 ];
                 if ($correct) {
                     $test_score += $question->score;
                 }
             }
         }
-        $test_users->status = 1;
-        $test_users->score =  $test_score;
-        $test_users->save();
-        if ($request->get('essay')) {
-            foreach ($request->get('essay') as $question_id => $answer_id) {
-                $answers[] = [
-                    'question_id' => $question_id,
-                    'answer' => $answer_id,
+        $userTest->status   = 1;
+        $userTest->score    =  $test_score;
+        $userTest->save();
+        if ($request->get('essayQuest')) {
+            foreach ($request->get('essayQuest') as $question_id => $answer_id) {
+                $answers[]  = [
+                    'question_id'   => $question_id,
+                    'answer'        => $answer_id,
                 ];
             }
-            $test_users->score = '';
+            $userTest->score = '';
         }
-        $test_users->answers()->createMany($answers);
-        $test_users->save();
-        return view('client.modules.user_test_result', compact('test_users'));
+        $userTest->answers()->createMany($answers);
+        $userTest->save();
+        return view('client.modules.user_test_result', compact('userTest'));
     }
 
     /**
@@ -123,11 +137,9 @@ class UserTestController extends Controller
             'title',
             'score'
         ])
-        ->where('user_id', $user->id)->where('status', 1)
-        ->join('tests', 'test_id', 'tests.id')
-        ->get();
-
-         //dd($user_test_status);
+            ->where('user_id', $user->id)->where('status', 1)
+            ->join('tests', 'test_id', 'tests.id')
+            ->get();
         return view('client.modules.user_test', compact('user_test_status'));
     }
 

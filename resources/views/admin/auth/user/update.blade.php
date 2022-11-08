@@ -33,7 +33,7 @@
                         <!-- /.card-header -->
                         <!-- form start -->
                         <form action="{{ route('users.update', $data->id) }}" method="post">
-                            <input name="_method" type="hidden" value="PUT">
+                            @method('PUT')
                             <div class="card-body">
                                 {!! csrf_field() !!}
                                 <div class="col-md-12">
@@ -52,30 +52,6 @@
                                             placeholder="Nhập họ và tên đệm ..."
                                             value="{{ old('last_name') ?? $data->last_name }}" tabindex="2">
                                         {!! $errors->first('last_name', '<em for="last_name" class="help-block" style="color: red">:message</em>') !!}
-                                    </div>
-
-                                    <div class="form-group @if ($errors->has('email')) has-error @endif">
-                                        <label for="email" class="control-label">Email <span
-                                                style="color: red">*</span></label>
-                                        <input type="text" name="email" class="form-control input-sm"
-                                            placeholder="user@risetproduk.com" value="{{ old('email') ?? $data->email }}"
-                                            tabindex="3">
-                                        {!! $errors->first('email', '<em for="email" class="help-block" style="color: red">:message</em>') !!}
-                                    </div>
-
-                                    <div class="form-group @if ($errors->has('password')) has-error @endif">
-                                        <label for="password" class="control-label">Mật khẩu </label>
-                                        <input type="password" name="password" class="form-control input-sm" placeholder=""
-                                            value="{{ $data->password }}" tabindex="5" disabled>
-                                        {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
-                                    </div>
-
-                                    <div class="form-group @if ($errors->has('password')) has-error @endif">
-                                        <label for="password_confirmation" class="control-label">Nhập lại mật khẩu </label>
-                                        <input type="password" name="password_confirmation" class="form-control input-sm"
-                                            placeholder="Nhập lại mật khẩu..." value="{{ $data->password }}" disabled
-                                            tabindex="6">
-                                        {!! $errors->first('password', '<em for="password" class="help-block" style="color: red">:message</em>') !!}
                                     </div>
 
                                     <div class="form-group @if ($errors->has('phone')) has-error @endif">

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StudentRequest;
-use App\Http\Requests\Auth\User\CreateRequest as UserCreateRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lesson;
@@ -76,14 +75,14 @@ class StudentController extends Controller
     }
 
     /**
-     * @param UserCreateRequest $request
+     * @param StudentRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(UserCreateRequest $request)
+    public function store(StudentRequest $request)
     {
         $email = $request->input('email', '');
-        $user  = Sentinel::getUser()->first_name; // @phpstan-ignore-line
+        $user  = Sentinel::getUser()->first_name;
 
         DB::beginTransaction();
         try {
@@ -101,7 +100,7 @@ class StudentController extends Controller
             $user = Sentinel::registerAndActivate($data);
 
             //Attach the user to the role
-            $role = Sentinel::findRoleById($request->role); // @phpstan-ignore-line
+            $role = Sentinel::findRoleById($request->role);
             $role->users()
                 ->attach($user);
 

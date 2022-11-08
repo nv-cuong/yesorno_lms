@@ -10,7 +10,8 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('question.index') }}">Ngân hàng câu hỏi</a></li>
                         <li class="breadcrumb-item active"></li>
                     </ol>
                 </div><!-- /.col -->
@@ -98,7 +99,7 @@
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                                 <input type="checkbox" name="is_correct[{{ $idx }}]"
-                                                   class="@error('is_correct') is-invalid @enderror" value="1"
+                                                    class="@error('is_correct') is-invalid @enderror" value="1"
                                                     {{ old('is_correct.' . $idx) ? 'checked' : '' }}>
                                                 @error('is_correct')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -136,7 +137,6 @@
                                 </div>
                             </div>
 
-
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <button type="submit" class="btn btn-primary">Thêm mới</button>
@@ -146,11 +146,6 @@
                     <!-- /.card -->
                 </div>
                 <!--/.col (left) -->
-                <!-- right column -->
-                <div class="col-md-6">
-
-                </div>
-                <!--/.col (right) -->
             </div>
             <!-- /.row -->
         </div><!-- /.container-fluid -->
@@ -161,7 +156,6 @@
 @section('scripts')
     <script>
         d = document.getElementById("category").value;
-        //alert(d);
         if (d == 1) {
             document.getElementById("check_question").style.display = 'block';
             document.getElementById("check_true").style.display = 'none';
@@ -177,7 +171,6 @@
 
         document.getElementById("category").onchange = function() {
             d = document.getElementById("category").value;
-            //alert(d);
             if (d == 1) {
                 document.getElementById("check_question").style.display = 'block';
                 document.getElementById("check_true").style.display = 'none';

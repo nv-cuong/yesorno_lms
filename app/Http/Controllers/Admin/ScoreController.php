@@ -80,20 +80,15 @@ class ScoreController extends Controller
     public function store(ScoreRequest $request)
     {
         $test_user_item = $request->except('_token');
-
         try {
             $student_id = $test_user_item['student_id'];
             foreach ($student_id as $user_id) {
-
                 $user  = User::find($user_id);
-
                 $user->tests()->attach($test_user_item['test_id']);
             }
         } catch (\Throwable $t) {
-
             throw new ModelNotFoundException();
         }
-
         return redirect(route('score.index'))->with('message', 'Thêm bài test thành công !')->with('type_alert', "success");
     }
 

@@ -31,7 +31,7 @@
                                     <th>Khóa học trong lớp</th>
                                     <th>Thời gian học</th>
                                     <th>Học viên trong lớp</th>
-                                    <th>Tùy chọn</th>
+                                    <th style="width: 20%;">Tùy chọn</th>
                                 </tr>
                             </thead>
                             <tbody id="load">
