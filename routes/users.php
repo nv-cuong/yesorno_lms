@@ -15,6 +15,9 @@ Route::prefix('users')->group(function () {
     Route::get('/create', [UserController::class, 'create'])
         ->name('users.create')->middleware('myweb.auth:users.create');
 
+    Route::get('/data', [UserController::class, 'getUsersData'])
+        ->name('data')->middleware('myweb.auth:users.show');
+
     Route::post('', [UserController::class, 'store'])
         ->name('users.store')->middleware('myweb.auth:users.create');
 

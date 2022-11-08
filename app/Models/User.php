@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notifiable;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Collection;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends EloquentUser
 {
@@ -83,7 +83,7 @@ class User extends EloquentUser
             'user_lessons',
             'user_id',
             'lesson_id'
-        );
+        )->withPivot('status');
     }
 
     public function notifications(): BelongsToMany
@@ -134,4 +134,5 @@ class User extends EloquentUser
         }
         return $query;
     }
+
 }

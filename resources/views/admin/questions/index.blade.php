@@ -1,12 +1,12 @@
 @extends('Admin.Layouts.master')
-@section('title', 'Dashboard')
+@section('title', 'Question')
 
 @section('content')
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1>Quản lý Câu hỏi</h1>
+                    <h1>Ngân hàng câu hỏi</h1>
                 </div>
                 <div class="col-sm-12">
                     @include('Admin/_alert')
@@ -28,6 +28,18 @@
                                 Tạo câu hỏi
                             </a>
                         </div>
+                        <div class="card-body">
+                            <form action="{{ route('question.import') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
+                                <br>
+                                <button type="submit" class="btn btn-success " >Import Question Data</button>
+                                <a class="btn btn-warning" href="{{ route('question.export') }}">Export Question Data</a>
+                                @error('import')
+                                        <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </form>
+                        </div>   
                         <table class="table table-striped" id="question">
                             <thead>
                                 <tr>
@@ -102,7 +114,7 @@
                 <!-- Modal body -->
                 <div class="modal-body">
                     <div class="table-responsive">
-                        <table class="table table-striped" id="show_answer">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="show_answer">
                             <thead>
                                 <tr>
                                     <th class="th-sortable text-center" data-toggle="class">
@@ -128,10 +140,15 @@
             var table = $('#question').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/questions/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'content',
@@ -166,6 +183,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function question_delete(id) {

@@ -13,6 +13,7 @@ use App\Models\User;
 use App\Models\UserTest;
 use App\Models\UserTestAnswer;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Yajra\DataTables\Facades\DataTables;
 
 class ScoreController extends Controller
 {
@@ -21,20 +22,43 @@ class ScoreController extends Controller
      */
     public function index()
     {
-        $test_users = User::select([
-            'users.id',
-            'first_name',
-            'te.test_id',
-            'status',
-            'tests.title',
-            'te.score',
-            'te.id'
-        ])
-            ->LeftJoin('user_tests AS te', 'user_id', 'users.id')
-            ->Join('tests', 'te.test_id', 'tests.id')
-            ->get();
+        return view('admin.score.index');
+    }
 
-        return view('admin.score.index', compact('test_users'));
+    /**
+     *
+     * @return DataTables
+     */
+    public function getScoreData()
+    {
+        $usertests = UserTest::select([
+            'id',
+            'user_id',
+            'status',
+            'score',
+            'test_id',
+        ])->with('test', 'user');
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($usertests)
+            ->editColumn('status', function ($usertest) {
+                if ($usertest->status == 0) return 'Chưa làm';
+                if ($usertest->status == 1) return 'Đã làm';
+            })
+            ->editColumn('test_id', function ($usertest) {
+                return $usertest->test->title;
+            })
+            ->editColumn('user_id', function ($usertest) {
+                $lastname = $usertest->user->last_name;
+                $firstname = $usertest->user->first_name;
+                $name = $lastname.' '.$firstname;
+                return $name;
+            })
+            ->addColumn('actions', function ($usertest) {
+                return view('admin.score.actions', ['row' => $usertest])->render();
+            })
+            ->rawColumns(['actions'])
+            ->make(true);
     }
 
     /**
@@ -86,8 +110,6 @@ class ScoreController extends Controller
     public function dots(Request $request, $id)
     {
         $user_test = UserTest::find($id);
-        // $user_test_answers =  $user_test->answers->where('answer_essay','')->groupBy('question_id');
-        // dd($user_test_answers);
 
         $user_test_answers = UserTestAnswer::select([
 

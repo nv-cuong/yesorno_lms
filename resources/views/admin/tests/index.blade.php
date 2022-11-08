@@ -74,10 +74,15 @@
             var table = $('#testId').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/test/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'category',
@@ -89,7 +94,8 @@
                     },
                     {
                         data: 'question_count',
-                        name: 'question_count'
+                        name: 'question_count',
+                        searchable: false
                     },
                     {
                         data: 'title',
@@ -116,6 +122,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
     </script>
 

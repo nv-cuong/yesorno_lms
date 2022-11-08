@@ -49,14 +49,15 @@
                                                 $vid_id = $vid_code[0];
                                             @endphp
                                             <div class="d-flex justify-content-center">
-                                                <iframe src="https://youtube.com/embed/{{ $vid_id }}"
-                                                    width="700" height="415" allowfullscreen>
+                                                <iframe src="https://youtube.com/embed/{{ $vid_id }}" width="700"
+                                                    height="415" allowfullscreen>
                                                 </iframe>
                                             </div>
-                                            <span>
-                                                Tài liệu bài học:
-                                            </span>
                                             <br>
+                                            <strong>
+                                                Tài liệu bài học:
+                                            </strong>
+                                            <br><br>
                                         @else
                                             @php
                                                 $path = explode('/', $file->path);
@@ -80,13 +81,12 @@
                                         <p>Không có file nào</p>
                                     @endforelse
                                 </div>
+                                <br>
                                 <div class="table-responsive">
-                                    <strong>
-                                        <span style="color: black">
-                                            <h6>Nội dung bài học</h6>
-                                        </span>
+                                    <div>
+                                        <strong>Nội dung bài học :</strong><br>
                                         {!! $lesson->content !!}
-                                    </strong>
+                                    </div>
                                 </div>
                             @endif
                         </div>

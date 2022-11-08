@@ -56,8 +56,8 @@ class QuestionController extends Controller
             if ($question->category == 1){
                 $var = <<<EOD
                 <a onclick="event.preventDefault();answer_qu($question->id)" 
-                    href="" class="btn btn-primary btn-sm ">
-                    <i class="fa fa-plus-circle"></i>Xem</a>
+                    href="" class="btn btn-primary btn-sm " title="Xem câu trả lời">
+                    <i class="fa fa-plus-circle"></i></a>
                 EOD;
                 return $var;
             }
@@ -72,7 +72,7 @@ class QuestionController extends Controller
         ->addColumn('actions', function ($question) {
             return view('admin.questions.actions', ['row' => $question])->render();
         })
-        ->rawColumns(['actions', 'answers'])
+        ->rawColumns(['actions', 'answers', 'course_id'])
         ->make(true);
     }
 
@@ -153,7 +153,7 @@ class QuestionController extends Controller
         $question_test = Question::find($id);
 
 
-        if ($question_test->test()->count() > 0) {
+        if ($question_test->tests->count() > 0) {
             return redirect(route('question.index'))
                 ->with('message', "Câu hỏi có trong bài test không thể sửa !")
                 ->with('type_alert', "danger");

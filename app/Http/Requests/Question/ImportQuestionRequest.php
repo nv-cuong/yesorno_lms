@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\ClassStudy;
+namespace App\Http\Requests\Question;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class ImportQuestionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,11 +23,23 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
-            'name'          => ['required', 'max:255', 'unique:class_studies'],
-            'course_id'     => ['required'],
-            'description'   => ['required', 'min:20'],
-            'schedule'      => ['required'],
+            'import' => ['required'],
+        ];;
+    }
+
+
+     /**
+     * {@inheritDoc}
+     * @see \Illuminate\Foundation\Http\FormRequest::messages()
+     */
+    public function messages()
+    {
+        $rule =  [
+            'import.required'     => 'Bạn chưa chọn file',
         ];
+        return $rule;
     }
 }
+

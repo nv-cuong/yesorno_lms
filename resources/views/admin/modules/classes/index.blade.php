@@ -23,7 +23,7 @@
                             <a href="{{ route('class.create') }}" class="btn btn-success float-right"
                                 title="Thêm một lớp học mới">Tạo lớp học mới</a>
                         </div>
-                        <table class="table table-striped" id="class">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="class">
                             <thead>
                                 <tr>
                                     <th>STT</th>
@@ -31,7 +31,7 @@
                                     <th>Khóa học trong lớp</th>
                                     <th>Thời gian học</th>
                                     <th>Học viên trong lớp</th>
-                                    <th>Tùy chọn</th>
+                                    <th style="width: 20%;">Tùy chọn</th>
                                 </tr>
                             </thead>
                             <tbody id="load">
@@ -50,10 +50,15 @@
             var table = $('#class').DataTable({
                 processing: true,
                 serverSide: true,
+                order: [
+                    [1, 'asc']
+                ],
                 ajax: '/admin/class/data',
                 columns: [{
                         data: 'id',
-                        name: 'id'
+                        name: 'id',
+                        orderable: false,
+                        searchable: false
                     },
                     {
                         data: 'name',
@@ -69,7 +74,8 @@
                     },
                     {
                         data: 'users_count',
-                        name: 'users_count'
+                        name: 'users_count',
+                        searchable: false
                     },
                     {
                         data: 'actions',
@@ -84,6 +90,15 @@
                     $(this).updateLivicon();
                 });
             });
+            table.on('order.dt search.dt', function() {
+                let i = 1;
+                table.cells(null, 0, {
+                    search: 'applied',
+                    order: 'applied'
+                }).every(function(cell) {
+                    this.data(i++);
+                });
+            }).draw();
         });
 
         function class_delete(id) {

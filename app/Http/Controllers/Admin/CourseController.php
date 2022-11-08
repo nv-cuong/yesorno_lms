@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
 use App\Models\Course;
 use App\Models\Notification;
+use App\Models\Test;
+use App\Models\Unit;
 use App\Models\User;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -55,15 +57,34 @@ class CourseController extends Controller
     }
 
     /**
+     *
+     * @return DataTables
+     */
+    public function getUnitData($id)
+    {
+        $units = Unit::select([
+            'id',
+            'course_id',
+            'title',
+        ])->where('course_id', $id);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($units)
+            ->addColumn('actions_unit', function ($unit) {
+                return view('admin.modules.courses.actions_unit', ['row' => $unit])->render();
+            })
+            ->rawColumns(['actions_unit'])
+            ->make(true);
+    }
+
+    /**
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function showCourse($id)
     {
         $course = Course::find($id);
-        $units  = $course->units()->paginate(1000);
-
-        return view('admin.modules.courses.detail', compact('course', 'units'));
+        return view('admin.modules.courses.detail', compact('course'));
     }
 
     /**
@@ -135,17 +156,18 @@ class CourseController extends Controller
             $course->status         = $request->input('status');
             $course->begin_date     = $request->input('begin_date');
             $course->end_date       = $request->input('end_date');
+            $course->description    = $request->input('description');
             $photo                  = $request->file('image');
             if ($photo) {
                 $path = Storage::putFile('images', $photo);
                 $course->image = $path;
             } else {
                 $course->image          = $course->image;
-                $course->description    = $request->input('description');
-                $course->save();
-                $message                = 'Cập nhật khóa học thành công';
-                $type                   = 'success';
             }
+            
+            $course->save();
+            $message                = 'Cập nhật khóa học thành công';
+            $type                   = 'success';
         }
 
         return redirect(route('course.index'))
@@ -189,12 +211,32 @@ class CourseController extends Controller
     {
         $course = Course::find($id);
         if ($course) {
-            $tests = $course->tests()->paginate(100);
-            return view('admin.modules.courses.test', compact('course', 'tests'));
+            return view('admin.modules.courses.test', compact('course'));
         }
-        return redirect(route('course.index'))
-            ->with('message', 'Khóa học không tồn tại')
-            ->with('type_alert', "danger");
+        return abort(404);
+    }
+
+    /**
+     *
+     * @return DataTables
+     */
+    public function getTestData($id)
+    {
+        $tests = Test::select([
+            'tests.id',
+            'title',
+            'category',
+        ])->leftJoin('course_tests AS ct', 'ct.test_id', 'tests.id')
+            ->where('ct.course_id', $id);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($tests)
+            ->editColumn('category', function ($test) {
+                if ($test->category == 0) return 'Bài thi';
+                return 'Khảo sát';
+            })
+            ->rawColumns(['category'])
+            ->make(true);
     }
 
     /**
@@ -214,8 +256,39 @@ class CourseController extends Controller
             ->with('type_alert', "danger");
     }
 
-    public function addStudent(Request $request, $id)
+    /**
+     *
+     * @return DataTables
+     */
+    public function getStudentData($id)
     {
+        $users = User::select([
+            'users.id',
+            'email',
+            'status',
+            DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
+        ])->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
+            ->where('uc.course_id', $id);
+
+        // @phpstan-ignore-next-line
+        return DataTables::of($users)
+            ->editColumn('status', function ($user) {
+                if ($user->status == 0) {
+                    $message = 'Chấp nhận';
+                } else {
+                    $message = 'Đã chấp nhận';
+                }
+                return '<a href="" data-toggle="modal" data-target="#activeModal"
+                    onclick="javascript:user_active(' . $user->id . ')">' .
+                    $message . '
+                </a>';
+            })
+            ->filterColumn('fullname', function ($user, $keyword) {
+                $sql = "CONCAT(last_name,' ',first_name)  like ?";
+                $user->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->rawColumns(['fullname', 'status'])
+            ->make(true);
     }
 
     /**

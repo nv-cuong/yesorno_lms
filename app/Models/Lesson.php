@@ -59,6 +59,6 @@ class Lesson extends Model
             'user_lessons',
             'lesson_id',
             'user_id'
-        );
+        )->withPivot('status');
     }
 }

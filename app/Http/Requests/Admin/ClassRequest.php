@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin\ClassStudy;
+namespace App\Http\Requests\Admin;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class ClassRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,7 @@ class UpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'          => ['required', 'max:255'],
+            'name'          => "required| max:255| unique:class_studies,name," . $this->id,
             'course_id'     => ['required'],
             'description'   => ['required', 'min:20'],
             'schedule'      => ['required'],
