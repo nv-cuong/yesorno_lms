@@ -36,6 +36,7 @@ class UserTestController extends Controller
 
         if ($startedTime == null) {
             $startedTime = now();
+            $userTest->started_at = $startedTime;
             $userTest->save();
         } else {
             $passedSeconds  = now()->diffInSeconds($startedTime);
@@ -108,8 +109,9 @@ class UserTestController extends Controller
                 }
             }
         }
-        $userTest->status   = 1;
-        $userTest->score    =  $test_score;
+        $userTest->status       = 1;
+        $userTest->score        =  $test_score;
+        $userTest->submitted_at = $submittedTime;
         $userTest->save();
         if ($request->get('essayQuest')) {
             foreach ($request->get('essayQuest') as $question_id => $answer_id) {
