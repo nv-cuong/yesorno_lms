@@ -7,7 +7,6 @@ use Illuminate\Notifications\Notifiable;
 use Cartalyst\Sentinel\Users\EloquentUser;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class User extends EloquentUser
 {

@@ -68,13 +68,13 @@ class StudentCoursesController extends Controller
         $lesson = Lesson::where('slug', $slug)->first();
         $user_lesson = $getUser->lessons()->where('lesson_id', $lesson->id)->first()->pivot;
         $nextLesson = Lesson::where('id', '>', $lesson->id)->where('unit_id', $lesson->unit_id)->first();
-        $files = File::all()
-            ->where('lesson_id', $lesson->id);
+        $files = File::where('lesson_id', $lesson->id)->get();
         return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'user_lesson'));
     }
 
     /**
      * @param string $slug
+     * @return NULL
      */
     public function lessonProgress($slug)
     {
