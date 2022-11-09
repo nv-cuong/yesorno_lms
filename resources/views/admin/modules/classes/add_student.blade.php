@@ -34,13 +34,7 @@
                                         <td>{{ $item->first_name }}</td>
                                         <td>{{ $item->email }}</td>
                                         <td>{{ $item->birthday }}</td>
-                                        <td>
-                                            @if ($item->gender == 'female')
-                                            Nữ
-                                            @elseif ($item->gender == 'male')
-                                            Nam
-                                            @endif
-                                        </td>
+                                        <td>{{ __('userlabel.' . $item->gender) }}</td>
                                         <td>
                                             <input class="form-check-input" type="checkbox" id="student" 
                                                 name="std_id[]" value="{{ $item->id }}" 
