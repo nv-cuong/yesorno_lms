@@ -59,22 +59,31 @@
 
                 <div class="auhtor-con">
                     <ul class="author-list">
-                        <li> <strong>Họ và tên:</strong> {{ $student->first_name }} {{ $student->last_name }}</li>
+                        <li> <strong>Họ và tên:</strong> {{ $student->last_name }} {{ $student->first_name }}</li>
                         <li> <strong>Giới tính:</strong>
                             @if ($student->gender == 'male')
                                 Nam
-                            @else
+                            @elseif ($student->gender == 'female')
                                 Nữ
+                            @else
+                                Khác
                             @endif
                         </li>
                         <li> <strong>Số điện thoại:</strong> {{ $student->phone }}</li>
+                        <li> <strong>Ngày sinh:</strong> {{ $student->birthday }}</li>
                         <li> <strong>E-mail:</strong> {{ $student->email }}</li>
                         @if (empty($student->address))
-                            Chưa cập nhật
+                            <li> <strong>Địa chỉ:</strong> Chưa cập nhật</li>
                         @else
                             <li> <strong>Địa chỉ:</strong> {{ $student->address }}</li>
                         @endif
                     </ul>
+                    <br><br>
+                    <div>
+                        <a href="{{ route('profile.edit', $student->id) }}" class="btn btn-success btn-lg">Thay đổi thông
+                            tin</a>
+                        <a href="#" class="btn btn-primary btn-lg">Đổi mật khẩu</a>
+                    </div>
                 </div>
             </div>
         </div>

@@ -69,5 +69,10 @@ Route::get('/user_tests', [UserTestController::class, 'test_user'])
 Route::get('/user_tests/detail/{id}', [UserTestController::class, 'user_tests_detail'])
     ->name('user_tests_detail');
 
+//Profile users
 Route::post('/uploadImg', [HomeController::class, 'uploadImg'])
     ->name('uploadImg');
+Route::get('/profile/edit/{id}', [HomeController::class, 'profile_edit'])
+    ->name('profile.edit');
+Route::put('/profile/update/{id}', [HomeController::class, 'profile_update'])
+    ->name('profile.update');
