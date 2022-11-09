@@ -167,7 +167,7 @@ class HomeController extends Controller
 
         $file_image = $request->file('name_img');
         $path_old = $user->path;
-        $path = Storage::putFile('public/images', $file_image);
+        $path = Storage::putFile('images', $file_image);
         $name = Storage::url($path);
         if ($path_old != NULL) {
             Storage::delete($path_old);
@@ -201,7 +201,7 @@ class HomeController extends Controller
         $file_image = $request->file('name_img');
         if ($file_image) {
             $path_old = $student->path;
-            $path = Storage::putFile('public/images', $file_image);
+            $path = Storage::putFile('images', $file_image);
             $name = Storage::url($path);
             if ($path_old != NULL) {
                 Storage::delete($path_old);

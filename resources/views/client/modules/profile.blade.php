@@ -44,7 +44,7 @@
                         @if (empty($student->name_img))
                             <img src="{{ asset('user/img/team/team-1.jpg') }}" alt="Chưa có ảnh" class="mb-3">
                         @else
-                            <img src="{{ asset($student->name_img) }}" alt="Ảnh cá nhân" class="mb-3"
+                            <img src="{{ asset($student->path) }}" alt="Ảnh cá nhân" class="mb-3"
                                 style="height: 300px; width: 400px;">
                         @endif
                         <input type="hidden" name="student_id" value="{{ $student->id }}">
