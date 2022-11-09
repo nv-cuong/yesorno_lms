@@ -121,9 +121,13 @@ class TestController extends Controller
     {
         $id = $request->input('test_id', 'value');
         $test = Test::find($id);
+        $vld = DB::table('user_tests') -> select('test_id')
+        ->join('tests' ,'user_tests.test_id','=','tests.id')->where('test_id',$id);
+        dd($vld);
         if ($test) {
             $test->course()->detach();
             $test->question()->detach();
+            if($vld != $id)
             Test::destroy($id);
             return redirect()
                 ->action([TestController::class, 'index'])
