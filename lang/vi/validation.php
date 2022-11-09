@@ -156,6 +156,8 @@ return [
         'question'      => 'câu hỏi',
         'score'         => 'điểm',
         'is_correct'    => 'đáp án đúng',
-        'student_id'    => 'học viên'
+        'student_id'    => 'học viên',
+        'category'      => 'loại',
+        'course'        => 'khóa',
     ],
 ];

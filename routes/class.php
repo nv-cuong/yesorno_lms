@@ -3,10 +3,6 @@
 use App\Http\Controllers\Admin\ClassController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/class/add/{slug}', [ClassController::class, 'add'])
-    ->name('class.add');
-Route::post('/class/add/{id}', [ClassController::class, 'join'])
-    ->name('class.join');
 Route::prefix('class')->group(function () {
     Route::get('/', [ClassController::class, 'index'])
         ->name('class.index')->middleware('myweb.auth:class.show');
@@ -31,4 +27,10 @@ Route::prefix('class')->group(function () {
 
     Route::get('/show/{id}', [ClassController::class, 'show'])
         ->name('class.show')->middleware('myweb.auth:class.show');
+
+    Route::get('/add/{slug}', [ClassController::class, 'add'])
+        ->name('class.add')->middleware('myweb.auth');
+
+    Route::post('/add/{id}', [ClassController::class, 'join'])
+        ->name('class.join')->middleware('myweb.auth');
 });

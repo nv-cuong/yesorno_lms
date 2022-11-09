@@ -25,7 +25,7 @@
                     id="multiple-select-clear-field" name="question[]" data-dependent="course" multiple>
                     @foreach ($questions as $row)
                         <option value="{{ $row->id }}">
-                            {{ $row->id . '. ' . $row->content . ' ' }}[{{ $a[$row->category] }}]
+                            {{ $row->id . '. ' . $row->content . ' ' }}[{{ $q_categories[$row->category] }}]
                         </option>
                     @endforeach
                 </select>
