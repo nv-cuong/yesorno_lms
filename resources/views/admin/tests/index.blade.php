@@ -5,7 +5,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-12">
-                    @include('Admin/_alert')
+                    @include('admin/_alert')
                 </div>
 
             </div>

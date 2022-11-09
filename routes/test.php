@@ -19,7 +19,7 @@ Route::prefix('/test')->name('test.')->group(function () {
     Route::post('/update/{id}', [TestController::class, 'update'])
         ->name('update')->middleware('myweb.auth:test.edit');
     Route::get('/view/{id}', [TestController::class, 'view'])
-        ->name('view');
+        ->name('view')->middleware('myweb.auth:test.show');
     Route::get('/create/{id_course}/{id_test}/{arr_quest}', [TestController::class, 'createquestion'])
         ->name('create_question');
     Route::post('/store/question/{id_test}', [TestController::class, 'store_question'])
@@ -30,8 +30,4 @@ Route::prefix('/test')->name('test.')->group(function () {
         ->name('question.edit');
     Route::post('/update_question/{id_test}/{id_question_old}', [TestController::class, 'question_update'])
         ->name('question.update');
-    Route::post('/search', [TestController::class, 'search'])
-        ->name('search');
-    Route::get('/update_category_test', [TestController::class, 'update_category_test'])
-        ->name('update_category_test');
 });

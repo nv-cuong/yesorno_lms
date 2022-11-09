@@ -24,11 +24,12 @@ class TestRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => ['required'],
-            'time' => ['required','numeric'],
-            'description'=> ['required','min:5'],
-            'question'=>['required'],
-            'course'=>['required'],
+            'title'         => ['required'],
+            'category'      => ['required'],
+            'time'          => ['required','numeric','min:1'],
+            'description'   => ['required','min:5'],
+            'question'      => ['required'],
+            'course'        => ['required'],
         ];
     }
 }

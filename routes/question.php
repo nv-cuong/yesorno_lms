@@ -30,7 +30,6 @@ Route::prefix('/questions')->name('question.')->group(function () {
     Route::get('/answer/{id}', [QuestionController::class, 'show_answser'])
         ->name('answer')->middleware('myweb.auth:question.show');
 
-            Route::get('export', [ImportQuestionController::class, 'export' ])->name('export');
-            Route::post('import', [ImportQuestionController::class, 'import'])->name('import');
-
+    Route::get('export', [ImportQuestionController::class, 'export'])->name('export');
+    Route::post('import', [ImportQuestionController::class, 'import'])->name('import');
 });
