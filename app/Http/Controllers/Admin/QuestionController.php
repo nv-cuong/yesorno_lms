@@ -17,8 +17,6 @@ use Yajra\DataTables\Facades\DataTables;
 
 class QuestionController extends Controller
 {
-
-
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -82,8 +80,6 @@ class QuestionController extends Controller
     public function create()
     {
         $course = Course::all();
-
-
         return view('admin.questions.create', compact('course'));
     }
 
@@ -141,8 +137,6 @@ class QuestionController extends Controller
         return redirect(route('question.index'))->with('message', 'Thêm câu hỏi thành công !')->with('type_alert', "success");
     }
 
-
-
     /**
      * @param Request $request
      * @param int $id
@@ -151,9 +145,7 @@ class QuestionController extends Controller
     public function edit(Request $request, $id)
     {
         $question_test = Question::find($id);
-
-
-        if ($question_test->tests->count() > 0) {
+        if ($question_test->tests()->exists()) {
             return redirect(route('question.index'))
                 ->with('message', "Câu hỏi có trong bài test không thể sửa !")
                 ->with('type_alert', "danger");
@@ -180,7 +172,6 @@ class QuestionController extends Controller
      */
     public function update(EditQuestionRequest $request, $id)
     {
-
         $msg = 'Câu hỏi không tồn tại !';
         $question = Question::find($id);
         if ($question->category == 1) {
@@ -217,7 +208,6 @@ class QuestionController extends Controller
         return redirect(route('question.index'))->with('message', $msg)->with('type_alert', "success");
     }
 
-
     /**
      * @param Request $request
      * @throws ModelNotFoundException
@@ -228,9 +218,9 @@ class QuestionController extends Controller
         $question_id = $request->input('question_id', 0);
         $question = Question::find($question_id);
 
-        if ($question->tests()->count() > 0) {
+        if ($question->tests()->exists()) {
             return redirect(route('question.index'))
-                ->with('message', "Câu hỏi có trong bài test không thể sửa !")
+                ->with('message', "Câu hỏi có trong bài test không thể xóa !")
                 ->with('type_alert', "danger");
         } else {
             if ($question_id) {
@@ -243,7 +233,6 @@ class QuestionController extends Controller
             }
         }
     }
-
 
     /**
      * @param int $id
