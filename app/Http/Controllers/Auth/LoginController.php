@@ -7,8 +7,6 @@ use App\Http\Requests\Auth\LoginRequest;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Sentinel\Checkpoints\NotActivatedException;
 use Cartalyst\Sentinel\Checkpoints\ThrottlingException;
-use Illuminate\Support\Facades\Cookie;
-
 
 class LoginController extends Controller
 {
@@ -32,18 +30,18 @@ class LoginController extends Controller
 
 
         try {
-            if($request->has('rememberme')) 
-            $user = Sentinel::authenticate($credentials,true);
-            else 
-            $user = Sentinel::authenticate($credentials,false);
-            if ($user) {   
+            $remember = false;
+            if($request->has('rememberme')) {
+                $remember = true;
+            }
 
+            $user = Sentinel::authenticate($credentials, $remember);
+            
+            if ($user) {   
+                $request->session()->regenerate();
                 if ($user-> inRole ('student')){
-                    $request->session()->regenerate();
                     return redirect()->intended(route('home'));
-                }
-                else{
-                    $request->session()->regenerate();
+                }else{
                     return redirect()->intended(route('dashboard'));
                 }
             } else {
