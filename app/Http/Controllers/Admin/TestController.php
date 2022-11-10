@@ -119,15 +119,11 @@ class TestController extends Controller
     {
         $id = $request->input('test_id');
         $test = Test::find($id);
-        if ($test->user()->exists()) {
-            return redirect()
-                ->action([TestController::class, 'index'])
-                ->with('message', 'Không thể xóa! Đã có học viên làm bài kiểm tra!')
-                ->with('type_alert', 'danger');
-        }
-        if ($test) {
+
+        if ($test->user()->exists() == false) {
             $test->course()->detach();
             $test->question()->detach();
+
             Test::destroy($id);
             return redirect()
                 ->action([TestController::class, 'index'])

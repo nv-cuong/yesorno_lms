@@ -26,16 +26,22 @@ class LoginController extends Controller
     public function postLogin(LoginRequest $request)
     {
         $credentials = $request->except('_token');
+    
+
 
         try {
-            $user = Sentinel::authenticate($credentials);
-            if ($user) {
+            $remember = false;
+            if($request->has('rememberme')) {
+                $remember = true;
+            }
+
+            $user = Sentinel::authenticate($credentials, $remember);
+            
+            if ($user) {   
+                $request->session()->regenerate();
                 if ($user-> inRole ('student')){
-                    $request->session()->regenerate();
                     return redirect()->intended(route('home'));
-                }
-                else{
-                    $request->session()->regenerate();
+                }else{
                     return redirect()->intended(route('dashboard'));
                 }
             } else {
