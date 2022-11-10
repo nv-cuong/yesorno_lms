@@ -87,9 +87,9 @@ class QuestionsImport implements  ToModel, WithHeadingRow
                         ]);
                     }
                 }
-            } catch (Exception $e) {
+            } catch (Exception) {
             DB::rollback();
-            throw new Exception($e->getMessage(""));
+            throw new Exception();
         }
         DB::commit();
     }

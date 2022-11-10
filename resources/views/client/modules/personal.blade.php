@@ -43,7 +43,7 @@
                     @if (empty($student->name_img))
                         <img src="{{ asset('user/img/team/team-1.jpg') }}" alt="Chưa có ảnh" class="mb-3">
                     @else
-                        <img src="{{ asset($student->name_img) }}" alt="Ảnh cá nhân" class="mb-3"
+                        <img src="{{ asset($student->path) }}" alt="Ảnh cá nhân" class="mb-3"
                             style="height: 300px; width: 400px;">
                     @endif
                     <form action="{{ route('uploadImg') }}" enctype="multipart/form-data" method="post">
@@ -59,22 +59,23 @@
 
                 <div class="auhtor-con">
                     <ul class="author-list">
-                        <li> <strong>Họ và tên:</strong> {{ $student->first_name }} {{ $student->last_name }}</li>
-                        <li> <strong>Giới tính:</strong>
-                            @if ($student->gender == 'male')
-                                Nam
-                            @else
-                                Nữ
-                            @endif
-                        </li>
+                        <li> <strong>Họ và tên:</strong> {{ $student->last_name }} {{ $student->first_name }}</li>
+                        <li> <strong>Giới tính:</strong> {{ __('userlabel.' . $student->gender) }} </li>
                         <li> <strong>Số điện thoại:</strong> {{ $student->phone }}</li>
+                        <li> <strong>Ngày sinh:</strong> {{ $student->birthday }}</li>
                         <li> <strong>E-mail:</strong> {{ $student->email }}</li>
                         @if (empty($student->address))
-                            Chưa cập nhật
+                            <li> <strong>Địa chỉ:</strong> Chưa cập nhật</li>
                         @else
                             <li> <strong>Địa chỉ:</strong> {{ $student->address }}</li>
                         @endif
                     </ul>
+                    <br><br>
+                    <div>
+                        <a href="{{ route('profile.edit', $student->id) }}" class="btn btn-success btn-lg">Thay đổi thông
+                            tin</a>
+                        <a href="" class="btn btn-primary btn-lg">Đổi mật khẩu</a>
+                    </div>
                 </div>
             </div>
         </div>
