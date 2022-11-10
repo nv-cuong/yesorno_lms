@@ -22,7 +22,7 @@ class IndexController extends Controller
             return view('login');
         }
 
-        if (!$user->hasAccess('dashboard')) {
+        if ($user->hasAccess('dashboard') == false) {
             abort(403);
         }
 
