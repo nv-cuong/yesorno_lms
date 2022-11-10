@@ -92,7 +92,9 @@
 
                                             <option value="" {{ old('role') ? 'selected="selected"' : '' }}></option>
                                             @foreach ($roleDb as $role)
-                                                @if (old('role') == $role->id)
+                                                @if ($role->id == 1)
+                                                    continue;
+                                                @elseif (old('role') == $role->id)
                                                     <option value="{{ $role->id }}" selected="selected">
                                                         {{ $role->name }}</option>
                                                 @else

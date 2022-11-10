@@ -40,7 +40,7 @@
                                 @enderror
                             </form>
                         </div>   
-                        <table class="table table-striped" id="question">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="question">
                             <thead>
                                 <tr>
                                     <th>STT</th>

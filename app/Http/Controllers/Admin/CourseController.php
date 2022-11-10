@@ -275,13 +275,14 @@ class CourseController extends Controller
             ->editColumn('status', function ($user) {
                 if ($user->status == 0) {
                     $message = 'Chấp nhận';
+                    return '<a href="" data-toggle="modal" data-target="#activeModal"
+                        onclick="javascript:user_active(' . $user->id . ')">' .
+                        $message . '
+                    </a>';
                 } else {
                     $message = 'Đã chấp nhận';
+                    return $message;
                 }
-                return '<a href="" data-toggle="modal" data-target="#activeModal"
-                    onclick="javascript:user_active(' . $user->id . ')">' .
-                    $message . '
-                </a>';
             })
             ->filterColumn('fullname', function ($user, $keyword) {
                 $sql = "CONCAT(last_name,' ',first_name)  like ?";

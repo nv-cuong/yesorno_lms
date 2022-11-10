@@ -40,7 +40,7 @@ class StudentController extends Controller
             'address',
             'age',
             'gender',
-            DB::raw("CONCAT(first_name,' ', last_name) as fullname"),
+            DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
             'first_name',
             'last_name'
         ])
@@ -51,7 +51,7 @@ class StudentController extends Controller
         // @phpstan-ignore-next-line
         return DataTables::of($students)
         ->filterColumn('fullname', function($query, $keyword) {
-            $sql = "CONCAT(first_name,' ',last_name)  like ?";
+            $sql = "CONCAT(last_name,' ',first_name)  like ?";
             $query->whereRaw($sql, ["%{$keyword}%"]);
         })
         ->addColumn('actions', function ($student) {
