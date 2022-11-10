@@ -24,7 +24,7 @@
 
             <div class="form-floating">
                 <input type="email" 
-                @if(Cookie::has('emailuser')) value ="{{Cookie::get('emailuser')}}" @endif  
+
                 name="email" class="form-control @error('email') is-invalid @enderror"
                     id="floatingInput" placeholder="name@example.com" >
                 <label for="floatingInput">E-mail</label>
@@ -36,7 +36,7 @@
             </div>
             <div class="form-floating">
                 <input type="password" 
-                @if(Cookie::has('passworduser')) value ="{{Cookie::get('passworduser')}}" @endif 
+
                  name="password" class="form-control @error('password') is-invalid @enderror"
                     id="floatingPassword" placeholder="Password">
                 <label for="floatingPassword">Mật khẩu</label>
@@ -49,7 +49,7 @@
 
             <div class="checkbox mb-3">
                 <label>
-                    <input type="checkbox" @if(Cookie::has('emailuser')) checked @endif
+                    <input type="checkbox" 
                      name="rememberme" > Lưu đăng nhập
                 </label>
             </div>

@@ -28,12 +28,14 @@ class LoginController extends Controller
     public function postLogin(LoginRequest $request)
     {
         $credentials = $request->except('_token');
-        if($request->has('rememberme')) {
-            Cookie::queue('emailuser',$request->email,1440);
-            Cookie::queue('passworduser',$request->password,1440);
-        } 
+    
+
+
         try {
-            $user = Sentinel::authenticate($credentials);
+            if($request->has('rememberme')) 
+            $user = Sentinel::authenticate($credentials,true);
+            else 
+            $user = Sentinel::authenticate($credentials,false);
             if ($user) {   
 
                 if ($user-> inRole ('student')){
