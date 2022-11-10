@@ -60,15 +60,7 @@
                 <div class="auhtor-con">
                     <ul class="author-list">
                         <li> <strong>Họ và tên:</strong> {{ $student->last_name }} {{ $student->first_name }}</li>
-                        <li> <strong>Giới tính:</strong>
-                            @if ($student->gender == 'male')
-                                Nam
-                            @elseif ($student->gender == 'female')
-                                Nữ
-                            @else
-                                Khác
-                            @endif
-                        </li>
+                        <li> <strong>Giới tính:</strong> {{ __('userlabel.' . $student->gender) }} </li>
                         <li> <strong>Số điện thoại:</strong> {{ $student->phone }}</li>
                         <li> <strong>Ngày sinh:</strong> {{ $student->birthday }}</li>
                         <li> <strong>E-mail:</strong> {{ $student->email }}</li>
@@ -82,7 +74,7 @@
                     <div>
                         <a href="{{ route('profile.edit', $student->id) }}" class="btn btn-success btn-lg">Thay đổi thông
                             tin</a>
-                        <a href="#" class="btn btn-primary btn-lg">Đổi mật khẩu</a>
+                        <a href="" class="btn btn-primary btn-lg">Đổi mật khẩu</a>
                     </div>
                 </div>
             </div>
