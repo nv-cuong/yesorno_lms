@@ -67,5 +67,10 @@ Route::get('/user_tests', [UserTestController::class, 'test_user'])
 Route::get('/user_tests/detail/{id}', [UserTestController::class, 'user_tests_detail'])
     ->name('user_tests_detail')->middleware('myweb.auth');
 
+//Profile users
 Route::post('/uploadImg', [HomeController::class, 'uploadImg'])
     ->name('uploadImg')->middleware('myweb.auth');
+Route::get('/profile/edit/{id}', [HomeController::class, 'profile_edit'])
+    ->name('profile.edit')->middleware('myweb.auth');
+Route::put('/profile/update/{id}', [HomeController::class, 'profile_update'])
+    ->name('profile.update')->middleware('myweb.auth')->middleware('myweb.auth');

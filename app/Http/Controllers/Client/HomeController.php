@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
@@ -135,10 +136,10 @@ class HomeController extends Controller
     {
         $getUser = Sentinel::getUser();
         $id = $getUser->id;
-        $student = User::withCount(['courses', 'lessons' => function($query){
+        $student = User::withCount(['courses', 'lessons' => function ($query) {
             return $query->where('status', 1);
         }])->find($id);
-       
+
         return view('client.modules.personal', compact('student'));
     }
 
@@ -166,7 +167,7 @@ class HomeController extends Controller
 
         $file_image = $request->file('name_img');
         $path_old = $user->path;
-        $path = Storage::putFile('public/images', $file_image);
+        $path = Storage::putFile('images', $file_image);
         $name = Storage::url($path);
         if ($path_old != NULL) {
             Storage::delete($path_old);
@@ -178,5 +179,38 @@ class HomeController extends Controller
         $user->save();
 
         return redirect(route('personal'));
+    }
+
+    public function profile_edit($id)
+    {
+        $student = User::find($id);
+        return view('client.modules.profile', compact('student'));
+    }
+
+    public function profile_update(Request $request, $id)
+    {
+
+        $student = User::findOrFail($id);
+        $student->phone = $request->input('phone');
+        $student->first_name = $request->input('first_name');
+        $student->gender = $request->input('gender');
+        $student->last_name = $request->input('last_name');
+        $student->address = $request->input('address');
+        $student->birthday = $request->input('birthday');
+
+        $file_image = $request->file('name_img');
+        if ($file_image) {
+            $path_old = $student->path;
+            $path = Storage::putFile('images', $file_image);
+            $name = Storage::url($path);
+            if ($path_old != NULL) {
+                Storage::delete($path_old);
+            }
+            $student->name_img = $name;
+            $student->path = $path;
+        }
+
+        $student->save();
+        return redirect()->route('personal');
     }
 }
