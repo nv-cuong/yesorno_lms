@@ -42,6 +42,12 @@ class RoleController extends Controller
             ->addColumn('actions', function ($role) {
                 return view('admin.auth.role.actions', ['row' => $role])->render();
             })
+            ->editColumn('updated_at', function ($role) {
+                return $role->updated_at;
+            })
+            ->editColumn('created_at', function ($role) {
+                return $role->created_at;
+            })
             ->rawColumns(['actions'])
             ->make(true);
     }

@@ -28,7 +28,7 @@
                                                 <th class="text-center">Số điện thoại</th>
                                                 <th class="text-center">Địa chỉ</th>
                                                 <th class="text-center">Ngày sinh</th>
-                                                <th class="text-center">Tùy chọn</th>
+                                                <th class="text-center" style="width: 20%;">Tùy chọn</th>
                                             </tr>
                                         </thead>
                                         <tbody id="load">

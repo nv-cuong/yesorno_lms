@@ -28,7 +28,7 @@
                             </a>
                         </div>
 
-                        <table class="table table-striped" id="testId">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="testId">
                             <thead>
                                 <tr>
                                     <th>
