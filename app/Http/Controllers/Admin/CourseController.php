@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
+use App\Mail\SendEmail;
 use App\Models\Course;
 use App\Models\Notification;
 use App\Models\Test;
@@ -13,6 +14,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -164,7 +166,7 @@ class CourseController extends Controller
             } else {
                 $course->image          = $course->image;
             }
-            
+
             $course->save();
             $message                = 'Cập nhật khóa học thành công';
             $type                   = 'success';
@@ -311,6 +313,11 @@ class CourseController extends Controller
             $user = User::find($user_id);
             $notification = Notification::find(1);
             $user->notifications()->attach($notification->id);
+
+            $email_user = $user->email;
+            //send mail
+            Mail::to($email_user)->send(new SendEmail());
+
             return redirect(route('course.student', $id))
                 ->with('message', 'Học viên đã được chấp nhận vào khóa học')
                 ->with('type_alert', "success");

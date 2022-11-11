@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Client\HomeController;
+use App\Http\Controllers\MailController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -48,3 +50,4 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');
+Route::get('mail/send', [MailController::class,'send']);

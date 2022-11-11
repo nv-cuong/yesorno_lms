@@ -23,28 +23,22 @@ class QuestionRequest extends FormRequest
      */
     public function rules()
     {
-        if ($this->category == 1) {
-            $rules = [
-                'content' => ['required', 'max:250', 'unique:questions'],
-                'course_id' => ['required'],
-                'score' => ['required', 'integer', 'min:1'],
-                'is_correct' => ['required'],
-            ];
+        $rules = [
+            'content' => "required|max:250|unique:questions,content," . $this->id,
+            'course_id' => ['required'],
+            'score' => ['required', 'integer', 'min:1'],
+        ];
 
+        if ($this->category == 1) {
+            $rules['is_correct'] = ['required'];
             for ($idx = 0; $idx < 4; $idx++) {
                 $rules['answer1.' . $idx] = "required";
             }
+        } 
 
-            return $rules;
-        } else {
-            return [
-                'content' => ['required', 'max:50', 'unique:questions'],
-                'course_id' => ['required'],
-                'score' => ['required', 'integer', 'min:1'],
-            ];
-        }
+        return $rules;
     }
-    
+
     public function messages()
     {
         return [
