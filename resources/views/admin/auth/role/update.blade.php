@@ -84,5 +84,43 @@
     <!-- /.content -->
 @stop
 
-
+@section('scripts')
+<script>
+    $(function () {
+        var oTable = $('#acl-table').DataTable({
+            aaSorting: [[0, 'asc']],
+            stateSave: true,
+            bPaginate: false,
+            bInfo: false,
+            responsive: true,
+            processing: true,
+            bFilter: false,
+            fixedHeader: true,
+            columns: [
+                {orderable: true, searchable: true},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+            ]
+        });
+    });
+</script>
+<script language="javascript">
+    $('.styled').click(function(e){
+        $("#acl-all").prop( "checked", false );
+    })
+    
+    $('#acl-all').click(function (e) {
+        var all = $('#acl-all');
+            console.log(all);
+        if (all.is(":checked")) {
+            $('.acl').prop('checked', true);
+        } else {
+            $('.acl').prop('checked', false);
+        }
+    });
+</script>
+@stop
 

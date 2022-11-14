@@ -1,5 +1,5 @@
 <div class="checkbox checkbox-success">
-    <input type="checkbox" name="acl_all" value="ok" class="styled acl" id="acl-all"
+    <input type="checkbox" name="acl_all" value="ok" class="acl" id="acl-all"
             style="margin-left: 0;" {{ old('acl_all') ? 'checked' : ''}}>
     <label for="acl-all">Checked All</label>
 </div>
@@ -296,53 +296,3 @@
 
     </tbody>
 </table>
-
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
-  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-<script>
-    $(function () {
-        var oTable = $('#acl-table').DataTable({
-            aaSorting: [[0, 'asc']],
-            stateSave: true,
-            bPaginate: false,
-            bInfo: false,
-            responsive: true,
-            processing: true,
-            bFilter: false,
-            fixedHeader: true,
-            columns: [
-                {orderable: true, searchable: true},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-            ]
-
-        });
-    });
-
-    $('#acl-all').on('click', function () {
-        var all = $('#acl-all');
-        if (all.is(":checked")) {
-            $('.acl').prop('checked', true);
-        } else {
-            $('.acl').prop('checked', false);
-        }
-    });
-</script>
