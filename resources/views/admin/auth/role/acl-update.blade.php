@@ -35,7 +35,7 @@
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="user_show" {{ old('user_show') || array_key_exists('user.show', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="user_view" {{ old('user_view') || array_key_exists('user.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -70,7 +70,7 @@
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="role_show" {{ old('role_show') || array_key_exists('role.show', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="role_view" {{ old('role_view') || array_key_exists('role.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -103,7 +103,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_show" {{ old('course_show') || array_key_exists('course.show', $permissions) ? 'checked' : ''}}>
+                        name="course_view" {{ old('course_view') || array_key_exists('course.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -137,7 +137,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_show" {{ old('class_show') || array_key_exists('class.show', $permissions) ? 'checked' : ''}}>
+                        name="class_view" {{ old('class_view') || array_key_exists('class.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -171,7 +171,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_show" {{ old('student_show') || array_key_exists('student.show', $permissions) ? 'checked' : ''}}>
+                        name="student_view" {{ old('student_view') || array_key_exists('student.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -205,7 +205,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_show" {{ old('test_show') || array_key_exists('test.show', $permissions) ? 'checked' : ''}}>
+                        name="test_view" {{ old('test_view') || array_key_exists('test.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -239,7 +239,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_show" {{ old('question_show') || array_key_exists('question.show', $permissions) ? 'checked' : ''}}>
+                        name="question_view" {{ old('question_view') || array_key_exists('question.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -272,7 +272,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_show" {{ old('score_show') || array_key_exists('score.show', $permissions) ? 'checked' : ''}}>
+                        name="score_view" {{ old('score_view') || array_key_exists('score.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>

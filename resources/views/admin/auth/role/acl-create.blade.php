@@ -39,7 +39,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="user_show" {{ old('user_show') ? 'checked' : ''}}>
+                        name="user_view" {{ old('user_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -79,7 +79,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="role_show" {{ old('role_show') ? 'checked' : ''}}>
+                        name="role_view" {{ old('role_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -115,7 +115,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_show" {{ old('course_show') ? 'checked' : ''}}>
+                        name="course_view" {{ old('course_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -149,7 +149,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_show" {{ old('class_show') ? 'checked' : ''}}>
+                        name="class_view" {{ old('class_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -183,7 +183,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_show" {{ old('student_show') ? 'checked' : ''}}>
+                        name="student_view" {{ old('student_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -217,7 +217,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_show" {{ old('test_show') ? 'checked' : ''}}>
+                        name="test_view" {{ old('test_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -251,7 +251,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_show" {{ old('question_show') ? 'checked' : ''}}>
+                        name="question_view" {{ old('question_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -285,7 +285,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_show" {{ old('score_show') ? 'checked' : ''}}>
+                        name="score_view" {{ old('score_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
