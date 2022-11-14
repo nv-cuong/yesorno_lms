@@ -18,49 +18,11 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory()->count(10)->create()->each(function($user) {
-        //     DB::table('activations')->insert([
-        //         'user_id' => $user->id,
-        //         'code' => fake()->password(),
-        //         'completed' => '1'
-        //     ]);
-        //     DB::table('role_users')->insert([
-        //         'user_id' => $user->id,
-        //         'role_id' => '5',
-        //     ]);
-        // });
         DB::table('role_users')->truncate();
         DB::table('roles')->truncate();
         DB::table('users')->truncate();
-        $roles = [
-            [
-                'name' => 'Admin',
-                'slug' => 'admin',
-                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
-            ],
-            [
-                'name' => 'Manager',
-                'slug' => 'manager',
-                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
-            ],
-            [
-                'name' => 'Teacher',
-                'slug' => 'teacher',
-                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
-            ],
-            [
-                'name' => 'Class Manager',
-                'slug' => 'class-manager',
-                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
-            ],
-            [
-                'name' => 'Student',
-                'slug' => 'student',
-                'permissions'=> '{"dashboard":true,"acl.all":true,"user.status":true}',
-            ],
-        ];
 
-        Role::insert($roles);
+        $this->call(RoleSeeder::class);
 
         $users = [
             [
@@ -139,10 +101,8 @@ class UserSeeder extends Seeder
                 case 'student@example.com':
                     $role = Sentinel::findRoleBySlug('student');
                     $role->users()->attach($user);
-                    
                     break;
             }
         }
-
     }
 }
