@@ -73,64 +73,58 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
 @stop
 @section('scripts')
-    <script type="text/javascript">
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-                "oLanguage": {
-                    "sInfo": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ học viên", // text you want show for info section
-                    "sSearch": "Tìm kiếm",
-                    "oPaginate": {
-                        "sPrevious": "Trước",
-                        "sNext": "Tiếp",
-                    }
-                },
-            }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-        });
-    </script>
+<script type="text/javascript">
+    $(function() {
+        $("#example1").DataTable({
+            "responsive": true,
+            "lengthChange": false,
+            "autoWidth": false,
+            "oLanguage": {
+                "sInfo": "", // text you want show for info section
+                "sSearch": "Tìm kiếm",
+                "oPaginate": {
+                    "sPrevious": "Trước",
+                    "sNext": "Tiếp",
+                }
+            },
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    });
+</script>
+<script>
+    function myFunction(id) {
+        document.getElementById("question_id").value = id;
+    }
+</script>
+@endsection
 
-    @yield('modal')
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Xóa câu hỏi?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có muốn xóa không?
-                </div>
-                <div class="modal-footer">
-                    <form method="post" action="{{ route('test.question.delete', $tests->id) }}"
-                        onsubmit="return ConfirmDelete( this )">
-                        @method('DELETE')
-                        @csrf
-                        <input type="hidden" name="question_id" id='question_id' value="0"><br>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
-
-                        <button class="btn btn-danger" type="submit">Đồng ý</button>
-                    </form>
-                </div>
+@section('modal')
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa câu hỏi?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn xóa không?
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="{{ route('test.question.delete', $tests->id) }}"
+                    onsubmit="return ConfirmDelete( this )">
+                    @method('DELETE')
+                    @csrf
+                    <input type="hidden" name="question_id" id='question_id' value="0"><br>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Không</button>
+                    <button class="btn btn-danger" type="submit">Đồng ý</button>
+                </form>
             </div>
         </div>
     </div>
-    </div>
-    </div>
-
-    @yield('js')
-    <script>
-        function myFunction(id) {
-            document.getElementById("question_id").value = id;
-        }
-    </script>
+</div>
 @endsection

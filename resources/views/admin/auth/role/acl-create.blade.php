@@ -1,5 +1,5 @@
 <div class="checkbox checkbox-success">
-    <input type="checkbox" name="acl_all" value="ok" class="styled acl" id="acl-all"
+    <input type="checkbox" name="acl_all" value="ok" class="acl" id="acl-all"
             style="margin-left: 0;" {{ old('acl_all') ? 'checked' : ''}}>
     <label for="acl-all">Checked All</label>
 </div>
@@ -39,7 +39,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="user_show" {{ old('user_show') ? 'checked' : ''}}>
+                        name="user_view" {{ old('user_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -79,7 +79,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="role_show" {{ old('role_show') ? 'checked' : ''}}>
+                        name="role_view" {{ old('role_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -115,7 +115,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_show" {{ old('course_show') ? 'checked' : ''}}>
+                        name="course_view" {{ old('course_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -149,7 +149,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_show" {{ old('class_show') ? 'checked' : ''}}>
+                        name="class_view" {{ old('class_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -183,7 +183,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_show" {{ old('student_show') ? 'checked' : ''}}>
+                        name="student_view" {{ old('student_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -217,7 +217,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_show" {{ old('test_show') ? 'checked' : ''}}>
+                        name="test_view" {{ old('test_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -251,7 +251,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_show" {{ old('question_show') ? 'checked' : ''}}>
+                        name="question_view" {{ old('question_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -285,7 +285,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_show" {{ old('score_show') ? 'checked' : ''}}>
+                        name="score_view" {{ old('score_view') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -296,53 +296,3 @@
 
     </tbody>
 </table>
-
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
-  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-<script>
-    $(function () {
-        var oTable = $('#acl-table').DataTable({
-            aaSorting: [[0, 'asc']],
-            stateSave: true,
-            bPaginate: false,
-            bInfo: false,
-            responsive: true,
-            processing: true,
-            bFilter: false,
-            fixedHeader: true,
-            columns: [
-                {orderable: true, searchable: true},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-            ]
-
-        });
-    });
-
-    $('#acl-all').on('click', function () {
-        var all = $('#acl-all');
-        if (all.is(":checked")) {
-            $('.acl').prop('checked', true);
-        } else {
-            $('.acl').prop('checked', false);
-        }
-    });
-</script>
