@@ -1,3 +1,6 @@
+@php
+$permissions = $role->permissions;
+@endphp
 <div class="checkbox checkbox-success">
     <input type="checkbox" name="acl_all" value="ok" class="acl" id="acl-all"
             style="margin-left: 0;" {{ old('acl_all') || array_key_exists('acl.all', $permissions) ? 'checked' : ''}}>
@@ -17,7 +20,6 @@
     </thead>
 
     <tbody>
-
     <!-- Users -->
     <tr>
         <td>User</td>

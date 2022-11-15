@@ -2,6 +2,18 @@ includes:
     - ./vendor/nunomaduro/larastan/extension.neon
 
 parameters:
+    noModelMake: true
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    checkModelProperties: false
+    checkOctaneCompatibility: true
+    checkMissingCallableSignature: true
+    noUnnecessaryCollectionCall: true
+    noUnnecessaryCollectionCallOnly: []
+    noUnnecessaryCollectionCallExcept: []
+    squashedMigrationsPath: []
+    databaseMigrationsPath: []
+    reportUnmatchedIgnoredErrors: false
     universalObjectCratesClasses:
         - Illuminate\Http\Request
         - Illuminate\Support\Optional
@@ -24,6 +36,7 @@ parameters:
         - '#Call to an undefined static method .*findRoleById\(\)#'
         - '#Call to an undefined static method .*update\(\)#'
         - '#Call to an undefined static method .*findUserById\(\)#'
+        - '#Call to an undefined static method .*validateCredentials\(\)#'
         - '#Property App\\Models*#'
         - '#Access to an undefined property Cartalyst\\Sentinel*#'
         - '#Cannot access property*#'
@@ -45,16 +58,3 @@ parameters:
         - *.blade.php
     mixinExcludeClasses:
         - Eloquent
-
-    noModelMake: true
-    checkGenericClassInNonGenericObjectType: false
-    checkMissingIterableValueType: false
-    checkModelProperties: false
-    checkOctaneCompatibility: true
-    checkMissingCallableSignature: true
-    noUnnecessaryCollectionCall: true
-    noUnnecessaryCollectionCallOnly: []
-    noUnnecessaryCollectionCallExcept: []
-    squashedMigrationsPath: []
-    databaseMigrationsPath: []
-    reportUnmatchedIgnoredErrors: false
