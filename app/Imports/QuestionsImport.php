@@ -43,7 +43,7 @@ class QuestionsImport implements  ToModel, WithHeadingRow
                         'category' => $row['category'],
                         'score' => $row['score'],
                     ]);
-                }
+                
                 for ($q = 1; $q <= 4; $q++) {
                     switch ($q) {
                         case 1:
@@ -76,7 +76,8 @@ class QuestionsImport implements  ToModel, WithHeadingRow
                             break;
                         }
                     }
-                } else {
+                }    
+            } else {
                     if($row['course_id']) { 
                     Question::create([
                         'course_id' => $row['course_id'],
