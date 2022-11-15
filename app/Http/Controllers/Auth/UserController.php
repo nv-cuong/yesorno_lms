@@ -77,6 +77,7 @@ class UserController extends Controller
     public function create()
     {
         $roleDb = Role::select('id', 'name')
+            ->where('id', '<>', 1)
             ->get();
 
         return view('admin.auth.user.create', array(
@@ -111,12 +112,12 @@ class UserController extends Controller
             ];
 
             //Create a new user
-            $user = Sentinel::registerAndActivate($data);
+            $newUser = Sentinel::registerAndActivate($data);
 
             //Attach the user to the role
-            $role = Sentinel::findRoleById($request->role);
-            $role->users()
-                ->attach($user);
+            $roles = $request->role;
+            foreach($roles as $role)
+                $newUser->roles()->attach($role);
 
             DB::commit();
 
@@ -150,6 +151,7 @@ class UserController extends Controller
         }
 
         $roleDb = Role::select('id', 'name')
+            ->where('id', '<>', 1)
             ->get();
 
         $userRole = $user->roles[0]->id ?? null;
