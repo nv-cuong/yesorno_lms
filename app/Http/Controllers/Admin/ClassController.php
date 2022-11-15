@@ -74,7 +74,8 @@ class ClassController extends Controller
         $courses = Course::select([
             'id',
             'title',
-        ])->get();
+        ])->where('status', 1)
+        ->get();
         return view('admin.modules.classes.create', compact('courses', 'class', 'course'));
     }
 
@@ -139,7 +140,8 @@ class ClassController extends Controller
         $courses = Course::select([
             'id',
             'title',
-        ])->get();
+        ])->where('status', 1)
+        ->get();
 
         $class = ClassStudy::find($id);
         if ($class) {
@@ -287,12 +289,12 @@ class ClassController extends Controller
                 $message    = 'Thêm học viên mới thành công';
                 $type       = 'success';
             } else {
-                return redirect(route('class.show', $class->slug));
+                return redirect(route('class.show', $class->id));
             }
         } catch (\Throwable $t) {
             throw new ModelNotFoundException();
         }
-        return redirect(route('class.show', $class->slug))
+        return redirect(route('class.show', $class->id))
             ->with('message', $message)
             ->with('type_alert', $type);
     }
