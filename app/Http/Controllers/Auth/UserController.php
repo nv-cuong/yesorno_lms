@@ -116,8 +116,10 @@ class UserController extends Controller
 
             //Attach the user to the role
             $roles = $request->role;
-            foreach($roles as $role)
+            if($roles) {
+                foreach($roles as $role)
                 $newUser->roles()->attach($role);
+            }
 
             DB::commit();
 
@@ -156,12 +158,12 @@ class UserController extends Controller
             ->where('id', '<>', 1)
             ->get();
 
-        $userRole = $user->roles[0]->id ?? null;
+        $userRoles = $user->roles;
 
         return view('admin.auth.user.update', array(
             'data'     => $user,
             'roleDb'   => $roleDb,
-            'userRole' => $userRole
+            'userRoles' => $userRoles
         ));
     }
 
@@ -183,25 +185,16 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $oldRole = Sentinel::findRoleById($user->roles[0]->id ?? null);
-
             $credentials = [
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
             ];
 
             #Valid User For Update
-            $role = Sentinel::findRoleById($request->role);
-
-            if ($oldRole) {
-                #Remove a user from a role.
-                $oldRole->users()
-                    ->detach($user);
+            $roles = $request->role;
+            if ($roles) {
+                $user->roles()->sync($roles);
             }
-
-            #Assign a user to a role.
-            $role->users()
-                ->attach($user);
 
             #Update User
             Sentinel::update($user, $credentials);
