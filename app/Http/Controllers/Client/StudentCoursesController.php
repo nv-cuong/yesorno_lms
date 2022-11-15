@@ -29,7 +29,10 @@ class StudentCoursesController extends Controller
         foreach ($course->units as $unit) {
             $courseLesson += $unit->lessons_count;
         }
-        $access = $course->users()->where('user_id', $id)->first()->pivot;
+        $access = $course->users()
+            ->where('user_id', $id)
+            ->first()
+            ->pivot;
         $courses = Course::inRandomOrder()
             ->paginate(3)
             ->onEachSide(1);
@@ -65,11 +68,25 @@ class StudentCoursesController extends Controller
     public function personalLesson(Request $request, $slug)
     {
         $getUser = Sentinel::getUser();
-        $lesson = Lesson::where('slug', $slug)->first();
-        $user_lesson = $getUser->lessons()->where('lesson_id', $lesson->id)->first()->pivot;
-        $nextLesson = Lesson::where('id', '>', $lesson->id)->where('unit_id', $lesson->unit_id)->first();
-        $files = File::where('lesson_id', $lesson->id)->get();
-        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'user_lesson'));
+        $lesson = Lesson::where('slug', $slug)
+            ->first();
+
+        $userLesson = $getUser->lessons()
+            ->where('lesson_id', $lesson->id)
+            ->first()
+            ->pivot;
+
+        $nextLesson = Lesson::where('id', '>', $lesson->id)
+            ->where('unit_id', $lesson->unit_id)
+            ->first();
+
+        $files = File::where('lesson_id', $lesson->id)
+            ->get();
+
+        if ($userLesson->status == 0) {
+            $this->lessonProgress($slug);
+        }
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'userLesson'));
     }
 
     /**
@@ -78,10 +95,11 @@ class StudentCoursesController extends Controller
      */
     public function lessonProgress($slug)
     {
-        $getUser = Sentinel::getUser();
-        $lesson = Lesson::where('slug', $slug)->first();
-        $getUser->lessons()->updateExistingPivot($lesson->id, [
-            'status' => 1,
-        ]);
+        $getUser    = Sentinel::getUser();
+        $lesson     = Lesson::where('slug', $slug)->first();
+        $getUser->lessons()
+            ->updateExistingPivot($lesson->id, [
+                'status' => 1,
+            ]);
     }
 }
