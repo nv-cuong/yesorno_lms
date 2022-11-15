@@ -10,6 +10,7 @@ use App\Models\Notification;
 use App\Models\User;
 use App\Models\Question;
 use App\Models\UserTest;
+use App\Notifications\SendMessageNotification;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Contracts\View\View;
@@ -30,6 +31,19 @@ class HomeController extends Controller
             $count_user_tests = $user_tests->count();
             $view->with('user_tests', $user_tests);
             $view->with('count_user_tests', $count_user_tests);
+        }
+        if ($user) {
+            $notifications = Notification::select(
+                'notifications.id',
+                'content',
+                'un.user_id',
+                'un.course_id',
+            )
+                ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
+                ->where('un.user_id', $user->id)
+                ->with('users')
+                ->get();
+            $view->with('notifications', $notifications);
         }
     }
 

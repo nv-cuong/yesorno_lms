@@ -46,18 +46,6 @@ class SendEmail extends Mailable
         );
     }
 
-    // /**
-    //  * Get the message content definition.
-    //  *
-    //  * @return \Illuminate\Mail\Mailables\Content
-    //  */
-    // public function content()
-    // {
-    //     return new Content(
-    //         view: 'view.demo',
-    //     );
-    // }
-
     /**
      * Get the attachments for the message.
      *

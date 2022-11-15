@@ -312,7 +312,7 @@ class CourseController extends Controller
             }
             $user = User::find($user_id);
             $notification = Notification::find(1);
-            $user->notifications()->attach($notification->id);
+            $user->notifications()->attach($notification->id, ['course_id' => $id]);
 
             $email_user = $user->email;
             //send mail

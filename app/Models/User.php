@@ -92,7 +92,7 @@ class User extends EloquentUser
             'user_notifications',
             'user_id',
             'notification_id'
-        );
+        )->withPivot('course_id');
     }
 
     /**

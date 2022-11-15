@@ -34,16 +34,9 @@
                                 <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                             </li>
                             @php
-                            use App\Models\Notification;
-                            if($user = Sentinel::getUser()){
-                            $notifications = Notification::select(
-                                'notifications.id',
-                                'content'
-                            )
-                            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
-                            ->where('un.user_id', $user->id)
-                            ->get();
+                                $user = Sentinel::getUser()
                             @endphp
+                            @if($user)
                             <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
                                     <i class="far fa-bell"></i>
                                     Thông báo({{ $notifications->count() + $user_tests->count() }}) </a>
@@ -53,7 +46,6 @@
                                     <div class="dropdown-divider"></div>
                                     <a href="#" class="dropdown-item">
                                         <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
-
                                     </a>
                                     @empty
 
@@ -68,16 +60,8 @@
                                     @endforelse
                                 </div>
                             </li>
-                            @php
-                            } else {
-                            @endphp
-                            <li class="nav-item"> <a class="nav-link" href="#">
-                                    <i class="far fa-bell"></i>
-                                    Thông báo </a>
-                            </li>
-                            @php
-                            }
-                            @endphp
+                            @endif
+                            
 
                             <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('test_users') }}">Test </a>
