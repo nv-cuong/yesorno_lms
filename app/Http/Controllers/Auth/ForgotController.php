@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
 use Cartalyst\Sentinel\Laravel\Facades\Reminder;
@@ -46,9 +45,7 @@ class ForgotController extends Controller
 
             if (! $user) {
                 DB::rollBack();
-
                 Session::flash('failed', __('Không tồn tại user !'));
-
                 return redirect()->back()->withInput();
             }
 
@@ -56,18 +53,11 @@ class ForgotController extends Controller
 
             $code = $reminder->code;
 
-            $sent = Mail::send('admin.auth.emails.password', compact('user', 'code'), function ($m) use ($user) {
-                $m->to($user->email)->subject('Reset your account password.');
+            Mail::send('admin.auth.emails.password',
+                compact('user', 'code'),
+                function ($m) use ($user) {
+                return $m->to($user->email)->subject('Reset your account password.');
             });
-
-            // $sent = 1;
-
-            if ($sent === 0) {
-                DB::commit();
-                Session::flash('failed', __('không tìm thấy mail !'));
-
-                return redirect()->back();
-            }
 
             DB::commit();
 
@@ -109,7 +99,11 @@ class ForgotController extends Controller
             return redirect()->back()->withInput();
         }
 
-        if (! Reminder::complete($user, $request->code, $request->password)) {
+        if (! Reminder::complete(
+            $user,
+            $request->input('code', ''),
+            $request->input('password', '')
+            )) {
             Session::flash('failed', __('Mã đặt lại không hợp lệ hoặc hết hạn.'));
 
             return redirect()->route('forgotPassword.form');
