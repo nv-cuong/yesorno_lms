@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Cartalyst\Sentinel\Laravel\Facades\Activation;
 use Illuminate\Support\Facades\DB;
@@ -48,25 +47,14 @@ class RegisterController extends Controller
 
                 $code = $activation->code;
 
-                $sent = Mail::send(
+                Mail::send(
                     'admin.auth.emails.activate',
                     compact('user', 'code'),
                     function ($m) use ($user) {
-                        $m->to($user->email)
-                    ->subject('Activate Your Account');
+                        return $m->to($user->email)
+                        ->subject('Activate Your Account');
                     }
                 );
-
-                //$sent = 1;
-
-                if ($sent === 0) {
-                    Session::flash('failed', __('auth.activation_email_unsuccessful'));
-
-                    DB::commit();
-                    return redirect()
-                        ->back()
-                        ->withInput();
-                }
 
                 DB::commit();
 
@@ -87,8 +75,8 @@ class RegisterController extends Controller
     /**
      * Handle activation for the user registration.
      *
-     * @param $userId
-     * @param $code
+     * @param int $userId
+     * @param string $code
      *
      * @return \Illuminate\Http\RedirectResponse
      */

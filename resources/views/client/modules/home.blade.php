@@ -120,7 +120,7 @@
                                         <a href="{{ route('detail', $item->slug) }}" class="event-btn">Vào khóa học</a>
                                         <div class="event-bottom-right">
                                             <i class="fas fa-users"></i>
-                                            <span>Học viên ({{ $item->users()->count() }})</span>
+                                            <span>Học viên ({{ $item->users_count }})</span>
                                         </div>
                                     </div>
                                 </div>
