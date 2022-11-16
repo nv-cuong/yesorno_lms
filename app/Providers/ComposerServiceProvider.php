@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
+
 class ComposerServiceProvider extends ServiceProvider
 {
     /**
@@ -23,6 +24,11 @@ class ComposerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        view()->composer('*', 'App\Http\Controllers\Client\HomeController');
+        view()->composer(['admin.layouts.master'],
+            'App\Http\Controllers\Controller');
+        view()->composer([
+            'client.layouts.master',
+        ],
+            'App\Http\Controllers\Client\HomeController');
     }
 }

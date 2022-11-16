@@ -3,12 +3,8 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClassStudy;
 use App\Models\Course;
-use App\Models\Lesson;
-use App\Models\Notification;
 use App\Models\User;
-use App\Models\Question;
 use App\Models\UserTest;
 use App\Notifications\SendMessageNotification;
 use Illuminate\Http\Request;
@@ -27,7 +23,8 @@ class HomeController extends Controller
     {
         $user = Sentinel::getUser();
         if ($user) {
-            $user_tests = UserTest::where('user_id', $user->id)->where('status', 0)->get();
+            $user_tests = UserTest::where('user_id', $user->id)
+            ->where('status', 0)->get();
             $count_user_tests = $user_tests->count();
             $view->with('user_tests', $user_tests);
             $view->with('count_user_tests', $count_user_tests);
@@ -62,15 +59,11 @@ class HomeController extends Controller
             'end_date',
             'image'
 
-        ])
+        ])->withCount('users')
             ->orderBy('created_at', 'DESC')
             ->take(4)
             ->get();
-
-        $classes = ClassStudy::select([
-            'id'
-        ]);
-        return view('client.modules.home', compact('courses', 'classes'));
+        return view('client.modules.home', compact('courses'));
     }
 
     /**

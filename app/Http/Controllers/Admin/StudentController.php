@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\Admin\StudentRequest;
+use App\Http\Requests\Auth\User\UserRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lesson;
-use App\Models\Role;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -66,12 +66,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $roleDb = Role::select('id', 'name')
-            ->get();
-
-        return view('admin.students.create', array(
-            'roleDb' => $roleDb,
-        ));
+        return view('admin.students.create');
     }
 
     /**
@@ -79,7 +74,7 @@ class StudentController extends Controller
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function store(StudentRequest $request)
+    public function store(UserRequest $request)
     {
         $email = $request->input('email', '');
         $user  = Sentinel::getUser()->first_name;
@@ -91,18 +86,16 @@ class StudentController extends Controller
                 'last_name'  => $request->last_name,
                 'email'      => Str::lower($email),
                 'password'   => $request->password,
-                'phone'   => $request->phone,
+                'phone'      => $request->phone,
                 'created_by' => $user,
                 'updated_by' => $user,
             ];
-
+            
             //Create a new user
-            $user = Sentinel::registerAndActivate($data);
+            $newUser = Sentinel::registerAndActivate($data);
 
             //Attach the user to the role
-            $role = Sentinel::findRoleById($request->role);
-            $role->users()
-                ->attach($user);
+            $newUser->roles()->attach($request->role);
 
             DB::commit();
 

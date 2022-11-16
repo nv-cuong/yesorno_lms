@@ -21,12 +21,13 @@ class LoginController extends Controller
 
     /**
      * @param LoginRequest $request
-     * @return \Illuminate\Http\RedirectResponse|unknown
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function postLogin(LoginRequest $request)
     {
         $credentials = $request->except('_token');
-    
+
 
 
         try {
@@ -36,8 +37,8 @@ class LoginController extends Controller
             }
 
             $user = Sentinel::authenticate($credentials, $remember);
-            
-            if ($user) {   
+
+            if ($user) {
                 $request->session()->regenerate();
                 if ($user-> inRole ('student')){
                     return redirect()->intended(route('home'));
