@@ -19,8 +19,7 @@ class Controller extends BaseController
     {
         $user = Sentinel::getUser();
         if ($user) {
-            $user_tests = UserTest::where('user_id', $user->id)
-            ->where('status', 0)->get();
+            $user_tests = UserTest::where('status', 1)->get();
             $count_user_tests = $user_tests->count();
             $view->with('user_tests', $user_tests);
             $view->with('count_user_tests', $count_user_tests);

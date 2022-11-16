@@ -119,7 +119,7 @@
                     </li>
                 @endif
 
-                @if ($user->hasAccess(['acl.all']))
+                @if ($user->hasAccess(['role.*']))
                     <li class="nav-item">
                         <a href="{{ route('roles.index') }}" class="nav-link">
                             <i class="nav-icon fas fa-user"></i>

@@ -32,7 +32,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="user_edit" {{ old('user_edit') ? 'checked' : ''}}>
+                        name="user_update" {{ old('user_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -46,7 +46,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="user_destroy" {{ old('user_destroy') ? 'checked' : ''}}>
+                        name="user_delete" {{ old('user_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -72,7 +72,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="role_edit" {{ old('role_edit') ? 'checked' : ''}}>
+                        name="role_update" {{ old('role_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -86,7 +86,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="role_destroy" {{ old('role_destroy') ? 'checked' : ''}}>
+                        name="role_delete" {{ old('role_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -108,7 +108,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_edit" {{ old('course_edit') ? 'checked' : ''}}>
+                        name="course_update" {{ old('course_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -122,7 +122,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_destroy" {{ old('course_destroy') ? 'checked' : ''}}>
+                        name="course_delete" {{ old('course_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -142,7 +142,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_edit" {{ old('class_edit') ? 'checked' : ''}}>
+                        name="class_update" {{ old('class_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -156,7 +156,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_destroy" {{ old('class_destroy') ? 'checked' : ''}}>
+                        name="class_delete" {{ old('class_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -176,7 +176,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_edit" {{ old('student_edit') ? 'checked' : ''}}>
+                        name="student_update" {{ old('student_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -190,7 +190,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_destroy" {{ old('student_destroy') ? 'checked' : ''}}>
+                        name="student_delete" {{ old('student_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -210,7 +210,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_edit" {{ old('test_edit') ? 'checked' : ''}}>
+                        name="test_update" {{ old('test_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -224,7 +224,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_destroy" {{ old('test_destroy') ? 'checked' : ''}}>
+                        name="test_delete" {{ old('test_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -244,7 +244,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_edit" {{ old('question_edit') ? 'checked' : ''}}>
+                        name="question_update" {{ old('question_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -258,7 +258,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_destroy" {{ old('question_destroy') ? 'checked' : ''}}>
+                        name="question_delete" {{ old('question_delete') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -278,7 +278,7 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_point" {{ old('score_point') ? 'checked' : ''}}>
+                        name="score_update" {{ old('score_update') ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
