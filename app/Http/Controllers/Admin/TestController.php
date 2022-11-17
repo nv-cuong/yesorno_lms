@@ -128,7 +128,9 @@ class TestController extends Controller
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('success', 'Dữ liệu xóa thành công.');
+                
         } else {
+            
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('message', 'Bài test đang được sử dụng.')

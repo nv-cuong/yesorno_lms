@@ -76,7 +76,7 @@ class QuestionsImport implements  ToModel, WithHeadingRow
                             break;
                         }
                     }
-                }    
+                }
             } else {
                     if($row['course_id']) { 
                     Question::create([
