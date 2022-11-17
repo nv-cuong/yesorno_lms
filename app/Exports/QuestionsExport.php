@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\Question;
+use App\Models\Answer;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
@@ -18,9 +19,14 @@ class QuestionsExport implements FromCollection, WithHeadings
     
     public function collection()
     {
-        return Question::select('id','course_id','category','content','answer','score')->with('answers')
-        ->get();
-    }
 
-    
+        // return Question::select('id','course_id','category','content','answer','score')->has('answers')->with('answers:question_id,content,checked')
+        // ->get();
+
+        return Question::with('answers')
+        ->get();
+
+      
+        
+    } 
 }
