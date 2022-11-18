@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
+use App\Models\Notification;
 use App\Models\User;
 use App\Models\UserTest;
 use App\Notifications\SendMessageNotification;

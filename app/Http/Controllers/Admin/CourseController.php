@@ -10,7 +10,8 @@ use App\Models\Notification;
 use App\Models\Test;
 use App\Models\Unit;
 use App\Models\User;
-
+use App\Notifications\SendMessageNotification;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -317,6 +318,7 @@ class CourseController extends Controller
             $email_user = $user->email;
             //send mail
             Mail::to($email_user)->send(new SendEmail());
+            $user->courses()->notify(new SendMessageNotification($user));
 
             return redirect(route('course.student', $id))
                 ->with('message', 'Học viên đã được chấp nhận vào khóa học')
