@@ -121,15 +121,15 @@ class UserTestController extends Controller
         $userTest->submitted_at = $submittedTime;
         $userTest->save();
 
-        if ($request->get('essayQuest')) {
-            foreach ($request->get('essayQuest') as $questionId => $answerId) {
-                $answers[]  = [
-                    'question_id'   => $questionId,
-                    'answer'        => $answerId,
-                ];
-            }
-            $userTest->score = 0;
+        $essayQuest = $request->input('essayQuest', []);
+
+        foreach ($essayQuest as $questionId => $answerId) {
+            $answers[]  = [
+                'question_id'   => $questionId,
+                'answer'        => $answerId,
+            ];
         }
+        $userTest->score = 0;
         $userTest->answers()->createMany($answers);
         $userTest->save();
         return view('client.modules.user_test_result', compact('userTest'));

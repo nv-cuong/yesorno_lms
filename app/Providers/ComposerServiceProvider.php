@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\View\Composers\CommonComposer;
+use App\View\Composers\ProfileComposer;
 
 
 class ComposerServiceProvider extends ServiceProvider
@@ -25,10 +27,10 @@ class ComposerServiceProvider extends ServiceProvider
     public function boot()
     {
         view()->composer(['admin.layouts.master'],
-            'App\Http\Controllers\Controller');
+            CommonComposer::class);
         view()->composer([
             'client.layouts.master',
         ],
-            'App\Http\Controllers\Client\HomeController');
+            ProfileComposer::class);
     }
 }
