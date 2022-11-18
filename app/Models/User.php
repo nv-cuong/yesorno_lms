@@ -85,15 +85,6 @@ class User extends EloquentUser
         )->withPivot('status');
     }
 
-    public function notifications(): BelongsToMany
-    {
-        return $this->belongsToMany(
-            Notification::class,
-            'user_notifications',
-            'user_id',
-            'notification_id'
-        )->withPivot('course_id');
-    }
 
     /**
      *

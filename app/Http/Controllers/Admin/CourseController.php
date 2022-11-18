@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use App\Notifications\AssignCourse;
 
 class CourseController extends Controller
 {
@@ -300,32 +301,37 @@ class CourseController extends Controller
      * @param int $id
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function activeStudent(Request $request, $id)
+    public function activeStudent(Request $request, $courseId)
     {
         $user_id = $request->input('user_id', 0);
-        if ($user_id) {
-            $user_course = DB::table('user_courses')
-                ->where('user_id', $user_id)
-                ->where('course_id', $id)
-                ->first();
-            if ($user_course->status == 0) {
-                DB::table('user_courses')->where('id', $user_course->id)->update(['status' => 1]);
+        $user = User::find($user_id);
+        $course = Course::find($courseId);
+
+        if ($user && $course) {
+            if ($user->courses()
+                ->where('course_id', $courseId)
+                ->where('user_courses.status', 0)
+                ->exists()
+            ) {
+                $user->courses()
+                    ->updateExistingPivot($courseId, ['status' => 1]);
+                $assignNotification = [
+                    'course_id' => $courseId,
+                    'course_name' => $course->title,
+                    'course_slug' => $course->slug,
+                    'course_begin_date' => date('d/m/Y', strtotime($course->begin_date)),
+                ];
+
+                $user->notify(new AssignCourse($assignNotification));
+
+                return redirect(route('course.student', $courseId))
+                    ->with('message', 'Học viên đã được chấp nhận vào khóa học')
+                    ->with('type_alert', "success");
             }
-            $user = User::find($user_id);
-            $notification = Notification::find(1);
-            $user->notifications()->attach($notification->id, ['course_id' => $id]);
-
-            $email_user = $user->email;
-            //send mail
-            Mail::to($email_user)->send(new SendEmail());
-            $user->courses()->notify(new SendMessageNotification($user));
-
-            return redirect(route('course.student', $id))
-                ->with('message', 'Học viên đã được chấp nhận vào khóa học')
-                ->with('type_alert', "success");
-        } else
-            return redirect(route('course.student', $id))
+        } else {
+            return redirect(route('course.student', $courseId))
                 ->with('message', 'Học viên không tồn tại')
                 ->with('type_alert', "danger");
+        }
     }
 }

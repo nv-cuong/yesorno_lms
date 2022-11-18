@@ -128,8 +128,13 @@ class TestController extends Controller
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('success', 'Dữ liệu xóa thành công.');
+                
         } else {
-            throw new ModelNotFoundException();
+            
+            return redirect()
+                ->action([TestController::class, 'index'])
+                ->with('message', 'Bài test đang được sử dụng.')
+                ->with('type_alert', "danger");
         }
     }
 

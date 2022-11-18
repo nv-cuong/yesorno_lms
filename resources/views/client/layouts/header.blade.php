@@ -37,37 +37,41 @@
                             <li class="nav-item {{ url()->current() == route('contact') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                             </li>
+                            @if($user)
                             @php
-                                $user = Sentinel::getUser();
+                            $notifications = $user->unreadNotifications;
                             @endphp
-                            @if ($user)
-                                <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown"
-                                        href="#">
-                                        <i class="far fa-bell"></i>
-                                        Thông báo({{ $notifications->count() + $count_user_tests }}) </a>
-                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                                        @forelse($notifications as $notification)
-                                            <div class="dropdown-divider"></div>
-                                            <a href="#" class="dropdown-item">
-                                                <i class="fas fa-envelope mr-2"></i> {{ $notification->created_at }} user {{ $notification->data['first_name'] }} aaa
-                                            </a>
-                                        @empty
-                                        @endforelse
-                                        
-                                        @forelse($user_tests as $user_test)
-                                            <div class="dropdown-divider"></div>
-                                            <a href="{{ route('doTest', $user_test->id) }}" class="dropdown-item">
-                                                <i class="fas fa-envelope mr-2"></i> Bạn có bài test
+                            <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo({{ $user->unreadNotifications->count() }}) </a>
+                                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
-                                            </a>
-                                        @empty
-                                        @endforelse
-                                    </div>
-                                </li>
+                                    @forelse($notifications as $notification)
+                                    <div class="dropdown-divider"></div>
+                                    @if(isset($notification->data['course_id']))
+                                    <a href="{{ route('detail', [$notification->data['course_slug']]) }}" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->data['course_name'] }} (started at {{$notification->data['course_begin_date']}} )
+                                    </a>
+                                    @endif
+                                    @empty
+                                    @endforelse
+                                    @forelse($user_tests as $user_test)
+                                    <div class="dropdown-divider"></div>
+                                    <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
+                                    </a>
+                                    @empty
+                                    @endforelse
+                                </div>
+                            </li>
+                            @else
+                            <li class="nav-item"> <a class="nav-link" href="#">
+                                    <i class="far fa-bell"></i>
+                                    Thông báo(0)</a>
+                            </li>
                             @endif
 
-
-                            <li class="nav-item {{ url()->current() == route('test_users') ? 'active' : '' }}">
+                            <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('test_users') }}">Test </a>
                             </li>
                             <form class="form-inline" style="padding-left: 100px" action="{{ route('search') }}"

@@ -34,6 +34,7 @@ class QuestionController extends Controller
             'id',
             'content',
             'category',
+            'answer',
             'score',
             'course_id'
         ])->with('course');

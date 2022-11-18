@@ -31,7 +31,7 @@ $permissions = $role->permissions;
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="user_edit" {{ old('user_edit') || array_key_exists('user.edit', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="user_update" {{ old('user_update') || array_key_exists('user.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -43,7 +43,7 @@ $permissions = $role->permissions;
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="user_destroy" {{ old('user_destroy') || array_key_exists('user.destroy', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="user_delete" {{ old('user_delete') || array_key_exists('user.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -66,7 +66,7 @@ $permissions = $role->permissions;
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="role_edit" {{ old('role_edit') || array_key_exists('role.edit', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="role_update" {{ old('role_update') || array_key_exists('role.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -78,7 +78,7 @@ $permissions = $role->permissions;
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="role_destroy" {{ old('role_destroy') || array_key_exists('role.destroy', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="role_delete" {{ old('role_delete') || array_key_exists('role.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -98,7 +98,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_edit" {{ old('course_edit') || array_key_exists('course.edit', $permissions) ? 'checked' : ''}}>
+                        name="course_update" {{ old('course_update') || array_key_exists('course.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -112,7 +112,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_destroy" {{ old('course_destroy') || array_key_exists('course.destroy', $permissions) ? 'checked' : ''}}>
+                        name="course_delete" {{ old('course_delete') || array_key_exists('course.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -132,7 +132,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_edit" {{ old('class_edit') || array_key_exists('class.edit', $permissions) ? 'checked' : ''}}>
+                        name="class_update" {{ old('class_update') || array_key_exists('class.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -146,7 +146,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_destroy" {{ old('class_destroy') || array_key_exists('class.destroy', $permissions) ? 'checked' : ''}}>
+                        name="class_delete" {{ old('class_delete') || array_key_exists('class.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -166,7 +166,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_edit" {{ old('student_edit') || array_key_exists('student.edit', $permissions) ? 'checked' : ''}}>
+                        name="student_update" {{ old('student_update') || array_key_exists('student.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -180,7 +180,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_destroy" {{ old('student_destroy') || array_key_exists('student.destroy', $permissions) ? 'checked' : ''}}>
+                        name="student_delete" {{ old('student_delete') || array_key_exists('student.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -200,7 +200,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_edit" {{ old('test_edit') || array_key_exists('test.edit', $permissions) ? 'checked' : ''}}>
+                        name="test_update" {{ old('test_update') || array_key_exists('test.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -214,7 +214,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_destroy" {{ old('test_destroy') || array_key_exists('test.destroy', $permissions) ? 'checked' : ''}}>
+                        name="test_delete" {{ old('test_delete') || array_key_exists('test.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -234,7 +234,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_edit" {{ old('question_edit') || array_key_exists('question.edit', $permissions) ? 'checked' : ''}}>
+                        name="question_update" {{ old('question_update') || array_key_exists('question.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -248,7 +248,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_destroy" {{ old('question_destroy') || array_key_exists('question.destroy', $permissions) ? 'checked' : ''}}>
+                        name="question_delete" {{ old('question_delete') || array_key_exists('question.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -267,7 +267,7 @@ $permissions = $role->permissions;
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_point" {{ old('score_point') || array_key_exists('score.point', $permissions) ? 'checked' : ''}}>
+                        name="score_update" {{ old('score_update') || array_key_exists('score.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>

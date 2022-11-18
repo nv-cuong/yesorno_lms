@@ -6,45 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Notification;
 use App\Models\User;
-use App\Models\UserTest;
-use App\Notifications\SendMessageNotification;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
-    /**
-     * {@inheritDoc}
-     * @see \App\Http\Controllers\Controller::compose()
-     */
-    public function compose(View $view)
-    {
-        $user = Sentinel::getUser();
-        if ($user) {
-            $user_tests = UserTest::where('user_id', $user->id)
-            ->where('status', 0)->get();
-            $count_user_tests = $user_tests->count();
-            $view->with('user_tests', $user_tests);
-            $view->with('count_user_tests', $count_user_tests);
-        }
-        if ($user) {
-            $notifications = Notification::select(
-                'notifications.id',
-                'content',
-                'un.user_id',
-                'un.course_id',
-            )
-                ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
-                ->where('un.user_id', $user->id)
-                ->with('users')
-                ->get();
-            $view->with('notifications', $notifications);
-        }
-    }
-
     /**
      *  @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
