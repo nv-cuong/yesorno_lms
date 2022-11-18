@@ -6,7 +6,6 @@ namespace Database\Seeders;
 
 use App\Models\Course;
 use App\Models\Lesson;
-use App\Models\Notification;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -31,12 +30,7 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
-        $notifications = [
-            [
-                'content' => 'Bạn đã được duyệt vào khóa học '
-            ],
-        ];
-        Notification::insert($notifications);
+
 
         // Schema::disableForeignKeyConstraints();
         // DB::table('user_lessons')->truncate();
