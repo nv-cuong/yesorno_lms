@@ -18,7 +18,7 @@ Route::prefix('roles')->group(function () {
         ->middleware('myweb.auth:roles.create');
 
     Route::get('/data', [RoleController::class, 'getRolesData'])
-        ->name('data')->middleware('myweb.auth:roles.show');
+        ->name('roles.data')->middleware('myweb.auth:roles.show');
 
     Route::post('', [RoleController::class, 'store'])
         ->name('roles.store')

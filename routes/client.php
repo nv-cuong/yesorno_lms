@@ -46,19 +46,8 @@ Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])
     ->name('lesson.download')->middleware('myweb.auth');
 Route::get('/doTest/{id}', [UserTestController::class, 'doTest'])
     ->name('doTest')->middleware('myweb.auth');
-
-Route::get('/show_makes', [TestCoursesController::class, 'show_make'])
-    ->name('show.make')->middleware('myweb.auth');
-Route::get('/index/make_test/{id_test}', [TestCoursesController::class, 'index_make_test'])
-    ->name('index_make')->middleware('myweb.auth');
-Route::post('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
-    ->name('save_maked')->middleware('myweb.auth');
-Route::get('/index/save_maked/{id_test}/{id_user}', [TestCoursesController::class, 'save_maked'])
-    ->name('save_maked_get')->middleware('myweb.auth');
-Route::get('/index/show_maked_test/{id_user}/{id_test}', [TestController::class, 'view_maked'])
-    ->name('view_maked')->middleware('myweb.auth');
-Route::get('/index/random/{id_course}', [TestCoursesController::class, 'random_test'])
-    ->name('random_test');
+Route::get('/index/final/{courseId}', [UserTestController::class, 'finalTest'])
+    ->name('finalTest');
 
 Route::post('/sendTest/{id}', [UserTestController::class, 'sendTest'])
     ->name('send.test')->middleware('myweb.auth');

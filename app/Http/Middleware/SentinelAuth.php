@@ -18,38 +18,36 @@ class SentinelAuth
      * @param array $role
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle( $request, Closure $next, $role=[]) {
+    public function handle($request, Closure $next, $role = [])
+    {
 
-        Sentinel::setHasher( new BcryptHasher() );
+        Sentinel::setHasher(new BcryptHasher());
 
         $user = Sentinel::check();
 
-        if ( ! $user ) {
-            return redirect()->guest( 'login' );
+        if (!$user) {
+            return redirect()->guest('login');
         }
 
         // This Is Admin User?
         $roles = Sentinel::getRoles()->pluck('slug')->all();
 
-        if ( is_array($roles) ) {
-            if ( in_array('admin', $roles,) )
-            {
-                return $next( $request );
+        if (is_array($roles)) {
+            if (in_array('admin', $roles,)) {
+                return $next($request);
             }
-
         }
 
         // Check Access When User Is Not Admin
         // @phpstan-ignore-next-line
-        if ( $user->hasAccess( $role ) ) {
-            return $next( $request );
+        if ($user->hasAccess($role)) {
+            return $next($request);
         }
 
-        if ( $request->ajax() || $request->wantsJson() ) {
-            return response( trans( 'backpack::base.unauthorized' ), 401 );
+        if ($request->ajax() || $request->wantsJson()) {
+            return response(trans('backpack::base.unauthorized'), 401);
         }
 
         return abort(404, 'Unauthorized action.');
-
-	}
+    }
 }
