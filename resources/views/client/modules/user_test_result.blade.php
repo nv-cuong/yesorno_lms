@@ -41,7 +41,7 @@
                                 <div class="course-view-more">
                                     @if ($userTest->score != null)
                                         <h4>Điểm của bạn là: {{ $userTest->score }}</h4>
-                                        <a href="{{ route('user_tests_detail', $test_users->id) }}" class="btn btn-primary">
+                                        <a href="{{ route('user_tests_detail', $userTest->id) }}" class="btn btn-primary">
                                             Xem lại bài làm
                                         </a>
                                     @else

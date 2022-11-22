@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\ClassStudy;
 use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\Notification;
@@ -55,5 +56,13 @@ class DatabaseSeeder extends Seeder
         //     'course_id' => '1',
         //     'status' => '1'
         // ]);
+
+        $courses = Course::all();
+
+        ClassStudy::all()->each(function ($class) use ($courses) {
+            $class->courses()->attach(
+                $courses->random(rand(1, 3))->pluck('id')->toArray()
+            );
+        });
     }
 }

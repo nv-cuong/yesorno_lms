@@ -65,35 +65,33 @@ class UserTestController extends Controller
 
         $answers        = [];
         $testScore      = 0;
-        $questions      = 0;
+        $questions      = '';
 
         if ($request->get('answers')) {
             foreach ($testUserItems['answers'] as $key  => $answerId) {
-                $questionId     = Answer::find($answerId)->question->id;
-                $question       = Answer::find($answerId)->question;
                 $answers_item   = Answer::find($answerId);
+                $questionId     = $answers_item->question_id;
+                $question       = $answers_item->question;
 
-                if ($answers_item->checked == 0) {
-                    $check = 0;
-                } else {
-                    $check = 1;
-                }
                 if ($questions != $questionId) {
                     $answers[$questionId] = [
                         'question_id'   => $questionId,
                         'answer'        => $answers_item->id,
-                        'correct'       => $check
+                        'correct'       => $answers_item->checked
                     ];
-                } else {
-                    if ($answers[$questionId]['answer']) {
-                        if ($check == 0) {
-                            $answers[$questionId]['correct'] =  0;
-                        }
-                        $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answers_item->id;
+                    if ($answers_item->checked == 1) {
+                        $testScore += $question->score;
                     }
-                }
-                if ($check == 1) {
-                    $testScore += $question->score;
+
+                } else {
+                    $testScore -= $question->score;
+                    if ($answers_item->checked == 0) {
+                        $answers[$questionId]['correct'] = 0;
+                    }
+                    $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answers_item->id;
+                    if ($answers[$questionId]['correct'] == 1) {
+                        $testScore += $question->score;
+                    }
                 }
                 $questions = $questionId;
             }
@@ -116,11 +114,6 @@ class UserTestController extends Controller
             }
         }
 
-        $userTest->status       = 1;
-        $userTest->score        = $testScore;
-        $userTest->submitted_at = $submittedTime;
-        $userTest->save();
-
         if ($request->get('essayQuest')) {
             foreach ($request->get('essayQuest') as $questionId => $answerId) {
                 $answers[]  = [
@@ -128,10 +121,14 @@ class UserTestController extends Controller
                     'answer'        => $answerId,
                 ];
             }
-            $userTest->score = 0;
+            $testScore = '';
         }
-        $userTest->answers()->createMany($answers);
+
+        $userTest->status       = 1;
+        $userTest->score        = $testScore;
+        $userTest->submitted_at = $submittedTime;
         $userTest->save();
+        $userTest->answers()->createMany($answers);
         return view('client.modules.user_test_result', compact('userTest'));
     }
 
