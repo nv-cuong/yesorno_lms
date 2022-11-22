@@ -29,12 +29,13 @@
                             <thead>
                                 <tr>
                                     <th>STT</th>
+                                    <th>Mã người dùng</th>
                                     <th>Họ và tên</th>
                                     <th>Email</th>
                                     <th>Role - chức năng</th>
                                     <th>Lần cuối đăng nhập</th>
                                     <th>Trạng thái</th>
-                                    <th>-</th>
+                                    <th>Tùy chọn</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,6 +89,10 @@
                         name: 'id',
                         orderable: false,
                         searchable: false
+                    },
+                    {
+                        data: 'stu_id',
+                        name: 'stu_id'
                     },
                     {
                         data: 'fullname',

@@ -40,6 +40,7 @@ class StudentController extends Controller
             'address',
             'age',
             'gender',
+            'stu_id',
             DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
             'first_name',
             'last_name'
@@ -89,6 +90,7 @@ class StudentController extends Controller
                 'phone'      => $request->phone,
                 'created_by' => $user,
                 'updated_by' => $user,
+                'stu_id'     => $request->stu_id,
             ];
             
             //Create a new user
@@ -145,6 +147,7 @@ class StudentController extends Controller
             $student->last_name = $request->input('last_name');
             $student->address = $request->input('address');
             $student->birthday = $request->input('birthday');
+            $student->stu_id = $request->input('stu_id');
             $student->age = \Carbon\Carbon::parse($request->input('birthday', ''))->age;
             $student->save();
             $msg = 'Thay đổi thành công!';

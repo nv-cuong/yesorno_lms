@@ -270,6 +270,7 @@ class CourseController extends Controller
             'users.id',
             'email',
             'status',
+            'stu_id',
             DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
         ])->leftJoin('user_courses AS uc', 'uc.user_id', 'users.id')
             ->where('uc.course_id', $id);

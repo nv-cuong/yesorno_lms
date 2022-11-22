@@ -23,9 +23,14 @@
                                             class="user-profile-image"></td>
                                 @endif
                             </tr>
+                            
+                            <tr>
+                                <th>Mã học viên</th>
+                                <td>{{ $student->stu_id }}</td>
+                            </tr>
 
                             <tr>
-                                <th>Họ và tên</th>
+                                <th>Họ và tên học viên</th>
                                 <td>{{ $student->last_name }} {{ $student->first_name }}</td>
                             </tr>
 

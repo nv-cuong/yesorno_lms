@@ -5,8 +5,6 @@
     <div class="animated fadeIn">
         <div class="content-header">
         </div>
-        <!--content-header-->
-
 
         <div class="card">
 
@@ -19,8 +17,8 @@
                         <table class="table table-bordered table-striped">
                             <tbody>
                                 <tr>
-                                    <th>STT</th>
-                                    <td>{{ $student->id }}</td>
+                                    <th>Mã học viên</th>
+                                    <td>{{ $student->stu_id }}</td>
                                 </tr>
                                 <tr>
                                     <th>Họ và tên</th>
@@ -50,11 +48,12 @@
                                                     <ul class="nav nav-pills flex-column">
                                                         <li class="nav-item">
                                                             @forelse ($class->courses()->get() as $course)
-                                                            <div class="p-3">
-                                                                <i class="bi bi-journal-bookmark-fill" style="font-size:1.2em"></i>
-                                                                {{ $course->getOriginal('title') }}
-                                                                <br>
-                                                            </div>
+                                                                <div class="p-3">
+                                                                    <i class="bi bi-journal-bookmark-fill"
+                                                                        style="font-size:1.2em"></i>
+                                                                    {{ $course->getOriginal('title') }}
+                                                                    <br>
+                                                                </div>
                                                             @empty
                                                                 Lớp học không có khóa nào
                                                             @endforelse
@@ -63,22 +62,6 @@
                                                     </ul>
                                                 </div>
                                             </div>
-                                            {{-- <div class="d-flex justify-content-between align-items-center">
-                                                <ul class="list-group list-group-flush" style="width : 100%">
-                                                    <li class="list-group-item fa-2x">
-                                                        <i class="fas fa-chalkboard-teacher"></i>
-                                                        {{ $class['name'] }}
-                                                    </li>
-                                                    @foreach ($class->courses()->get() as $course)
-                                                        <li class="list-group-item" style="margin-left : 40px">
-                                                            <i class="fas fa-book fa-lg"
-                                                                style="color: rgb(35, 35, 248)"></i>
-                                                            {{ $course->getOriginal('title') }}
-                                                        </li>
-                                                    @endforeach
-                                                    <br>
-                                                </ul>
-                                            </div> --}}
                                         @empty
                                             <ul class="list-group list-group-flush"style="width : 100%">
                                                 <li class="list-group-item">
@@ -92,7 +75,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div><!-- Nav tabs -->
+                </div>
             </div>
         </div>
     </div>
