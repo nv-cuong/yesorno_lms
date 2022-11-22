@@ -9,17 +9,29 @@ return [
     'user.update'       => true,
     'user.delete'       => true,
 
+    // Roles
+    'roles.view'         => true,
+    'roles.create'       => true,
+    'roles.update'       => true,
+    'roles.delete'       => true,
+
     // Courses
     'course.view'       => true,
     'course.create'     => true,
     'course.update'     => true,
     'course.delete'     => true,
 
-    // Units
-    'unit.view'         => true,
-    'unit.create'       => true,
-    'unit.update'       => true,
-    'unit.delete'       => true,
+    // Students
+    'student.view'         => true,
+    'student.create'       => true,
+    'student.update'       => true,
+    'student.delete'       => true,
+
+    // Classes
+    'class.view'         => true,
+    'class.create'       => true,
+    'class.update'       => true,
+    'class.delete'       => true,
 
     // Questions
     'question.view'     => true,
@@ -33,9 +45,8 @@ return [
     'test.update'       => true,
     'test.delete'       => true,
 
-    // User Tests
-    'userTest.view'     => true,
-    'userTest.create'   => true,
-    'userTest.update'   => true,
-    'userTest.delete'   => true,
+    // User Tests / Score
+    'score.view'     => true,
+    'score.create'   => true,
+    'score.update'   => true,
 ];

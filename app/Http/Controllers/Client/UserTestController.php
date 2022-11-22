@@ -136,6 +136,7 @@ class UserTestController extends Controller
                 'answer'        => $givenAnswer,
             ];
         }
+        $userTest->score = 0;
         $userTest->answers()->createMany($answers);
         $userTest->save();
         return view('client.modules.user_test_result', compact('userTest'));

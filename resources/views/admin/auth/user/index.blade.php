@@ -34,11 +34,10 @@
                                     <th>Role - chức năng</th>
                                     <th>Lần cuối đăng nhập</th>
                                     <th>Trạng thái</th>
-                                    <th>Khác</th>
+                                    <th>-</th>
                                 </tr>
                             </thead>
                             <tbody>
-
                             </tbody>
                         </table>
                     </div>

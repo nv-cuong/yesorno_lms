@@ -65,107 +65,104 @@
                 </div>
             </div>
         </div>
-        </div>
     </section>
 @stop
 @section('scripts')
-    <script type="text/javascript">
-        $(function() {
-            var table = $('#testId').DataTable({
-                processing: true,
-                serverSide: true,
-                order: [
-                    [1, 'asc']
-                ],
-                ajax: '/admin/test/data',
-                columns: [{
-                        data: 'id',
-                        name: 'id',
-                        orderable: false,
-                        searchable: false
-                    },
-                    {
-                        data: 'category',
-                        name: 'category'
-                    },
-                    {
-                        data: 'category_name',
-                        name: 'category_name'
-                    },
-                    {
-                        data: 'question_count',
-                        name: 'question_count',
-                        searchable: false
-                    },
-                    {
-                        data: 'title',
-                        name: 'title'
-                    },
-                    {
-                        data: 'time',
-                        name: 'time'
-                    },
-                    {
-                        data: 'description',
-                        name: 'description'
-                    },
-                    {
-                        data: 'actions',
-                        name: 'actions',
-                        orderable: false,
-                        searchable: false
-                    }
-                ]
-            });
-            table.on('draw', function() {
-                $('.livicon').each(function() {
-                    $(this).updateLivicon();
-                });
-            });
-            table.on('order.dt search.dt', function() {
-                let i = 1;
-                table.cells(null, 0, {
-                    search: 'applied',
-                    order: 'applied'
-                }).every(function(cell) {
-                    this.data(i++);
-                });
-            }).draw();
+<script type="text/javascript">
+    $(function() {
+        var table = $('#testId').DataTable({
+            processing: true,
+            serverSide: true,
+            order: [
+                [1, 'asc']
+            ],
+            ajax: '/admin/test/data',
+            columns: [{
+                    data: 'id',
+                    name: 'id',
+                    orderable: false,
+                    searchable: false
+                },
+                {
+                    data: 'category',
+                    name: 'category'
+                },
+                {
+                    data: 'category_name',
+                    name: 'category_name'
+                },
+                {
+                    data: 'question_count',
+                    name: 'question_count',
+                    searchable: false
+                },
+                {
+                    data: 'title',
+                    name: 'title'
+                },
+                {
+                    data: 'time',
+                    name: 'time'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'actions',
+                    name: 'actions',
+                    orderable: false,
+                    searchable: false
+                }
+            ]
         });
-    </script>
+        table.on('draw', function() {
+            $('.livicon').each(function() {
+                $(this).updateLivicon();
+            });
+        });
+        table.on('order.dt search.dt', function() {
+            let i = 1;
+            table.cells(null, 0, {
+                search: 'applied',
+                order: 'applied'
+            }).every(function(cell) {
+                this.data(i++);
+            });
+        }).draw();
+    });
+</script>
+<script>
+    function myFunction(id) {
+        document.getElementById("test_id").value = id;
+    }
+</script>
+@endsection
 
-    @yield('modal')
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Xóa bài Test?</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Bạn có muốn xóa không?
-                </div>
-                <div class="modal-footer">
-                    <form method="post" action="{{ route('test.delete') }}" onsubmit="return ConfirmDelete( this )">
-                        @method('DELETE')
-                        @csrf
-                        <input type="hidden" name="test_id" id='test_id' value="0"><br>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">không</button>
-
-                        <button class="btn btn-danger" type="submit">Đồng ý</button>
-                    </form>
-                </div>
+@section('modal')
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Xóa bài Test?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có muốn xóa không?
+            </div>
+            <div class="modal-footer">
+                <form method="post" action="{{ route('test.delete') }}" onsubmit="return ConfirmDelete( this )">
+                    @method('DELETE')
+                    @csrf
+                    <input type="hidden" name="test_id" id='test_id' value="0"><br>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">không</button>
+                    <button class="btn btn-danger" type="submit">Đồng ý</button>
+                </form>
             </div>
         </div>
     </div>
-    @yield('js')
-
-    <script>
-        function myFunction(id) {
-            document.getElementById("test_id").value = id;
-        }
-    </script>
+</div>
 @endsection

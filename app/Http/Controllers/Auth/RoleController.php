@@ -65,7 +65,7 @@ class RoleController extends Controller
      *
      * @param CreateRequest $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
      * @throws \Throwable
      */
@@ -73,9 +73,9 @@ class RoleController extends Controller
     {
         $role = new Role();
         $role->name = $request->name;
-        $role->slug = Str::slug($request->name);
+        $role->slug = Str::slug($request->name); // @phpstan-ignore-line
 
-        $permissions = collect(json_decode($this->permissions($request)))->toArray();
+        $permissions = $this->permissions($request);
         $role->permissions = $permissions;
 
         $role->save();
@@ -87,24 +87,21 @@ class RoleController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function edit($id)
     {
         $role = Role::find($id);
 
-        if (empty($role)) {
-            Session::flash('failed', __('global.denied'));
-
-            return redirect()->back();
+        if ($role) {
+            return view('admin.auth.role.update', array(
+                'role'      => $role,
+            ));
         }
 
-        $permission = json_decode(json_encode($role->permissions), true);
+        Session::flash('failed', __('global.denied'));
 
-        return view('admin.auth.role.update', array(
-            'dataDb'      => $role,
-            'permissions' => $permission
-        ));
+        return redirect()->back();
     }
 
 
@@ -128,7 +125,7 @@ class RoleController extends Controller
         /**
          *  Permission Here
          */
-        $permissions = collect(json_decode($this->permissions($request)))->toArray();
+        $permissions = $this->permissions($request);
         $role->permissions = $permissions;
         $role->save();
 
@@ -166,7 +163,7 @@ class RoleController extends Controller
 
     /**
      * @param Request $request
-     * @return string
+     * @return array
      */
     private function permissions(Request $request)
     {
@@ -180,7 +177,7 @@ class RoleController extends Controller
             $permissions[preg_replace('/_([^_]*)$/', '.\1', $key)] = true;
         }
 
-        return json_encode($permissions);
+        return $permissions;
     }
 
 
@@ -190,10 +187,12 @@ class RoleController extends Controller
      */
     public function duplicate($id)
     {
-        $role = Role::where('id', $id)->firstOrFail();
+        $role = Role::find($id);
+        if($role)
+        {
+            return view('admin.auth.role.duplicate', ['role' => $role]);
+        }
+        abort(404);
 
-        $permission = json_decode(json_encode($role->permissions), true);
-
-        return view('admin.auth.role.duplicate', ['data' => $role, 'permissions' => $permission]);
     }
 }

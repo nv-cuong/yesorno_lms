@@ -33,51 +33,39 @@
                             <li class="nav-item {{  url()->current() == route('contact')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
                             </li>
+                            @if($user)
                             @php
-                            use App\Models\Notification;
-                            if($user = Sentinel::getUser()){
-                            $notifications = Notification::select(
-                                'notifications.id',
-                                'content'
-                            )
-                            ->join('user_notifications as un', 'un.notification_id', 'notifications.id')
-                            ->where('un.user_id', $user->id)
-                            ->get();
+                            $notifications = $user->unreadNotifications;
                             @endphp
                             <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
                                     <i class="far fa-bell"></i>
-                                    Thông báo({{ $notifications->count() + $user_tests->count() }}) </a>
+                                    Thông báo({{ $user->unreadNotifications->count() }}) </a>
                                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
                                     @forelse($notifications as $notification)
                                     <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item">
-                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->content}}
-
+                                    @if(isset($notification->data['course_id']))
+                                    <a href="{{ route('detail', [$notification->data['course_slug']]) }}" class="dropdown-item">
+                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->data['course_name'] }} (started at {{$notification->data['course_begin_date']}} )
                                     </a>
+                                    @endif
                                     @empty
-
                                     @endforelse
                                     @forelse($user_tests as $user_test)
                                     <div class="dropdown-divider"></div>
                                     <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
                                         <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
-
                                     </a>
                                     @empty
                                     @endforelse
                                 </div>
                             </li>
-                            @php
-                            } else {
-                            @endphp
+                            @else
                             <li class="nav-item"> <a class="nav-link" href="#">
                                     <i class="far fa-bell"></i>
-                                    Thông báo </a>
+                                    Thông báo(0)</a>
                             </li>
-                            @php
-                            }
-                            @endphp
+                            @endif
 
                             <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('test_users') }}">Test </a>

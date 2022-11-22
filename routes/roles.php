@@ -11,7 +11,7 @@ Route::prefix('roles')->group(function () {
     //Resource Route
     Route::get('', [RoleController::class, 'index'])
         ->name('roles.index')
-        ->middleware('myweb.auth:roles.show');
+        ->middleware('myweb.auth:roles.view');
 
     Route::get('/create', [RoleController::class, 'create'])
         ->name('roles.create')
@@ -26,7 +26,7 @@ Route::prefix('roles')->group(function () {
 
     Route::get('/{role}', [RoleController::class, 'show'])
         ->name('roles.show')
-        ->middleware('myweb.auth:roles.show');
+        ->middleware('myweb.auth:roles.view');
 
     Route::get('/{role}/edit', [RoleController::class, 'edit'])
         ->name('roles.edit')
@@ -42,5 +42,5 @@ Route::prefix('roles')->group(function () {
 
     Route::delete('/delete', [RoleController::class, 'destroy'])
         ->name('roles.destroy')
-        ->middleware('myweb.auth:roles.destroy');
+        ->middleware('myweb.auth:roles.delete');
 });

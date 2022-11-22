@@ -83,21 +83,7 @@
                                         {!! $errors->first('phone', '<em for="phone" class="help-block " style="color: red">:message</em>') !!}
                                     </div>
 
-                                    <div class="form-group @if ($errors->has('role')) has-error @endif">
-                                        <label for="role" class="control-label">Role - Phân quyền <span
-                                                style="color: red">*</span></label>
-                                        <select name="role" class="form-control" data-placeholder="Role - Phân quyền"
-                                            tabindex="4" style="width: 100%;">
-                                            @foreach ($roleDb as $role)
-                                                @if ($role->id == 5)
-                                                    <option value="{{ $role->id }}" selected="selected">
-                                                        {{ $role->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
-                                        {!! $errors->first('role', '<em for="role" class="help-block" style="color: red">:message</em>') !!}
-                                    </div>
-
+                                    <input type="hidden" name="role" value="5">
                                 </div>
                                 <div class="card-footer">
                                     <div class="pull-right">

@@ -7,10 +7,10 @@ use App\Http\Controllers\ImportQuestionController;
 Route::prefix('/questions')->name('question.')->group(function () {
 
     Route::get('index', [QuestionController::class, 'index'])
-        ->name('index')->middleware('myweb.auth:question.show');
+        ->name('index')->middleware('myweb.auth:question.view');
 
     Route::get('/data', [QuestionController::class, 'getQuestionData'])
-        ->name('data')->middleware('myweb.auth:question.show');
+        ->name('data')->middleware('myweb.auth:question.view');
 
     Route::get('create', [QuestionController::class, 'create'])
         ->name('create')->middleware('myweb.auth:question.create');
@@ -25,11 +25,13 @@ Route::prefix('/questions')->name('question.')->group(function () {
         ->name('update')->middleware('myweb.auth:question.edit');
 
     Route::delete('/delete', [QuestionController::class, 'destroy'])
-        ->name('delete')->middleware('myweb.auth:question.destroy');
+        ->name('delete')->middleware('myweb.auth:question.delete');
 
     Route::get('/answer/{id}', [QuestionController::class, 'show_answser'])
-        ->name('answer')->middleware('myweb.auth:question.show');
+        ->name('answer')->middleware('myweb.auth:question.view');
 
-    Route::get('export', [ImportQuestionController::class, 'export'])->name('export');
-    Route::post('import', [ImportQuestionController::class, 'import'])->name('import');
+    Route::get('export', [ImportQuestionController::class, 'export'])
+        ->name('export')->middleware('myweb.auth:question.view');
+    Route::post('import', [ImportQuestionController::class, 'import'])
+        ->name('import')->middleware('myweb.auth:question.view');
 });

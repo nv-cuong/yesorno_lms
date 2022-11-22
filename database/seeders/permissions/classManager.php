@@ -4,7 +4,7 @@ return [
     'dashboard'         => true,
 
     // Users
-    'user.view'         => true,
+    'user.view'         => false,
     'user.create'       => false,
     'user.update'       => false,
     'user.delete'       => false,
@@ -15,27 +15,32 @@ return [
     'course.update'     => true,
     'course.delete'     => true,
 
-    // Units
-    'unit.view'         => true,
-    'unit.create'       => true,
-    'unit.update'       => true,
-    'unit.delete'       => true,
+    // Students
+    'student.view'         => true,
+    'student.create'       => true,
+    'student.update'       => true,
+    'student.delete'       => true,
+
+    // Classes
+    'class.view'         => true,
+    'class.create'       => true,
+    'class.update'       => true,
+    'class.delete'       => true,
 
     // Questions
     'question.view'     => true,
-    'question.create'   => true,
-    'question.update'   => true,
-    'question.delete'   => true,
+    'question.create'   => false,
+    'question.update'   => false,
+    'question.delete'   => false,
 
     // Tests
     'test.view'         => true,
-    'test.create'       => true,
-    'test.update'       => true,
-    'test.delete'       => true,
+    'test.create'       => false,
+    'test.update'       => false,
+    'test.delete'       => false,
 
-    // User Tests
-    'userTest.view'     => true,
-    'userTest.create'   => true,
-    'userTest.update'   => true,
-    'userTest.delete'   => true,
+    // User Tests / Score
+    'score.view'     => true,
+    'score.create'   => false,
+    'score.update'   => false,
 ];

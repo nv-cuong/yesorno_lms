@@ -74,7 +74,7 @@
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">
                     @if (Sentinel::inRole('teacher'))
-                        {{ $user_tests->count() }}
+                        {{ $count_user_tests }}
                     @else
                         0
                     @endif
@@ -88,7 +88,6 @@
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('score.index') }}" class="dropdown-item">
                             <i class="fas fa-envelope mr-2"></i> Bạn có bài chấm điểm
-
                         </a>
                     @empty
                     @endforelse

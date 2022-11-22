@@ -86,26 +86,19 @@
                                     <div class="form-group @if ($errors->has('role')) has-error @endif">
                                         <label for="role" class="control-label">Phân quyền<span
                                                 style="color: red">*</span></label>
-
-                                        <select name="role" class="form-control" data-placeholder="@lang('auth.form_user_role_select')"
-                                            tabindex="4" style="width: 100%;">
-
-                                            <option value="" {{ old('role') ? 'selected="selected"' : '' }}></option>
-                                            @foreach ($roleDb as $role)
-                                                @if ($role->id == 1)
-                                                    continue;
-                                                @elseif (old('role') == $role->id)
-                                                    <option value="{{ $role->id }}" selected="selected">
-                                                        {{ $role->name }}</option>
-                                                @else
-                                                    <option value="{{ $role->id }}">{{ $role->name }}</option>
-                                                @endif
-                                            @endforeach
-                                        </select>
+                                        @foreach ($roleDb as $role)
+                                        <div class="form-check">
+                                            <input class="form-check-input @error('role') is-invalid @enderror" type="checkbox" id="vehicle1"
+                                                name="role[]" value="{{ $role->id }}"
+                                                @if (old('role') == $role->id)
+                                                        checked
+                                                    @endif>
+                                            <label class="form-check-label">{{ $role->name }}</label>
+                                        </div>
+                                        @endforeach
+                                        
                                         {!! $errors->first('role', '<em for="role" class="help-block" style="color: red">:message</em>') !!}
-
                                     </div>
-
                                 </div>
 
                                 <div class="card-footer">

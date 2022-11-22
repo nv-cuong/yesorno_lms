@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                
+
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -32,14 +32,14 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="{{route('roles.update', $dataDb->id)}}" method="post">
+              <form action="{{route('roles.update', $role->id)}}" method="post">
                     <input name="_method" type="hidden" value="PUT">
                     <div class="card-body">
                         {!! csrf_field() !!}
 
                         <div class="form-group">
                             <label for="name">Name <span style="color: red">*</span></label>
-                            <input type="text" name="name" class="form-control input-sm " placeholder="@lang('global.name')" value="{{ old('name') ?? $dataDb->name }}">
+                            <input type="text" name="name" class="form-control input-sm " placeholder="@lang('global.name')" value="{{ old('name') ?? $role->name }}">
                             {!! $errors->first('name', '<em for="name" class="help-block" style="color: red">:message</em>') !!}
                         </div>
 
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="card-footer">
-                        
+
                         <div class="pull-right">
                             <button type="submit" class="btn ladda-button btn-flat btn-success btn-sm" data-style="zoom-in">
                                 <span class="ladda-label"><i class="fa fa-save"></i> Sửa</span>
@@ -84,5 +84,42 @@
     <!-- /.content -->
 @stop
 
+@section('scripts')
+<script>
+    $(function () {
+        var oTable = $('#acl-table').DataTable({
+            aaSorting: [[0, 'asc']],
+            stateSave: true,
+            bPaginate: false,
+            bInfo: false,
+            responsive: true,
+            processing: true,
+            bFilter: false,
+            fixedHeader: true,
+            columns: [
+                {orderable: true, searchable: true},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+                {orderable: false, searchable: false},
+            ]
+        });
+    });
+</script>
+<script language="javascript">
+    $('.styled').click(function(e){
+        $("#acl-all").prop( "checked", false );
+    })
 
+    $('#acl-all').click(function (e) {
+        var all = $('#acl-all');
+        if (all.is(":checked")) {
+            $('.acl').prop('checked', true);
+        } else {
+            $('.acl').prop('checked', false);
+        }
+    });
+</script>
+@stop
 

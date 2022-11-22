@@ -1,5 +1,9 @@
+@php
+$permissions = $role->permissions;
+@endphp
 <div class="checkbox checkbox-success">
-    <input type="checkbox" value="ok" name="acl_all" class="styled acl" id="acl-all" style="margin-left: 0;" {{ old('acl_all') || array_key_exists('acl.all', $permissions) ? 'checked' : ''}}>
+    <input type="checkbox" name="acl_all" value="ok" class="acl" id="acl-all"
+            style="margin-left: 0;" {{ old('acl_all') || array_key_exists('acl.all', $permissions) ? 'checked' : ''}}>
     <label for="acl-all">Checked All</label>
 </div>
 
@@ -16,7 +20,6 @@
     </thead>
 
     <tbody>
-
     <!-- Users -->
     <tr>
         <td>User</td>
@@ -28,19 +31,19 @@
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="user_edit" {{ old('user_edit') || array_key_exists('user.edit', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="user_update" {{ old('user_update') || array_key_exists('user.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="user_show" {{ old('user_show') || array_key_exists('user.show', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="user_view" {{ old('user_view') || array_key_exists('user.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="user_destroy" {{ old('user_destroy') || array_key_exists('user.destroy', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="user_delete" {{ old('user_delete') || array_key_exists('user.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -63,19 +66,19 @@
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="role_edit" {{ old('role_edit') || array_key_exists('role.edit', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="role_update" {{ old('role_update') || array_key_exists('role.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="role_show" {{ old('role_show') || array_key_exists('role.show', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="role_view" {{ old('role_view') || array_key_exists('role.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
-                <input type="checkbox" value="ok" class="styled acl" name="role_destroy" {{ old('role_destroy') || array_key_exists('role.destroy', $permissions) ? 'checked' : ''}}>
+                <input type="checkbox" value="ok" class="styled acl" name="role_delete" {{ old('role_delete') || array_key_exists('role.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -95,21 +98,21 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_edit" {{ old('course_edit') || array_key_exists('course.edit', $permissions) ? 'checked' : ''}}>
+                        name="course_update" {{ old('course_update') || array_key_exists('course.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_show" {{ old('course_show') || array_key_exists('course.show', $permissions) ? 'checked' : ''}}>
+                        name="course_view" {{ old('course_view') || array_key_exists('course.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="course_destroy" {{ old('course_destroy') || array_key_exists('course.destroy', $permissions) ? 'checked' : ''}}>
+                        name="course_delete" {{ old('course_delete') || array_key_exists('course.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -129,21 +132,21 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_edit" {{ old('class_edit') || array_key_exists('class.edit', $permissions) ? 'checked' : ''}}>
+                        name="class_update" {{ old('class_update') || array_key_exists('class.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_show" {{ old('class_show') || array_key_exists('class.show', $permissions) ? 'checked' : ''}}>
+                        name="class_view" {{ old('class_view') || array_key_exists('class.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="class_destroy" {{ old('class_destroy') || array_key_exists('class.destroy', $permissions) ? 'checked' : ''}}>
+                        name="class_delete" {{ old('class_delete') || array_key_exists('class.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -163,21 +166,21 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_edit" {{ old('student_edit') || array_key_exists('student.edit', $permissions) ? 'checked' : ''}}>
+                        name="student_update" {{ old('student_update') || array_key_exists('student.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_show" {{ old('student_show') || array_key_exists('student.show', $permissions) ? 'checked' : ''}}>
+                        name="student_view" {{ old('student_view') || array_key_exists('student.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="student_destroy" {{ old('student_destroy') || array_key_exists('student.destroy', $permissions) ? 'checked' : ''}}>
+                        name="student_delete" {{ old('student_delete') || array_key_exists('student.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -197,21 +200,21 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_edit" {{ old('test_edit') || array_key_exists('test.edit', $permissions) ? 'checked' : ''}}>
+                        name="test_update" {{ old('test_update') || array_key_exists('test.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_show" {{ old('test_show') || array_key_exists('test.show', $permissions) ? 'checked' : ''}}>
+                        name="test_view" {{ old('test_view') || array_key_exists('test.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="test_destroy" {{ old('test_destroy') || array_key_exists('test.destroy', $permissions) ? 'checked' : ''}}>
+                        name="test_delete" {{ old('test_delete') || array_key_exists('test.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -231,21 +234,21 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_edit" {{ old('question_edit') || array_key_exists('question.edit', $permissions) ? 'checked' : ''}}>
+                        name="question_update" {{ old('question_update') || array_key_exists('question.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_show" {{ old('question_show') || array_key_exists('question.show', $permissions) ? 'checked' : ''}}>
+                        name="question_view" {{ old('question_view') || array_key_exists('question.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="question_destroy" {{ old('question_destroy') || array_key_exists('question.destroy', $permissions) ? 'checked' : ''}}>
+                        name="question_delete" {{ old('question_delete') || array_key_exists('question.delete', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -264,14 +267,14 @@
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_point" {{ old('score_point') || array_key_exists('score.point', $permissions) ? 'checked' : ''}}>
+                        name="score_update" {{ old('score_update') || array_key_exists('score.update', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
         <td class="text-center">
             <div class="checkbox checkbox-success">
                 <input type="checkbox" value="ok" class="styled acl"
-                        name="score_show" {{ old('score_show') || array_key_exists('score.show', $permissions) ? 'checked' : ''}}>
+                        name="score_view" {{ old('score_view') || array_key_exists('score.view', $permissions) ? 'checked' : ''}}>
                 <label></label>
             </div>
         </td>
@@ -280,56 +283,3 @@
     </tr>
     </tbody>
 </table>
-
-<!-- DataTables -->
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
-  <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-<!-- DataTables  & Plugins -->
-<script src="{{ asset('/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-
-<script>
-    $(function () {
-        var oTable = $('#acl-table').DataTable({
-            aaSorting: [[0, 'asc']],
-            stateSave: true,
-            bPaginate: false,
-            bInfo: false,
-            responsive: true,
-            processing: true,
-            bFilter: false,
-            fixedHeader: true,
-            columns: [
-                {orderable: true, searchable: true},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-                {orderable: false, searchable: false},
-
-            ]
-
-        });
-    });
-
-    $('#acl-all').on('click', function () {
-        var all = $('#acl-all');
-        if (all.is(":checked")) {
-            $('.acl').prop('checked', true);
-        } else {
-            $('.acl').prop('checked', false);
-        }
-    });
-</script>

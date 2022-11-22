@@ -3,36 +3,15 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
-use App\Models\ClassStudy;
 use App\Models\Course;
-use App\Models\Lesson;
-use App\Models\Notification;
 use App\Models\User;
-use App\Models\Question;
-use App\Models\UserTest;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class HomeController extends Controller
 {
-    /**
-     * {@inheritDoc}
-     * @see \App\Http\Controllers\Controller::compose()
-     */
-    public function compose(View $view)
-    {
-        $user = Sentinel::getUser();
-        if ($user) {
-            $user_tests = UserTest::where('user_id', $user->id)->where('status', 0)->get();
-            $count_user_tests = $user_tests->count();
-            $view->with('user_tests', $user_tests);
-            $view->with('count_user_tests', $count_user_tests);
-        }
-    }
-
     /**
      *  @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -48,15 +27,11 @@ class HomeController extends Controller
             'end_date',
             'image'
 
-        ])
+        ])->withCount('users')
             ->orderBy('created_at', 'DESC')
             ->take(4)
             ->get();
-
-        $classes = ClassStudy::select([
-            'id'
-        ]);
-        return view('client.modules.home', compact('courses', 'classes'));
+        return view('client.modules.home', compact('courses'));
     }
 
     /**

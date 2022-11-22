@@ -10,13 +10,11 @@ use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\Auth\User\CreateRequest;
-use App\Http\Requests\Auth\User\UpdateRequest;
 use App\Http\Requests\Auth\User\UserRequest;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -57,8 +55,7 @@ class UserController extends Controller
             })
             ->addColumn('role', function ($user) {
                 if ($user->roles->isNotEmpty()) {
-                    $var = implode(', ',collect($user->roles)->pluck('name')->all());
-                    return $var;
+                    return $user->roles->pluck('name')->implode(',');
                 }
             })
             ->addColumn('status', function ($user) {
@@ -66,6 +63,9 @@ class UserController extends Controller
             })
             ->addColumn('actions', function ($user) {
                 return view('admin.auth.user.actions', ['row' => $user])->render();
+            })
+            ->orderColumn('role', function ($query, $order) {
+                $query->orderBy('ru.role_id', $order);
             })
             ->rawColumns(['fullname', 'actions', 'role', 'status'])
             ->make(true);
@@ -77,6 +77,7 @@ class UserController extends Controller
     public function create()
     {
         $roleDb = Role::select('id', 'name')
+            ->where('id', '<>', 1)
             ->get();
 
         return view('admin.auth.user.create', array(
@@ -103,7 +104,7 @@ class UserController extends Controller
             $data = [
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
-                'email'      => strtolower($email),
+                'email'      => str::lower($email), // @phpstan-ignore-line
                 'password'   => $request->password,
                 'phone'   => $request->phone,
                 'created_by' => $user,
@@ -111,12 +112,14 @@ class UserController extends Controller
             ];
 
             //Create a new user
-            $user = Sentinel::registerAndActivate($data);
+            $newUser = Sentinel::registerAndActivate($data);
 
             //Attach the user to the role
-            $role = Sentinel::findRoleById($request->role);
-            $role->users()
-                ->attach($user);
+            $roles = $request->role;
+            if($roles) {
+                foreach($roles as $role)
+                $newUser->roles()->attach($role);
+            }
 
             DB::commit();
 
@@ -137,8 +140,10 @@ class UserController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Http\RedirectResponse
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
+
     public function edit($id)
     {
         $user = Sentinel::findUserById($id);
@@ -150,14 +155,15 @@ class UserController extends Controller
         }
 
         $roleDb = Role::select('id', 'name')
+            ->where('id', '<>', 1)
             ->get();
 
-        $userRole = $user->roles[0]->id ?? null;
+        $userRoles = $user->roles;
 
         return view('admin.auth.user.update', array(
             'data'     => $user,
             'roleDb'   => $roleDb,
-            'userRole' => $userRole
+            'userRoles' => $userRoles
         ));
     }
 
@@ -179,25 +185,16 @@ class UserController extends Controller
 
         DB::beginTransaction();
         try {
-            $oldRole = Sentinel::findRoleById($user->roles[0]->id ?? null);
-
             $credentials = [
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
             ];
 
             #Valid User For Update
-            $role = Sentinel::findRoleById($request->role);
-
-            if ($oldRole) {
-                #Remove a user from a role.
-                $oldRole->users()
-                    ->detach($user);
+            $roles = $request->role;
+            if ($roles) {
+                $user->roles()->sync($roles);
             }
-
-            #Assign a user to a role.
-            $role->users()
-                ->attach($user);
 
             #Update User
             Sentinel::update($user, $credentials);
@@ -221,9 +218,9 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int $id
+     * @param  Request $request
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
