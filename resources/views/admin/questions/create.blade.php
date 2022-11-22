@@ -71,10 +71,11 @@
                                         style="width: 100%;" name="category" id="category">
 
                                         <option selected="selected" value="0">Câu hỏi tự luận</option>
-                                        <option value="1" {{ old('category') == 1 ? 'selected' : '' }}>Câu hỏi trắc
-                                            nghiệm
+                                        <option value="1" {{ old('category') == 1 ? 'selected' : '' }}>Câu hỏi nhiều lựa chọn
                                         </option>
                                         <option value="2" {{ old('category') == 2 ? 'selected' : '' }}>Câu hỏi Đúng sai
+                                        </option>
+                                        <option value="3" {{ old('category') == 3 ? 'selected' : '' }}>Câu hỏi trắc nghiệm
                                         </option>
                                     </select>
                                     @error('category')
@@ -82,10 +83,10 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group" id="check_question" style="display: none">
+                                <div class="form-group" id="multiple_choice" style="display: none">
                                     <label for="exampleInputEmail1">Đáp án <span style="color: red">*</span></label>
-                                    <input type="hidden" name="check_question">
-                                    @error('check_question')
+                                    <input type="hidden" name="multiple_choice">
+                                    @error('multiple_choice')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <div class="row">
@@ -101,6 +102,33 @@
                                                 <input type="checkbox" name="is_correct[{{ $idx }}]"
                                                     class="@error('is_correct') is-invalid @enderror" value="1"
                                                     {{ old('is_correct.' . $idx) ? 'checked' : '' }}>
+                                                @error('is_correct')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        @endfor
+                                    </div>
+                                </div>
+
+                                <div class="form-group" id="check_question" style="display: none">
+                                    <label for="exampleInputEmail1">Đáp án <span style="color: red">*</span></label>
+                                    <input type="hidden" name="check_question">
+                                    @error('check_question')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                    <div class="row">
+                                        @for ($idx = 0; $idx < 4; $idx++)
+                                            <div class="col-md-6 form-group">
+                                                <input type="text" name="answer3[{{ $idx }}]"
+                                                    class="form-control @error('answer3.' . $idx) is-invalid @enderror"
+                                                    id="exampleInputEmail1" placeholder="Đáp án {{ $idx + 1 }}"
+                                                    value="{{ old('answer3.' . $idx) }}">
+                                                @error('answer3.' . $idx)
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                                <input type="radio" name="is_correct"
+                                                    class="@error('is_correct') is-invalid @enderror" value="{{ $idx }}"
+                                                    {{ old('is_correct') ? 'checked' : '' }}>
                                                 @error('is_correct')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -154,37 +182,45 @@
 @stop
 
 @section('scripts')
-    <script>
-        d = document.getElementById("category").value;
+<script>
+    d = document.getElementById("category").value;
         if (d == 1) {
+            document.getElementById("multiple_choice").style.display = 'block';
+            document.getElementById("check_true").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+        } else if (d == 2) {
+            document.getElementById("check_true").style.display = 'block';
+            document.getElementById("multiple_choice").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+        }else if (d == 3) {
             document.getElementById("check_question").style.display = 'block';
             document.getElementById("check_true").style.display = 'none';
+            document.getElementById("multiple_choice").style.display = 'none';
         } else {
-            if (d == 2) {
-                document.getElementById("check_true").style.display = 'block';
-                document.getElementById("check_question").style.display = 'none';
-            } else {
-                document.getElementById("check_true").style.display = 'none';
-                document.getElementById("check_question").style.display = 'none';
-            }
+            document.getElementById("check_true").style.display = 'none';
+            document.getElementById("multiple_choice").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
         }
 
-        document.getElementById("category").onchange = function() {
-            d = document.getElementById("category").value;
-            if (d == 1) {
-                document.getElementById("check_question").style.display = 'block';
-                document.getElementById("check_true").style.display = 'none';
-            } else {
-                if (d == 2) {
-                    document.getElementById("check_true").style.display = 'block';
-                    document.getElementById("check_question").style.display = 'none';
-                } else {
-                    document.getElementById("check_true").style.display = 'none';
-                    document.getElementById("check_question").style.display = 'none';
-                }
-            }
-
-        };
-    </script>
-
+    document.getElementById("category").onchange = function() {
+        d = document.getElementById("category").value;
+        if (d == 1) {
+            document.getElementById("multiple_choice").style.display = 'block';
+            document.getElementById("check_true").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+        } else if (d == 2) {
+            document.getElementById("check_true").style.display = 'block';
+            document.getElementById("multiple_choice").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+        }else if (d == 3) {
+            document.getElementById("multiple_choice").style.display = 'block';
+            document.getElementById("check_true").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+        } else {
+            document.getElementById("check_true").style.display = 'none';
+            document.getElementById("multiple_choice").style.display = 'none';
+            document.getElementById("check_question").style.display = 'none';
+        }
+    };
+</script>
 @stop
