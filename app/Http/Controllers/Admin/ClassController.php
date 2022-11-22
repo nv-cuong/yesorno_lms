@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use App\Notifications\AssignCourse;
 
 class ClassController extends Controller
 {
@@ -258,23 +259,22 @@ class ClassController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function join($id)
+    public function join(Request $request, $id)
     {
         $message = 'Học viên không tồn tại!';
         $type = 'danger';
         $class = ClassStudy::find($id);
         $courses = $class->courses()->get();
+        $userIds = $request->input('std_id', false);
         try {
-            if (isset($_POST['std_id'])) {
-                foreach ($_POST['std_id'] as $value) {
+            if ($userIds) {
+                foreach ($userIds as $userId) {
                     //Xử lý các phần tử được chọn
-                    $student = User::find($value);
-                    if ($student->hasClass($class->id)) continue;
-                    else {
+                    $student = User::find($userId);
+                    if ($student->hasClass($class->id) == false) {
                         $class->users()->attach($student->id);
                         foreach ($courses as $course) {
-                            if ($student->hasCourse($course->id)) continue;
-                            else {
+                            if ($student->hasCourse($course->id) == false) {
                                 $student->courses()->attach($course->id, ['status' => 1]);
                                 $units = Unit::where('course_id', $course->id)->with('lessons')->get();
                                 foreach ($units as $unit) {
@@ -282,6 +282,14 @@ class ClassController extends Controller
                                         $student->lessons()->attach($lesson->id);
                                     }
                                 }
+                                $assignNotification = [
+                                    'course_id' => $course->id,
+                                    'course_name' => $course->title,
+                                    'course_slug' => $course->slug,
+                                    'course_begin_date' => date('d/m/Y', strtotime($course->begin_date)),
+                                ];
+
+                                $student->notify(new AssignCourse($assignNotification));
                             }
                         }
                     }
