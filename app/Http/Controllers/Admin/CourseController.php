@@ -4,15 +4,18 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
+use App\Mail\SendEmail;
 use App\Models\Course;
 use App\Models\Notification;
 use App\Models\Test;
 use App\Models\Unit;
 use App\Models\User;
-
+use App\Notifications\SendMessageNotification;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -308,9 +311,10 @@ class CourseController extends Controller
             if ($user->courses()
                 ->where('course_id', $courseId)
                 ->where('user_courses.status', 0)
-                ->exists()){
+                ->exists()
+            ) {
                 $user->courses()
-                ->updateExistingPivot($courseId, ['status' => 1]);
+                    ->updateExistingPivot($courseId, ['status' => 1]);
                 $assignNotification = [
                     'course_id' => $courseId,
                     'course_name' => $course->title,
@@ -324,7 +328,7 @@ class CourseController extends Controller
                     ->with('message', 'Học viên đã được chấp nhận vào khóa học')
                     ->with('type_alert', "success");
             }
-        } else{
+        } else {
             return redirect(route('course.student', $courseId))
                 ->with('message', 'Học viên không tồn tại')
                 ->with('type_alert', "danger");
