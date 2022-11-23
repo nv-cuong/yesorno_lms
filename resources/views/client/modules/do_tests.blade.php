@@ -152,14 +152,16 @@
 
 <body>
 
-    <h1> Bài test</h1>
+    <h1>Bài test</h1>
     <form method="post" action="{{ route('send.test', $id) }}" id="do_test">
         @csrf
         <div class="card-body">
             <div class="form-group">
                 @foreach ($questions as $question)
                     <h3 for="question" style="margin-bottom: 1.2rem">
-                        <label> {{ $loop->iteration . '. ' . $question->content }}</label>
+                        <label>
+                            {{ $loop->iteration . '. ' . $question->content }}
+                        </label>
                     </h3>
                     @if ($question->category == 2)
                         <label>
@@ -172,12 +174,13 @@
                         </label>
                     @endif
                     @if ($question->category == 0)
-                        <textarea class="form-control " value="" name="essayQuest[{{ $question->id }}]" id="exampleFormControlTextarea1"
-                            placeholder="nhập câu trả lời" rows="3"></textarea>
+                        <textarea class="form-control" value="" name="essayQuest[{{ $question->id }}]" id="exampleFormControlTextarea1"
+                            placeholder="Nhập câu trả lời" rows="3">
+                        </textarea>
                     @else
                         @foreach ($question->answers as $option)
                             <label>
-                                <input type="checkbox" name="answers[]" value="{{ $option->id }}" />
+                                <input type="checkbox" name="multiQuest[]" value="{{ $option->id }}" />
                                 {{ $option->content }}
                             </label>
                         @endforeach
@@ -187,16 +190,17 @@
         </div>
         <!-- /.card-body -->
         <br>
-        <button type="submit" class="btn btn-primary" onclick="stop()" id="checkBtn">Nộp bài</button></BR>
+        <button type="submit" class="btn btn-primary" onclick="stop()" id="checkBtn">
+            Nộp bài
+        </button>
+        <br>
     </form>
-    @php
-        echo '<div class="clock">
-        <p>Thời gian làm bài: <span id="h"> Giờ</span> :
-            <span id="m">Phút</span> :
-            <span id="s">Giây</span>
-        </p>
-    </div>';
-    @endphp
+    <div class="clock">
+        <p>Thời gian làm bài: </p>
+        <span id="h"></span> :
+        <span id="m"></span> :
+        <span id="s"></span>
+    </div>
 
     <script language="javascript">
         window.addEventListener('load', start);
@@ -279,19 +283,14 @@
         }
     </script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <?php
-    
-    if ($score != null) {
-        echo '<script>
-                        
-                          $(document).ready(function(){
-                            $("#do_test :input").prop("disabled", true);
-                        });
-                    </script>';
-    }
-    ?>
 
-    <script type="text/javascript"></script>
+    @if ($score != null)
+        <script>
+            $(document).ready(function() {
+                $("#do_test :input").prop("disabled", true);
+            });
+        </script>
+    @endif
 </body>
 
 </html>

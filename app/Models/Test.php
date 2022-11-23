@@ -19,7 +19,7 @@ class Test extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function course()
+    public function courses()
     {
         return $this->belongsToMany(
             Course::class,
@@ -32,7 +32,7 @@ class Test extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function question()
+    public function questions()
     {
         return $this->belongsToMany(
             Question::class,
@@ -46,7 +46,7 @@ class Test extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function user()
+    public function users()
     {
         return $this->belongsToMany(
             User::class,
