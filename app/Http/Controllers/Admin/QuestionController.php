@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Question;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Question\QuestionRequest;
-use App\Http\Requests\Question\EditQuestionRequest;
 use App\Models\Answer;
 use App\Models\Course;
 use Exception;
@@ -193,11 +192,11 @@ class QuestionController extends Controller
     }
 
     /**
-     * @param EditQuestionRequest $request
+     * @param QuestionRequest $request
      *
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function update(EditQuestionRequest $request, $id)
+    public function update(QuestionRequest $request, $id)
     {
         $msg = 'Câu hỏi không tồn tại !';
         $question = Question::find($id);
