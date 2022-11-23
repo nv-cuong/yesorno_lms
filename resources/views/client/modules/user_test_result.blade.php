@@ -8,10 +8,18 @@
             <img src="{{ asset('/user/img/header/header-shape-2.png') }}" class="hero-circle-1" alt="thumb">
         </div>
         <div class="container">
-            <h2 class="breadcrumb-title">Danh sách khóa học</h2>
+            <h2 class="breadcrumb-title">
+                Danh sách khóa học
+            </h2>
             <ul class="breadcrumb-menu clearfix">
-                <li><a href="{{ route('home') }}">Trang chủ</a></li>
-                <li class="active">Khóa học</li>
+                <li>
+                    <a href="{{ route('home') }}">
+                        Trang chủ
+                    </a>
+                </li>
+                <li class="active">
+                    Khóa học
+                </li>
             </ul>
         </div>
     </div>
@@ -24,12 +32,16 @@
             <div class="row csf align-items-center">
                 <div class="col-xl-8">
                     <div class="site-title-left">
-                        <h2>Cảm ơn bạn đã tham gia bài test</h2>
+                        <h2>
+                            Cảm ơn bạn đã tham gia bài test
+                        </h2>
                     </div>
                 </div>
                 <div class="col-xl-4">
                     <div class="site-title-right">
-                        <h2>Course</h2>
+                        <h2>
+                            Course
+                        </h2>
                     </div>
                 </div>
             </div>
@@ -40,12 +52,16 @@
                             <div class="col-xl-12">
                                 <div class="course-view-more">
                                     @if ($userTest->score != null)
-                                        <h4>Điểm của bạn là: {{ $userTest->score }}</h4>
+                                        <h4>
+                                            Điểm của bạn là: {{ $userTest->score }}
+                                        </h4>
                                         <a href="{{ route('user_tests_detail', $userTest->id) }}" class="btn btn-primary">
                                             Xem lại bài làm
                                         </a>
                                     @else
-                                        <h4>Vui lòng đợi giáo viên chấm điểm!</h4>
+                                        <h4>
+                                            Vui lòng đợi giáo viên chấm điểm!
+                                        </h4>
                                         <a href="{{ route('user_tests_detail', $userTest->id) }}" class="btn btn-primary">
                                             Xem lại bài làm
                                         </a>
