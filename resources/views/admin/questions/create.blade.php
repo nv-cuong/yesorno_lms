@@ -85,11 +85,15 @@
 
                                 <div class="form-group" id="multiple_choice" style="display: none">
                                     <label for="exampleInputEmail1">Đáp án <span style="color: red">*</span></label>
+                                    <button type="button" name="add" id="add" class="btn btn-success" title="Thêm đáp án">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </button>
+                                    <br><br>
                                     <input type="hidden" name="multiple_choice">
                                     @error('multiple_choice')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                    <div class="row">
+                                    <div class="row" id="answer_field">
                                         @for ($idx = 0; $idx < 4; $idx++)
                                             <div class="col-md-6 form-group">
                                                 <input type="text" name="answer1[{{ $idx }}]"
@@ -223,4 +227,22 @@
         }
     };
 </script>
+<script type="text/javascript">  
+    $(document).ready(function(){
+        var i=4;
+        
+        $('#add').click(function(){
+            i++;
+            $('#answer_field').append('<div class="col-md-6 form-group" id="row'+i+'">'+
+            '<button type="button" name="remove" id="'+i+'" class="btn btn-danger btn_remove"><i class="fas fa-times-circle"></i></button>'+
+            '<input type="text" name="answer1['+ i +']" class="form-control" placeholder="Đáp án'+i+'"value="">'+
+            '<input type="checkbox" name="is_correct['+ i +']"class="" value="1"</div>');
+        });
+
+        $(document).on('click', '.btn_remove', function(){
+            var button_id = $(this).attr("id");
+            $('#row'+button_id).remove();
+        });
+    });
+</script> 
 @stop

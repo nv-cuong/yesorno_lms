@@ -120,14 +120,12 @@ class QuestionController extends Controller
 
                 $option = $request->input('answer1');
                 $isCorrect = $request->input('is_correct');
-                for ($idx = 0; $idx < 4; $idx++) {
-                    if ($option[$idx] != '') {
-                        Answer::create([
-                            'question_id' => $question->id,
-                            'content' => $option[$idx],
-                            'checked' => isset($isCorrect[$idx]) ? 1 : 0
-                        ]);
-                    }
+                foreach($option as $key => $content){
+                    Answer::create([
+                        'question_id' => $question->id,
+                        'content' => $content,
+                        'checked' => array_key_exists($key, $isCorrect) ? 1 : 0
+                    ]);
                 }
             } elseif ($question_item['category'] == 3) {
                 $question = Question::create([
