@@ -2,15 +2,21 @@
 
 namespace App\Http\Controllers\Client;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
+
+use App\Models\Test;
+use App\Models\User;
+use App\Models\Answer;
+use App\Models\Course;
 use App\Models\Question;
 use App\Models\UserTest;
 use App\Models\UserTestAnswer;
-use App\Models\Answer;
-use App\Models\Test;
+
+use App\Http\Controllers\Controller;
+
+use Illuminate\Http\Request;
+
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
-use Carbon\Carbon;
 
 class UserTestController extends Controller
 {
@@ -19,7 +25,7 @@ class UserTestController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function doTest(Request $request, $id)
+    public function doTest($id)
     {
         $userTest       = UserTest::find($id);
         $test           = $userTest->test;
@@ -27,7 +33,7 @@ class UserTestController extends Controller
         $startedTime    = $userTest->started_at;
         $submittedTime  = $userTest->submitted_at;
         $status         = $userTest->status;
-        $questions      = $test->question;
+        $questions      = $test->questions;
         $time           = $test->time;
 
         if ($submittedTime || $status == 1) {
@@ -56,7 +62,6 @@ class UserTestController extends Controller
     {
         $submittedTime  = now();
         $testUserItems  = $request->except('_token');
-
         $userTest       = UserTest::find($id);
 
         if ($userTest->submitted_at || $userTest->status == 1) {
@@ -67,21 +72,23 @@ class UserTestController extends Controller
         $testScore      = 0;
         $questions      = 0;
 
-        if ($request->get('answers')) {
-            foreach ($testUserItems['answers'] as $key  => $answerId) {
-                $questionId     = Answer::find($answerId)->question->id;
-                $question       = Answer::find($answerId)->question;
-                $answers_item   = Answer::find($answerId);
+        // Multiple choice questions
+        if (isset($testUserItems['multiQuest'])) {
+            foreach ($testUserItems['multiQuest'] as $key  => $givenAnswer) {
+                $questionId     = Answer::find($givenAnswer)->question->id;
+                $question       = Answer::find($givenAnswer)->question;
+                $answerItem     = Answer::find($givenAnswer);
 
-                if ($answers_item->checked == 0) {
+                if ($answerItem->checked == 0) {
                     $check = 0;
                 } else {
                     $check = 1;
                 }
+
                 if ($questions != $questionId) {
                     $answers[$questionId] = [
                         'question_id'   => $questionId,
-                        'answer'        => $answers_item->id,
+                        'answer'        => $answerItem->id,
                         'correct'       => $check
                     ];
                 } else {
@@ -89,7 +96,7 @@ class UserTestController extends Controller
                         if ($check == 0) {
                             $answers[$questionId]['correct'] =  0;
                         }
-                        $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answers_item->id;
+                        $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answerItem->id;
                     }
                 }
                 if ($check == 1) {
@@ -99,20 +106,20 @@ class UserTestController extends Controller
             }
         }
 
-        if ($request->get('tfQuest')) {
-            foreach ($request->get('tfQuest') as $questionId => $answerId) {
-                $question   = Question::find($questionId);
-                $correct    = Question::where('id', $questionId)
-                    ->where('answer', $answerId)
-                    ->count() > 0;
-                $answers[]  = [
-                    'question_id'   => $questionId,
-                    'answer'        => $answerId,
-                    'correct'       => $correct
-                ];
-                if ($correct) {
-                    $testScore += $question->score;
-                }
+        // True - False questions
+        $tfQuest = $request->input('tfQuest', []);
+        foreach ($tfQuest as $questionId => $givenAnswer) {
+            $question   = Question::find($questionId);
+            $correct    = Question::where('id', $questionId)
+                ->where('answer', $givenAnswer)
+                ->count() > 0;
+            $answers[]  = [
+                'question_id'   => $questionId,
+                'answer'        => $givenAnswer,
+                'correct'       => $correct
+            ];
+            if ($correct) {
+                $testScore += $question->score;
             }
         }
 
@@ -121,12 +128,12 @@ class UserTestController extends Controller
         $userTest->submitted_at = $submittedTime;
         $userTest->save();
 
+        // Essay questions
         $essayQuest = $request->input('essayQuest', []);
-
-        foreach ($essayQuest as $questionId => $answerId) {
+        foreach ($essayQuest as $questionId => $givenAnswer) {
             $answers[]  = [
                 'question_id'   => $questionId,
-                'answer'        => $answerId,
+                'answer'        => $givenAnswer,
             ];
         }
         $userTest->score = 0;
@@ -172,5 +179,31 @@ class UserTestController extends Controller
             ->get();
 
         return view('client.modules.user_tests_detail', compact('user_test_answers'));
+    }
+
+    /**
+     * @param int $courseId
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function finalTest($courseId)
+    {
+        $course     = Course::find($courseId);
+        $test       = $course->tests()
+            ->where('category', 0)
+            ->first();
+
+        $testId     = $test->id;
+        $userId     = Sentinel::getUser()->id;
+        $user       = User::find($userId);
+
+        $userTest   = UserTest::where('user_id', $userId)
+            ->where('test_id', $testId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($userTest == null) {
+            $user->tests()->attach($testId);
+        }
+        return redirect()->route('doTest', [$userTest->id]);
     }
 }
