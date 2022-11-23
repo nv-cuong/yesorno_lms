@@ -41,27 +41,26 @@ class TestController extends Controller
             'title',
             'description',
         ])->with('course')
-        ->withCount('question');
+            ->withCount('question');
 
-        // @phpstan-ignore-next-line
         return DataTables::of($tests)
-        ->editColumn('category', function ($test) {
-            if($test->category == 0) return 'Bài thi';
-            return 'Khảo sát';
-        })
-        ->addColumn('category_name', function ($test) {
-            $course_name = '';
-            foreach($test->course as $courseItem){
-                $course_name .= $courseItem->title .'<br/>';
-            }
-            return $course_name;
-
-        })
-        ->addColumn('actions', function ($test) {
-            return view('admin.tests.actions', ['row' => $test])->render();
-        })
-        ->rawColumns(['actions', 'category_name'])
-        ->make(true);
+            ->editColumn('category', function ($test) {
+                if ($test->category == 0) return 'Bài thi cuối khoá';
+                if ($test->category == 1) return 'Bài thi';
+                return 'Khảo sát';
+            })
+            ->addColumn('category_name', function ($test) {
+                $course_name = '';
+                foreach ($test->course as $courseItem) {
+                    $course_name .= $courseItem->title . '<br/>';
+                }
+                return $course_name;
+            })
+            ->addColumn('actions', function ($test) {
+                return view('admin.tests.actions', ['row' => $test])->render();
+            })
+            ->rawColumns(['actions', 'category_name'])
+            ->make(true);
     }
 
     /**
@@ -69,8 +68,8 @@ class TestController extends Controller
      */
     public function create()
     {
-        $course = Course::pluck('title', 'id');
-        $question = Question::pluck('content', 'id');
+        $course     = Course::pluck('title', 'id');
+        $question   = Question::pluck('content', 'id');
         return view('admin.tests.create', compact('course', 'question'));
     }
 
@@ -85,20 +84,24 @@ class TestController extends Controller
         $test = new Test();
 
         try {
-            $test->category = $request->category;
-            $test->title = $request->title;
-            $test->time = $request->time;
-            $test->description = $request->description;
+            if ($request->category == 0 && Test::where('category', 0)->get()) {
+                return redirect()->back()
+                    ->with('message', 'Đã tồn tại bài thi cuối khoá')
+                    ->with('type_alert', 'danger');
+            }
+            $test->category     = $request->category;
+            $test->title        = $request->title;
+            $test->time         = $request->time;
+            $test->description  = $request->description;
             $test->save();
 
-            $course_id = $request->course;
-            $questions = $request->question;
+            $course_id          = $request->course;
+            $questions          = $request->question;
             foreach ($questions as $id) {
-                $question  = Question::find($id);
+                $question = Question::find($id);
                 $question->tests()->attach($test->id);
             }
-
-            $course  = Course::find($course_id);
+            $course = Course::find($course_id);
             $course->tests()->attach($test->id);
             DB::commit();
         } catch (\Exception $e) {
@@ -106,7 +109,6 @@ class TestController extends Controller
             Log::error($e->getMessage());
             throw new ModelNotFoundException();
         }
-
         return redirect()->route('test.index');
     }
 
@@ -128,9 +130,7 @@ class TestController extends Controller
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('success', 'Dữ liệu xóa thành công.');
-                
         } else {
-            
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('message', 'Bài test đang được sử dụng.')

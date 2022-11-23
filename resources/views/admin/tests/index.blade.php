@@ -7,7 +7,6 @@
                 <div class="col-sm-12">
                     @include('admin/_alert')
                 </div>
-
             </div>
         </div>
     </div>
