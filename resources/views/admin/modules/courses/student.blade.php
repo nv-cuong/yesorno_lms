@@ -27,6 +27,9 @@
                                         STT
                                     </th>
                                     <th>
+                                        Mã học viên
+                                    </th>
+                                    <th>
                                         Tên học viên
                                     </th>
                                     <th>
@@ -89,6 +92,10 @@
                         name: 'id',
                         orderable: false,
                         searchable: false
+                    },
+                    {
+                        data: 'stu_id',
+                        name: 'stu_id'
                     },
                     {
                         data: 'fullname',

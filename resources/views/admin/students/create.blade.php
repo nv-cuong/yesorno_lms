@@ -34,8 +34,16 @@
                                 {!! csrf_field() !!}
 
                                 <div class="col-md-12">
+                                    <div class="form-group @if ($errors->has('stu_id')) has-error @endif">
+                                        <label for="name" class="control-label">Mã học viên<span
+                                                style="color: red">*</span></label>
+                                        <input type="text" name="stu_id" class="form-control input-sm"
+                                            placeholder="Nhập mã học viên" value="{{ old('stu_id') }}" tabindex="1">
+                                        {!! $errors->first('stu_id', '<em for="stu_id" class="help-block" style="color: red">:message</em>') !!}
+                                    </div>
+
                                     <div class="form-group @if ($errors->has('first_name')) has-error @endif">
-                                        <label for="name" class="control-label">Tên người dùng<span
+                                        <label for="name" class="control-label">Tên học viên<span
                                                 style="color: red">*</span></label>
                                         <input type="text" name="first_name" class="form-control input-sm"
                                             placeholder="Nhập tên" value="{{ old('first_name') }}" tabindex="1">

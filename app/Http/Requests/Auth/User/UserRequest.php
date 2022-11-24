@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
             'last_name'  => 'required',
             'phone'      => 'required|digits:10',
             'role'       => 'required',
+            'stu_id'     => 'required|unique:users,stu_id',
         ];
         if ($this->getMethod() == 'POST') {
             $rules['password']   = 'required|confirmed|min:8';

@@ -39,6 +39,7 @@ class UserController extends Controller
             'id',
             'email',
             'last_login',
+            'stu_id',
             DB::raw("CONCAT(last_name,' ', first_name) as fullname"),
             'first_name',
             'last_name'
@@ -104,6 +105,7 @@ class UserController extends Controller
             $data = [
                 'first_name' => $request->first_name,
                 'last_name'  => $request->last_name,
+                'stu_id'     => $request->stu_id,
                 'email'      => str::lower($email), // @phpstan-ignore-line
                 'password'   => $request->password,
                 'phone'   => $request->phone,

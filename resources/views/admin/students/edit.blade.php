@@ -16,6 +16,18 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group row">
+                                    <label class="col-md-2 form-control-label" for="stu_id">Mã học viên</label>
+                                    <div class="col-md-10">
+                                        <input class="form-control @error('stu_id') is-invalid @enderror" type="text"
+                                            name="stu_id" id="stu_id" value="{{ old('stu_id') ?: $student->user_id }}"
+                                            placeholder="Nhập mã học viên">
+                                        @error('stu_id')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
                                     <label class="col-md-2 form-control-label" for="first_name">Họ và tên đệm</label>
                                     <div class="col-md-10">
                                         <input class="form-control @error('first_name') is-invalid @enderror" type="text"
@@ -29,7 +41,7 @@
                                 </div>
 
                                 <div class="form-group row">
-                                    <label class="col-md-2 form-control-label" for="last_name">Tên</label>
+                                    <label class="col-md-2 form-control-label" for="last_name">Tên học viên</label>
                                     <div class="col-md-10">
                                         <input class="form-control @error('last_name') is-invalid @enderror" type="text"
                                             name="last_name" id="last_name"
@@ -52,14 +64,16 @@
 
                                 <div class="form-group row">
                                     <label class="col-md-2 form-control-label" for="gender">Giới tính</label>
-                                    <div class="col-md-10">
-                                        </label>
+                                    <div class="col-md-10  @error('gender') is-invalid @enderror">
                                         <input type="radio" name="gender" value="male"
                                             {{ (old('gender') ?: $student->gender) == 'male' ? 'checked' : '' }}> Nam
                                         <input type="radio" name="gender" value="female" style="margin-left:10px"
                                             {{ (old('gender') ?: $student->gender) == 'female' ? 'checked' : '' }}> Nữ
                                         <input type="radio" name="gender" value="Other" style="margin-left:10px"
                                             {{ (old('gender') ?: $student->gender) == 'other' ? 'checked' : '' }}> Khác
+                                        @error('gender')
+                                            <div class="text-danger">{{ $message }}</div>
+                                        @enderror
                                     </div>
                                 </div>
 

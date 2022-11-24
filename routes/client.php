@@ -1,14 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\LessonController;
-use App\Http\Controllers\Admin\TestController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\CourseDetailController;
 use App\Http\Controllers\Client\SearchController;
 use App\Http\Controllers\Client\StudentCoursesController;
-use App\Http\Controllers\Client\TestCoursesController;
 use App\Http\Controllers\Client\UserTestController;
+use App\Http\Controllers\UserNotificationController;
 
 Route::get('/courses', [HomeController::class, 'courses'])
     ->name('courses');
@@ -63,3 +62,6 @@ Route::get('/profile/edit/{id}', [HomeController::class, 'profile_edit'])
     ->name('profile.edit')->middleware('myweb.auth');
 Route::put('/profile/update/{id}', [HomeController::class, 'profile_update'])
     ->name('profile.update')->middleware('myweb.auth')->middleware('myweb.auth');
+
+Route::get('/notifications/{id}', [UserNotificationController::class, 'show'])
+    ->name('notification.show')->middleware('myweb.auth');
