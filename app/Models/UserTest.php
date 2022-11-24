@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class UserTest extends Model
 {
     use HasFactory;
-    use HasFactory;
 
     protected $fillable = [
         'test_id',

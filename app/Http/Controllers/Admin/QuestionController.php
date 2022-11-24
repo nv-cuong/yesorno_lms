@@ -47,8 +47,9 @@ class QuestionController extends Controller
         })
         ->editColumn('category', function ($question) {
             if($question->category == 0) return 'Câu hỏi tự luận';
-            if($question->category == 1) return 'Câu hỏi trắc nghiệm';
-            return 'Câu hỏi đúng sai';
+            if($question->category == 1) return 'Câu hỏi nhiều lựa chọn';
+            if($question->category == 2) return 'Câu hỏi đúng sai';
+            if($question->category == 3) return 'Câu hỏi trắc nghiệm';
         })
         ->addColumn('answers', function ($question) {
             if ($question->category == 1){
@@ -63,6 +64,14 @@ class QuestionController extends Controller
             if ($question->category == 2){
                 if($question->answer == 1) return 'Đúng';
                 return 'Sai';
+            }
+            elseif ($question->category == 3){
+                $var = <<<EOD
+                <a onclick="event.preventDefault();answer_qu($question->id)" 
+                    href="" class="btn btn-primary btn-sm " title="Xem câu trả lời">
+                    <i class="fa fa-plus-circle"></i></a>
+                EOD;
+                return $var;
             }
             else return 'Tự luận';
 
@@ -110,12 +119,29 @@ class QuestionController extends Controller
 
                 $option = $request->input('answer1');
                 $isCorrect = $request->input('is_correct');
+                foreach($option as $key => $content){
+                    Answer::create([
+                        'question_id' => $question->id,
+                        'content' => $content,
+                        'checked' => array_key_exists($key, $isCorrect) ? 1 : 0
+                    ]);
+                }
+            } elseif ($question_item['category'] == 3) {
+                $question = Question::create([
+                    'content' => $question_item['content'],
+                    'course_id' => $question_item['course_id'],
+                    'category' => $question_item['category'],
+                    'score' => $question_item['score']
+                ]);
+
+                $option = $request->input('answer3');
+                $isCorrect = $request->input('is_correct');
                 for ($idx = 0; $idx < 4; $idx++) {
                     if ($option[$idx] != '') {
                         Answer::create([
                             'question_id' => $question->id,
                             'content' => $option[$idx],
-                            'checked' => isset($isCorrect[$idx]) ? 1 : 0
+                            'checked' => $isCorrect == $idx ? 1 : 0
                         ]);
                     }
                 }

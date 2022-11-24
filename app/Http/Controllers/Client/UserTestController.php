@@ -70,75 +70,78 @@ class UserTestController extends Controller
 
         $answers        = [];
         $testScore      = 0;
-        $questions      = 0;
 
         // Multiple choice questions
         if (isset($testUserItems['multiQuest'])) {
-            foreach ($testUserItems['multiQuest'] as $key  => $givenAnswer) {
-                $questionId     = Answer::find($givenAnswer)->question->id;
-                $question       = Answer::find($givenAnswer)->question;
-                $answerItem     = Answer::find($givenAnswer);
+            $multiQuest = $testUserItems['multiQuest'];
+            foreach ($multiQuest as $key  => $givenAnswers) {
+                $question = Question::where('id', $key)
+                    ->withCount(['answers' => function ($query) {
+                        return $query->where('checked', 1);
+                    }])->first();
+                $count = 0;
+                $answers[$key] = [
+                    'question_id'   => $key,
+                    'answer'        => '',
+                    'correct'       => 0
+                ];
+                foreach ($givenAnswers as $givenAnswer) {
+                    $answerItem     = Answer::find($givenAnswer);
+                    $questionId     = $key;
 
-                if ($answerItem->checked == 0) {
-                    $check = 0;
-                } else {
-                    $check = 1;
-                }
-
-                if ($questions != $questionId) {
-                    $answers[$questionId] = [
-                        'question_id'   => $questionId,
-                        'answer'        => $answerItem->id,
-                        'correct'       => $check
-                    ];
-                } else {
-                    if ($answers[$questionId]['answer']) {
-                        if ($check == 0) {
-                            $answers[$questionId]['correct'] =  0;
-                        }
-                        $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answerItem->id;
+                    if ($answerItem->checked == 0) {
+                        $check = 0;
+                        $count--;
+                    } else {
+                        $check = 1;
+                        $count++;
                     }
+                    if ($answers[$questionId]['answer'] == '')
+                        $answers[$questionId]['answer'] = $givenAnswer;
+                    else
+                        $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answerItem->id;
                 }
-                if ($check == 1) {
+                if ($question->answers_count == $count) {
                     $testScore += $question->score;
+                    $answers[$questionId]['correct'] = 1;
                 }
-                $questions = $questionId;
             }
         }
 
         // True - False questions
-        $tfQuest = $request->input('tfQuest', []);
-        foreach ($tfQuest as $questionId => $givenAnswer) {
-            $question   = Question::find($questionId);
-            $correct    = Question::where('id', $questionId)
-                ->where('answer', $givenAnswer)
-                ->count() > 0;
-            $answers[]  = [
-                'question_id'   => $questionId,
-                'answer'        => $givenAnswer,
-                'correct'       => $correct
-            ];
-            if ($correct) {
-                $testScore += $question->score;
+        if (isset($testUserItems['tfQuest'])) {
+            $tfQuest = $testUserItems['tfQuest'];
+            foreach ($tfQuest as $questionId => $givenAnswer) {
+                $question   = Question::find($questionId);
+                $correct    = $question->answer == $givenAnswer  ? 1 : 0;
+                $answers[]  = [
+                    'question_id'   => $questionId,
+                    'answer'        => $givenAnswer,
+                    'correct'       => $correct
+                ];
+                if ($correct) {
+                    $testScore += $question->score;
+                }
             }
+        }
+
+        // Essay questions
+        if (isset($testUserItems['essayQuest'])) {
+            $essayQuest = $testUserItems['essayQuest'];
+            foreach ($essayQuest as $questionId => $givenAnswer) {
+                $answers[]  = [
+                    'question_id'   => $questionId,
+                    'answer'        => $givenAnswer,
+                ];
+            }
+            $testScore = '';
         }
 
         $userTest->status       = 1;
         $userTest->score        = $testScore;
         $userTest->submitted_at = $submittedTime;
         $userTest->save();
-
-        // Essay questions
-        $essayQuest = $request->input('essayQuest', []);
-        foreach ($essayQuest as $questionId => $givenAnswer) {
-            $answers[]  = [
-                'question_id'   => $questionId,
-                'answer'        => $givenAnswer,
-            ];
-        }
-        $userTest->score = 0;
         $userTest->answers()->createMany($answers);
-        $userTest->save();
         return view('client.modules.user_test_result', compact('userTest'));
     }
 
