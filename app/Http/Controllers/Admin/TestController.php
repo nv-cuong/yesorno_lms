@@ -40,8 +40,8 @@ class TestController extends Controller
             'time',
             'title',
             'description',
-        ])->with('course')
-            ->withCount('question');
+        ])->with('courses')
+            ->withCount('questions');
 
         return DataTables::of($tests)
             ->editColumn('category', function ($test) {
@@ -50,11 +50,11 @@ class TestController extends Controller
                 return 'Khảo sát';
             })
             ->addColumn('category_name', function ($test) {
-                $course_name = '';
-                foreach ($test->course as $courseItem) {
-                    $course_name .= $courseItem->title . '<br/>';
+                $courseName = '';
+                foreach ($test->courses as $courseItem) {
+                    $courseName .= $courseItem->title . '<br/>';
                 }
-                return $course_name;
+                return $courseName;
             })
             ->addColumn('actions', function ($test) {
                 return view('admin.tests.actions', ['row' => $test])->render();
