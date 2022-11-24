@@ -83,7 +83,7 @@ class UserTestController extends Controller
                 $answers[$key] = [
                     'question_id'   => $key,
                     'answer'        => '',
-                    'correct'       => ''
+                    'correct'       => 0
                 ];
                 foreach ($givenAnswers as $givenAnswer) {
                     $answerItem     = Answer::find($givenAnswer);
@@ -91,15 +91,19 @@ class UserTestController extends Controller
 
                     if ($answerItem->checked == 0) {
                         $check = 0;
+                        $count--;
                     } else {
                         $check = 1;
                         $count++;
                     }
-                    $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answerItem->id;
-                    $answers[$questionId]['correct'] = $check;
+                    if ($answers[$questionId]['answer'] == '')
+                        $answers[$questionId]['answer'] = $givenAnswer;
+                    else
+                        $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answerItem->id;
                 }
-                if($question->answers_count == $count){
+                if ($question->answers_count == $count) {
                     $testScore += $question->score;
+                    $answers[$questionId]['correct'] = 1;
                 }
             }
         }
