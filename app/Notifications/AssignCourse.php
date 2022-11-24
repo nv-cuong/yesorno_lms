@@ -12,6 +12,12 @@ class AssignCourse extends Notification
     use Queueable;
 
     /**
+     * notification data
+     * @var array
+     */
+    private $data = [];
+
+    /**
      * Create a new notification instance.
      * @param array $data
      * @return void
