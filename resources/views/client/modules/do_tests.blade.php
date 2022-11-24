@@ -178,7 +178,7 @@
                     @else
                         @foreach ($question->answers as $option)
                             <label>
-                                <input type="checkbox" name="multiQuest[]" value="{{ $option->id }}" />
+                                <input type="checkbox" name="multiQuest[{{ $question->id }}][]" value="{{ $option->id }}" />
                                 {{ $option->content }}
                             </label>
                         @endforeach

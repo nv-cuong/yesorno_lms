@@ -70,42 +70,37 @@ class UserTestController extends Controller
 
         $answers        = [];
         $testScore      = 0;
-        $questions      = '';
 
         // Multiple choice questions
         if (isset($testUserItems['multiQuest'])) {
             $multiQuest = $testUserItems['multiQuest'];
-            foreach ($multiQuest as $key  => $givenAnswer) {
-                $answerItem     = Answer::find($givenAnswer);
-                $questionId     = $answerItem->question->id;
-                $question       = $answerItem->question;
+            foreach ($multiQuest as $key  => $givenAnswers) {
+                $question = Question::where('id', $key)
+                    ->withCount(['answers' => function ($query) {
+                        return $query->where('checked', 1);
+                    }])->first();
+                $count = 0;
+                $answers[$key] = [
+                    'question_id'   => $key,
+                    'answer'        => '',
+                    'correct'       => ''
+                ];
+                foreach ($givenAnswers as $givenAnswer) {
+                    $answerItem     = Answer::find($givenAnswer);
+                    $questionId     = $key;
 
-                if ($answerItem->checked == 0) {
-                    $check = 0;
-                } else {
-                    $check = 1;
-                }
-
-                if ($questions != $questionId) {
-                    $answers[$questionId] = [
-                        'question_id'   => $questionId,
-                        'answer'        => $answerItem->id,
-                        'correct'       => $check
-                    ];
-                    if ($answerItem->checked == 1) {
-                        $testScore += $question->score;
-                    }
-                } else {
-                    $testScore -= $question->score;
                     if ($answerItem->checked == 0) {
-                        $answers[$questionId]['correct'] = 0;
+                        $check = 0;
+                    } else {
+                        $check = 1;
+                        $count++;
                     }
                     $answers[$questionId]['answer'] = $answers[$questionId]['answer'] . "," . $answerItem->id;
-                    if ($answers[$questionId]['correct'] == 1) {
-                        $testScore += $question->score;
-                    }
+                    $answers[$questionId]['correct'] = $check;
                 }
-                $questions = $questionId;
+                if($question->answers_count == $count){
+                    $testScore += $question->score;
+                }
             }
         }
 
