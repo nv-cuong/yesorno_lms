@@ -24,7 +24,8 @@
                                         <thead>
                                             <tr>
                                                 <th class="text-center">ID</th>
-                                                <th class="text-center">Tên học viên</th>
+                                                <th class="text-center">Mã học viên</th>
+                                                <th class="text-center">Họ tên học viên</th>
                                                 <th class="text-center">Số điện thoại</th>
                                                 <th class="text-center">Địa chỉ</th>
                                                 <th class="text-center">Ngày sinh</th>
@@ -60,6 +61,10 @@
                         name: 'id',
                         orderable: false,
                         searchable: false
+                    },
+                    {
+                        data: 'stu_id',
+                        name: 'stu_id'
                     },
                     {
                         data: 'fullname',

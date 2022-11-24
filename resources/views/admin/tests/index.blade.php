@@ -92,8 +92,8 @@
                     name: 'category_name'
                 },
                 {
-                    data: 'question_count',
-                    name: 'question_count',
+                    data: 'questions_count',
+                    name: 'questions_count',
                     searchable: false
                 },
                 {

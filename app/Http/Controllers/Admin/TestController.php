@@ -40,8 +40,8 @@ class TestController extends Controller
             'time',
             'title',
             'description',
-        ])->with('course')
-        ->withCount('question');
+        ])->with('courses')
+        ->withCount('questions');
 
         // @phpstan-ignore-next-line
         return DataTables::of($tests)
@@ -51,7 +51,7 @@ class TestController extends Controller
         })
         ->addColumn('category_name', function ($test) {
             $course_name = '';
-            foreach($test->course as $courseItem){
+            foreach($test->courses as $courseItem){
                 $course_name .= $courseItem->title .'<br/>';
             }
             return $course_name;

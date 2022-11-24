@@ -24,11 +24,12 @@ class StudentRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone'=>['required','digits:10'],
-            'first_name'=>['required','max:255'],
-            'last_name'=>['required','max:255'],
-            'birthday' =>['required','date_format:Y-m-d','before:-6 years'],
-            'gender'=>['required']
+            'phone' => ['required', 'digits:10'],
+            'first_name' => ['required', 'max:255'],
+            'last_name' => ['required', 'max:255'],
+            'birthday' => ['required', 'date_format:Y-m-d', 'before:-6 years'],
+            'gender' => ['required'],
+            'stu_id' => ['required', 'unique:users,stu_id']
         ];
     }
 }
