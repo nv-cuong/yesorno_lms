@@ -74,7 +74,8 @@ class UserTestController extends Controller
 
         // Multiple choice questions
         if (isset($testUserItems['multiQuest'])) {
-            foreach ($testUserItems['multiQuest'] as $key  => $givenAnswer) {
+            $multiQuest = $testUserItems['multiQuest'];
+            foreach ($multiQuest as $key  => $givenAnswer) {
                 $answerItem     = Answer::find($givenAnswer);
                 $questionId     = $answerItem->question->id;
                 $question       = $answerItem->question;
@@ -94,7 +95,6 @@ class UserTestController extends Controller
                     if ($answerItem->checked == 1) {
                         $testScore += $question->score;
                     }
-
                 } else {
                     $testScore -= $question->score;
                     if ($answerItem->checked == 0) {
@@ -110,25 +110,25 @@ class UserTestController extends Controller
         }
 
         // True - False questions
-        $tfQuest = $request->input('tfQuest', []);
-        foreach ($tfQuest as $questionId => $givenAnswer) {
-            $question   = Question::find($questionId);
-            $correct    = Question::where('id', $questionId)
-                ->where('answer', $givenAnswer)
-                ->count() > 0;
-            $answers[]  = [
-                'question_id'   => $questionId,
-                'answer'        => $givenAnswer,
-                'correct'       => $correct
-            ];
-            if ($correct) {
-                $testScore += $question->score;
+        if (isset($testUserItems['tfQuest'])) {
+            $tfQuest = $testUserItems['tfQuest'];
+            foreach ($tfQuest as $questionId => $givenAnswer) {
+                $question   = Question::find($questionId);
+                $correct    = $question->answer == $givenAnswer  ? 1 : 0;
+                $answers[]  = [
+                    'question_id'   => $questionId,
+                    'answer'        => $givenAnswer,
+                    'correct'       => $correct
+                ];
+                if ($correct) {
+                    $testScore += $question->score;
+                }
             }
         }
-        
+
         // Essay questions
-        $essayQuest = $request->input('essayQuest', []);
-        if ($essayQuest) {
+        if (isset($testUserItems['essayQuest'])) {
+            $essayQuest = $testUserItems['essayQuest'];
             foreach ($essayQuest as $questionId => $givenAnswer) {
                 $answers[]  = [
                     'question_id'   => $questionId,
