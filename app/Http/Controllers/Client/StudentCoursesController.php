@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\Lesson;
 use App\Models\User;
 use App\Models\File;
+use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class StudentCoursesController extends Controller
@@ -69,24 +70,30 @@ class StudentCoursesController extends Controller
     {
         $getUser = Sentinel::getUser();
         $lesson = Lesson::where('slug', $slug)
+            ->with('unit')
             ->first();
-
+        
         $userLesson = $getUser->lessons()
             ->where('lesson_id', $lesson->id)
             ->first()
             ->pivot;
-
+            
+        $courseId = $lesson->unit->course_id;
         $nextLesson = Lesson::where('id', '>', $lesson->id)
             ->where('unit_id', $lesson->unit_id)
             ->first();
-
+        $nextUnit = Unit::where('id', '>', $lesson->unit_id)
+            ->where('course_id', $courseId)
+            ->with('lessons')
+            ->first();
+        
         $files = File::where('lesson_id', $lesson->id)
             ->get();
 
         if ($userLesson->status == 0) {
             $this->lessonProgress($slug);
         }
-        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'files', 'userLesson'));
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'nextUnit', 'files', 'userLesson'));
     }
 
     /**

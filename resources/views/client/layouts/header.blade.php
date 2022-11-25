@@ -49,7 +49,7 @@
                                     @forelse($notifications as $notification)
                                     <div class="dropdown-divider"></div>
                                     @if(isset($notification->data['course_id']))
-                                    <a href="{{ route('detail', [$notification->data['course_slug']]) }}" class="dropdown-item">
+                                    <a href="{{ route('personal.course', [$notification->data['course_slug']]) }}" class="dropdown-item">
                                         <i class="fas fa-envelope mr-2"></i> {{ $notification->data['course_name'] }} (started at {{$notification->data['course_begin_date']}} )
                                     </a>
                                     @endif
