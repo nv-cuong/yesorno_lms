@@ -165,22 +165,20 @@
                     </h3>
                     @if ($question->category == 2)
                         <label>
-                            <input name="tfQuest[{{ $question->id }}]" type="radio" value="1" checked /> A) Đúng
+                            <input name="tfQuest[{{ $question->id }}]" type="radio" value="1" /> A) Đúng
                             </BR>
                         </label>
                         <label>
                             <input name="tfQuest[{{ $question->id }}]" type="radio" value="0" /> B) Sai
                             </BR>
                         </label>
-                    @endif
-                    @if ($question->category == 0)
-                        <textarea class="form-control" value="" name="essayQuest[{{ $question->id }}]" id="exampleFormControlTextarea1"
-                            placeholder="Nhập câu trả lời" rows="3">
-                        </textarea>
+                    @elseif ($question->category == 0)
+                        <textarea class="form-control " value="" name="essayQuest[{{ $question->id }}]" id="exampleFormControlTextarea1"
+                            placeholder="nhập câu trả lời" rows="3"></textarea>
                     @else
                         @foreach ($question->answers as $option)
                             <label>
-                                <input type="checkbox" name="multiQuest[]" value="{{ $option->id }}" />
+                                <input type="checkbox" name="multiQuest[{{ $question->id }}][]" value="{{ $option->id }}" />
                                 {{ $option->content }}
                             </label>
                         @endforeach

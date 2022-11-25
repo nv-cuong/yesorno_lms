@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Score\ScoreRequest;
-use App\Models\Answer;
 use App\Models\ClassStudy;
 use Illuminate\Http\Request;
 use App\Models\Question;
@@ -31,7 +30,7 @@ class ScoreController extends Controller
      */
     public function getScoreData()
     {
-        $usertests = UserTest::select([
+        $userTests = UserTest::select([
             'id',
             'user_id',
             'status',
@@ -39,23 +38,22 @@ class ScoreController extends Controller
             'test_id',
         ])->with('test', 'user');
 
-        // @phpstan-ignore-next-line
-        return DataTables::of($usertests)
-            ->editColumn('status', function ($usertest) {
-                if ($usertest->status == 0) return 'Chưa làm';
-                if ($usertest->status == 1) return 'Đã làm';
+        return DataTables::of($userTests)
+            ->editColumn('status', function ($userTest) {
+                if ($userTest->status == 0) return 'Chưa làm';
+                if ($userTest->status == 1) return 'Đã làm';
             })
-            ->editColumn('test_id', function ($usertest) {
-                return $usertest->test->title;
+            ->editColumn('test_id', function ($userTest) {
+                return $userTest->test->title;
             })
-            ->editColumn('user_id', function ($usertest) {
-                $lastname = $usertest->user->last_name;
-                $firstname = $usertest->user->first_name;
-                $name = $lastname.' '.$firstname;
+            ->editColumn('user_id', function ($userTest) {
+                $lastName   = $userTest->user->last_name;
+                $firstName  = $userTest->user->first_name;
+                $name       = $lastName . ' ' . $firstName;
                 return $name;
             })
-            ->addColumn('actions', function ($usertest) {
-                return view('admin.score.actions', ['row' => $usertest])->render();
+            ->addColumn('actions', function ($userTest) {
+                return view('admin.score.actions', ['row' => $userTest])->render();
             })
             ->rawColumns(['actions'])
             ->make(true);
@@ -66,9 +64,9 @@ class ScoreController extends Controller
      */
     public function create()
     {
-        $tests = Test::select(['id', 'title'])->get();
-        $classes = ClassStudy::select(['id', 'name'])->get();
-        $users = User::all();
+        $tests      = Test::select(['id', 'title'])->get();
+        $classes    = ClassStudy::select(['id', 'name'])->get();
+        $users      = User::all();
         return view('admin.score.create', compact(['tests', 'users', 'classes']));
     }
 
@@ -79,21 +77,27 @@ class ScoreController extends Controller
      */
     public function store(ScoreRequest $request)
     {
-        $test_user_item = $request->except('_token');
+        $userTestItems      = $request->except('_token');
         try {
-            $student_id = $test_user_item['student_id'];
-            foreach ($student_id as $user_id) {
-                $user  = User::find($user_id);
-                $user->tests()->attach($test_user_item['test_id']);
+            $studentIds     = $userTestItems['student_id'];
+            $testIds        = $userTestItems['test_id'];
+            $userTest       = UserTest::where('user_id', $studentIds)->where('test_id', $testIds)->get();
+            if ($userTest) {
+                return redirect(route('score.index'))
+                    ->with('message', 'Thêm bài test thất bại, học viên đã được chỉ định bài test này!')
+                    ->with('type_alert', "danger");
+            }
+            foreach ($studentIds as $studentId) {
+                $student    = User::find($studentId);
+                $student->tests()->attach($userTestItems['test_id']);
             }
         } catch (\Throwable $t) {
             throw new ModelNotFoundException();
         }
-        return redirect(route('score.index'))->with('message', 'Thêm bài test thành công !')->with('type_alert', "success");
+        return redirect(route('score.index'))
+            ->with('message', 'Thêm bài test thành công !')
+            ->with('type_alert', "success");
     }
-
-
-
 
     /**
      * @param Request $request
@@ -103,13 +107,10 @@ class ScoreController extends Controller
     public function dots(Request $request, $id)
     {
         $user_test = UserTest::find($id);
-
         $user_test_answers = UserTestAnswer::select([
-
             'questions.content',
             'questions.id',
             'questions.score',
-
             'user_test.id as user_test_id',
             'user_test_answers.answer'
         ])
@@ -118,7 +119,6 @@ class ScoreController extends Controller
             ->join('questions', 'question_id', 'questions.id')
             ->where('questions.category', 0)
             ->get();
-
         return view('admin.score.dots', compact('user_test_answers'));
     }
 
@@ -128,11 +128,9 @@ class ScoreController extends Controller
      */
     public function point(Request $request)
     {
-        $test_user_item = $request->except('_token');
-
+        $userTestItems = $request->except('_token');
         $score = 0;
         if ($request->get('true')) {
-           
             foreach ($request->get('true')  as $question_id  => $answer_value) {
                 $question = Question::find($question_id);
                 if ($answer_value > $question->score) {
@@ -142,13 +140,12 @@ class ScoreController extends Controller
                 }
             }
         }
-
-        $test_user = UserTest::find($test_user_item['user_test_id']);
+        $test_user = UserTest::find($userTestItems['user_test_id']);
         $user_test_answer = UserTestAnswer::select([
             'questions.score',
             'user_test_answers.correct'
         ])
-            ->where('user_test_id', $test_user_item['user_test_id'])
+            ->where('user_test_id', $userTestItems['user_test_id'])
             ->join('questions', 'question_id', 'questions.id')
             ->where('questions.category', '!=', 0)
             ->get();
@@ -161,27 +158,22 @@ class ScoreController extends Controller
         }
         $test_user->score = $score;
         $test_user->save();
-        return redirect(route('score.index'))->with('message', 'Chấm điểm thành công !')->with('type_alert', "success");
+        return redirect(route('score.index'))
+            ->with('message', 'Chấm điểm thành công !')
+            ->with('type_alert', "success");
     }
 
-    
+
     /**
      * @param int $id
      * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
      */
     public function getStudent($id)
     {
-
         $users = ClassStudy::find($id)->users;
-        
-        
         foreach ($users as $row) {
-
             $output = '<option name ="student_' . $row->id . '"  value="' . $row->id . '">' . $row->first_name . '</option>';
-           
-            
         }
-        
         return Response($output);
     }
 }

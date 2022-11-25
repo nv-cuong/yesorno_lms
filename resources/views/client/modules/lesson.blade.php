@@ -84,10 +84,20 @@
                                                         </i>
                                                     </a>
                                                 </button>
+                                            @elseif($nextUnit)
+                                                <button class="" id="btnNext">
+                                                    <a href="{{ route('personal.lesson', [$nextUnit->lessons[0]->slug]) }}">
+                                                        <i class="fa fa-arrow-right">
+                                                            <span>
+                                                                CHƯƠNG TIẾP THEO
+                                                            </span>
+                                                        </i>
+                                                    </a>
+                                                </button>
                                             @else
-                                                <h5>
-                                                    KẾT THÚC CHƯƠNG
-                                                </h5>
+                                            <h5>
+                                                KẾT THÚC KHÓA HỌC
+                                            </h5>
                                             @endif
                                         </div>
                                     </div>

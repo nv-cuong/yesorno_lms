@@ -27,11 +27,6 @@
                     <h2>Chi tiết bài test</h2>
                 </div>
             </div>
-            <div class="col-xl-4">
-                <div class="site-title-right">
-                    <h2>Course</h2>
-                </div>
-            </div>
         </div>
         <div class="portfolio-items-area">
             <div class="row">
@@ -46,8 +41,7 @@
                                             <th>Tên câu hỏi</th>
                                             <th>Loại câu hỏi</th>
                                             <th>Câu trả lời</th>
-                                            <th>Checked</th>
-
+                                            <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,23 +50,21 @@
                                         @endphp
                                         @foreach ($user_test_answers as $uta)
                                         <tr>
-                                            <th>
+                                            <td>
                                                 {{ $loop->iteration}}
-                                            </th>
-                                            <th>{{$uta->content}}</th>
+                                            </td>
+                                            <td>{{$uta->content}}</td>
 
-                                            <th>
+                                            <td>
                                                 @if ($uta->category==0)
                                                 Tự luận
-                                                @else
-                                                @if ($uta->category==1)
+                                                @elseif ($uta->category==1)
                                                 Trắc nghiệm
                                                 @else
                                                 Đúng sai
                                                 @endif
-                                                @endif
-                                            </th>
-                                            <th>
+                                            </td>
+                                            <td>
                                                 @php
 
                                                 if($uta->category==1)
@@ -82,34 +74,32 @@
                                                 for( $i=0 ; $i<count($answer);$i++ ) { $answer_content=Answer::find($answer[$i]); echo ($answer_content->content);
                                                     echo "<br>";
                                                     }
-                                                    }
-                                                    if($uta->category==0)
-                                                    {
-                                                    echo $uta->answer;
-                                                    }
-                                                    if($uta->category==2)
-                                                    {
+                                                }
+                                                if($uta->category==0)
+                                                {
+                                                echo $uta->answer;
+                                                }
+                                                if($uta->category==2)
+                                                {
                                                     if($uta->answer==1)
                                                     {
                                                     echo 'Đúng';
                                                     }else{
                                                     echo 'Sai';
                                                     }
-                                                    }
-
-
-                                                    @endphp
-                                            </th>
-                                            <th>
+                                                }
+                                                @endphp
+                                            </td>
+                                            <td>
                                                 @if($uta->correct != '')
                                                 @if ($uta->correct ==1)
-                                                Đúng
+                                                <i class="fas fa-check" style="color:green ;"></i>
                                                 @else
-                                                Sai
+                                                <i class='fas fa-times' style='color:red'></i>
                                                 @endif
 
                                                 @endif
-                                            </th>
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -118,12 +108,6 @@
                             </div>
                         </div>
 
-                    </div>
-                    <!-- End Mixitup Nav-->
-                    <div class="magnific-mix-gallery masonary">
-                        <div id="portfolio-grid" class="portfolio-items" style="position: relative; height: 1285.32px;">
-
-                        </div>
                     </div>
                 </div>
             </div>
@@ -135,50 +119,3 @@
 </div>
 
 @endsection
-@section('css')
-<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
-<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }})">
-<link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
-<!-- DataTables & Plugins -->
-@endsection
-@section('scripts')
-<!-- datatables -->
-
-<script src="{{ asset('/admin/plugins/datatables/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/dataTables.buttons.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/jszip/jszip.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/pdfmake.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/pdfmake/vfs_fonts.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.html5.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.print.min.js') }}"></script>
-<script src="{{ asset('/admin/plugins/datatables-buttons/js/buttons.colVis.min.js') }}"></script>
-<script>
-    $(function() {
-        $("#example1").DataTable({
-            "responsive": true,
-            "lengthChange": false,
-            "autoWidth": false,
-            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
-            "oLanguage": {
-               "sInfo" : "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ câu hỏi",// text you want show for info section
-               "sSearch":"Tìm kiếm",
-               "oPaginate":{
-                "sPrevious":"Trước",
-                "sNext":"Tiếp",
-               }
-            },
-        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    });
-</script>
-
-<script>
-    function student_delete(id) {
-        var student_id = document.getElementById('student_id');
-        student_id.value = id;
-    }
-</script>
-@stop
