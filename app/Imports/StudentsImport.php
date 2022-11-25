@@ -37,6 +37,7 @@ class StudentsImport implements ToModel , WithHeadingRow
                     'phone' => $row['phone'],
                     'address' => $row['address'],
                     'birthday' => $row['birthday'],
+                    'gender' => $row['gender'],
                 ];
                 $newUser = Sentinel::registerAndActivate($user);
                 $newUser->roles()->attach(5);
