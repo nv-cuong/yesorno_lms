@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\StudentController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ImportStudentController;
 
 Route::prefix('students')->group(function () {
     Route::get('/', [StudentController::class, 'index'])
@@ -24,4 +25,11 @@ Route::prefix('students')->group(function () {
         ->name('student.course')->middleware('myweb.auth:student.view');
     Route::get('/statistic/{id}', [StudentController::class, 'showStatistic'])
         ->name('student.statistic')->middleware('myweb.auth:student.view');
+
+
+        Route::get('export', [ImportStudentController::class, 'export'])
+        ->name('student.export')->middleware('myweb.auth:user.view');
+        Route::post('import', [ImportStudentController::class, 'import'])
+        ->name('student.import')->middleware('myweb.auth:user.view');
+
 });

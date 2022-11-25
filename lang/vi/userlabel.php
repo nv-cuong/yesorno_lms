@@ -1,5 +1,6 @@
 <?php
 return [
     'male' => 'Nam',
-    'female' => 'Nữ'
+    'female' => 'Nữ',
+    'other' => 'Khác',
 ];

@@ -89,19 +89,19 @@
                                     <thead>
                                         <tr>
                                             <th>STT</th>
-                                            <th>Họ</th>
-                                            <th>Tên</th>
+                                            <th>Mã học viên</th>
+                                            <th>Họ tên học viên</th>
                                             <th>E-mail</th>
                                             <th>Số điện thoại</th>
                                             <th>Giới tính</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @forelse ($class->users as $item)
+                                        @forelse ($class->users as $key=>$item)
                                             <tr>
-                                                <td>{{ $item->id }}</td>
-                                                <td>{{ $item->last_name }}</td>
-                                                <td>{{ $item->first_name }}</td>
+                                                <td>{{ $key+1 }}</td>
+                                                <td>{{ $item->stu_id }}</td>
+                                                <td>{{ $item->last_name }} {{ $item->first_name }}</td>
                                                 <td>{{ $item->email }}</td>
                                                 <td>{{ $item->phone }}</td>
                                                 <td>{{__('userlabel.' . $item->gender) }}</td>
