@@ -18,6 +18,20 @@
                                     <a href="{{ route('student.create') }}" class="btn btn-success float-right">+ Thêm học
                                         viên</a>
                                 </div>
+
+                                <div class="card-body">
+                                    <form action="{{ route('student.import') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
+                                        <br>
+                                        <button type="submit" class="btn btn-success " >Import Student Data</button>
+                                        <a class="btn btn-warning" href="{{ route('student.export') }}">Export Student Data</a>
+                                        @error('import')
+                                                <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </form>
+                                </div>
+
                                 @include('admin/_alert')
                                 <div class="card">
                                     <table class="table table-striped table-bordered table-hover table-condensed" id="students">
