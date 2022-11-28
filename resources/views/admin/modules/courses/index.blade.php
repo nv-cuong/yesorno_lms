@@ -33,6 +33,9 @@
                                         Tên khóa học
                                     </th>
                                     <th>
+                                        Giảng viên
+                                    </th>
+                                    <th>
                                         Loại
                                     </th>
                                     <th>
@@ -110,6 +113,10 @@
                     {
                         data: 'title',
                         name: 'title'
+                    },
+                    {
+                        data: 'teacher_id',
+                        name: 'teacher_id'
                     },
                     {
                         data: 'status',

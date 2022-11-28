@@ -33,6 +33,7 @@ class User extends EloquentUser
         'permissions',
         'name_img',
         'path',
+        'stu_id',
     ];
 
     /**
