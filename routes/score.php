@@ -10,10 +10,10 @@ Route::prefix('/score')->name('score.')->group(function () {
         ->name('create')->middleware('myweb.auth:score.create');
     Route::post('store', [ScoreController::class, 'store'])
         ->name('store')->middleware('myweb.auth:score.create');
-    Route::get('/dots/{id}', [ScoreController::class, 'dots'])
-        ->name('dots')->middleware('myweb.auth:score.update');
-    Route::post('/point', [ScoreController::class, 'point'])
-        ->name('point')->middleware('myweb.auth:score.update'); 
+    Route::get('/marking/{id}', [ScoreController::class, 'marking'])
+        ->name('marking')->middleware('myweb.auth:score.update');
+    Route::post('/storingMarks', [ScoreController::class, 'storingMarks'])
+        ->name('storingMarks')->middleware('myweb.auth:score.update'); 
     Route::get('/student/{id}', [ScoreController::class, 'getStudent'])
         ->name('getStudent')->middleware('myweb.auth:score.create');
     Route::get('/data', [ScoreController::class, 'getScoreData'])
