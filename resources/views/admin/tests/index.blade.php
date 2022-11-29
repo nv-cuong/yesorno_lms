@@ -43,6 +43,9 @@
                                         Số câu hỏi
                                     </th>
                                     <th>
+                                        Điểm tối đa
+                                    </th>
+                                    <th>
                                         Tiêu đề
                                     </th>
                                     <th>
@@ -94,6 +97,10 @@
                         data: 'questions_count',
                         name: 'questions_count',
                         searchable: false
+                    },
+                    {
+                        data: 'total_score',
+                        name: 'total_score',
                     },
                     {
                         data: 'title',

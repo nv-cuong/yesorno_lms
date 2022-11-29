@@ -47,10 +47,14 @@ class ScoreController extends Controller
                 return $userTest->test->title;
             })
             ->editColumn('user_id', function ($userTest) {
-                $lastName   = $userTest->user->last_name;
                 $firstName  = $userTest->user->first_name;
-                $name       = $lastName . ' ' . $firstName;
+                $lastName   = $userTest->user->last_name;
+                $name       = $firstName . ' ' . $lastName;
                 return $name;
+            })->editColumn('score', function ($userTest) {
+                $score      = $userTest->score;
+                $totalScore = $userTest->test->total_score;
+                return "$score / $totalScore";
             })
             ->addColumn('actions', function ($userTest) {
                 return view('admin.score.actions', ['row' => $userTest])->render();
@@ -142,7 +146,7 @@ class ScoreController extends Controller
                 }
             }
         }
-        
+
         $test_user = UserTest::find($userTestItems['userTestId']);
         $user_test_answer = UserTestAnswer::select([
             'questions.score',

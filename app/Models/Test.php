@@ -10,7 +10,7 @@ class Test extends Model
     use HasFactory;
     protected $fillable = [
         'category',
-        'amount',
+        'total_score',
         'title',
         'published',
         'description',
@@ -39,7 +39,6 @@ class Test extends Model
             'test_questions',
             'test_id',
             'question_id'
-
         );
     }
     
