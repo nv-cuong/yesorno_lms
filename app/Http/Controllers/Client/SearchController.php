@@ -15,7 +15,8 @@ class SearchController extends Controller
      */
     public function search( Request $request){
         $data = Course::where('title','like', '%' .$request->keyword . '%')
-            ->with('units')
+            ->orWhere('description', 'like', '%' .$request->keyword . '%')
+            ->withCount(['units', 'users'])
             ->paginate(6);
         return view('client.modules.search_result', compact('data'));
     }

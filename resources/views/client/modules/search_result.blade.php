@@ -40,13 +40,12 @@
 
                             <div class="col-xl-4">
                                 <div class="course-view-more">
-                                    <h6>Tìm thấy {{$data->count()}} khóa học phù hợp</h6>
+                                    <h6>Tìm thấy {{$data->total()}} khóa học phù hợp</h6>
                                 </div>
                             </div>
                         </div>
                         <div class="magnific-mix-gallery masonary">
                             <div id="portfolio-grid" class="portfolio-items" style="position: relative; height: 1285.32px;">
-
                                 @foreach ($data as $course)
                                     <div class="pf-item video photography" style="position: absolute; left: 0%; top: 0px;">
                                         <div class="course-2-box">
@@ -55,7 +54,7 @@
                                                     alt="thumb">
                                                 <div class="course-2-pic-content">
 
-                                                    <p><span>{{ $course->users()->count() }}</span> người đã học</p>
+                                                    <p><span>{{ $course->users_count }}</span> người đã học</p>
                                                 </div>
                                             </div>
                                             <div class="course-2-content">
@@ -69,7 +68,7 @@
                                                 <div class="course-2-bottom">
                                                     <div class="course-2-lesson">
                                                         <i class="fas fa-book-open"></i>
-                                                        <p class="mb-0">Tổng số chương: {{$course->units()->count() }}</p></p>
+                                                        <p class="mb-0">Tổng số chương: {{$course->units_count }}</p></p>
                                                     </div>
                                                 </div>
                                                 <div class="course-2-btn">
@@ -81,7 +80,6 @@
                                         </div>
                                     </div>
                                 @endforeach
-
                             </div>
                         </div>
                     </div>
@@ -89,7 +87,7 @@
             </div>
         </div>
         <div class="text-center">
-            {{ $data->links() }}
+            {{ $data->withQueryString()->links() }}
         </div>
     </div>
 @endsection
