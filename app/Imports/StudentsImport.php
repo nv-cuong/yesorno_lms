@@ -31,6 +31,7 @@ class StudentsImport implements ToModel , WithHeadingRow
             if($row['email'] ) {
                 $user = [
                     'email' => $row['email'],
+                    'stu_id'=> $row['id'],
                     'password' => Hash::make(str_random(8)),
                     'first_name' => $row['first_name'],
                     'last_name' => $row['last_name'],
