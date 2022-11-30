@@ -25,19 +25,32 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <a href="{{ route('score.create') }}" class="btn btn-success float-right">+ Tạo bài test đầu
-                                vào</a>
+                            <a href="{{ route('score.create') }}" class="btn btn-success float-right">
+                                Tạo bài test đầu vào
+                            </a>
                         </div>
 
                         <table class="table table-striped table-bordered table-hover table-condensed" id="score_table">
                             <thead>
                                 <tr>
-                                    <th>STT</th>
-                                    <th>Tên học viên</th>
-                                    <th>Tên bài test</th>
-                                    <th>Điểm</th>
-                                    <th>Trạng thái</th>
-                                    <th>Hành động</th>
+                                    <th>
+                                        STT
+                                    </th>
+                                    <th>
+                                        Tên học viên
+                                    </th>
+                                    <th>
+                                        Tên bài test
+                                    </th>
+                                    <th>
+                                        Điểm / Điểm tối đa
+                                    </th>
+                                    <th>
+                                        Trạng thái
+                                    </th>
+                                    <th>
+                                        Hành động
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
