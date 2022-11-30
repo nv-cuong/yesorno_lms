@@ -39,7 +39,7 @@
                                         <tr>
                                             <th>STT</th>
                                             <th>Tên câu hỏi</th>
-                                            <th>Loại câu hỏi</th>
+                                            <th>Điểm câu hỏi</th>
                                             <th>Câu trả lời</th>
                                             <th></th>
                                         </tr>
@@ -56,13 +56,7 @@
                                             <td>{{$uta->content}}</td>
 
                                             <td>
-                                                @if ($uta->category==0)
-                                                Tự luận
-                                                @elseif ($uta->category==1)
-                                                Trắc nghiệm
-                                                @else
-                                                Đúng sai
-                                                @endif
+                                                {{$uta->score}}
                                             </td>
                                             <td>
                                                 @php

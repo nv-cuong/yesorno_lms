@@ -122,7 +122,7 @@ class TestController extends Controller
         $id = $request->input('test_id');
         $test = Test::find($id);
 
-        if ($test->user()->exists() == false) {
+        if ($test->users()->exists() == false) {
             $test->course()->detach();
             $test->question()->detach();
 
@@ -177,7 +177,7 @@ class TestController extends Controller
     public function edit($id)
     {
         $tests  = Test::find($id);
-        if ($tests->user()->exists()) {
+        if ($tests->users()->exists()) {
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('message', 'Không thể sửa! Đã có học viên làm bài kiểm tra!')
@@ -218,7 +218,7 @@ class TestController extends Controller
     public function view($id)
     {
         $tests  = Test::find($id);
-        $questions = $tests->question;
+        $questions = $tests->questions;
         $arr_question = [];
 
         foreach ($questions as $question) {
@@ -248,7 +248,7 @@ class TestController extends Controller
     public function createquestion($id, $testId, $arr_quest)
     {
         $test = Test::find($testId);
-        if ($test->user()->exists()) {
+        if ($test->users()->exists()) {
             return redirect(route('test.view', $testId))
                 ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');
@@ -299,7 +299,7 @@ class TestController extends Controller
     public function delete_question(Request $request, $id_test)
     {
         $test = Test::find($id_test);
-        if ($test->user()->exists()) {
+        if ($test->users()->exists()) {
             return redirect(route('test.view', $id_test))
                 ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');
@@ -319,7 +319,7 @@ class TestController extends Controller
     public function question_edit($questionId, $testId, $courseId)
     {
         $test = Test::find($testId);
-        if ($test->user()->exists()) {
+        if ($test->users()->exists()) {
             return redirect(route('test.view', $testId))
                 ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');

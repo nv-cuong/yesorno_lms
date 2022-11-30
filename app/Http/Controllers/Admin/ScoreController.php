@@ -81,7 +81,7 @@ class ScoreController extends Controller
         try {
             $studentIds     = $userTestItems['student_id'];
             $testIds        = $userTestItems['test_id'];
-            $userTest       = UserTest::where('user_id', $studentIds)->where('test_id', $testIds)->get();
+            $userTest       = UserTest::where('user_id', $studentIds)->where('test_id', $testIds)->first();
             if ($userTest) {
                 return redirect(route('score.index'))
                     ->with('message', 'Thêm bài test thất bại, học viên đã được chỉ định bài test này!')

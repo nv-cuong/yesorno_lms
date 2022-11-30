@@ -7,7 +7,7 @@
         <img src="{{ asset('admin/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">
-            TEAM 5 - LMS
+            LMS - ADMIN
         </span>
     </a>
 
