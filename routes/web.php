@@ -47,6 +47,7 @@ Route::prefix('admin')->group(function () {
 
     require 'users.php';
     require 'roles.php';
+    require 'teacher.php';
 });
 
 Route::post('/getQuestion', [TestController::class, 'getQuestion'])->name('getquestion');

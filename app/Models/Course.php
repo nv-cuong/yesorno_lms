@@ -14,7 +14,7 @@ class Course extends Model {
     protected $fillable = [
         'title',
         'slug',
-        'statistic_id',
+        'teacher_id',
         'description',
         'begin_date',
         'end_date',
@@ -32,10 +32,6 @@ class Course extends Model {
 
     public function units(): HasMany {
         return $this->hasMany(Unit::class);
-    }
-
-    public function statistic(): BelongsTo {
-        return $this->belongsTo(Statistic::class);
     }
 
     public function questions(): HasMany {

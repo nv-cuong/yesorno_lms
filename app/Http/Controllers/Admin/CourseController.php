@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 use App\Notifications\AssignCourse;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 
 class CourseController extends Controller
 {
@@ -37,21 +38,26 @@ class CourseController extends Controller
      */
     public function getCourseData()
     {
+        $user = Sentinel::getUser();
         $course = Course::select([
             'id',
             'title',
             'status',
             'begin_date',
             'end_date',
-        ])
-            ->withCount(['users' => function ($query) {
-                return $query->where('status', 0);
-            }]);
+            'teacher_id',
+        ])->withCount(['users' => function ($query) {
+            return $query->where('status', 0);
+        }])->with('users');
 
         return DataTables::of($course)
             ->editColumn('status', function ($course) {
                 if ($course->status == 0) return 'Miễn phí';
                 if ($course->status == 1) return 'Tính phí';
+            })
+            ->editColumn('teacher_id', function ($course) {
+                $teacher = User::where('id', $course->teacher_id)->first();
+                return $teacher->last_name . ' ' . $teacher->first_name;
             })
             ->addColumn('actions', function ($course) {
                 return view('admin.modules.courses.actions', ['row' => $course])->render();
@@ -108,7 +114,8 @@ class CourseController extends Controller
     public function storeCourse(CourseRequest $request)
     {
         $course_item = $request->except('_token');
-
+        $teacher = Sentinel::getUser();
+        $course_item['teacher_id'] = $teacher->id;
         $course_item['slug'] = Str::slug($course_item['title']);
         $photo = $request->file('image');
         if ($photo) {

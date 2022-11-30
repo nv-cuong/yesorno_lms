@@ -16,8 +16,7 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                <img src="{{ asset('admin/dist/img/user2-160x160.jpg') }}" class="img-circle elevation-2"
-                    alt="User Image">
+                <img src="{{ asset($user->path) }}" class="img-circle elevation-2" alt="Ảnh đại diện">
             </div>
             <div class="info">
                 <a href="#" class="d-block">
@@ -68,6 +67,14 @@
                     </a>
                 </li>
                 <li class="nav-item">
+                    <a href="{{ route('teacher.index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-user-edit"></i>
+                        <p>
+                            Giảng viên
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a href="{{ route('class.index') }}"
                         class="nav-link {{ url()->current() == route('class.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-list"></i>
@@ -96,7 +103,7 @@
                     <a href="{{ route('test.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Test
+                            Bài test
                         </p>
                     </a>
                 </li>
@@ -104,7 +111,7 @@
                     <a href="{{ route('score.index') }}" class="nav-link">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Score
+                            Điểm bài test
                         </p>
                     </a>
                 </li>
