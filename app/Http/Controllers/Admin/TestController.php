@@ -138,9 +138,9 @@ class TestController extends Controller
         $id = $request->input('test_id');
         $test = Test::find($id);
 
-        if ($test->user()->exists() == false) {
-            $test->course()->detach();
-            $test->question()->detach();
+        if ($test->users()->exists() == false) {
+            $test->courses()->detach();
+            $test->questions()->detach();
 
             Test::destroy($id);
             return redirect()
