@@ -28,20 +28,23 @@
                                 Tạo câu hỏi
                             </a>
                         </div>
-                        <div class="card-body">
+                        <div class="dropdown">
                             <form action="{{ route('question.import') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
-                                 @error('import')
-                                        <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                                 <br>
                                 <button type="submit" class="btn btn-success " >Import Question Data</button>
-                                <a class="btn btn-warning" href="{{ route('question.export') }}">Export Question Data</a>
-                                @error('import')
-                                        <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+
+                                <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                        Export
+                                </button>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('question.export') }}">Export Question Data</a>
+                                    <a class='dropdown-item' href="{{ route('question.importform') }}">Question Import Form</a>
                             </form>
+                            @error('import')
+                                        <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>   
                         <table class="table table-striped table-bordered table-hover table-condensed" id="question">
                             <thead>

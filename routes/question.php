@@ -34,4 +34,6 @@ Route::prefix('/questions')->name('question.')->group(function () {
         ->name('export')->middleware('myweb.auth:question.view');
     Route::post('import', [ImportQuestionController::class, 'import'])
         ->name('import')->middleware('myweb.auth:question.view');
+    Route::get('importform', [ImportQuestionController::class, 'importform'])
+    ->name('importform')->middleware('myweb.auth:question.view');
 });
