@@ -31,5 +31,7 @@ Route::prefix('students')->group(function () {
         ->name('student.export')->middleware('myweb.auth:user.view');
         Route::post('import', [ImportStudentController::class, 'import'])
         ->name('student.import')->middleware('myweb.auth:user.view');
+        Route::get('importform', [ImportStudentController::class, 'importform'])
+        ->name('student.importform')->middleware('myweb.auth:user.view');
 
 });

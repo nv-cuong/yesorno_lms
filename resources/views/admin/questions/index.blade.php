@@ -32,6 +32,9 @@
                             <form action="{{ route('question.import') }}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
+                                 @error('import')
+                                        <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                                 <br>
                                 <button type="submit" class="btn btn-success " >Import Question Data</button>
                                 <a class="btn btn-warning" href="{{ route('question.export') }}">Export Question Data</a>

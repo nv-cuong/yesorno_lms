@@ -19,19 +19,26 @@
                                         viên</a>
                                 </div>
 
-                                <div class="card-body">
+                                <div class="dropdown">
                                     <form action="{{ route('student.import') }}" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
                                         <br>
                                         <button type="submit" class="btn btn-success " >Import Student Data</button>
-                                        <a class="btn btn-warning" href="{{ route('student.export') }}">Export Student Data</a>
-                                        @error('import')
-                                                <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        
+                                        <button class="btn btn-warning dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false">
+                                            Export
+                                        </button>
+                                            <div class="dropdown-menu">
+                                                <a class='dropdown-item' href="{{ route('student.export') }}">Export Student Data</a>
+                                                <a class='dropdown-item' href="{{ route('student.importform') }}">Import Student Form</a>
+                                            </div>
+                                            @error('import')
+                                                        <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
+                                            @enderror
                                     </form>
                                 </div>
-
+                                
                                 @include('admin/_alert')
                                 <div class="card">
                                     <table class="table table-striped table-bordered table-hover table-condensed" id="students">
