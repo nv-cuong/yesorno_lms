@@ -323,7 +323,7 @@ select:focus {
     width: 100%;
     height: 100%;
     z-index: 999999;
-    background: url(assets/img/logo/pre-loader.gif) center no-repeat var(--white-color);
+    background: url(img/logo/pre-loader.gif) center no-repeat var(--white-color);
     text-align: center;
 }
 

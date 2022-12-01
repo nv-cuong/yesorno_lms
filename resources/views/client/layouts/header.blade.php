@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="header-logo">
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            <img src="{{ asset('/user/img/logo/logo-3.png') }}" class="logo-display" alt="thumb">
+                            <img width="229px" src="{{ asset('/user/img/logo/co-well-logo.png') }}" class="logo-display" alt="thumb">
                         </a>
                         <div class="f">
                             @if ($user = Sentinel::getUser())
