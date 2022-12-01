@@ -21,6 +21,16 @@ class Course extends Model {
         'image',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'begin_date' => 'datetime:Y-m-d',
+        'end_date' => 'datetime:Y-m-d',
+    ];
+
     public function tests(): BelongsToMany {
         return $this->belongsToMany(
             Test::class,

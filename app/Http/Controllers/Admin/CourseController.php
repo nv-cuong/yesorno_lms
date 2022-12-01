@@ -11,7 +11,6 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 use App\Notifications\AssignCourse;
@@ -29,7 +28,7 @@ class CourseController extends Controller
 
     /**
      *
-     * @return DataTables
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getCourseData()
     {
@@ -45,7 +44,7 @@ class CourseController extends Controller
             return $query->where('user_courses.status', 0);
         }])->with(['users', 'user']);
 
-        if (Sentinel::inRole('teacher')) {      
+        if ($user->inRole('teacher')) {
             $course = $course->where('teacher_id', $user->id);
         }
 
@@ -70,8 +69,8 @@ class CourseController extends Controller
     }
 
     /**
-     *
-     * @return DataTables
+     * @param integer $id course_id
+     * @return DataTables|\Illuminate\Http\JsonResponse
      */
     public function getUnitData($id)
     {
@@ -120,9 +119,9 @@ class CourseController extends Controller
         $teacher = Sentinel::getUser();
         $course_item['teacher_id'] = $teacher->id;
         $course_item['slug'] = Str::slug($course_item['title']);
-        $photo = $request->file('image');
-        if ($photo) {
-            $path = Storage::putFile('images', $photo);
+        if ($request->hasFile('image')) {
+            $photo = $request->file('image');
+            $path = $this->uploadFile($photo);
             $course_item['image'] = $path;
         }
         try {
@@ -139,7 +138,7 @@ class CourseController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function editCourse(Request $request, $id)
     {
@@ -170,12 +169,10 @@ class CourseController extends Controller
             $course->begin_date     = $request->input('begin_date');
             $course->end_date       = $request->input('end_date');
             $course->description    = $request->input('description');
-            $photo                  = $request->file('image');
-            if ($photo) {
-                $path = Storage::putFile('images', $photo);
-                $course->image = $path;
-            } else {
-                $course->image          = $course->image;
+
+            if ($request->hasFile('image')) {
+                $photo                  = $request->file('image');
+                $course->image = $this->uploadFile($photo);
             }
 
             $course->save();
@@ -218,7 +215,7 @@ class CourseController extends Controller
 
     /**
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function showTest($id)
     {
@@ -230,7 +227,7 @@ class CourseController extends Controller
     }
 
     /**
-     *
+     * @param integer $id
      * @return DataTables
      */
     public function getTestData($id)
@@ -255,7 +252,7 @@ class CourseController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function showStudent(Request $request, $id)
     {
@@ -270,7 +267,7 @@ class CourseController extends Controller
     }
 
     /**
-     *
+     * @param integer $id
      * @return DataTables
      */
     public function getStudentData($id)
@@ -308,7 +305,7 @@ class CourseController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param int $courseId
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
     public function activeStudent(Request $request, $courseId)
@@ -316,6 +313,9 @@ class CourseController extends Controller
         $user_id = $request->input('user_id', 0);
         $user = User::find($user_id);
         $course = Course::find($courseId);
+
+        $msg = 'Học viên không tồn tại';
+        $type = 'danger';
 
         if ($user && $course) {
             if ($user->courses()
@@ -329,19 +329,24 @@ class CourseController extends Controller
                     'course_id' => $courseId,
                     'course_name' => $course->title,
                     'course_slug' => $course->slug,
-                    'course_begin_date' => date('d/m/Y', strtotime($course->begin_date)),
+                    'course_begin_date' => $course->begin_date->format('d/m/Y'),
                 ];
 
                 $user->notify(new AssignCourse($assignNotification));
 
-                return redirect(route('course.student', $courseId))
-                    ->with('message', 'Học viên đã được chấp nhận vào khóa học')
-                    ->with('type_alert', "success");
+                $msg = 'Học viên đã được chấp nhận vào khóa học';
+                $type = 'success';
             }
-        } else {
-            return redirect(route('course.student', $courseId))
-                ->with('message', 'Học viên không tồn tại')
-                ->with('type_alert', "danger");
         }
+        return redirect(route('course.student', $courseId))
+            ->with('message', $msg)
+            ->with('type_alert', $type);
+    }
+
+    // @phpstan-ignore-next-line
+    private function uploadFile($photo)
+    {
+        $name = $photo->getClientOriginalName();
+        return $photo->storeAs('images', $name);
     }
 }
