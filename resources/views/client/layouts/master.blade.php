@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title> Team 5 | @yield('title') </title>
+    <title>@yield('title') </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -52,19 +52,15 @@
 </head>
 
 <body class="demo-1" id="bdy">
-
     <div class="se-pre-con"></div>
-
 
     @include('client.layouts.header')
     <div class="clearfix"></div>
 
-
     @yield('content')
     <div class="clearfix"></div>
-    @yield('js')
+
     @include('client.layouts.footer')
-    <script src="{{ asset('/user/js/jquery-2.0.0.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery-1.12.4.min.js') }}"></script>
     <script src="{{ asset('/user/js/popper.min.js') }}"></script>
     <script src="{{ asset('/user/js/bootstrap.min.js') }}"></script>
@@ -88,7 +84,7 @@
     <script src="{{ asset('/user/js/bsnav.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery.easypiechart.js') }}"></script>
     <script src="{{ asset('/user/js/main.js') }}"></script>
-    @stack('scripts')
+
     @yield('scripts')
 </body>
 

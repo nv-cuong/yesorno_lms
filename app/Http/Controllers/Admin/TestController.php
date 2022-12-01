@@ -36,7 +36,7 @@ class TestController extends Controller
         $tests = Test::select([
             'id',
             'category',
-            'amount',
+            'total_score',
             'time',
             'title',
             'description',
@@ -55,6 +55,10 @@ class TestController extends Controller
                     $courseName .= $courseItem->title . '<br/>';
                 }
                 return $courseName;
+            })
+            ->addColumn('total_score', function ($test) {
+                $totalScore = $test->total_score;
+                return $totalScore;
             })
             ->addColumn('actions', function ($test) {
                 return view('admin.tests.actions', ['row' => $test])->render();
@@ -84,24 +88,36 @@ class TestController extends Controller
         $test = new Test();
 
         try {
-            if ($request->category == 0 && Test::where('category', 0)->get()) {
-                return redirect()->back()
-                    ->with('message', 'Đã tồn tại bài thi cuối khoá')
-                    ->with('type_alert', 'danger');
+            $course_id      = $request->course;
+            $givenCategory  = $request->category;
+            $course         = Course::find($course_id)->with('tests')->first();
+            $existingTests  = $course->tests;
+
+            foreach ($existingTests as $existingTest) {
+                if ($givenCategory == 0 && $existingTest->category == 0) {
+                    return redirect()
+                        ->back()
+                        ->with('message', 'Khóa học này đã có bài thi cuối khoá')
+                        ->with('type_alert', 'danger');
+                }
             }
+            $totalScore         = 0;
             $test->category     = $request->category;
             $test->title        = $request->title;
             $test->time         = $request->time;
             $test->description  = $request->description;
+            $questionIds        = $request->question;
+            foreach ($questionIds as $id) {
+                $question       = Question::find($id);
+                $totalScore    += $question->score;
+            }
+            $test->total_score  = $totalScore;
             $test->save();
-
-            $course_id          = $request->course;
-            $questions          = $request->question;
-            foreach ($questions as $id) {
-                $question = Question::find($id);
+            
+            foreach ($questionIds as $id) {
+                $question       = Question::find($id);
                 $question->tests()->attach($test->id);
             }
-            $course = Course::find($course_id);
             $course->tests()->attach($test->id);
             DB::commit();
         } catch (\Exception $e) {
@@ -122,9 +138,9 @@ class TestController extends Controller
         $id = $request->input('test_id');
         $test = Test::find($id);
 
-        if ($test->user()->exists() == false) {
-            $test->course()->detach();
-            $test->question()->detach();
+        if ($test->users()->exists() == false) {
+            $test->courses()->detach();
+            $test->questions()->detach();
 
             Test::destroy($id);
             return redirect()
@@ -177,7 +193,7 @@ class TestController extends Controller
     public function edit($id)
     {
         $tests  = Test::find($id);
-        if ($tests->user()->exists()) {
+        if ($tests->users()->exists()) {
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('message', 'Không thể sửa! Đã có học viên làm bài kiểm tra!')
@@ -218,7 +234,7 @@ class TestController extends Controller
     public function view($id)
     {
         $tests  = Test::find($id);
-        $questions = $tests->question;
+        $questions = $tests->questions;
         $arr_question = [];
 
         foreach ($questions as $question) {
@@ -248,7 +264,7 @@ class TestController extends Controller
     public function createquestion($id, $testId, $arr_quest)
     {
         $test = Test::find($testId);
-        if ($test->user()->exists()) {
+        if ($test->users()->exists()) {
             return redirect(route('test.view', $testId))
                 ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');
@@ -299,7 +315,7 @@ class TestController extends Controller
     public function delete_question(Request $request, $id_test)
     {
         $test = Test::find($id_test);
-        if ($test->user()->exists()) {
+        if ($test->users()->exists()) {
             return redirect(route('test.view', $id_test))
                 ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');
@@ -319,7 +335,7 @@ class TestController extends Controller
     public function question_edit($questionId, $testId, $courseId)
     {
         $test = Test::find($testId);
-        if ($test->user()->exists()) {
+        if ($test->users()->exists()) {
             return redirect(route('test.view', $testId))
                 ->with('message', 'Không thể chỉnh sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');
