@@ -90,9 +90,6 @@ class StudentCoursesController extends Controller
         $files = File::where('lesson_id', $lesson->id)
             ->get();
 
-        // if ($userLesson->status == 0) {
-        //     $this->lessonProgress($slug);
-        // }
         return view('client.modules.lesson', compact('lesson', 'nextLesson', 'nextUnit', 'files', 'userLesson'));
     }
 
