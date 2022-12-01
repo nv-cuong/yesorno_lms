@@ -86,8 +86,8 @@ class ScoreController extends Controller
             $studentIds     = $userTestItems['student_id'];
             $testIds        = $userTestItems['test_id'];
             foreach ($studentIds as $studentId) {
-                $userTest   = UserTest::where('user_id', $studentId)->where('test_id', $testIds)->get();
-                if (count($userTest) > 0) {
+                $userTest   = UserTest::where('user_id', $studentId)->where('test_id', $testIds)->first();
+                if ($userTest) {
                     return redirect(route('score.index'))
                         ->with('message', 'Thêm bài test thất bại, học viên ' . $studentId . ' đã được chỉ định bài test này!')
                         ->with('type_alert', "danger");

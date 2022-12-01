@@ -162,7 +162,6 @@ class CourseController extends Controller
         $course = Course::find($id);
         if ($course) {
             $course->title          = $request->input('title');
-            $course->statistic_id   = $course->statistic_id;
             $course->slug           = Str::slug($course->title);
             $course->status         = $request->input('status');
             $course->begin_date     = $request->input('begin_date');
