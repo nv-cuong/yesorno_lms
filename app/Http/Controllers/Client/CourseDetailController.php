@@ -71,9 +71,9 @@ class CourseDetailController extends Controller
      */
     public function attach(Request $request)
     {
-        if ($getUser = Sentinel::getUser()) {
-            $getUser->courses()->attach($request->course_id);
-            $getUser->lessons()->attach($request->lesson_id);
+        if ($user = Sentinel::getUser()) {
+            $user->courses()->attach($request->course_id);
+            $user->lessons()->attach($request->lesson_id);
             return redirect(route('detail', $request->course_slug))
                 ->with('message', "Đăng kí khóa học thành công. Hãy học ngay !")
                 ->with('type_alert', "success");
@@ -90,20 +90,17 @@ class CourseDetailController extends Controller
      */
     public function detach(Request $request)
     {
-        $getUser = Sentinel::getUser();
-        $getUser->courses()->detach($request->course_id);
-        $lessons = Lesson::select([
-            'ul.lesson_id'
-        ])
-            ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
+        $user = Sentinel::getUser();
+        $user->courses()->detach($request->course_id);
+        $lessons = Lesson::leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
             ->leftJoin('units AS u', 'u.id', 'lessons.unit_id')
             ->join('courses AS c', 'c.id', 'u.course_id')
-            ->where('ul.user_id', $getUser->id)
+            ->where('ul.user_id', $user->id)
             ->where('c.id', $request->course_id)
-            ->get();
-        foreach ($lessons as $lesson) {
-            $getUser->lessons()->detach($lesson->lesson_id);
-        }
+            ->pluck('ul.lesson_id')->all();
+
+        $user->lessons()->detach($lessons);
+
         return redirect(route('detail', $request->course_slug))
             ->with('message', "Bạn đã hủy đăng kí khóa học này !")
             ->with('type_alert', "success");
@@ -129,7 +126,6 @@ class CourseDetailController extends Controller
      */
     public function detachClass(Request $request)
     {
-        // dd($request->class_id);
         $user = Sentinel::getUser();
         $class = ClassStudy::where('id', $request->class_id)->first();
         $class->users()->detach($user->id);
@@ -142,16 +138,14 @@ class CourseDetailController extends Controller
      * showLesson
      *
      * @param  mixed $id
-     * @return void
+     * @return \Illuminate\View\View
      */
     public function showLesson($id)
     {
-        $lesson = Lesson::where('id', $id)
-            ->first();
+        $lesson = Lesson::find($id);
 
         if ($lesson) {
-            $files = File::all()
-                ->where('lesson_id', $lesson->id);
+            $files = File::where('lesson_id', $id)->get();
             return view('client.modules.learning', compact('lesson', 'files'));
         } else {
             abort(404);
