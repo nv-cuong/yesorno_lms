@@ -34,38 +34,33 @@ class CourseController extends Controller
     public function getCourseData()
     {
         $user = Sentinel::getUser();
-        if (Sentinel::inRole('admin') || Sentinel::inRole('manager')) {
-            $course = Course::select([
-                'id',
-                'title',
-                'status',
-                'begin_date',
-                'end_date',
-                'teacher_id',
-            ])->withCount(['users' => function ($query) {
-                return $query->where('status', 0);
-            }])->with('users');
-        }else{
-            $course = Course::select([
-                'id',
-                'title',
-                'status',
-                'begin_date',
-                'end_date',
-                'teacher_id',
-            ])->where('teacher_id', $user->id)->withCount(['users' => function ($query) {
-                return $query->where('status', 0);
-            }])->with('users');
+        $course = Course::select([
+            'id',
+            'title',
+            'status',
+            'begin_date',
+            'end_date',
+            'teacher_id',
+        ])->withCount(['users' => function ($query) {
+            return $query->where('user_courses.status', 0);
+        }])->with(['users', 'user']);
+
+        if (Sentinel::inRole('teacher')) {      
+            $course = $course->where('teacher_id', $user->id);
         }
 
         return DataTables::of($course)
             ->editColumn('status', function ($course) {
                 if ($course->status == 0) return 'Miễn phí';
                 if ($course->status == 1) return 'Tính phí';
+                return '';
             })
             ->editColumn('teacher_id', function ($course) {
                 $teacher = $course->user;
-                return $teacher->last_name . ' ' . $teacher->first_name;
+                if($teacher){
+                    return $teacher->last_name . ' ' . $teacher->first_name;
+                }
+                return '';
             })
             ->addColumn('actions', function ($course) {
                 return view('admin.modules.courses.actions', ['row' => $course])->render();

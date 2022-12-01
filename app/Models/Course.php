@@ -59,7 +59,8 @@ class Course extends Model {
     public function user(): BelongsTo {
         return $this->belongsTo(
             User::class,
-            'teacher_id'
+            'teacher_id',
+            'id'
         );
     }
 
