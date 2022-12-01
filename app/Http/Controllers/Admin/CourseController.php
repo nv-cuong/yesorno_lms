@@ -4,18 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CourseRequest;
-use App\Mail\SendEmail;
 use App\Models\Course;
-use App\Models\Notification;
 use App\Models\Test;
 use App\Models\Unit;
 use App\Models\User;
-use App\Notifications\SendMessageNotification;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
@@ -47,17 +42,25 @@ class CourseController extends Controller
             'end_date',
             'teacher_id',
         ])->withCount(['users' => function ($query) {
-            return $query->where('status', 0);
-        }])->with('users');
+            return $query->where('user_courses.status', 0);
+        }])->with(['users', 'user']);
+
+        if (Sentinel::inRole('teacher')) {      
+            $course = $course->where('teacher_id', $user->id);
+        }
 
         return DataTables::of($course)
             ->editColumn('status', function ($course) {
                 if ($course->status == 0) return 'Miễn phí';
                 if ($course->status == 1) return 'Tính phí';
+                return '';
             })
             ->editColumn('teacher_id', function ($course) {
-                $teacher = User::where('id', $course->teacher_id)->first();
-                return $teacher->last_name . ' ' . $teacher->first_name;
+                $teacher = $course->user;
+                if($teacher){
+                    return $teacher->last_name . ' ' . $teacher->first_name;
+                }
+                return '';
             })
             ->addColumn('actions', function ($course) {
                 return view('admin.modules.courses.actions', ['row' => $course])->render();
