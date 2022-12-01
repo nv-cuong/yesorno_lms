@@ -136,17 +136,9 @@ class HomeController extends Controller
     {
         $user = User::find($request['student_id']);
 
-        $file_image = $request->file('name_img');
-        if($file_image){
-            $path_old = $user->path;
-            $path = Storage::putFile('images', $file_image);
-            $name = Storage::url("$path");
-            if ($path_old != NULL) {
-                Storage::delete("$path_old");
-            }
-
-            $user->name_img = $name;
-            $user->path = $path;
+        if ($request->hasFile('name_img')) {
+            $file_image = $request->file('name_img');
+            $user = $this->uploadFile($user, $file_image);
             $user->save();
         }
         return redirect(route('personal'));
@@ -179,21 +171,29 @@ class HomeController extends Controller
             $student->last_name = $request->input('last_name');
             $student->address = $request->input('address');
             $student->birthday = $request->input('birthday');
-
-            $file_image = $request->file('name_img');
-            if ($file_image) {
-                $path_old = $student->path;
-                $path = Storage::putFile('images', $file_image);
-                $name = Storage::url("$path");
-                if ($path_old != NULL) {
-                    Storage::delete("$path_old");
-                }
-                $student->name_img = $name;
-                $student->path = $path;
+            if ($request->hasFile('name_img')) {
+                $file_image = $request->file('name_img');
+                $student = $this->uploadFile($student, $file_image);
             }
 
             $student->save();
         }
         return redirect()->route('personal');
+    }
+
+    // @phpstan-ignore-next-line
+    private function uploadFile($user, $file)
+    {
+        $path_old = $user->path;
+        $name = $file->getClientOriginalName();
+        $path = $file->storeAs('images', $name);
+
+        if ($path_old != NULL) {
+            Storage::delete("$path_old");
+        }
+        $user->name_img = $name;
+        $user->path = $path;
+
+        return $user;
     }
 }
