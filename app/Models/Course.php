@@ -56,6 +56,13 @@ class Course extends Model {
         )->withPivot('status');
     }
 
+    public function user(): BelongsTo {
+        return $this->belongsTo(
+            User::class,
+            'teacher_id'
+        );
+    }
+
     /**
      * Scope a query request key.
      *

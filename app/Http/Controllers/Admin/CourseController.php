@@ -34,16 +34,29 @@ class CourseController extends Controller
     public function getCourseData()
     {
         $user = Sentinel::getUser();
-        $course = Course::select([
-            'id',
-            'title',
-            'status',
-            'begin_date',
-            'end_date',
-            'teacher_id',
-        ])->withCount(['users' => function ($query) {
-            return $query->where('status', 0);
-        }])->with('users');
+        if (Sentinel::inRole('admin') || Sentinel::inRole('manager')) {
+            $course = Course::select([
+                'id',
+                'title',
+                'status',
+                'begin_date',
+                'end_date',
+                'teacher_id',
+            ])->withCount(['users' => function ($query) {
+                return $query->where('status', 0);
+            }])->with('users');
+        }else{
+            $course = Course::select([
+                'id',
+                'title',
+                'status',
+                'begin_date',
+                'end_date',
+                'teacher_id',
+            ])->where('teacher_id', $user->id)->withCount(['users' => function ($query) {
+                return $query->where('status', 0);
+            }])->with('users');
+        }
 
         return DataTables::of($course)
             ->editColumn('status', function ($course) {
@@ -51,7 +64,7 @@ class CourseController extends Controller
                 if ($course->status == 1) return 'Tính phí';
             })
             ->editColumn('teacher_id', function ($course) {
-                $teacher = User::where('id', $course->teacher_id)->first();
+                $teacher = $course->user;
                 return $teacher->last_name . ' ' . $teacher->first_name;
             })
             ->addColumn('actions', function ($course) {
