@@ -52,7 +52,7 @@
                 <a href="#" class="dropdown-item">
                     <!-- Message Start -->
                     <div class="media">
-                        <img src="dist/img/user3-128x128.jpg" alt="User Avatar" class="img-size-50 img-circle mr-3">
+                        <img src="{{ asset('admin/dist/img/user3-128x128.jpg') }}" alt="User Avatar" class="img-size-50 img-circle mr-3">
                         <div class="media-body">
                             <h3 class="dropdown-item-title">
                                 Nora Silvester
@@ -73,17 +73,15 @@
             <a class="nav-link" data-toggle="dropdown" href="#">
                 <i class="far fa-bell"></i>
                 <span class="badge badge-warning navbar-badge">
-                    @if (Sentinel::inRole('teacher'))
+                    @if ($user->inRole('teacher'))
                         {{ $count_user_tests }}
                     @else
                         0
                     @endif
-
                 </span>
             </a>
             <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                @if (Sentinel::inRole('teacher'))
-
+                @if ($user->inRole('teacher'))
                     @forelse($user_tests as $user_test)
                         <div class="dropdown-divider"></div>
                         <a href="{{ route('score.index') }}" class="dropdown-item">
@@ -91,7 +89,6 @@
                         </a>
                     @empty
                     @endforelse
-
                 @endif
             </div>
         </li>
