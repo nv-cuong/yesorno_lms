@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-xl-4">
                                 <div class="course-view-more">
-                                    <h6>Tổng khóa học: {{ $courseTotal->count() }} - <a>View All</a></h6>
+                                    <h6>Tổng khóa học: {{ $courses->total() }} - <a>View All</a></h6>
                                 </div>
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                                             <div class="course-2-pic">
                                                 <img src="{{ asset($course->image) }}" class="course-img" alt="thumb">
                                                 <div class="course-2-pic-content">
-                                                    <p><span>{{ $course->users()->count() }}</span> người đã học</p>
+                                                    <p><span>{{ $course->users_count }}</span> người đã học</p>
                                                 </div>
                                             </div>
                                             <div class="course-2-content">
@@ -81,7 +81,7 @@
                                                 <div class="course-2-bottom">
                                                     <div class="course-2-lesson">
                                                         <i class="fas fa-book-open"></i>
-                                                        <p class="mb-0">Tổng số chương: {{ $course->units()->count() }}
+                                                        <p class="mb-0">Tổng số chương: {{ $course->units_count }}
                                                         </p>
                                                     </div>
                                                 </div>
@@ -102,7 +102,7 @@
             </div>
         </div>
         <div class="text-center">
-            {{ $courses->appends(request()->query())->links() }}
+            {{ $courses->withQueryString()->links() }}
         </div>
     </div>
 @endsection
