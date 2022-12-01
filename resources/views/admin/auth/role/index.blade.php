@@ -1,4 +1,4 @@
-@extends('Admin.Layouts.master')
+@extends('admin.layouts.master')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -38,7 +38,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                
+
                             </tbody>
                         </table>
                     </div>

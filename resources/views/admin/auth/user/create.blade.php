@@ -1,4 +1,4 @@
-@extends('Admin.Layouts.master')
+@extends('admin.layouts.master')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -104,7 +104,7 @@
                                             <label class="form-check-label">{{ $role->name }}</label>
                                         </div>
                                         @endforeach
-                                        
+
                                         {!! $errors->first('role', '<em for="role" class="help-block" style="color: red">:message</em>') !!}
                                     </div>
                                 </div>
@@ -123,7 +123,7 @@
                                 </div>
                             </div>
                         </form>
-                   
+
 
                 </div>
 

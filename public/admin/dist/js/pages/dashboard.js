@@ -50,7 +50,7 @@ $(function () {
   /* jQueryKnob */
   $('.knob').knob()
 
-  // jvectormap data
+ /* // jvectormap data
   var visitorsData = {
     US: 398, // USA
     SA: 400, // Saudi Arabia
@@ -99,7 +99,7 @@ $(function () {
   sparkline1.draw([1000, 1200, 920, 927, 931, 1027, 819, 930, 1021])
   sparkline2.draw([515, 519, 520, 522, 652, 810, 370, 627, 319, 630, 921])
   sparkline3.draw([15, 19, 20, 22, 33, 27, 31, 27, 19, 30, 21])
-
+*/
   // The Calender
   $('#calendar').datetimepicker({
     format: 'L',
@@ -113,7 +113,7 @@ $(function () {
 
   /* Chart.js Charts */
   // Sales chart
-  var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d')
+ /* var salesChartCanvas = document.getElementById('revenue-chart-canvas').getContext('2d')
   // $('#revenue-chart').get(0).getContext('2d');
 
   var salesChartData = {
@@ -263,5 +263,5 @@ $(function () {
     type: 'line',
     data: salesGraphChartData,
     options: salesGraphChartOptions
-  })
+  })*/
 })

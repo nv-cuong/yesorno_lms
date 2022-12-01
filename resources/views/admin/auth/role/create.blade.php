@@ -1,4 +1,4 @@
-@extends('Admin.Layouts.master')
+@extends('admin.layouts.master')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                
+
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -57,13 +57,13 @@
                     </div>
 
                     <div class="card-footer">
-                        
 
-                        
+
+
                             <button type="submit" class="btn ladda-button btn-success btn-sm" data-style="zoom-in">
                                 <span class="ladda-label"><i class="fa fa-save"></i> Tạo</span>
                                 <span class="ladda-spinner"><div class="ladda-progress" style="width: 0px;"></div></span></button>
-                       
+
 
                         <div class="clearfix"></div>
                     </div>
@@ -112,7 +112,7 @@
     $('.styled').click(function(e){
         $("#acl-all").prop( "checked", false );
     })
-    
+
     $('#acl-all').click(function (e) {
         var all = $('#acl-all');
         if (all.is(":checked")) {
