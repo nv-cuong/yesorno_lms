@@ -138,7 +138,7 @@
                     }
                 ]
             });
-            table.on('draw', function() {
+           table.on('draw', function() {
                 $('.livicon').each(function() {
                     $(this).updateLivicon();
                 });

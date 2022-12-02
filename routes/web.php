@@ -33,11 +33,10 @@ Route::get('/course', function () {
     return view('course');
 });
 
+Route::get('/dashboard', [IndexController::class, 'index'])
+    ->name('dashboard')->middleware('myweb.auth:dashboard');
+
 Route::prefix('admin')->group(function () {
-
-    Route::get('/dashboard', [IndexController::class, 'index'])
-        ->name('dashboard')->middleware('myweb.auth:dashboard');
-
     require 'question.php';
     require 'class.php';
     require 'student.php';

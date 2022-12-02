@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Course;
-use App\Models\Notification;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -54,6 +53,7 @@ class HomeController extends Controller
             $name = 'created_at';
             $sort = 'DESC';
         }
+
         $courses = Course::select([
             'id',
             'title',
@@ -64,14 +64,11 @@ class HomeController extends Controller
             'end_date',
             'image'
         ])
-            ->with('units', 'users')
+            ->withCount(['units', 'users'])
             ->orderBy($name, $sort)
-            // ->where('status', $filter)
             ->paginate(6);
-        $courseTotal = Course::select([
-            'id',
-        ]);
-        return view('client.modules.courses', compact('courses', 'courseTotal'));
+
+        return view('client.modules.courses', compact('courses'));
     }
 
     /**
@@ -80,12 +77,14 @@ class HomeController extends Controller
      */
     public function courseFilter(Request $request)
     {
+        $filter = '';
         if ($request->filter == 'free') {
             $filter = '0';
         } elseif ($request->filter == 'pro') {
             $filter = '1';
         }
-        $courses = Course::select([
+
+        $query = Course::select([
             'id',
             'title',
             'slug',
@@ -95,13 +94,13 @@ class HomeController extends Controller
             'end_date',
             'image'
         ])
-            ->with('units', 'users')
-            ->where('status', $filter)
-            ->paginate(6);
-        $courseTotal = Course::select([
-            'id',
-        ]);
-        return view('client.modules.courses', compact('courses', 'courseTotal'));
+        ->withCount(['units', 'users']);
+        if ('' != $filter){
+            $query = $query->where('status', $filter);
+        }
+        $courses = $query->paginate(6);
+
+        return view('client.modules.courses', compact('courses'));
     }
 
 
@@ -129,64 +128,72 @@ class HomeController extends Controller
     }
 
     /**
+     *
      * @param Request $request
+     * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
-    public function search(Request $request)
-    {
-        $output = '';
-        $course = Course::where('title', 'LIKE', '%' . $request->keyword . '%')->get();
-    }
-
     public function uploadImg(Request $request)
     {
         $user = User::find($request['student_id']);
 
-        $file_image = $request->file('name_img');
-        $path_old = $user->path;
-        $path = Storage::putFile('images', $file_image);
-        $name = Storage::url($path);
-        if ($path_old != NULL) {
-            Storage::delete($path_old);
+        if ($request->hasFile('name_img')) {
+            $file_image = $request->file('name_img');
+            $user = $this->uploadFile($user, $file_image);
+            $user->save();
         }
-
-
-        $user->name_img = $name;
-        $user->path = $path;
-        $user->save();
-
         return redirect(route('personal'));
     }
 
+    /**
+     *
+     * @param integer $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
     public function profile_edit($id)
     {
         $student = User::find($id);
         return view('client.modules.profile', compact('student'));
     }
 
+    /**
+     *
+     * @param Request $request
+     * @param integer $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function profile_update(Request $request, $id)
     {
-
-        $student = User::findOrFail($id);
-        $student->phone = $request->input('phone');
-        $student->first_name = $request->input('first_name');
-        $student->gender = $request->input('gender');
-        $student->last_name = $request->input('last_name');
-        $student->address = $request->input('address');
-        $student->birthday = $request->input('birthday');
-
-        $file_image = $request->file('name_img');
-        if ($file_image) {
-            $path_old = $student->path;
-            $path = Storage::putFile('images', $file_image);
-            $name = Storage::url($path);
-            if ($path_old != NULL) {
-                Storage::delete($path_old);
+        $student = User::find($id);
+        if ($student){
+            $student->phone = $request->input('phone');
+            $student->first_name = $request->input('first_name');
+            $student->gender = $request->input('gender');
+            $student->last_name = $request->input('last_name');
+            $student->address = $request->input('address');
+            $student->birthday = $request->input('birthday');
+            if ($request->hasFile('name_img')) {
+                $file_image = $request->file('name_img');
+                $student = $this->uploadFile($student, $file_image);
             }
-            $student->name_img = $name;
-            $student->path = $path;
-        }
 
-        $student->save();
+            $student->save();
+        }
         return redirect()->route('personal');
+    }
+
+    // @phpstan-ignore-next-line
+    private function uploadFile($user, $file)
+    {
+        $path_old = $user->path;
+        $name = $file->getClientOriginalName();
+        $path = $file->storeAs('images', $name);
+
+        if ($path_old != NULL) {
+            Storage::delete("$path_old");
+        }
+        $user->name_img = $name;
+        $user->path = $path;
+
+        return $user;
     }
 }

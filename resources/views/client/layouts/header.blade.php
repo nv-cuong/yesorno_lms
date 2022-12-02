@@ -5,7 +5,7 @@
                 <div class="container">
                     <div class="header-logo">
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            <img src="{{ asset('/user/img/logo/logo-3.png') }}" class="logo-display" alt="thumb">
+                            <img width="229px" src="{{ asset('/user/img/logo/co-well-logo.png') }}" class="logo-display" alt="thumb">
                         </a>
                         <div class="f">
                             @if ($user = Sentinel::getUser())
@@ -106,33 +106,33 @@
         </div>
     </div>
     @push('scripts')
-        <script>
-            $('.input_search').keyup(function() {
-                var _text = $(this).val();
+    <script>
+        $('.input_search').keyup(function() {
+            var _text = $(this).val();
 
-                if (_text != '') {
-                    $.ajax({
-                        url: "{{ route('live.search') }}?key=" + _text,
-                        type: 'GET',
-                        success: function(data) {
-                            var _html = '';
-                            _html += '<div class="search_main">';
-                            _html += '<ul>';
-                            for (var course of data) {
-                                _html += '<li>';
-                                _html += '<a href="{{ route('detail', '') }}/' + course.slug + '">' +
-                                    course.title + '</a>';
-                                _html += '<hr>';
-                                _html += '</li>';
-                            }
-                            _html += '</ul>';
-                            _html += '</div>';
-                            $('.search_results').html(_html)
+            if (_text != '') {
+                $.ajax({
+                    url: "{{ route('live.search') }}?key=" + _text,
+                    type: 'GET',
+                    success: function(data) {
+                        var _html = '';
+                        _html += '<div class="search_main">';
+                        _html += '<ul>';
+                        for (var course of data) {
+                            _html += '<li>';
+                            _html += '<a href="{{ route('detail', '') }}/' + course.slug + '">' +
+                                course.title + '</a>';
+                            _html += '<hr>';
+                            _html += '</li>';
                         }
-                    });
-                } else {
-                    $('.search_results').html('')
-                }
-            })
-        </script>
+                        _html += '</ul>';
+                        _html += '</div>';
+                        $('.search_results').html(_html)
+                    }
+                });
+            } else {
+                $('.search_results').html('')
+            }
+        })
+    </script>
     @endpush

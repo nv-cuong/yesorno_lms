@@ -37,6 +37,7 @@ parameters:
         - '#Call to an undefined static method .*update\(\)#'
         - '#Call to an undefined static method .*findUserById\(\)#'
         - '#Call to an undefined static method .*validateCredentials\(\)#'
+        - '#Call to an undefined method .*notify\(\)#'
         - '#Property App\\Models*#'
         - '#Access to an undefined property Cartalyst\\Sentinel*#'
         - '#Cannot access property*#'

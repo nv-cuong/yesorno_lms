@@ -6,12 +6,12 @@
                     <h4 class="foo-widget-title">Về chúng tôi</h4>
                     <p>
                         Tòa nhà 3D, Số 3 Duy Tân, Quận Cầu Giấy, Hà Nội
-
+                    </br>
                         HR: (+84) 24 6297 3538
-
+                    </br>
                         Sales & MKT: (+84) 24 6680 1615
-
-                        Email: info@co-well.vn
+                    </br>
+                        Email: <a href="mailto:info@co-well.vn">info@co-well.vn</a>
                     </p>
                     <div class="footer-hours">
                         <ul>
@@ -21,8 +21,7 @@
                     </div>
                 </div>
                 <div class="footer-widget-box footer-cat">
-                    <h4 class="foo-widget-title">CO-WELL
-                    </h4>
+                    <h4 class="foo-widget-title">CO-WELL</h4>
                     <ul class="foo-list">
                         <li><a href="#">Tài liệu<u></u></a></li>
                         <li><a href="#">Ngôn ngữ lập trình</a></li>
@@ -46,7 +45,7 @@
                     <h4 class="foo-widget-title">Đăng ký</h4>
                     <p>
                         Tel: (+81) 3 5783 4511
-
+                    </br>
                         Fax: (+81) 3 5783 4513
                     </p>
                     <div class="subscribe">
@@ -60,12 +59,12 @@
         </div>
         <div class="copyright">
             <div class="container">
-                <p>Copyright © 2020. All Rights Reserved.</p>
+                <p>Copyright © 2022 CO-WELL ASIA CO.,LTD. All Rights Reserved.</p>
                 <ul class="footer-social">
-                    <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                    <li><a href="https://www.facebook.com/CowellAsia"><i class="fab fa-facebook-f"></i></a></li>
                     <li><a href="#"><i class="fab fa-instagram"></i></a></li>
-                    <li><a href="#"><i class="fab fa-twitter"></i></a></li>
-                    <li><a href="#"><i class="fab fa-youtube"></i></a></li>
+                    <li><a href="https://twitter.com/COWELLAsiavn"><i class="fab fa-twitter"></i></a></li>
+                    <li><a href="https://www.youtube.com/channel/UClRk1QQe5pH5ZhCcuns_7CA"><i class="fab fa-youtube"></i></a></li>
                 </ul>
             </div>
         </div>

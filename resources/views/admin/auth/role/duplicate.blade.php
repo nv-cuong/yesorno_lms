@@ -1,4 +1,4 @@
-@extends('Admin.Layouts.master')
+@extends('admin.layouts.master')
 @section('title', 'Dashboard')
 
 @section('content')
@@ -6,7 +6,7 @@
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                
+
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-right">
@@ -56,7 +56,7 @@
                     </div>
 
                     <div class="card-footer">
-                        
+
 
                         <div class="pull-right">
                             <button type="submit" class="btn ladda-button btn-success btn-sm" data-style="zoom-in">

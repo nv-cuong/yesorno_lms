@@ -22,6 +22,7 @@ class CommonComposer
         if ($user) {
             $user_tests = UserTest::where('status', 1)->get();
             $count_user_tests = $user_tests->count();
+            $view->with('user', $user);
             $view->with('user_tests', $user_tests);
             $view->with('count_user_tests', $count_user_tests);
         }

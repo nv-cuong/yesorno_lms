@@ -1,10 +1,7 @@
-@php
-    $user = Sentinel::getUser();
-@endphp
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="{{ route('dashboard') }}" class="brand-link">
-        <img src="{{ asset('admin/dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo"
+        <img src="{{ asset('admin/dist/img/logo.png') }}" alt="CO-WELL ASIA Logo"
             class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">
             LMS - ADMIN
@@ -16,7 +13,9 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
+                @if($user->path)
                 <img src="{{ asset($user->path) }}" class="img-circle elevation-2" alt="Ảnh đại diện">
+                @endif
             </div>
             <div class="info">
                 <a href="#" class="d-block">
