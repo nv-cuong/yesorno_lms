@@ -15,6 +15,8 @@ use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
 use App\Notifications\AssignCourse;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SendEmail;
 
 class CourseController extends Controller
 {
@@ -331,7 +333,8 @@ class CourseController extends Controller
                     'course_slug' => $course->slug,
                     'course_begin_date' => $course->begin_date->format('d/m/Y'),
                 ];
-
+                $email_user = $user->email;
+                Mail::to($email_user)->send(new SendEmail());
                 $user->notify(new AssignCourse($assignNotification));
 
                 $msg = 'Học viên đã được chấp nhận vào khóa học';

@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Dashboard')
+@section('title', 'Điểm bài test')
 
 @section('content')
     <div class="content-header">

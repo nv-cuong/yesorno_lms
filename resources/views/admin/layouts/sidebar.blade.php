@@ -13,8 +13,8 @@
         <!-- Sidebar user panel (optional) -->
         <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-                @if($user->path)
-                <img src="{{ asset($user->path) }}" class="img-circle elevation-2" alt="Ảnh đại diện">
+                @if ($user->path)
+                    <img src="{{ asset($user->path) }}" class="img-circle elevation-2" alt="Ảnh đại diện">
                 @endif
             </div>
             <div class="info">
@@ -49,8 +49,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                 data-accordion="false">
                 <li class="nav-item">
-                    <a href="{{ route('dashboard') }}"
-                        class="nav-link {{ url()->current() == route('dashboard') ? 'active' : '' }}">
+                    <a href="{{ route('dashboard') }}" class="nav-link {{ url()->current() == route('dashboard') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-th"></i>
                         <p>
                             Trang chủ
@@ -58,7 +57,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('students') }}" class="nav-link">
+                    <a href="{{ route('students') }}" class="nav-link {{ url()->current() == route('students') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-users"></i>
                         <p>
                             Học viên
@@ -66,7 +65,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('teacher.index') }}" class="nav-link">
+                    <a href="{{ route('teacher.index') }}"
+                        class="nav-link {{ url()->current() == route('teacher.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-user-edit"></i>
                         <p>
                             Giảng viên
@@ -83,7 +83,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('course.index') }}" class="nav-link">
+                    <a href="{{ route('course.index') }}"
+                        class="nav-link {{ url()->current() == route('course.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-tree"></i>
                         <p>
                             Khóa học
@@ -91,7 +92,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('question.index') }}" class="nav-link">
+                    <a href="{{ route('question.index') }}"
+                        class="nav-link {{ url()->current() == route('question.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-edit"></i>
                         <p>
                             Ngân hàng câu hỏi
@@ -99,7 +101,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('test.index') }}" class="nav-link">
+                    <a href="{{ route('test.index') }}"
+                        class="nav-link {{ url()->current() == route('test.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Bài test
@@ -107,7 +110,8 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('score.index') }}" class="nav-link">
+                    <a href="{{ route('score.index') }}"
+                        class="nav-link {{ url()->current() == route('score.index') ? 'active' : '' }}">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
                             Điểm bài test
@@ -116,7 +120,8 @@
                 </li>
                 @if ($user->hasAccess(['user.*']))
                     <li class="nav-item">
-                        <a href="{{ route('users.index') }}" class="nav-link">
+                        <a href="{{ route('users.index') }}"
+                            class="nav-link {{ url()->current() == route('users.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
                                 Users
@@ -127,7 +132,8 @@
 
                 @if ($user->hasAccess(['role.*']))
                     <li class="nav-item">
-                        <a href="{{ route('roles.index') }}" class="nav-link">
+                        <a href="{{ route('roles.index') }}"
+                            class="nav-link {{ url()->current() == route('roles.index') ? 'active' : '' }}">
                             <i class="nav-icon fas fa-user"></i>
                             <p>
                                 Roles
