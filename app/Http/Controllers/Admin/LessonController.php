@@ -99,8 +99,10 @@ class LessonController extends Controller
                 'published' => $lesson_item['published'],
                 'content' => $lesson_item['content'],
             ]);
-            $this->saveDocument($request, $lesson, 'path_link');
-            $this->saveDocument($request, $lesson, 'path_zip');
+            if ($request->input('path_link'))
+                $this->saveDocument($request, $lesson, 'path_link');
+            if ($request->input('path_zip'))
+                $this->saveDocument($request, $lesson, 'path_zip');
         } catch (\Throwable $th) {
             throw new ModelNotFoundException();
         }

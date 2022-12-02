@@ -42,7 +42,7 @@
                                 </h2>
                                 <div class="table-responsive">
                                     @forelse ($files as $file)
-                                        @if ($file->type == 'link')
+                                        @if ($file->type == 'link' && $file->path != null)
                                             @php
                                                 $vid = explode('=', $file->path, 3);
                                                 $vid_code = explode('&', $vid[1] ?? '');
@@ -58,7 +58,7 @@
                                                 Tài liệu bài học:
                                             </strong>
                                             <br><br>
-                                        @else
+                                        @elseif($file->type != 'link')
                                             @php
                                                 $path = explode('/', $file->path);
                                                 $file_name = $path[count($path) - 1];

@@ -173,7 +173,7 @@
 </div>
 @endsection
 @section('scripts')
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 <script language="javascript">
     $("#btnDone").click(function(e) {
         e.preventDefault();
