@@ -21,11 +21,15 @@ class LessonController extends Controller
      */
     public function showLesson($id)
     {
-        $lesson = Lesson::where('id', $id)
-            ->first();
-        $files = File::all()
-            ->where('lesson_id', $lesson->id);
-        return view('admin.modules.courses.units.lessons.detail', compact('lesson', 'files'));
+        $lesson = Lesson::find($id);
+        if ($lesson){
+            $files = $lesson->files()->get();
+            return view(
+                'admin.modules.courses.units.lessons.detail',
+                compact('lesson', 'files'));
+        }
+
+        return abort(404);
     }
 
     /**
@@ -64,27 +68,6 @@ class LessonController extends Controller
 
     /**
      * @param LessonRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    private static function saveDocument(Request $request, Lesson $lesson, $docType)
-    {
-        $lesson_item = $request->except('_token');
-        if ($docType == 'path_link') {
-            $type = 'link';
-            $path = $lesson_item[$docType];
-        } else {
-            $type = $request->file($docType)->extension();
-            $path = Storage::putFileAs('files', $request->file($docType), $request->file($docType)->getClientOriginalName());
-        }
-        File::create([
-            'lesson_id' => $lesson->id,
-            'type' => $type,
-            'path' => $path,
-        ]);
-    }
-
-    /**
-     * @param LessonRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -113,15 +96,14 @@ class LessonController extends Controller
     /**
      * @param Request $request
      * @param int $id
-     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|unknown
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory|\Illuminate\Http\RedirectResponse
      */
     public function editLesson(Request $request, $id)
     {
         $lesson = Lesson::find($id);
         if ($lesson) {
             $unit = Unit::pluck('title', 'id');
-            $files = File::all()
-                ->where('lesson_id', $lesson->id);
+            $files = $lesson->files()->get();
             return view('admin.modules.courses.units.lessons.edit', compact('lesson', 'files', 'unit'));
         }
         return redirect(route('unit.detail', [$lesson->unit_id]))
@@ -147,10 +129,10 @@ class LessonController extends Controller
             $lesson->published = $request->input('published');
             $lesson->save();
 
-            $hasFiles = File::where('lesson_id', $lesson->id)->first();
+            $hasFiles = $lesson->files()->exists();
 
-            if ($hasFiles != null) {
-                $files = File::all()->where('lesson_id', $lesson->id);
+            if ($hasFiles) {
+                $files = $lesson->files()->get();
 
                 foreach ($files as $file) {
                     if ($file->type == 'link') {
@@ -180,16 +162,17 @@ class LessonController extends Controller
      */
     public function destroyLesson(Request $request, $unit_id)
     {
-        $lesson_id = $request->input('lesson_id', 0);
-        if ($lesson_id) {
+        $lesson_id = 0 + $request->input('lesson_id', 0);
+        $msg = 'Bài học không tồn tại';
+        $type = 'danger';
+        if ($lesson_id > 0) {
             Lesson::destroy($lesson_id);
-            return redirect(route('unit.detail', [$unit_id]))
-                ->with('message', 'Bài học đã được xóa')
-                ->with('type_alert', "success");
-        } else
-            return redirect(route('unit.detail', [$unit_id]))
-                ->with('message', 'Bài học không tồn tại')
-                ->with('type_alert', "danger");
+            $msg = 'Bài học đã được xóa';
+            $type = 'success';
+        }
+        return redirect(route('unit.detail', [$unit_id]))
+            ->with('message', $msg)
+            ->with('type_alert', $type);
     }
 
     /**
@@ -201,9 +184,40 @@ class LessonController extends Controller
     {
         $file = File::find($id);
         $name = 'baihoc' . $id . '.zip';
-        if ($file) {
+        if ($file && $file->path) {
             return Storage::download($file->path, $name);
         }
         throw new ModelNotFoundException();
+    }
+
+    /**
+     * @param LessonRequest $request
+     * @param Lesson $lesson
+     * @param string $docType
+     * @return boolean
+     */
+    private static function saveDocument(LessonRequest $request, Lesson $lesson, $docType)
+    {
+        $lesson_item = $request->except('_token');
+        $type = '';
+        $path = '';
+
+        if ($docType == 'path_link') {
+            $type = 'link';
+            $path = $lesson_item[$docType];
+        } elseif($request->hasFile($docType)) {
+            $file = $request->file($docType);
+            $type = $file->extension();
+            $fileName = $file->getClientOriginalName();
+            $path = $file->storeAs('files', $fileName);
+        }
+
+        File::create([
+            'lesson_id' => $lesson->id,
+            'type' => $type,
+            'path' => $path,
+        ]);
+
+        return true;
     }
 }

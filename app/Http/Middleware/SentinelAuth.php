@@ -45,6 +45,7 @@ class SentinelAuth
         }
 
         if ($request->ajax() || $request->wantsJson()) {
+            // @phpstan-ignore-next-line
             return response(trans('backpack::base.unauthorized'), 401);
         }
 

@@ -23,7 +23,7 @@ class CourseFactory extends Factory
         return [
             'title' => $title,
             'slug' => $slug,
-            'statistic_id' => fake()->numberBetween(1, 1000),
+            //'statistic_id' => fake()->numberBetween(1, 1000),
             'description' => fake()->text(1000),
             'status'=> fake()->boolean(),
             'begin_date' => fake()->date(),
