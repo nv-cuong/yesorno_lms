@@ -70,3 +70,7 @@
         </div>
     </div>
 </footer>
+<!-- Start Scroll top
+  ============================================= -->
+  <a href="#bdy" id="scrtop" class="smooth-menu"><i class="ti-arrow-up"></i></a>
+  <!-- End Scroll top-->

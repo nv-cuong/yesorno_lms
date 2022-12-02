@@ -26,6 +26,7 @@ class Course extends Model {
      *
      * @var array
      */
+    // @phpstan-ignore-next-line
     protected $casts = [
         'begin_date' => 'datetime:Y-m-d',
         'end_date' => 'datetime:Y-m-d',

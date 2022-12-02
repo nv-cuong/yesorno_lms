@@ -60,7 +60,7 @@ class CourseDetailController extends Controller
             }
             return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
         } else {
-            abort(404);
+            return abort(404);
             // return view('client.modules.404');
         }
     }
@@ -148,7 +148,7 @@ class CourseDetailController extends Controller
             $files = File::where('lesson_id', $id)->get();
             return view('client.modules.learning', compact('lesson', 'files'));
         } else {
-            abort(404);
+            return abort(404);
         }
     }
 }

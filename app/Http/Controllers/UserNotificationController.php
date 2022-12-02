@@ -22,6 +22,6 @@ class UserNotificationController extends Controller
             return redirect(route('detail', [$notification->data['course_slug']]));
         }
 
-        abort(404);
+        return abort(404);
     }
 }

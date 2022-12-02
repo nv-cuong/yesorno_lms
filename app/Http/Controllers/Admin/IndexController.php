@@ -23,7 +23,7 @@ class IndexController extends Controller
         }
 
         if ($user->hasAccess('dashboard') == false) {
-            abort(403);
+            return abort(403);
         }
 
         $students   = User::select([
