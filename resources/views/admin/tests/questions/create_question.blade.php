@@ -67,6 +67,5 @@
             document.getElementById("count_question_id").value = counter;
         });
     </script>
-    <script language="javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
 
 @endsection

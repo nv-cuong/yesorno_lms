@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Test Manager')
+@section('title', 'Bài test')
 @section('content')
     <div class="content-header">
         <div class="container-fluid">

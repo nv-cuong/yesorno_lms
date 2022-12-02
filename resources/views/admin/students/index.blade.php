@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Class Manager')
+@section('title', 'Học viên')
 @section('content')
     <div class="row">
         <div class="col-12">
