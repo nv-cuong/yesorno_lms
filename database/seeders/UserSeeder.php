@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
                 'gender' => fake()->randomElement(['male', 'female']),
+                'stu_id' => 'AD001',
             ],
             [
                 'email' => 'manager@example.com',
@@ -44,6 +45,7 @@ class UserSeeder extends Seeder
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
                 'gender' => fake()->randomElement(['male', 'female']),
+                'stu_id' => 'QL001',
             ],
             [
                 'email' => 'teacher@example.com',
@@ -54,6 +56,7 @@ class UserSeeder extends Seeder
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
                 'gender' => fake()->randomElement(['male', 'female']),
+                'stu_id' => 'GV001',
             ],
             [
                 'email' => 'student@example.com',
@@ -64,6 +67,7 @@ class UserSeeder extends Seeder
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
                 'gender' => fake()->randomElement(['male', 'female']),
+                'stu_id' => 'SV001',
             ],
             [
                 'email' => 'classmanager@example.com',
@@ -74,6 +78,7 @@ class UserSeeder extends Seeder
                 'address' => fake()->address(),
                 'age' => fake()->numberBetween(1, 100),
                 'gender' => fake()->randomElement(['male', 'female']),
+                'stu_id' => 'QLL001',
             ],
         ];
 

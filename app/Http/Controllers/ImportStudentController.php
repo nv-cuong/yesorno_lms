@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\StudentsExport;
 use App\Imports\StudentsImport;
+use App\Exports\StudentsImportForm;
 use App\Http\Requests\Student\ImportStudentRequest;
 
 class ImportStudentController extends Controller
@@ -16,6 +17,11 @@ class ImportStudentController extends Controller
     public function export() 
     {
         return Excel::download(new StudentsExport, 'Students.xlsx');
+    }
+
+    public function importform()
+    {
+        return Excel::download(new StudentsImportForm, 'ImportForm.xlsx');
     }
    
     /**
