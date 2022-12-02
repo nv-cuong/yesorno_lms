@@ -33,8 +33,7 @@ class UserController extends Controller
      */
     public function getUsersData()
     {
-        $getUser = Sentinel::getUser();
-        $roleId = Sentinel::findRoleById($getUser->id);
+        $role = Sentinel::findRoleBySlug('admin');
         $users = User::select([
             'id',
             'email',
@@ -45,8 +44,9 @@ class UserController extends Controller
             'last_name'
         ])
         ->leftJoin('role_users AS ru', 'user_id', 'users.id')
-        ->where('ru.role_id', '>', $roleId->id)
-        ->with('roles', 'activations');
+        ->where('ru.role_id', '>', $role->id)
+        ->with('roles', 'activations')
+        ->distinct();
 
         // @phpstan-ignore-next-line
         return DataTables::of($users)

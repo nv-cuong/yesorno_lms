@@ -25,7 +25,7 @@
                     </span>
                 </a>
                 <div class="signup">
-                    <a href="{{ route('logout') }}">
+                    <a href="{{ route('logout') }}" title="Đăng xuất">
                         <i class="fas fa-sign-out-alt"></i>
                     </a>
                 </div>
