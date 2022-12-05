@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\Admin\TestRequest;
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Carbon\Carbon;
 use App\Models\Test;
 use App\Models\Course;
 use App\Models\Question;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\Admin\Test\StoreRequest;
+use App\Http\Requests\Admin\Test\UpdateRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
  * @author sant1ago
@@ -82,7 +84,7 @@ class TestController extends Controller
      * @throws ModelNotFoundException
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(TestRequest $request)
+    public function store(StoreRequest $request)
     {
         DB::beginTransaction();
         $test = new Test();
@@ -190,19 +192,19 @@ class TestController extends Controller
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function edit($id)
+    public function update($id)
     {
-        $tests  = Test::find($id);
-        if ($tests->users()->exists()) {
+        $test  = Test::find($id);
+        if ($test->users()->exists()) {
             return redirect()
                 ->action([TestController::class, 'index'])
                 ->with('message', 'Không thể sửa! Đã có học viên làm bài kiểm tra!')
                 ->with('type_alert', 'danger');
         }
-        $course = Course::pluck('title', 'id');
-        $question = Question::pluck('content', 'id');
+        $course     = Course::pluck('title', 'id');
+        $question   = Question::pluck('content', 'id');
 
-        return view('admin.tests.edit', compact('course', 'question', 'tests'));
+        return view('admin.tests.update', compact('course', 'question', 'test'));
     }
 
     /**
@@ -211,13 +213,21 @@ class TestController extends Controller
      * @throws ModelNotFoundException
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(TestRequest $request, $id)
+    public function saveUpdates(UpdateRequest $request, $id)
     {
-        $test  = Test::find($id);
+        $test       = Test::find($id);
+        $totalScore = 0;
         try {
-            $test->title = $request->title;
-            $test->time = $request->time;
-            $test->description = $request->description;
+            $test->title        = $request->title;
+            $test->time         = $request->time;
+            $test->description  = $request->description;
+            $test->updated_at   = Carbon::now();
+
+            $questions = $test->questions()->get();
+            foreach ($questions as $question) {
+                $totalScore += $question->score;
+            }
+            $test->total_score = $totalScore;
             $test->save();
         } catch (\Throwable $t) {
             DB::rollback();
