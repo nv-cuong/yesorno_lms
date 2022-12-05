@@ -17,7 +17,7 @@ Route::prefix('/score')->name('score.')->group(function () {
     Route::get('/student/{id}', [ScoreController::class, 'getStudent'])
         ->name('getStudent')->middleware('myweb.auth:score.create');
     Route::get('/data', [ScoreController::class, 'getScoreData'])
-        ->name('data')->middleware('myweb.auth:scores.view');
+        ->name('data')->middleware('myweb.auth:score.view');
     Route::get('/mark/data/{id}', [ScoreController::class, 'getMarkData'])
-        ->name('dataMark')->middleware('myweb.auth:scores.view');
+        ->name('dataMark')->middleware('myweb.auth:score.view');
 });
