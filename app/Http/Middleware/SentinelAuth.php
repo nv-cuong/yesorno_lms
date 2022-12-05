@@ -15,14 +15,12 @@ class SentinelAuth
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @param array $role
+     * @param array $permission
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next, $role = [])
+    public function handle($request, Closure $next, $permission = [])
     {
-
         Sentinel::setHasher(new BcryptHasher());
-
         $user = Sentinel::check();
 
         if (!$user) {
@@ -39,16 +37,14 @@ class SentinelAuth
         }
 
         // Check Access When User Is Not Admin
-        // @phpstan-ignore-next-line
-        if ($user->hasAccess($role)) {
+        if ($user->hasAccess($permission)) {
             return $next($request);
         }
 
         if ($request->ajax() || $request->wantsJson()) {
-            // @phpstan-ignore-next-line
             return response(trans('backpack::base.unauthorized'), 401);
         }
 
-        return abort(404, 'Unauthorized action.');
+        return abort(403, 'Unauthorized action.');
     }
 }
