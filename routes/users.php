@@ -25,10 +25,10 @@ Route::prefix('users')->group(function () {
         ->name('users.show')->middleware('myweb.auth:user.view');
 
     Route::get('/{user}/edit', [UserController::class, 'edit'])
-        ->name('users.edit')->middleware('myweb.auth:user.edit');
+        ->name('users.edit')->middleware('myweb.auth:user.update');
 
     Route::put('/{user}', [UserController::class, 'update'])
-        ->name('users.update')->middleware('myweb.auth:user.edit');
+        ->name('users.update')->middleware('myweb.auth:user.update');
 
     Route::delete('/delete', [UserController::class, 'destroy'])
         ->name('users.destroy')->middleware('myweb.auth:user.delete');

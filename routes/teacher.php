@@ -13,7 +13,7 @@ Route::prefix('teachers')->name('teacher.')->group(function () {
     Route::post('/store', [TeacherController::class, 'store'])
         ->name('store')->middleware('myweb.auth:teacher.create');
     Route::get('/edit/{id}', [TeacherController::class, 'edit'])
-        ->name('edit')->middleware('myweb.auth:teacher.edit');
+        ->name('edit')->middleware('myweb.auth:teacher.update');
     Route::put('/update/{id}', [TeacherController::class, 'update'])
         ->name('update')->middleware('myweb.auth:teacher.update');
     Route::delete('/delete', [TeacherController::class, 'destroy'])

@@ -13,12 +13,13 @@ Route::prefix('roles')->group(function () {
         ->name('roles.index')
         ->middleware('myweb.auth:roles.view');
 
+    Route::get('/data', [RoleController::class, 'getRolesData'])
+        ->name('roles.data')
+        ->middleware('myweb.auth:roles.view');
+
     Route::get('/create', [RoleController::class, 'create'])
         ->name('roles.create')
         ->middleware('myweb.auth:roles.create');
-
-    Route::get('/data', [RoleController::class, 'getRolesData'])
-        ->name('roles.data')->middleware('myweb.auth:roles.show');
 
     Route::post('', [RoleController::class, 'store'])
         ->name('roles.store')
@@ -30,11 +31,11 @@ Route::prefix('roles')->group(function () {
 
     Route::get('/{role}/edit', [RoleController::class, 'edit'])
         ->name('roles.edit')
-        ->middleware('myweb.auth:roles.edit');
+        ->middleware('myweb.auth:roles.update');
 
     Route::put('/{role}', [RoleController::class, 'update'])
         ->name('roles.update')
-        ->middleware('myweb.auth:roles.edit');
+        ->middleware('myweb.auth:roles.update');
 
     Route::get('/{role}/duplicate', [RoleController::class, 'duplicate'])
         ->name('roles.duplicate')

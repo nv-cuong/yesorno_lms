@@ -19,10 +19,10 @@ Route::prefix('/questions')->name('question.')->group(function () {
         ->name('store')->middleware('myweb.auth:question.create');
 
     Route::get('/edit/{id}', [QuestionController::class, 'edit'])
-        ->name('edit')->middleware('myweb.auth:question.edit');
+        ->name('edit')->middleware('myweb.auth:question.update');
 
     Route::post('/edit/{id}', [QuestionController::class, 'update'])
-        ->name('update')->middleware('myweb.auth:question.edit');
+        ->name('update')->middleware('myweb.auth:question.update');
 
     Route::delete('/delete', [QuestionController::class, 'destroy'])
         ->name('delete')->middleware('myweb.auth:question.delete');
