@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Class Manager')
+@section('title', 'Học viên')
 @section('content')
     <div class="row">
         <div class="col-12">
@@ -24,14 +24,15 @@
                                         @csrf
                                         <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
                                         <br>
-                                        <button type="submit" class="btn btn-success " >Import Student Data</button>
-                                        <a class="btn btn-warning" href="{{ route('student.export') }}">Export Student Data</a>
-                                        @error('import')
-                                                <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
-                                        @enderror
+                                        <button type="submit" class="btn btn-success" >Import Student Data</button>
+                                            <a class='btn btn-warning' href="{{ route('student.export') }}">Export Student Data</a>
+                                            <a class='btn btn-warning' href="{{ route('student.importform') }}">Download Import Form</a>
+                                                @error('import')
+                                                            <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
                                     </form>
                                 </div>
-
+                                
                                 @include('admin/_alert')
                                 <div class="card">
                                     <table class="table table-striped table-bordered table-hover table-condensed" id="students">

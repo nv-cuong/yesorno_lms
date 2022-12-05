@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests\Admin\Test;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TestRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,12 +24,9 @@ class TestRequest extends FormRequest
     public function rules()
     {
         return [
-            'title'         => "required|unique:tests,title,". $this->id,
-            'category'      => ['required'],
-            'time'          => ['required','numeric','min:1'],
-            'description'   => ['required','min:5'],
-            'question'      => ['required'],
-            'course'        => ['required'],
+            'title'         => "required|unique:tests,title," . $this->id,
+            'time'          => ['required', 'numeric', 'min:1'],
+            'description'   => ['required', 'min:5'],
         ];
     }
 }

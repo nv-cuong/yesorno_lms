@@ -16,7 +16,7 @@
     <a class="btn btn-info" href="{{ route('test.view', [$row->id]) }}" title="Thông tin bài test">
         <i class="far fa-eye"></i>
     </a>
-    <a class="btn btn-success" href="{{ route('test.edit', [$row->id]) }}" title="Sửa thông tin bài test">
+    <a class="btn btn-success" href="{{ route('test.update', [$row->id]) }}" title="Sửa thông tin bài test">
         <i class="fas fa-edit"></i>
     </a>
     @csrf

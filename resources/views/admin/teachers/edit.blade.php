@@ -1,5 +1,5 @@
 @extends('admin.layouts.master')
-@section('title', 'Dashboard')
+@section('title', 'Giảng viên')
 
 @section('content')
 <div class="container-fluid" style="padding-top: 30px">
@@ -138,8 +138,4 @@
         </form>
     </div>
 </div>
-@stop
-@section('scripts')
-<!--animated-->
-<script src="/ajax/ajax.student.js" type="text/javascript"></script>
 @stop

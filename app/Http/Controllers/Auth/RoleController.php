@@ -192,7 +192,7 @@ class RoleController extends Controller
         {
             return view('admin.auth.role.duplicate', ['role' => $role]);
         }
-        abort(404);
+        return abort(404);
 
     }
 }

@@ -1,5 +1,5 @@
-@extends('Admin.Layouts.master')
-@section('title', 'Dashboard')
+@extends('admin.layouts.master')
+@section('title', 'Học viên')
 
 @section('content')
     <div class="content-header">

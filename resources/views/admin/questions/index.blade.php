@@ -33,11 +33,12 @@
                                 @csrf
                                 <input type="file" class="form-control @error('import') is-invalid @enderror " name="import">
                                 <br>
-                                <button type="submit" class="btn btn-success " >Import Question Data</button>
-                                <a class="btn btn-warning" href="{{ route('question.export') }}">Export Question Data</a>
-                                @error('import')
+                                <button type="submit" class="btn btn-success" >Import Question Data</button>
+                                    <a class="btn btn-warning" href="{{ route('question.export') }}">Export Question Data</a>
+                                    <a class='btn btn-warning' href="{{ route('question.importform') }}">Download Import Form</a>
+                            @error('import')
                                         <div style="font-size:20px;" class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            @enderror
                             </form>
                         </div>   
                         <table class="table table-striped table-bordered table-hover table-condensed" id="question">

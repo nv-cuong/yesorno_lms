@@ -14,10 +14,10 @@ Route::prefix('/test')->name('test.')->group(function () {
         ->name('store')->middleware('myweb.auth:test.create');
     Route::DELETE('/delete', [TestController::class, 'delete'])
         ->name('delete')->middleware('myweb.auth:test.delete');
-    Route::get('/edit/{id}', [TestController::class, 'edit'])
-        ->name('edit')->middleware('myweb.auth:test.edit');
-    Route::post('/update/{id}', [TestController::class, 'update'])
-        ->name('update')->middleware('myweb.auth:test.edit');
+    Route::get('/update/{id}', [TestController::class, 'update'])
+        ->name('update')->middleware('myweb.auth:test.update');
+    Route::post('/saveUpdates/{id}', [TestController::class, 'saveUpdates'])
+        ->name('saveUpdates')->middleware('myweb.auth:test.update');
     Route::get('/view/{id}', [TestController::class, 'view'])
         ->name('view')->middleware('myweb.auth:test.view');
     Route::get('/create/{id_course}/{id_test}/{arr_quest}', [TestController::class, 'createquestion'])
