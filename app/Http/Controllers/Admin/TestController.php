@@ -211,18 +211,12 @@ class TestController extends Controller
     public function saveUpdates(UpdateRequest $request, $id)
     {
         $test       = Test::find($id);
-        $totalScore = 0;
         try {
             $test->title        = $request->title;
             $test->time         = $request->time;
             $test->description  = $request->description;
             $test->updated_at   = Carbon::now();
-
-            $questions = $test->questions()->get();
-            foreach ($questions as $question) {
-                $totalScore += $question->score;
-            }
-            $test->total_score = $totalScore;
+            $test->total_score  = $test->questions()->sum('score');
             $test->save();
         } catch (\Throwable $t) {
             DB::rollback();
