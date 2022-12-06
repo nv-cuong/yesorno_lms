@@ -1,18 +1,23 @@
+
 <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
+        @if($route_prefix_name)
+            @if(isset($unit) && !isset($lesson))
+                {{ Breadcrumbs::render($route_prefix_name, $unit) }}
+            @elseif(isset($lesson))
+                {{ Breadcrumbs::render($route_prefix_name, $lesson) }}
+            @else
+                {{ Breadcrumbs::render($route_prefix_name) }}
+            @endif
+        @else
         <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('dashboard') }}" class="nav-link">Trang chủ</a>
+            <a href="#" class="nav-link">Trang chủ</a>
         </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Liên hệ</a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-            <a href="{{ route('home') }}" class="nav-link">Giao diện</a>
-        </li>
+        @endif
     </ul>
 
     <!-- Right navbar links -->

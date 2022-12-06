@@ -31,7 +31,7 @@ class TestController extends Controller
 
     /**
      *
-     * @return DataTables
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getTestData()
     {
@@ -80,7 +80,7 @@ class TestController extends Controller
     }
 
     /**
-     * @param TestRequest $request
+     * @param StoreRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -92,7 +92,7 @@ class TestController extends Controller
         try {
             $course_id      = $request->course;
             $givenCategory  = $request->category;
-            $course         = Course::find($course_id)->with('tests')->first();
+            $course         = Course::with('tests')->find($course_id);
             $existingTests  = $course->tests;
 
             foreach ($existingTests as $existingTest) {
@@ -110,7 +110,7 @@ class TestController extends Controller
             $questionIds        = $request->question;
             $test->total_score  = Question::whereIn('id', $questionIds)->sum('score');
             $test->save();
-            
+
             foreach ($questionIds as $id) {
                 $question       = Question::find($id);
                 $question->tests()->attach($test->id);
@@ -157,9 +157,7 @@ class TestController extends Controller
      */
     public function getQuestion(Request $request)
     {
-        $select = $request->get('select');
         $value = $request->get('value');
-        $dependent = $request->get('dependent');
         if ($value == "#") {
             $questions = Question::all();
         } else {
@@ -292,18 +290,20 @@ class TestController extends Controller
         $validated = $request->validate([
             'question' => 'required',
         ]);
-        $tests = Test::find($id_test);
+        $test = Test::find($id_test);
         try {
             for ($q = 0; $q < (count($request->question)); $q++) {
                 $question  = Question::find($request->question[$q]);
-                $question->tests()->attach($tests->id);
+                $question->tests()->attach($test->id);
             }
         } catch (\Throwable $t) {
             DB::rollback();
             Log::info($t->getMessage());
             throw new ModelNotFoundException();
         }
-        $tests->save();
+
+        $test->total_score  = $test->questions()->sum('score');
+        $test->save();
         return redirect()->route('test.view', $id_test);
     }
 
@@ -322,6 +322,9 @@ class TestController extends Controller
         $id = $request->input('question_id', 'value');
         $question = Question::find($id);
         $question->tests()->detach($id_test);
+
+        $test->total_score = $test->total_score - $question->score;
+        $test->save();
         return redirect()->route('test.view', $id_test);
     }
 
@@ -340,20 +343,20 @@ class TestController extends Controller
                 ->with('type_alert', 'danger');
         }
         $question = Question::find($questionId);
-        $tests  = Test::find($testId);
-        $questions = $tests->question;
+        $questions = $test->questions;
         $questArray[] = "";
         foreach ($questions as $quest) {
             $questArray[] = $quest->pivot->question_id;
         }
         $question_old = Question::where('course_id', $courseId)
             ->WhereNotIn('id', $questArray)
-            ->select('id', 'content', 'category')->get();
+            ->select('id', 'content', 'category')
+            ->get();
         $categories = [];
         $categories[0] = "Tự luận";
         $categories[1] = "Trắc nhiệm nhiều lựa chọn";
         $categories[2] = "Trắc nhiệm đúng sai";
-        return view('admin.tests.questions.edit_question', compact('tests', 'question', 'question_old', 'categories'));
+        return view('admin.tests.questions.edit_question', compact('test', 'question', 'question_old', 'categories'));
     }
 
     /**
@@ -366,13 +369,16 @@ class TestController extends Controller
     public function question_update(Request $request, $id, $id_question_old)
     {
         $test = Test::find($id);
+        $totalScore = 0;
 
-        foreach ($test->question as $row) {
+        foreach ($test->questions as $row) {
             if ($row->pivot->question_id == $id_question_old) {
                 $row->pivot->question_id = $request->question;
                 $row->pivot->save();
             }
+            $totalScore += $row->score;
         }
+        $test->save();
         return redirect()->route('test.view', $id);
     }
 

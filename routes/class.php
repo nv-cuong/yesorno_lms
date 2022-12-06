@@ -17,10 +17,10 @@ Route::prefix('class')->group(function () {
         ->name('class.store')->middleware('myweb.auth:class.create');
 
     Route::get('/edit/{id}', [ClassController::class, 'edit'])
-        ->name('class.edit')->middleware('myweb.auth:class.edit');
+        ->name('class.edit')->middleware('myweb.auth:class.update');
 
     Route::put('/update/{id}', [ClassController::class, 'update'])
-        ->name('class.update')->middleware('myweb.auth:class.edit');
+        ->name('class.update')->middleware('myweb.auth:class.update');
 
     Route::delete('/delete', [ClassController::class, 'destroy'])
         ->name('class.delete')->middleware('myweb.auth:class.delete');
