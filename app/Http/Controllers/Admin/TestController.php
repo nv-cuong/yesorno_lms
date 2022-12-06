@@ -103,17 +103,12 @@ class TestController extends Controller
                         ->with('type_alert', 'danger');
                 }
             }
-            $totalScore         = 0;
             $test->category     = $request->category;
             $test->title        = $request->title;
             $test->time         = $request->time;
             $test->description  = $request->description;
             $questionIds        = $request->question;
-            foreach ($questionIds as $id) {
-                $question       = Question::find($id);
-                $totalScore    += $question->score;
-            }
-            $test->total_score  = $totalScore;
+            $test->total_score  = Question::whereIn('id', $questionIds)->sum('score');
             $test->save();
             
             foreach ($questionIds as $id) {
