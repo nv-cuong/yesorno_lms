@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\User\UserRequest;
 use App\Http\Requests\Admin\TeacherRequest;
 use App\Models\Course;
-use App\Models\Lesson;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
@@ -22,7 +21,7 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function index()
     {
@@ -70,7 +69,7 @@ class TeacherController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -80,8 +79,8 @@ class TeacherController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param  UserRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(UserRequest $request)
     {
@@ -125,7 +124,7 @@ class TeacherController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function show($id)
     {
@@ -141,7 +140,7 @@ class TeacherController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\View\View
      */
     public function edit($id)
     {
@@ -158,9 +157,9 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\TeacherRequest  $request
+     * @param  TeacherRequest  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(TeacherRequest $request, $id)
     {
@@ -186,7 +185,7 @@ class TeacherController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Request $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(Request $request)
     {
@@ -217,7 +216,7 @@ class TeacherController extends Controller
             ])
                 ->where('teacher_id', $id)
                 ->get();
-            return view('admin.teachers.course', compact(['teacher', 'courses']));
+            return view('admin.teachers.course', compact('teacher', 'courses'));
         }
         return redirect(route('teacher.index'))
             ->with('msg', 'Không có giảng viên theo yêu cầu, vui lòng kiểm tra lại!');
