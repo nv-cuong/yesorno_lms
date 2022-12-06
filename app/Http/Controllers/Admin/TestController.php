@@ -31,7 +31,7 @@ class TestController extends Controller
 
     /**
      *
-     * @return DataTables
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getTestData()
     {
@@ -80,7 +80,7 @@ class TestController extends Controller
     }
 
     /**
-     * @param TestRequest $request
+     * @param StoreRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -92,7 +92,7 @@ class TestController extends Controller
         try {
             $course_id      = $request->course;
             $givenCategory  = $request->category;
-            $course         = Course::find($course_id)->with('tests')->first();
+            $course         = Course::with('tests')->find($course_id);
             $existingTests  = $course->tests;
 
             foreach ($existingTests as $existingTest) {
@@ -109,13 +109,10 @@ class TestController extends Controller
             $test->time         = $request->time;
             $test->description  = $request->description;
             $questionIds        = $request->question;
-            foreach ($questionIds as $id) {
-                $question       = Question::find($id);
-                $totalScore    += $question->score;
-            }
+            $totalScore = Question::whereIn('id', $questionIds)->sum('score');
             $test->total_score  = $totalScore;
             $test->save();
-            
+
             foreach ($questionIds as $id) {
                 $question       = Question::find($id);
                 $question->tests()->attach($test->id);
@@ -162,9 +159,7 @@ class TestController extends Controller
      */
     public function getQuestion(Request $request)
     {
-        $select = $request->get('select');
         $value = $request->get('value');
-        $dependent = $request->get('dependent');
         if ($value == "#") {
             $questions = Question::all();
         } else {

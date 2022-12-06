@@ -26,7 +26,7 @@ class ScoreController extends Controller
 
     /**
      *
-     * @return DataTables
+     * @return \Illuminate\Http\JsonResponse
      */
     public function getScoreData()
     {
@@ -71,7 +71,7 @@ class ScoreController extends Controller
         $tests      = Test::select(['id', 'title'])->get();
         $classes    = ClassStudy::select(['id', 'name'])->get();
         $users      = User::all();
-        return view('admin.score.create', compact(['tests', 'users', 'classes']));
+        return view('admin.score.create', compact('tests', 'users', 'classes'));
     }
 
     /**
@@ -105,25 +105,28 @@ class ScoreController extends Controller
 
     /**
      * @param Request $request
-     * @param unknown $id
+     * @param integer $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
     public function marking(Request $request, $id)
     {
         $user_test = UserTest::find($id);
-        $userTestAnswers = UserTestAnswer::select([
-            'questions.content',
-            'questions.id',
-            'questions.score',
-            'user_test.id as user_test_id',
-            'user_test_answers.answer'
-        ])
-            ->where('user_test_id', $id)
-            ->LeftJoin('user_tests as user_test', 'user_test_id', 'user_test.id')
-            ->join('questions', 'question_id', 'questions.id')
-            ->where('questions.category', 0)
-            ->get();
-        return view('admin.score.marking', compact('userTestAnswers'));
+        if($user_test){
+            $userTestAnswers = UserTestAnswer::select([
+                'questions.content',
+                'questions.id',
+                'questions.score',
+                'user_test.id as user_test_id',
+                'user_test_answers.answer'
+            ])
+                ->where('user_test_id', $id)
+                ->LeftJoin('user_tests as user_test', 'user_test_id', 'user_test.id')
+                ->join('questions', 'question_id', 'questions.id')
+                ->where('questions.category', 0)
+                ->get();
+            return view('admin.score.marking', compact('userTestAnswers'));
+        }
+        return abort(404);
     }
 
     /**
@@ -156,7 +159,7 @@ class ScoreController extends Controller
             ->join('questions', 'question_id', 'questions.id')
             ->where('questions.category', '!=', 0)
             ->get();
-        if ($user_test_answer) {
+        if ($user_test_answer->count()) {
             foreach ($user_test_answer as $uta) {
                 if ($uta->correct == 1) {
                     $score += $uta->score;
@@ -177,8 +180,9 @@ class ScoreController extends Controller
     public function getStudent($id)
     {
         $users = ClassStudy::find($id)->users;
+        $output = '';
         foreach ($users as $row) {
-            $output = '<option name ="student_' . $row->id . '"  value="' . $row->id . '">' . $row->first_name . '</option>';
+            $output .= '<option name ="student_' . $row->id . '"  value="' . $row->id . '">' . $row->first_name . '</option>';
         }
         return Response($output);
     }

@@ -71,7 +71,7 @@ class StudentController extends Controller
     }
 
     /**
-     * @param StudentRequest $request
+     * @param UserRequest $request
      * @throws ModelNotFoundException
      * @return \Illuminate\Routing\Redirector|\Illuminate\Http\RedirectResponse
      */
@@ -92,7 +92,7 @@ class StudentController extends Controller
                 'updated_by' => $user,
                 'stu_id'     => $request->stu_id,
             ];
-            
+
             //Create a new user
             $newUser = Sentinel::registerAndActivate($data);
 

@@ -55,6 +55,7 @@ parameters:
         - '#Cannot call method .*units\(\)#'
         - '#Cannot call method .*inRole\(\)#'
         - '#Cannot call method .*delete\(\)#'
+        - '#Cannot call method .*notify\(\)#'
 
     excludePaths:
         - *.blade.php

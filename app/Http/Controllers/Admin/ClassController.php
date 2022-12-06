@@ -121,7 +121,7 @@ class ClassController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  string  $slug
+     * @param  integer $id
      * @return \Illuminate\View\View
      */
     public function show($id)
