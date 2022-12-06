@@ -6,7 +6,7 @@
             <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </li>
         @if($route_prefix_name)
-            @if(isset($unit))
+            @if(isset($unit) && !isset($lesson))
                 {{ Breadcrumbs::render($route_prefix_name, $unit) }}
             @elseif(isset($lesson))
                 {{ Breadcrumbs::render($route_prefix_name, $lesson) }}

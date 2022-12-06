@@ -25,12 +25,16 @@ Breadcrumbs::for('admin/courses', function ($trail) {
 // Unit
 Breadcrumbs::for('admin/units', function ($trail, $unit) {
     $trail->parent('admin/courses');
-    $trail->push($unit->title, route('unit.detail', $unit->id));
+    if($unit->id)
+        $trail->push($unit->title, route('unit.detail', $unit->id));
 });
 // Lesson
 Breadcrumbs::for('admin/lessons', function ($trail, $lesson) {
-    $trail->parent('admin/units', $lesson->unit);
-    $trail->push($lesson->title, route('lesson.detail', $lesson->id));
+    if($lesson->id) {
+        $trail->parent('admin/units', $lesson->unit);
+        $trail->push($lesson->title, route('lesson.detail', $lesson->id));
+    } else
+        $trail->parent('admin/courses');
 });
 // Question
 Breadcrumbs::for('admin/questions', function ($trail) {

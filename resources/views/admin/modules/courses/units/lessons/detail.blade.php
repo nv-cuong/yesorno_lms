@@ -9,23 +9,6 @@
                     <h1>
                         Quản lí khóa học
                     </h1>
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb">
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('course.index') }}">
-                                    Khóa học
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item">
-                                <a href="{{ route('unit.detail', $lesson->unit_id) }}">
-                                    Chương
-                                </a>
-                            </li>
-                            <li class="breadcrumb-item active" aria-current="page">
-                                {{ $lesson->title }}
-                            </li>
-                        </ol>
-                    </nav>
                 </div>
             </div>
         </div>
