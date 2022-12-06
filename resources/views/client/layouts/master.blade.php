@@ -24,6 +24,7 @@
     <link href="{{ asset('/user/css/swiper.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('/user/style.css') }}" rel="stylesheet">
     <link href="{{ asset('/user/css/responsive.css') }}" rel="stylesheet" />
+    <link href="{{ asset('admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}" rel="stylesheet" />
     @yield('css')
     <style>
         .pagination {
@@ -84,6 +85,8 @@
     <script src="{{ asset('/user/js/bsnav.min.js') }}"></script>
     <script src="{{ asset('/user/js/jquery.easypiechart.js') }}"></script>
     <script src="{{ asset('/user/js/main.js') }}"></script>
+    <!-- SweetAlert2 -->
+    <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
 
     @yield('scripts')
 </body>

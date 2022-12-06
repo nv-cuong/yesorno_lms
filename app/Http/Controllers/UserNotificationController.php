@@ -19,7 +19,7 @@ class UserNotificationController extends Controller
 
         if ($notification) {
             $notification->markAsRead();
-            return redirect(route('detail', [$notification->data['course_slug']]));
+            return redirect(route('personal.course', [$notification->data['course_slug']]));
         }
 
         return abort(404);

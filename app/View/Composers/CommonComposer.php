@@ -5,6 +5,7 @@ use Illuminate\View\View;
 
 use App\Models\UserTest;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
+use Illuminate\Support\Facades\Route;
 
 class CommonComposer
 {
@@ -18,7 +19,7 @@ class CommonComposer
     public function compose(View $view)
     {
         $user = Sentinel::getUser();
-
+        
         if ($user) {
             $user_tests = UserTest::where('status', 1)->get();
             $count_user_tests = $user_tests->count();
@@ -26,5 +27,7 @@ class CommonComposer
             $view->with('user_tests', $user_tests);
             $view->with('count_user_tests', $count_user_tests);
         }
+        $route_prefix = Route::current()->getPrefix();
+        $view->with('route_prefix_name', $route_prefix);
     }
 }
