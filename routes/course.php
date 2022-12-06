@@ -15,8 +15,6 @@ Route::prefix('/courses')->name('course.')->group(function () {
         ->name('dataCourse')->middleware('myweb.auth:course.view');
     Route::get('/test/data/{id}', [CourseController::class, 'getTestData'])
         ->name('dataTest')->middleware('myweb.auth:course.view');
-    Route::get('/unit/data/{id}', [CourseController::class, 'getUnitData'])
-        ->name('dataUnit')->middleware('myweb.auth:course.view');
     Route::get('/student/data/{id}', [CourseController::class, 'getStudentData'])
         ->name('dataStudent')->middleware('myweb.auth:course.view');
     Route::get('create', [CourseController::class, 'createCourse'])
@@ -55,6 +53,8 @@ Route::prefix('/units')->name('unit.')->group(function () {
 });
 
 Route::prefix('/lessons')->name('lesson.')->group(function () {
+    Route::get('/data/{id}', [LessonController::class, 'getLessonData'])
+        ->name('data')->middleware('myweb.auth:course.view');
     Route::get('/show/{id}', [LessonController::class, 'showLesson'])
         ->name('detail')->middleware('myweb.auth:course.view');
     Route::get('/create/{unit_id}', [LessonController::class, 'createLesson'])

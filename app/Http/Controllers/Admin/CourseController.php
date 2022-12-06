@@ -71,27 +71,6 @@ class CourseController extends Controller
     }
 
     /**
-     * @param integer $id course_id
-     * @return DataTables|\Illuminate\Http\JsonResponse
-     */
-    public function getUnitData($id)
-    {
-        $units = Unit::select([
-            'id',
-            'course_id',
-            'title',
-        ])->where('course_id', $id);
-
-        // @phpstan-ignore-next-line
-        return DataTables::of($units)
-            ->addColumn('actions_unit', function ($unit) {
-                return view('admin.modules.courses.actions_unit', ['row' => $unit])->render();
-            })
-            ->rawColumns(['actions_unit'])
-            ->make(true);
-    }
-
-    /**
      * @param int $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
