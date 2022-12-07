@@ -17,8 +17,8 @@ Route::get('/search', [SearchController::class, 'search'])
     ->name('search');
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
     ->name('detail');
-Route::get('/personal', [HomeController::class, 'personal'])
-    ->name('personal')
+Route::get('/profile', [HomeController::class, 'profile'])
+    ->name('profile')
     ->middleware('myweb.auth');
 Route::get('/contact', [HomeController::class, 'contact'])
     ->name('contact');
@@ -58,10 +58,10 @@ Route::get('/user_tests/detail/{id}', [UserTestController::class, 'user_tests_de
 //Profile users
 Route::post('/uploadImg', [HomeController::class, 'uploadImg'])
     ->name('uploadImg')->middleware('myweb.auth');
-Route::get('/profile/edit/{id}', [HomeController::class, 'profile_edit'])
-    ->name('profile.edit')->middleware('myweb.auth');
-Route::put('/profile/update/{id}', [HomeController::class, 'profile_update'])
-    ->name('profile.update')->middleware('myweb.auth')->middleware('myweb.auth');
+Route::get('/profile/update', [HomeController::class, 'profileUpdate'])
+    ->name('profile.update')->middleware('myweb.auth');
+Route::put('/profile/saveUpdate/{id}', [HomeController::class, 'saveProfileUpdates'])
+    ->name('profile.saveUpdate')->middleware('myweb.auth')->middleware('myweb.auth');
 
 Route::get('/notifications/{id}', [UserNotificationController::class, 'show'])
     ->name('notification.show')->middleware('myweb.auth');

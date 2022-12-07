@@ -94,8 +94,8 @@ class HomeController extends Controller
             'end_date',
             'image'
         ])
-        ->withCount(['units', 'users']);
-        if ('' != $filter){
+            ->withCount(['units', 'users']);
+        if ('' != $filter) {
             $query = $query->where('status', $filter);
         }
         $courses = $query->paginate(6);
@@ -107,15 +107,15 @@ class HomeController extends Controller
     /**
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function personal()
+    public function profile()
     {
-        $getUser = Sentinel::getUser();
-        $id = $getUser->id;
-        $student = User::withCount(['courses', 'lessons' => function ($query) {
+        $getUser    = Sentinel::getUser();
+        $id         = $getUser->id;
+        $user       = User::withCount(['courses', 'lessons' => function ($query) {
             return $query->where('status', 1);
         }])->find($id);
 
-        return view('client.modules.personal', compact('student'));
+        return view('client.modules.profile', compact('user'));
     }
 
 
@@ -141,7 +141,7 @@ class HomeController extends Controller
             $user = $this->uploadFile($user, $file_image);
             $user->save();
         }
-        return redirect(route('personal'));
+        return redirect(route('profile'));
     }
 
     /**
@@ -149,10 +149,12 @@ class HomeController extends Controller
      * @param integer $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
-    public function profile_edit($id)
+    public function profileUpdate()
     {
-        $student = User::find($id);
-        return view('client.modules.profile', compact('student'));
+        $getUser    = Sentinel::getUser();
+        $id         = $getUser->id;
+        $user       = User::find($id);
+        return view('client.modules.profileUpdate', compact('user'));
     }
 
     /**
@@ -161,39 +163,42 @@ class HomeController extends Controller
      * @param integer $id
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function profile_update(Request $request, $id)
+    public function saveProfileUpdates(Request $request, $id)
     {
         $student = User::find($id);
-        if ($student){
-            $student->phone = $request->input('phone');
-            $student->first_name = $request->input('first_name');
-            $student->gender = $request->input('gender');
-            $student->last_name = $request->input('last_name');
-            $student->address = $request->input('address');
-            $student->birthday = $request->input('birthday');
+        if ($student) {
+            $student->phone         = $request->input('phone');
+            $student->first_name    = $request->input('first_name');
+            $student->last_name     = $request->input('last_name');
+            $student->gender        = $request->input('gender');
+            $student->address       = $request->input('address');
+            $student->birthday      = $request->input('birthday');
             if ($request->hasFile('name_img')) {
                 $file_image = $request->file('name_img');
-                $student = $this->uploadFile($student, $file_image);
+                $student    = $this->uploadFile($student, $file_image);
             }
-
             $student->save();
         }
-        return redirect()->route('personal');
+        return redirect()->route('profile');
     }
 
-    // @phpstan-ignore-next-line
+    /**
+     *
+     * @param User $user
+     * @param File $file
+     * @return User
+     */
     private function uploadFile($user, $file)
     {
-        $path_old = $user->path;
-        $name = $file->getClientOriginalName();
-        $path = $file->storeAs('images', $name);
+        $oldPath    = $user->path;
+        $name       = $file->getClientOriginalName();
+        $newPath    = $file->storeAs('images', $name);
 
-        if ($path_old != NULL) {
-            Storage::delete("$path_old");
+        if ($oldPath != NULL) {
+            Storage::delete("$oldPath");
         }
         $user->name_img = $name;
-        $user->path = $path;
-
+        $user->path     = $newPath;
         return $user;
     }
 }
