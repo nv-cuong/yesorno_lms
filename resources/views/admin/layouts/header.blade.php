@@ -89,7 +89,7 @@
                 @if ($user->inRole('teacher'))
                     @forelse($user_tests as $user_test)
                         <div class="dropdown-divider"></div>
-                        <a href="{{ route('score.index') }}" class="dropdown-item">
+                        <a href="{{ route('score.marking', [$user_test->id]) }}" class="dropdown-item">
                             <i class="fas fa-envelope mr-2"></i> Bạn có bài chấm điểm
                         </a>
                     @empty
