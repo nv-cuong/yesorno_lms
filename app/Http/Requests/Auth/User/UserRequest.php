@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth\User;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -13,7 +14,12 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $id = $this->route()->parameter('user');
+        $user = User::find($id);
+        if($user->roles[0]->id == 2 || $user->roles[0]->id == 1)
+            return abort(403, 'Unauthorized action.');
+        else
+            return true;
     }
 
     /**
