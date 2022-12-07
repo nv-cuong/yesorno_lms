@@ -11,6 +11,7 @@ use App\Models\Test;
 use App\Models\User;
 use App\Models\UserTest;
 use App\Models\UserTestAnswer;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -30,13 +31,21 @@ class ScoreController extends Controller
      */
     public function getScoreData()
     {
+        $user = Sentinel::getUser();
         $userTests = UserTest::select([
-            'id',
+            'user_tests.id',
             'user_id',
-            'status',
+            'user_tests.status',
             'score',
-            'test_id',
+            'user_tests.test_id',
         ])->with('test', 'user');
+
+        if ($user->inRole('teacher')) {
+            $userTests = $userTests
+                ->leftJoin('course_tests as ct', 'ct.test_id', 'user_tests.test_id' )
+                ->join('courses', 'ct.course_id', 'courses.id')
+                ->where('teacher_id', $user->id);
+        }
 
         return DataTables::of($userTests)
             ->editColumn('status', function ($userTest) {

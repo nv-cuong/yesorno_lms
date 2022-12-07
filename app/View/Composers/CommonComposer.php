@@ -21,7 +21,12 @@ class CommonComposer
         $user = Sentinel::getUser();
         
         if ($user) {
-            $user_tests = UserTest::where('status', 1)->get();
+            $user_tests = UserTest::where('user_tests.status', 1)
+                ->where('score', '')
+                ->leftJoin('course_tests as ct', 'ct.test_id', 'user_tests.test_id' )
+                ->join('courses', 'ct.course_id', 'courses.id')
+                ->where('teacher_id', $user->id)
+                ->get();
             $count_user_tests = $user_tests->count();
             $view->with('user', $user);
             $view->with('user_tests', $user_tests);
