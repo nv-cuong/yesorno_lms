@@ -103,14 +103,12 @@ class TestController extends Controller
                         ->with('type_alert', 'danger');
                 }
             }
-            $totalScore         = 0;
             $test->category     = $request->category;
             $test->title        = $request->title;
             $test->time         = $request->time;
             $test->description  = $request->description;
             $questionIds        = $request->question;
-            $totalScore = Question::whereIn('id', $questionIds)->sum('score');
-            $test->total_score  = $totalScore;
+            $test->total_score  = Question::whereIn('id', $questionIds)->sum('score');
             $test->save();
 
             foreach ($questionIds as $id) {
@@ -211,18 +209,12 @@ class TestController extends Controller
     public function saveUpdates(UpdateRequest $request, $id)
     {
         $test       = Test::find($id);
-        $totalScore = 0;
         try {
             $test->title        = $request->title;
             $test->time         = $request->time;
             $test->description  = $request->description;
             $test->updated_at   = Carbon::now();
-
-            $questions = $test->questions()->get();
-            foreach ($questions as $question) {
-                $totalScore += $question->score;
-            }
-            $test->total_score = $totalScore;
+            $test->total_score  = $test->questions()->sum('score');
             $test->save();
         } catch (\Throwable $t) {
             DB::rollback();
@@ -310,12 +302,7 @@ class TestController extends Controller
             throw new ModelNotFoundException();
         }
 
-        $questions = $test->questions;
-        $totalScore = 0;
-        foreach($questions as $question){
-            $totalScore += $question->score;
-        }
-        $test->total_score = $totalScore;
+        $test->total_score  = $test->questions()->sum('score');
         $test->save();
         return redirect()->route('test.view', $id_test);
     }

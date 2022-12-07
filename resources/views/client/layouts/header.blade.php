@@ -5,19 +5,24 @@
                 <div class="container">
                     <div class="header-logo">
                         <a class="navbar-brand" href="{{ route('home') }}">
-                            <img width="229px" src="{{ asset('/user/img/logo/co-well-logo.png') }}" class="logo-display" alt="thumb">
+                            <img width="229px" src="{{ asset('/user/img/logo/co-well-logo.png') }}" class="logo-display"
+                                alt="thumb">
                         </a>
                         <div class="f">
                             @if ($user = Sentinel::getUser())
-                                <a href="{{ route('personal', $user->id) }}" class="d-inline bg-primary text-white"
-                                    style="border-radius: 10px; padding: 6px 15px">Hello: {{ $user->first_name }}</a>
+                                <a href="{{ route('profile') }}" class="d-inline bg-primary text-white"
+                                    style="border-radius: 10px; padding: 6px 15px">
+                                    Hello: {{ $user->first_name }}
+                                </a>
                                 <a href="{{ route('logout') }}" class="d-inline p-3 bg-dark text-white"
                                     style="border-radius: 15px"><i class="fas fa-power-off"></i></a>
                             @else
-                                <a href="{{ route('login.form') }}" class="d-inline p-2 bg-primary text-white">Đăng
-                                    nhập</a>
-                                <a href="{{ route('register.form') }}" class="d-inline p-2 bg-dark text-white">Đăng
-                                    ký</a>
+                                <a href="{{ route('login.form') }}" class="d-inline p-2 bg-primary text-white">
+                                    Đăng nhập
+                                </a>
+                                <a href="{{ route('register.form') }}" class="d-inline p-2 bg-dark text-white">
+                                    Đăng ký
+                                </a>
                             @endif
                         </div>
                     </div>
@@ -25,53 +30,65 @@
             </div>
             <div class="container">
                 <div class="menu-bg hd">
-                    <button class="navbar-toggler toggler-spring"><span class="navbar-toggler-icon"></span></button>
+                    <button class="navbar-toggler toggler-spring">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
                     <div class="collapse navbar-collapse justify-content-sm-end">
                         <ul class="navbar-nav navbar-mobile mr-auto">
                             <li class="nav-item {{ url()->current() == route('home') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('home') }}">Trang chủ</a>
+                                <a class="nav-link" href="{{ route('home') }}">
+                                    Trang chủ
+                                </a>
                             </li>
                             <li class="nav-item {{ url()->current() == route('courses') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('courses') }}">Khóa học</i></a>
+                                <a class="nav-link" href="{{ route('courses') }}">
+                                    Khóa học
+                                </a>
                             </li>
                             <li class="nav-item {{ url()->current() == route('contact') ? 'active' : '' }}">
-                                <a class="nav-link" href="{{ route('contact') }}">Liên hệ</a>
+                                <a class="nav-link" href="{{ route('contact') }}">
+                                    Liên hệ
+                                </a>
                             </li>
-                            @if($user)
-                            @php
-                            $notifications = $user->unreadNotifications;
-                            @endphp
-                            <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown" href="#">
-                                    <i class="far fa-bell"></i>
-                                    Thông báo({{ $user->unreadNotifications->count() + $count_user_tests}}) </a>
-                                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                            @if ($user)
+                                @php
+                                    $notifications = $user->unreadNotifications;
+                                @endphp
+                                <li class="nav-item dropdown"> <a class="nav-link" data-toggle="dropdown"
+                                        href="#">
+                                        <i class="far fa-bell"></i>
+                                        Thông báo({{ $user->unreadNotifications->count() + $count_user_tests }}) </a>
+                                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
 
-                                    @forelse($notifications as $notification)
-                                    <div class="dropdown-divider"></div>
-                                    @if(isset($notification->data['course_id']))
-                                    <a href="{{ route('notification.show', [$notification->id]) }}" class="dropdown-item">
-                                        <i class="fas fa-envelope mr-2"></i> {{ $notification->data['course_name'] }} (started at {{$notification->data['course_begin_date']}} )
-                                    </a>
-                                    @endif
-                                    @empty
-                                    @endforelse
-                                    @forelse($user_tests as $user_test)
-                                    <div class="dropdown-divider"></div>
-                                    <a href="{{ route('doTest',$user_test->id) }}" class="dropdown-item">
-                                        <i class="fas fa-envelope mr-2"></i>  Bạn có bài test
-                                    </a>
-                                    @empty
-                                    @endforelse
-                                </div>
-                            </li>
+                                        @forelse($notifications as $notification)
+                                            <div class="dropdown-divider"></div>
+                                            @if (isset($notification->data['course_id']))
+                                                <a href="{{ route('notification.show', [$notification->id]) }}"
+                                                    class="dropdown-item">
+                                                    <i class="fas fa-envelope mr-2"></i>
+                                                    {{ $notification->data['course_name'] }} (started at
+                                                    {{ $notification->data['course_begin_date'] }} )
+                                                </a>
+                                            @endif
+                                        @empty
+                                        @endforelse
+                                        @forelse($user_tests as $user_test)
+                                            <div class="dropdown-divider"></div>
+                                            <a href="{{ route('doTest', $user_test->id) }}" class="dropdown-item">
+                                                <i class="fas fa-envelope mr-2"></i> Bạn có bài test
+                                            </a>
+                                        @empty
+                                        @endforelse
+                                    </div>
+                                </li>
                             @else
-                            <li class="nav-item"> <a class="nav-link" href="#">
-                                    <i class="far fa-bell"></i>
-                                    Thông báo(0)</a>
-                            </li>
+                                <li class="nav-item"> <a class="nav-link" href="#">
+                                        <i class="far fa-bell"></i>
+                                        Thông báo(0)</a>
+                                </li>
                             @endif
 
-                            <li class="nav-item {{  url()->current() == route('test_users')  ? 'active' : '' }}">
+                            <li class="nav-item {{ url()->current() == route('test_users') ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('test_users') }}">Test </a>
                             </li>
                             <form class="form-inline" style="padding-left: 100px" action="{{ route('search') }}"
@@ -91,7 +108,7 @@
                     </div>
                     <div class="header-3-bt">
                         @if ($user = Sentinel::getUser())
-                            <a href="{{ route('personal') }}" class="header-3-btn">Khóa học của tôi</a>
+                            <a href="{{ route('profile') }}" class="header-3-btn">Khóa học của tôi</a>
                         @else
                             <a class="header-3-btn">Khóa học của tôi</a>
                         @endif
@@ -106,33 +123,33 @@
         </div>
     </div>
     @push('scripts')
-    <script>
-        $('.input_search').keyup(function() {
-            var _text = $(this).val();
+        <script>
+            $('.input_search').keyup(function() {
+                var _text = $(this).val();
 
-            if (_text != '') {
-                $.ajax({
-                    url: "{{ route('live.search') }}?key=" + _text,
-                    type: 'GET',
-                    success: function(data) {
-                        var _html = '';
-                        _html += '<div class="search_main">';
-                        _html += '<ul>';
-                        for (var course of data) {
-                            _html += '<li>';
-                            _html += '<a href="{{ route('detail', '') }}/' + course.slug + '">' +
-                                course.title + '</a>';
-                            _html += '<hr>';
-                            _html += '</li>';
+                if (_text != '') {
+                    $.ajax({
+                        url: "{{ route('live.search') }}?key=" + _text,
+                        type: 'GET',
+                        success: function(data) {
+                            var _html = '';
+                            _html += '<div class="search_main">';
+                            _html += '<ul>';
+                            for (var course of data) {
+                                _html += '<li>';
+                                _html += '<a href="{{ route('detail', '') }}/' + course.slug + '">' +
+                                    course.title + '</a>';
+                                _html += '<hr>';
+                                _html += '</li>';
+                            }
+                            _html += '</ul>';
+                            _html += '</div>';
+                            $('.search_results').html(_html)
                         }
-                        _html += '</ul>';
-                        _html += '</div>';
-                        $('.search_results').html(_html)
-                    }
-                });
-            } else {
-                $('.search_results').html('')
-            }
-        })
-    </script>
+                    });
+                } else {
+                    $('.search_results').html('')
+                }
+            })
+        </script>
     @endpush
