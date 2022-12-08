@@ -38,7 +38,7 @@ Breadcrumbs::for('admin/lessons', function ($trail, $lesson) {
 });
 // Question
 Breadcrumbs::for('admin/questions', function ($trail) {
-    $trail->push('Câu hỏi', route('question.index'));
+    $trail->push('Ngân hàng câu hỏi', route('question.index'));
 });
 // Test
 Breadcrumbs::for('admin/test', function ($trail) {

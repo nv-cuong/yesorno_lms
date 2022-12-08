@@ -15,22 +15,23 @@ use Yajra\DataTables\Facades\DataTables;
 class UnitController extends Controller
 {
     /**
-     *
-     * @return DataTables
+     * @param integer $id
+     * @return DataTables|\Illuminate\Http\JsonResponse
      */
     public function getUnitData($id)
     {
-        $lessons = Lesson::select([
+        $units = Unit::select([
             'id',
+            'course_id',
             'title',
-            'content',
-        ])->where('unit_id', $id);
+        ])->where('course_id', $id);
+
         // @phpstan-ignore-next-line
-        return DataTables::of($lessons)
-            ->addColumn('actions', function ($lesson) {
-                return view('admin.modules.courses.units.actions', ['row' => $lesson])->render();
+        return DataTables::of($units)
+            ->addColumn('actions_unit', function ($unit) {
+                return view('admin.modules.courses.actions_unit', ['row' => $unit])->render();
             })
-            ->rawColumns(['actions'])
+            ->rawColumns(['actions_unit'])
             ->make(true);
     }
 

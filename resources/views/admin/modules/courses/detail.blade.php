@@ -103,7 +103,7 @@
                 order: [
                     [1, 'asc']
                 ],
-                ajax: '/admin/courses/unit/data/{{ $course->id }}',
+                ajax: "{!! route('unit.data', [$course->id]) !!}",
                 columns: [{
                         data: 'id',
                         name: 'id',

@@ -1,3 +1,8 @@
+<style>
+    .breadcrumb {
+        margin-bottom: 0;
+    }
+</style>
 @if (count($breadcrumbs))
 
     <ol class="breadcrumb">

@@ -29,8 +29,8 @@ Route::prefix('class')->group(function () {
         ->name('class.show')->middleware('myweb.auth:class.view');
 
     Route::get('/add/{slug}', [ClassController::class, 'add'])
-        ->name('class.add')->middleware('myweb.auth:class.view');
+        ->name('class.add')->middleware('myweb.auth:class.update');
 
     Route::post('/add/{id}', [ClassController::class, 'join'])
-        ->name('class.join')->middleware('myweb.auth:class.view');
+        ->name('class.join')->middleware('myweb.auth:class.update');
 });

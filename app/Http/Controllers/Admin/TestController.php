@@ -323,7 +323,7 @@ class TestController extends Controller
         $question = Question::find($id);
         $question->tests()->detach($id_test);
 
-        $test->total_score = $test->total_score - $question->score;
+        $test->total_score  = $test->questions()->sum('score');
         $test->save();
         return redirect()->route('test.view', $id_test);
     }
@@ -369,15 +369,14 @@ class TestController extends Controller
     public function question_update(Request $request, $id, $id_question_old)
     {
         $test = Test::find($id);
-        $totalScore = 0;
 
         foreach ($test->questions as $row) {
             if ($row->pivot->question_id == $id_question_old) {
                 $row->pivot->question_id = $request->question;
                 $row->pivot->save();
             }
-            $totalScore += $row->score;
         }
+        $test->total_score  = $test->questions()->sum('score');
         $test->save();
         return redirect()->route('test.view', $id);
     }

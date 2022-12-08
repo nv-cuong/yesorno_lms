@@ -34,22 +34,28 @@ class LessonController extends Controller
 
     /**
      *
+     * @param integer $id
      * @return DataTables
      */
-    public function getLessonData()
+    public function getLessonData($id)
     {
         $lessons = Lesson::select([
             'id',
             'title',
-            'content'
-        ]);
-
+            'content',
+        ])->where('unit_id', $id);
         // @phpstan-ignore-next-line
         return DataTables::of($lessons)
             ->addColumn('actions', function ($lesson) {
-                return view('admin.modules.courses.units.lessons.detail', ['row' => $lesson])->render();
+                return view('admin.modules.courses.units.actions', ['row' => $lesson])->render();
             })
-            ->rawColumns(['actions'])
+            ->editColumn('content', function ($lesson) {
+                $tmp = <<<EOD
+                    $lesson->content
+                EOD;
+                return $tmp;
+            })
+            ->rawColumns(['actions', 'content'])
             ->make(true);
     }
 
