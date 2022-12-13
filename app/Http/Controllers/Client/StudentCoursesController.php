@@ -79,6 +79,7 @@ class StudentCoursesController extends Controller
             ->pivot;
             
         $courseId = $lesson->unit->course_id;
+        $course = Course::find($courseId);
         $nextLesson = Lesson::where('id', '>', $lesson->id)
             ->where('unit_id', $lesson->unit_id)
             ->first();
@@ -86,11 +87,10 @@ class StudentCoursesController extends Controller
             ->where('course_id', $courseId)
             ->with('lessons')
             ->first();
-        
         $files = File::where('lesson_id', $lesson->id)
             ->get();
 
-        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'nextUnit', 'files', 'userLesson'));
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'nextUnit', 'files', 'userLesson', 'course'));
     }
 
     /**

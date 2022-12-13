@@ -145,8 +145,17 @@ class CourseDetailController extends Controller
         $lesson = Lesson::find($id);
 
         if ($lesson) {
+            $courseId = $lesson->unit->course_id;
+            $course = Course::find($courseId);
+            $nextLesson = Lesson::where('id', '>', $lesson->id)
+                ->where('unit_id', $lesson->unit_id)
+                ->first();
+            $nextUnit = Unit::where('id', '>', $lesson->unit_id)
+                ->where('course_id', $courseId)
+                ->with('lessons')
+                ->first();
             $files = File::where('lesson_id', $id)->get();
-            return view('client.modules.learning', compact('lesson', 'files'));
+            return view('client.modules.learning', compact('lesson', 'files', 'course', 'nextLesson', 'nextUnit'));
         } else {
             return abort(404);
         }
