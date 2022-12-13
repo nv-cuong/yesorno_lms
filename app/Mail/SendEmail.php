@@ -28,10 +28,10 @@ class SendEmail extends Mailable
      *
      * @return $this
      */
-    public function build()
+    public function build(array $row)
     {
         return $this->from('admin@example.com')
-            ->view('mails.sendmail');
+            ->view('mails.sendmail', compact('row'));
     }
 
     /**
