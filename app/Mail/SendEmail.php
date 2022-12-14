@@ -12,15 +12,17 @@ use Illuminate\Queue\SerializesModels;
 class SendEmail extends Mailable
 {
     use Queueable, SerializesModels;
+    public $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($data, $pass)
     {
-        
+        $this->data = $data;
+        $this->pass = $pass;
     }
 
     /**
@@ -28,10 +30,12 @@ class SendEmail extends Mailable
      *
      * @return $this
      */
-    public function build(array $row)
+    public function build()
     {
         return $this->from('admin@example.com')
-            ->view('mails.sendmail', compact('row'));
+            ->view('mails.sendmail')
+            ->with('data', $this->data)
+            ->with('pass', $this->pass);
     }
 
     /**

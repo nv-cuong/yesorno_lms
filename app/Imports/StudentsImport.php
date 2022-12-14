@@ -31,10 +31,11 @@ class StudentsImport implements ToModel , WithHeadingRow
         DB::beginTransaction();
         try {
             if($row['email'] ) {
-                $user = [ 
+                $pass = str_random(8); 
+                $data = [ 
                     'email' => $row['email'],
                     'stu_id'=> $row['id'],
-                    'password' => Hash::make(str_random(8)),
+                    'password' => $pass,
                     'first_name' => $row['first_name'],
                     'last_name' => $row['last_name'],
                     'phone' => $row['phone'],
@@ -42,11 +43,11 @@ class StudentsImport implements ToModel , WithHeadingRow
                     'birthday' => $row['birthday'],
                     'gender' => $row['gender'],
                 ];
-                $newUser = Sentinel::registerAndActivate($user);
+                $newUser = Sentinel::registerAndActivate($data);
                 $newUser->roles()->attach(5);
                 // dd($row['email']);    
                 
-                Mail::to($row['email'])->send(new SendEmail($user));
+                Mail::to($row['email'])->send(new SendEmail($data,$pass));
 
              
             }

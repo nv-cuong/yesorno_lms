@@ -1,13 +1,18 @@
-{{-- Ban da dang ky khoa hoc thanh cong --}}
 
-<h2>Hey, It is me {{ $user->first_name }}</h2> 
-<br>
-    
-<strong>User details: </strong><br>
-<strong>Name: </strong>{{ $user -> first_name }} <br>
-<strong>Email: </strong>{{ $user -> email }} <br>
-<strong>Password: </strong>{{ $user -> password }} <br>
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="utf-8">
+</head>
+<body>
+<h2>Mật khẩu Reset</h2>
 
-<h2>Please reset your password<h2>
-   
-Thank you
+<div >
+    <h2>Xin chào {{ $data['first_name'] }} !</h2> 
+    <br>
+    <strong> Tên: </strong> {{ $data['first_name'] }} <br>
+    <strong> Email: </strong> {{ $data['email']}} <br>
+    <strong> Mật khẩu: </strong> {{ $pass }} <br>
+</div>
+</body>
+</html>
