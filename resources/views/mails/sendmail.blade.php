@@ -5,7 +5,7 @@
     <meta charset="utf-8">
 </head>
 <body>
-<h2>Mật khẩu Reset</h2>
+<h2>Reset Mật khẩu</h2>
 
 <div >
     <h2>Xin chào {{ $data['first_name'] }} !</h2> 

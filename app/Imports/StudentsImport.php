@@ -3,16 +3,12 @@
 namespace App\Imports;
 
 use App\Mail\SendEmail;
-use App\Models\User;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class StudentsImport implements ToModel , WithHeadingRow
@@ -44,10 +40,9 @@ class StudentsImport implements ToModel , WithHeadingRow
                     'gender' => $row['gender'],
                 ];
                 $newUser = Sentinel::registerAndActivate($data);
-                $newUser->roles()->attach(5);
-                // dd($row['email']);    
+                $newUser->roles()->attach(5); 
                 
-                Mail::to($row['email'])->send(new SendEmail($data,$pass));
+                Mail::to($row['email'])->send(new SendEmail($data, $pass));
 
              
             }
