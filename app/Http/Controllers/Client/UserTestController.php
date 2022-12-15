@@ -114,7 +114,7 @@ class UserTestController extends Controller
             foreach ($tfQuest as $questionId => $givenAnswer) {
                 $question   = Question::find($questionId);
                 $correct    = $question->answer == $givenAnswer  ? 1 : 0;
-                $answers[]  = [
+                $answers[$questionId]  = [
                     'question_id'   => $questionId,
                     'answer'        => $givenAnswer,
                     'correct'       => $correct
@@ -129,7 +129,7 @@ class UserTestController extends Controller
         if (isset($testUserItems['essayQuest'])) {
             $essayQuest = $testUserItems['essayQuest'];
             foreach ($essayQuest as $questionId => $givenAnswer) {
-                $answers[]  = [
+                $answers[$questionId]  = [
                     'question_id'   => $questionId,
                     'answer'        => $givenAnswer,
                 ];
@@ -137,6 +137,18 @@ class UserTestController extends Controller
             $testScore = '';
         }
 
+        //If user not answered
+        $questions = $userTest->test->questions;
+        foreach($questions as $question) {
+            if(!array_key_exists($question->id, $answers)){
+                $answers[$question->id] = [
+                    'question_id'   => $question->id,
+                    'answer'        => '',
+                    'correct'       => 0,
+                ];
+            }
+        }
+        
         $userTest->status       = 1;
         $userTest->score        = $testScore;
         $userTest->submitted_at = $submittedTime;
@@ -180,8 +192,9 @@ class UserTestController extends Controller
             ->where('user_test_id', $id)
             ->join('questions', 'question_id', 'questions.id')
             ->get();
-
-        return view('client.modules.user_tests_detail', compact('user_test_answers'));
+        $user_test = UserTest::find($id);
+        
+        return view('client.modules.user_tests_detail', compact('user_test_answers', 'user_test'));
     }
 
     /**

@@ -35,7 +35,7 @@
                                     <th>Role - chức năng</th>
                                     <th>Lần cuối đăng nhập</th>
                                     <th>Trạng thái</th>
-                                    <th>Tùy chọn</th>
+                                    <th style="width: 10%;">Tùy chọn</th>
                                 </tr>
                             </thead>
                             <tbody>
