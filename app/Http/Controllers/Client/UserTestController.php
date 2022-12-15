@@ -207,19 +207,21 @@ class UserTestController extends Controller
         $test       = $course->tests()
             ->where('category', 0)
             ->first();
+        if ($test) {
+            $testId     = $test->id;
+            $userId     = Sentinel::getUser()->id;
+            $user       = User::find($userId);
 
-        $testId     = $test->id;
-        $userId     = Sentinel::getUser()->id;
-        $user       = User::find($userId);
+            $userTest   = UserTest::where('user_id', $userId)
+                ->where('test_id', $testId)
+                ->orderBy('created_at', 'desc')
+                ->first();
 
-        $userTest   = UserTest::where('user_id', $userId)
-            ->where('test_id', $testId)
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        if ($userTest == null) {
-            $user->tests()->attach($testId);
+            if ($userTest == null) {
+                $user->tests()->attach($testId);
+            }
+            return redirect()->route('doTest', [$userTest->id]); 
         }
-        return redirect()->route('doTest', [$userTest->id]);
+        return abort(404);
     }
 }
