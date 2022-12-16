@@ -12,7 +12,7 @@
     <br>
     <strong> Tên: </strong> {{ $data['first_name'] }} <br>
     <strong> Email: </strong> {{ $data['email']}} <br>
-    <strong> Mật khẩu: </strong> {{ $pass }} <br>
+    <strong> Mật khẩu: </strong> {{ $data['password'] }} <br>
 </div>
 </body>
 </html>

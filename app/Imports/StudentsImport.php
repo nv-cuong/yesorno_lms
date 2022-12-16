@@ -42,7 +42,7 @@ class StudentsImport implements ToModel , WithHeadingRow
                 $newUser = Sentinel::registerAndActivate($data);
                 $newUser->roles()->attach(5); 
                 
-                Mail::to($row['email'])->send(new SendEmail($data, $pass));
+                Mail::to($row['email'])->send(new SendEmail($data));
 
              
             }

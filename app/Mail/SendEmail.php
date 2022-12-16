@@ -17,10 +17,10 @@ class SendEmail extends Mailable
      *
      * @return void
      */
-    public function __construct($data, $pass)
+    public function __construct($data)
     {
         $this->data = $data;
-        $this->pass = $pass;
+        // $this->pass = $pass;
     }
 
     /**
@@ -32,8 +32,8 @@ class SendEmail extends Mailable
     {
         return $this->from('admin@example.com')
             ->view('mails.sendmail')
-            ->with('data', $this->data)
-            ->with('pass', $this->pass);
+            ->with('data', $this->data);
+            // ->with('pass', $this->pass);
     }
 
     /**
