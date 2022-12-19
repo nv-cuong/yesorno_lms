@@ -25,9 +25,6 @@
     </div>
 
     <div id="portfolio" class="portfolio-area course-2 de-padding">
-        <div class="wavesshape">
-            <img src="{{ asset('/user/img/course/course-bg-2.png') }}" alt="thumb">
-        </div>
         <div class="container">
             <div class="row csf align-items-center">
                 <div class="col-xl-8">
@@ -37,14 +34,8 @@
                         </h2>
                     </div>
                 </div>
-                <div class="col-xl-4">
-                    <div class="site-title-right">
-                        <h2>
-                            Course
-                        </h2>
-                    </div>
-                </div>
             </div>
+            <br>
             <div class="portfolio-items-area">
                 <div class="row">
                     <div class="col-xl-12 portfolio-content">
