@@ -153,7 +153,7 @@
 <body>
 
     <h1>Bài test</h1>
-    <form method="post" action="{{ route('send.test', $id) }}" id="do_test">
+    <form method="post" action="{{ route('send.test', $id) }}" id="do_test" onSubmit="return confirm('Bạn có chắc chắn muốn nộp bài?') ">
         @csrf
         <div class="card-body">
             <div class="form-group">
@@ -194,10 +194,11 @@
         <br>
     </form>
     <div class="clock">
-        <p>Thời gian làm bài: </p>
-        <span id="h"></span> :
-        <span id="m"></span> :
-        <span id="s"></span>
+        <p>Thời gian làm bài: 
+            <span id="h"></span> :
+            <span id="m"></span> :
+            <span id="s"></span>
+        </p>
     </div>
 
     <script language="javascript">
@@ -280,8 +281,6 @@
             }
         }
     </script>
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-
     @if ($score != null)
         <script>
             $(document).ready(function() {

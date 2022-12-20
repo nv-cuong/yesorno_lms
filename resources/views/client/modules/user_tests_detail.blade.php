@@ -61,7 +61,7 @@
                                             <td>
                                                 @php
 
-                                                if($uta->category==1)
+                                                if($uta->category == 1 && $uta->answer != NULL)
                                                 {
                                                 $answer= explode(",",$uta->answer);
 
@@ -69,18 +69,18 @@
                                                     echo "<br>";
                                                     }
                                                 }
-                                                if($uta->category==0)
+                                                if($uta->category == 0)
                                                 {
                                                 echo $uta->answer;
                                                 }
-                                                if($uta->category==2)
+                                                if($uta->category == 2)
                                                 {
-                                                    if($uta->answer==1)
-                                                    {
-                                                    echo 'Đúng';
-                                                    }else{
-                                                    echo 'Sai';
-                                                    }
+                                                    if($uta->answer == 1) {
+                                                        echo 'Đúng';
+                                                    } elseif($uta->answer == 1) {
+                                                        echo 'Sai';
+                                                    } else 
+                                                        echo '';
                                                 }
                                                 @endphp
                                             </td>
@@ -96,6 +96,11 @@
                                             </td>
                                         </tr>
                                         @endforeach
+                                        <tr>
+                                            <th colspan="5">
+                                                Tổng điểm: {{ $user_test->score }} / {{ $user_test->test->total_score }}
+                                            </th>
+                                        </tr>
                                     </tbody>
 
                                 </table>

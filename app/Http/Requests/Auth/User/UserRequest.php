@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Auth\User;
 
 use App\Models\User;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UserRequest extends FormRequest
@@ -14,6 +15,11 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
+        $role = Sentinel::getRoles()->pluck('slug');
+        if ($role[0] == 'admin') {
+            return true;
+        }
+        
         $id = $this->route()->parameter('user');
         $user = User::find($id);
         if($user->roles[0]->id == 2 || $user->roles[0]->id == 1)
