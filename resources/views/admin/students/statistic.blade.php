@@ -45,6 +45,11 @@
                             </tr>
 
                             <tr>
+                                <th>Email</th>
+                                <td>{{ $student->email }}</td>
+                            </tr>
+
+                            <tr>
                                 <th>Địa chỉ</th>
                                 <td>{{ $student->address }}</td>
                             </tr>

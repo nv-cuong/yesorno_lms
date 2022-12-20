@@ -45,21 +45,21 @@ class StudentController extends Controller
             'first_name',
             'last_name'
         ])
-        ->leftJoin('role_users AS ru', 'user_id', 'users.id')
-        ->where('ru.role_id', 5)
-        ->with('roles', 'activations');
+            ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+            ->where('ru.role_id', 5)
+            ->with('roles', 'activations');
 
         // @phpstan-ignore-next-line
         return DataTables::of($students)
-        ->filterColumn('fullname', function($query, $keyword) {
-            $sql = "CONCAT(last_name,' ',first_name)  like ?";
-            $query->whereRaw($sql, ["%{$keyword}%"]);
-        })
-        ->addColumn('actions', function ($student) {
-            return view('admin.students.actions', ['row' => $student])->render();
-        })
-        ->rawColumns(['name', 'actions'])
-        ->make(true);
+            ->filterColumn('fullname', function ($query, $keyword) {
+                $sql = "CONCAT(last_name,' ',first_name)  like ?";
+                $query->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->addColumn('actions', function ($student) {
+                return view('admin.students.actions', ['row' => $student])->render();
+            })
+            ->rawColumns(['name', 'actions'])
+            ->make(true);
     }
 
     /**
@@ -102,10 +102,10 @@ class StudentController extends Controller
             DB::commit();
 
             return redirect()->route('students')
-            ->with('msg', 'Học sinh thêm thành công!');
+                ->with('msg', 'Học sinh thêm thành công!');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::info($e->getFile() . ':'. $e->getFile(). ' : ' . $e->getMessage());
+            Log::info($e->getFile() . ':' . $e->getFile() . ' : ' . $e->getMessage());
             Session::flash('failed', $e->getMessage() . ' ' . $e->getLine());
 
             return redirect()
@@ -218,7 +218,19 @@ class StudentController extends Controller
                 ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
                 ->where('ul.user_id', $id)
                 ->get();
-            return view('admin.students.course', compact('student', 'courses', 'lessons'));
+
+            $course = Course::where('id', $student->courses)->with(['classStudies', 'units' => function ($q) {
+                return $q->withCount('lessons');
+            }])->first();
+            $courseLesson = 0;
+            foreach ($course->units as $unit) {
+                $courseLesson += $unit->lessons_count;
+            }
+            $countLesson = $lessons->where('status', 1)->count();
+            if ($countLesson != 0) {
+                $progress = ceil(($countLesson * 100) / $courseLesson);
+            } else $progress = 0;
+            return view('admin.students.course', compact(['student', 'courses', 'lessons', 'progress']));
         }
         return redirect(route('students'))
             ->with('msg', 'Học sinh chưa tồn tại!');
@@ -254,5 +266,4 @@ class StudentController extends Controller
         return redirect(route('students'))
             ->with('msg', 'Học sinh chưa tồn tại!');
     }
-
 }

@@ -15,6 +15,15 @@
                 <div class="card-body">
                     @forelse ($courses as $course)
                         <div class="card collapsed-card">
+                            <span>
+                                Tiến độ khóa học: {{ $progress }}%
+                            </span>
+                            <div class="progress" style="height: 30px">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                    aria-valuenow={{ $progress }} aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ $progress }}%">
+                                </div>
+                            </div>
                             <div class="card-header" style="font-size:1.8em">
                                 <i class="bi bi-journal-bookmark-fill"></i>
                                 {{ $course['title'] }}
