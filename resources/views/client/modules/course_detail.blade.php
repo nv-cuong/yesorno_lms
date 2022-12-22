@@ -21,15 +21,15 @@
                 <div class="course-left-sidebar">
 
                     <div class="course-left-box crs-post">
-                        <h5 class="course-left-title">More course for you</h5>
+                        <h5 class="course-left-title">Những khóa học khác</h5>
                         <div class="course-post">
-                            @foreach ($courses as $item)
-                            <div class="course-post-wrp">
-                                <img src="{{ asset($item->image) }}" style="width: 80px" alt="thumb">
-                                <div class="course-post-text">
-                                    <a href="{{ route('detail', $item->slug) }}">{{ $item->title }}</a>
+                            @foreach ($courses_slide as $item)
+                                <div class="course-post-wrp">
+                                    <img src="{{ asset($item->image) }}" style="width: 80px" alt="thumb">
+                                    <div class="course-post-text">
+                                        <a href="{{ route('detail', $item->slug) }}">{{ $item->title }}</a>
+                                    </div>
                                 </div>
-                            </div>
                             @endforeach
 
                         </div>
@@ -52,48 +52,62 @@
                             @endif
                         </div>
 
-                       <span style="color:brown"> Bắt đầu từ: </span>{{ $course->begin_date }} <span style="color:brown"> đến: </span> {{ $course->end_date }} <br>
+                        <span style="color:brown"> Bắt đầu từ: </span>{{ $course->begin_date }} <span style="color:brown">
+                            đến: </span> {{ $course->end_date }} <br>
                         @if ($course->status == 0)
                             <h5>( Khóa học miễn phí )</h5>
-                        @else
-                            <div class="course-syl-price cr-mb">
-                                <ul>
-                                    <li>
-                                        <p title="Số lượng học sinh đã đang kí học"><i class="fas fa-user"></i>{{ $course->users()->get()->count() }} Đang học</p>
-                                    </li>
-                                    <li>
-                                        @if ($user && $access)
-                                            <form action="{{ route('post.detach') }}" method="get">
-                                                Bạn đã đăng kí khóa học này
-                                                <input type="hidden" name="course_id" value="{{ $course->id }}">
-                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="btn btn-danger" title="Đăng kí vào khóa học">Hủy</button>
-                                            </form>
-                                        @elseif($user)
-                                            <form action="{{ route('post.attach') }}" method="get">
-                                                @foreach ($units as $unit)
-                                                    @php
-                                                        $lessons = App\Models\Lesson::where('unit_id', $unit->id)->get();
-                                                    @endphp
-                                                    @foreach ($lessons as $item)
-                                                        <input type="hidden" name="lesson_id[]"
-                                                            value="{{ $item->id }}">
-                                                    @endforeach
+                        @endif
+                        <div class="course-syl-price cr-mb">
+                            <ul>
+                                <li>
+                                    <p title="Số lượng học sinh đã đang kí học"><i
+                                            class="fas fa-user"></i>{{ $course->users()->get()->count() }} Đang học</p>
+                                </li>
+                                <li>
+                                    @if ($user && $access)
+                                        <form action="{{ route('post.detach') }}" method="get">
+                                            Bạn đã đăng kí khóa học này
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                            <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                            <button type="submit" class="btn btn-danger"
+                                                title="Đăng kí vào khóa học">Hủy</button>
+                                        </form>
+                                    @elseif($user)
+                                        <form action="{{ route('post.attach') }}" method="get">
+                                            @foreach ($units as $unit)
+                                                @php
+                                                    $lessons = App\Models\Lesson::where('unit_id', $unit->id)->get();
+                                                @endphp
+                                                @foreach ($lessons as $item)
+                                                    <input type="hidden" name="lesson_id[]" value="{{ $item->id }}">
                                                 @endforeach
-                                                <input type="hidden" name="course_id" value="{{ $course->id }}">
-                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
-                                            </form>
-                                        @else
-                                            <form action="{{ route('post.attach') }}" method="get">
-                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh </button>
-                                            </form>
-                                        @endif
-                                    </li>
-                                </ul>
+                                            @endforeach
+                                            <input type="hidden" name="course_id" value="{{ $course->id }}">
+                                            <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                            <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('post.attach') }}" method="get">
+                                            <input type="hidden" name="course_slug" value="{{ $course->slug }}">
+                                            <button type="submit" class="theme-btn" title="Đăng kí vào khóa học">Ghi danh
+                                            </button>
+                                        </form>
+                                    @endif
+                                </li>
+                            </ul>
+                        </div>
+                        @if ($access)
+                            <span>
+                                Tiến độ khóa học: {{ $progress }}%
+                            </span>
+                            <div class="progress" style="height: 30px">
+                                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar"
+                                    aria-valuenow={{ $progress }} aria-valuemin="0" aria-valuemax="100"
+                                    style="width: {{ $progress }}%">
+                                </div>
                             </div>
-
+                            <br>
                         @endif
 
                         <div class="course-course-pic cr-mb">
@@ -112,11 +126,6 @@
                                         role="tab" aria-controls="nav-profile" aria-selected="false">
                                         Nội dung
                                     </a>
-                                    <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab"
-                                        href="#nav-contact" role="tab" aria-controls="nav-contact"
-                                        aria-selected="false">
-                                        Danh sách lớp
-                                    </a>
                                 </div>
                             </nav>
                             <div class="tab-content" id="nav-tabContent">
@@ -134,131 +143,110 @@
                                     aria-labelledby="nav-profile-tab">
                                     <div class="course-accordion">
                                         <div class="course-accordion-header mb-30">
-                                            <h2 class="course-content-title">Nội dung khóa học</h2>
-                                            <p class="mb-0">
-                                                <i class="fas fa-check"></i>
-                                                <span>
-                                                    Học lập trình để đi làm
-                                                </span>
-                                            </p>
+                                            <h2 class="course-content-title">
+                                                Nội dung khóa học
+                                            </h2>
                                         </div>
                                         <div class="ask">
+                                            @php
+                                                $sttUnit = 0;
+                                            @endphp
                                             <div class="panel-group" id="accordion" role="tablist"
-                                                aria-multiselectable="true">
-
-                                                @php $n = 0; @endphp
-
-                                                @foreach ($units as $unit)
-                                                    @php $n = $n + 1; @endphp
-                                                        <div class="panel-heading" role="tab" id="@if ($n == 1){{'headingOne'}}@elseif($n == 2){{'headingTwo'}}@else{{'heading'.$n}}@endif">
-                                                            <h4 class="panel-title">
-                                                                <a role="button" data-toggle="collapse" data-parent="#accordion" href="@if ($n == 1){{'#collapseOne'}}@elseif($n == 2){{'#collapseTwo'}}@else{{'#collapse'.$n}}@endif" aria-expanded="false" aria-controls="@if ($n == 1){{'collapseOne'}}@elseif($n == 2){{'collapseTwo'}}@else{{'collapse'.$n}}@endif" class="collapsed">
-                                                                    Chương {{$n}}: {{$unit->title}}
-                                                                </a>
-                                                            </h4>
-                                                        </div>
-                                                        <div id="@if ($n == 1){{'collapseOne'}}@elseif($n == 2){{'collapseTwo'}}@else{{'collapse'.$n}}@endif" class="panel-collapse in collapse" role="tabpanel" aria-labelledby="@if ($n == 1){{'headingOne'}}@elseif($n == 2){{'headingTwo'}}@else{{'heading'.$n}}@endif" style="">
-                                                            <div class="panel-body">
-                                                                <ul class="course-video-list">
-
-                                                                    @php
-                                                                        $lessons = App\Models\Lesson::where('unit_id', $unit->id)->get();
-                                                                        $stt = 0;
-                                                                    @endphp
-
-                                                                    @foreach ($lessons as $lesson)
-                                                                        @php
-                                                                            $stt = $stt + 1;
-                                                                        @endphp
+                                                aria-multiselectable="true" style="margin-bottom : 50px">
+                                                @forelse ($course->units as $unit)
+                                                    @php
+                                                        $sttUnit++;
+                                                        $stt = 0;
+                                                    @endphp
+                                                    <div class="panel-heading" role="tab"
+                                                        id="heading{{ $unit->id }}">
+                                                        <h4 class="panel-title">
+                                                            <a role="button" data-toggle="collapse"
+                                                                data-parent="#accordion"
+                                                                href="#collapse{{ $unit->id }}" aria-expanded="false"
+                                                                aria-controls="collapse{{ $unit->id }}"
+                                                                class="collapsed">
+                                                                Chương {{ $sttUnit }}: {{ $unit->title }}
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                    @foreach ($lessons as $lessonItem)
+                                                        @if ($lessonItem['unit_id'] == $unit->id)
+                                                            @php
+                                                                $stt++;
+                                                            @endphp
+                                                            <div id="collapse{{ $unit->id }}"
+                                                                class="panel-collapse in collapse" role="tabpanel"
+                                                                aria-labelledby="heading{{ $unit->id }}">
+                                                                <div class="panel-body">
+                                                                    <ul class="course-video-list">
                                                                         <li>
                                                                             <div class="course-video-wrp">
                                                                                 <div class="course-item-name">
                                                                                     <div>
-                                                                                        <i class="fas fa-play"></i>
-                                                                                        <span>Bài
-                                                                                            {{ $stt }}</span>
-                                                                                    </div>
-                                                                                    <h5>{{ $lesson->title }}</h5>
-                                                                                </div>
-                                                                                <div class="course-time-preview">
-                                                                                    <div class="course-item-info">
-                                                                                        @if ($access)
-                                                                                            @if ($access->status == 0)
-                                                                                                <span style="color: red">Hãy đăng kí và đợi duyệt!</span>
-                                                                                            @else
-                                                                                                <a href="{{ route('personal.lesson', [$lesson->slug]) }}">Xem</a>
-                                                                                            @endif
-                                                                                        @elseif($course->status == 0)
-                                                                                            <a href="{{ route('learning', ['id' => $lesson->id]) }}">Xem</a>
+                                                                                        @if ($lessonItem->status == 1)
+                                                                                            <i class="fas fa-play"></i>
                                                                                         @else
-                                                                                            <span style="color: red">Hãy đăng kí!</span>
+                                                                                            <i class="fas fa-play text-muted"></i>
                                                                                         @endif
+                                                                                        <span>
+                                                                                            bài {{ $stt }}:
+                                                                                        </span>
                                                                                     </div>
+                                                                                    <h5>
+                                                                                        {{ $lessonItem->title }}
+                                                                                    </h5>
                                                                                 </div>
+                                                                                @if ($access)
+                                                                                    <div class="course-time-preview">
+                                                                                        <div class="course-item-info">
+                                                                                            <a
+                                                                                                href="{{ route('personal.lesson', [$lessonItem->slug]) }}">
+                                                                                                Xem
+                                                                                            </a>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                @else
+                                                                                    Hãy đăng ký khóa học
+                                                                                @endif
                                                                             </div>
                                                                         </li>
-                                                                    @endforeach
-                                                                </ul>
+                                                                    </ul>
+                                                                </div>
                                                             </div>
+                                                        @endif
+                                                    @endforeach
+                                                @empty
+                                                    <div class="panel-heading" role="tab"
+                                                        id="heading{{ $unit->id }}" style="margin-bottom : 20px">
+                                                        <h4 class="panel-title">
+                                                            <a role="button" data-toggle="collapse"
+                                                                data-parent="#accordion"
+                                                                href="#collapse{{ $unit->id }}" aria-expanded="false"
+                                                                aria-controls="collapse{{ $unit->id }}"
+                                                                class="collapsed">
+                                                                Không có chương nào
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                @endforelse
+                                            </div>
+                                            @if ($countLesson == $courseLesson)
+                                                <div class="ask">
+                                                    <div class="panel-group" id="accordion">
+                                                        <div class="panel-heading" role="tab" id="headingOne">
+                                                            <h4 class="panel-title">
+                                                                <a role="button"
+                                                                    href="{{ route('finalTest', [$course->id]) }}">
+                                                                    Làm bài kiểm tra cuối khóa
+                                                                </a>
+                                                            </h4>
                                                         </div>
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="tab-pane fade" id="nav-contact" role="tabpanel"
-                                    aria-labelledby="nav-contact-tab">
-                                    @foreach ($course->classStudies()->get() as $class)
-                                    <div class="course-ovr-wrp">
-                                        <div class="course-over-fet">
-                                            <div class="course-over-bio">
-                                                <div class="course-over-name">
-                                                    <h5><span style="color: violet">Tên lớp: </span> {{ $class->name }} </h5>
-                                                    <h5><span style="color: violet">Thời gian học: </span>
-                                                        @if ($class->schedule == 0)
-                                                            Sáng
-                                                        @elseif ($class->schedule == 1)
-                                                            Chiều
-                                                        @else
-                                                            Cả ngày
-                                                        @endif
-                                                    </h5>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="mb-0" style="text-align: justify">
-                                                {!! $class->description !!}
-                                            </div>
-                                            @if ($user)
-                                            @if ($class_of_user)
-                                            @if(in_array($class->id, $class_of_user))
-                                                            <form action="{{ route('post.detach.class') }}" method="get">
-                                                                <span>Bạn đã đăng kí lớp học này !</span>
-                                                                <input type="hidden" name="class_id" value="{{ $class->id }}">
-                                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                                <button type="submit" class="btn btn-danger">Hủy</button>
-                                                            </form>
-                                                @else
-                                                            <form action="{{ route('post.attach.class') }}" method="get">
-                                                                <input type="hidden" name="class_id" value="{{ $class->id }}">
-                                                                <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                                <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
-                                                            </form>
-                                                            @endif
-                                                        @else
-                                                        <form action="{{ route('post.attach.class') }}" method="get">
-                                                            <input type="hidden" name="class_id" value="{{ $class->id }}">
-                                                            <input type="hidden" name="course_slug" value="{{ $course->slug }}">
-                                                            <button type="submit" class="theme-btn" title="Đăng kí vào lop học">đăng kí</button>
-                                                        </form>
-                                                        @endif
-                                            @else
-                                            Đăng nhập!!
                                             @endif
-                                            <hr>
                                         </div>
                                     </div>
-                                @endforeach
                                 </div>
                             </div>
                         </div>

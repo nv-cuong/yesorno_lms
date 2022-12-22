@@ -33,13 +33,13 @@ Route::get('/detach-class', [CourseDetailController::class, 'detachClass'])
 Route::get('/courses/lesson/{id}', [CourseDetailController::class, 'showLesson'])
     ->name('learning')->middleware('myweb.auth');
 
-Route::get('/personal/courses/{slug}', [StudentCoursesController::class, 'personalCourse'])
+Route::get('/personal/courses/{slug}', [CourseDetailController::class, 'personalCourse'])
     ->name('personal.course')->middleware('myweb.auth');
-Route::get('/personal/lesson/{slug}', [StudentCoursesController::class, 'personalLesson'])
+Route::get('/personal/lesson/{slug}', [CourseDetailController::class, 'personalLesson'])
     ->name('personal.lesson')->middleware('myweb.auth');
-Route::post('/personal/lessonprogress/{slug}', [StudentCoursesController::class, 'lessonProgress'])
+Route::post('/personal/lessonprogress/{slug}', [CourseDetailController::class, 'lessonProgress'])
     ->name('lessonProgress')->middleware('myweb.auth');
-Route::post('/personal/detach', [StudentCoursesController::class, 'detach'])
+Route::post('/personal/detach', [CourseDetailController::class, 'detach'])
     ->name('post.personal.detach')->middleware('myweb.auth');
 Route::get('/downloadFile/{id}', [LessonController::class, 'downloadFile'])
     ->name('lesson.download')->middleware('myweb.auth');

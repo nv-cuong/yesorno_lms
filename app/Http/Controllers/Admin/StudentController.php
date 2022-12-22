@@ -219,9 +219,10 @@ class StudentController extends Controller
                 ->where('ul.user_id', $id)
                 ->get();
 
-            $course = Course::where('id', $student->courses)->with(['classStudies', 'units' => function ($q) {
+            $course = Course::where('id', $id)->with(['classStudies', 'units' => function ($q) {
                 return $q->withCount('lessons');
             }])->first();
+            // dd($course->units);
             $courseLesson = 0;
             foreach ($course->units as $unit) {
                 $courseLesson += $unit->lessons_count;

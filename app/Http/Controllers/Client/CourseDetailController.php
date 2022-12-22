@@ -10,9 +10,6 @@ use App\Models\Lesson;
 use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Http\Request;
-use PHPUnit\Framework\Constraint\Count;
-use Ramsey\Collection\Map\AbstractMap;
-use Termwind\Components\Dd;
 
 class CourseDetailController extends Controller
 {
@@ -22,32 +19,40 @@ class CourseDetailController extends Controller
      */
     public function courseDetail($slug)
     {
-        $courses = Course::select([
+        $courses_slide = Course::select([
             'title',
             'slug',
             'image',
-        ])
-            ->take(4)
-            ->get();
-        $course = Course::where('slug', $slug)
-            ->with('classStudies', 'users')
-            ->first();
+        ])->take(4)->get();
 
+        $course = Course::where('slug', $slug)->with(['classStudies','users' ,'units' => function ($q) {
+            return $q->withCount('lessons');
+        }])->first();
+
+        $courseLesson = 0;
+        foreach ($course->units as $unit) {
+            $courseLesson += $unit->lessons_count;
+        }
+
+        $user = Sentinel::getUser();
+        $id = $user->id;
+        
         if ($course) {
             $units = Unit::where('course_id', $course->id)
                 ->get();
-            $user = Sentinel::getUser();
-            $access = '';
             $class_of_user = '';
+
             if ($user) {
-                $access = Course::select([
-                    'courses.id',
-                    'uc.status',
-                ])
-                    ->join('user_courses AS uc', 'uc.course_id', 'courses.id')
-                    ->where('courses.id', $course->id)
-                    ->where('uc.user_id', $user->id)
-                    ->first();
+                // $access = Course::select([
+                //     'courses.id',
+                //     'uc.status',
+                // ])
+                //     ->join('user_courses AS uc', 'uc.course_id', 'courses.id')
+                //     ->where('courses.id', $course->id)
+                //     ->where('uc.user_id', $user->id)
+                //     ->first();
+                $access = $user->hasCourse($course->id);
+
                 $class_of_user = ClassStudy::select([
                     'class_studies.id'
                 ])
@@ -58,10 +63,26 @@ class CourseDetailController extends Controller
                     ->pluck('id')
                     ->toArray();
             }
-            return view('client.modules.course_detail', compact('courses', 'course', 'units', 'user', 'access', 'class_of_user'));
+            $lessons = Lesson::select([
+                'ul.status',
+                'unit_id',
+                'lessons.title',
+                'lessons.slug'
+            ])
+                ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
+                ->Join('units AS u', 'u.id', 'lessons.unit_id')
+                ->where('u.course_id', $course->id)
+                ->where('ul.user_id', $id)
+                ->get();
+            $countLesson = $lessons->where('status', 1)->count();
+            $progress = 0;
+            if ($countLesson != 0) {
+                $progress = ceil(($countLesson * 100) / $courseLesson);
+            }
+            // dd($course->units);
+            return view('client.modules.course_detail', compact(['courses_slide', 'course', 'units', 'user', 'access', 'class_of_user', 'progress', 'lessons', 'countLesson', 'courseLesson']));
         } else {
             return abort(404);
-            // return view('client.modules.404');
         }
     }
 
@@ -159,5 +180,98 @@ class CourseDetailController extends Controller
         } else {
             return abort(404);
         }
+    }
+
+    // /**
+    //  * @param Request $request
+    //  * @param string $slug
+    //  * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+    //  */
+    // public function personalCourse(Request $request, $slug)
+    // {
+    //     $getUser = Sentinel::getUser();
+    //     $id = $getUser->id;
+    //     $course = Course::where('slug', $slug)->with(['classStudies', 'units' => function ($q) {
+    //         return $q->withCount('lessons');
+    //     }])->first();
+    //     $courseLesson = 0;
+    //     foreach ($course->units as $unit) {
+    //         $courseLesson += $unit->lessons_count;
+    //     }
+    //     $access = $course->users()
+    //         ->where('user_id', $id)
+    //         ->first()
+    //         ->pivot;
+    //     $courses = Course::inRandomOrder()
+    //         ->paginate(3)
+    //         ->onEachSide(1);
+
+    //     $lessons = Lesson::select([
+    //         'ul.status',
+    //         'unit_id',
+    //         'lessons.title',
+    //         'lessons.slug'
+    //     ])
+    //         ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
+    //         ->Join('units AS u', 'u.id', 'lessons.unit_id')
+    //         ->where('u.course_id', $course->id)
+    //         ->where('ul.user_id', $id)
+    //         ->get();
+    //     $countLesson = $lessons->where('status', 1)->count();
+
+    //     if ($countLesson != 0) {
+    //         $progress = ceil(($countLesson * 100) / $courseLesson);
+    //     } else $progress = 0;
+
+    //     return view(
+    //         'client.modules.course_detail',
+    //         compact('course', 'courses', 'access', 'courseLesson', 'countLesson', 'lessons', 'progress')
+    //     );
+    // }
+
+    /**
+     * @param Request $request
+     * @param string $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function personalLesson(Request $request, $slug)
+    {
+        $getUser = Sentinel::getUser();
+        $lesson = Lesson::where('slug', $slug)
+            ->with('unit')
+            ->first();
+
+        $userLesson = $getUser->lessons()
+            ->where('lesson_id', $lesson->id)
+            ->first()
+            ->pivot;
+
+        $courseId = $lesson->unit->course_id;
+        $course = Course::find($courseId);
+        $nextLesson = Lesson::where('id', '>', $lesson->id)
+            ->where('unit_id', $lesson->unit_id)
+            ->first();
+        $nextUnit = Unit::where('id', '>', $lesson->unit_id)
+            ->where('course_id', $courseId)
+            ->with('lessons')
+            ->first();
+        $files = File::where('lesson_id', $lesson->id)
+            ->get();
+
+        return view('client.modules.lesson', compact('lesson', 'nextLesson', 'nextUnit', 'files', 'userLesson', 'course'));
+    }
+
+    /**
+     * @param string $slug
+     * @return NULL
+     */
+    public function lessonProgress($slug)
+    {
+        $getUser    = Sentinel::getUser();
+        $lesson     = Lesson::where('slug', $slug)->first();
+        $getUser->lessons()
+            ->updateExistingPivot($lesson->id, [
+                'status' => 1,
+            ]);
     }
 }
