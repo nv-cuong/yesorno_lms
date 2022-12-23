@@ -187,7 +187,8 @@
                                                                                         @if ($lessonItem->status == 1)
                                                                                             <i class="fas fa-play"></i>
                                                                                         @else
-                                                                                            <i class="fas fa-play text-muted"></i>
+                                                                                            <i
+                                                                                                class="fas fa-play text-muted"></i>
                                                                                         @endif
                                                                                         <span>
                                                                                             bài {{ $stt }}:
