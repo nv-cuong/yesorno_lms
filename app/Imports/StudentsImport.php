@@ -2,16 +2,14 @@
 
 namespace App\Imports;
 
-use App\Models\User;
+use App\Mail\SendEmail;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class StudentsImport implements ToModel , WithHeadingRow
 {
@@ -29,10 +27,11 @@ class StudentsImport implements ToModel , WithHeadingRow
         DB::beginTransaction();
         try {
             if($row['email'] ) {
-                $user = [
+                $pass = str_random(8); 
+                $data = [ 
                     'email' => $row['email'],
                     'stu_id'=> $row['id'],
-                    'password' => Hash::make(str_random(8)),
+                    'password' => $pass,
                     'first_name' => $row['first_name'],
                     'last_name' => $row['last_name'],
                     'phone' => $row['phone'],
@@ -40,12 +39,16 @@ class StudentsImport implements ToModel , WithHeadingRow
                     'birthday' => $row['birthday'],
                     'gender' => $row['gender'],
                 ];
-                $newUser = Sentinel::registerAndActivate($user);
-                $newUser->roles()->attach(5);
+                $newUser = Sentinel::registerAndActivate($data);
+                $newUser->roles()->attach(5); 
+                
+                Mail::to($row['email'])->send(new SendEmail($data));
+
+             
             }
-        } catch (Exception) {
+        } catch (Exception $e) {
             DB::rollBack();
-            throw new Exception();
+            throw new Exception($e);
         }
         DB::commit();
     }
