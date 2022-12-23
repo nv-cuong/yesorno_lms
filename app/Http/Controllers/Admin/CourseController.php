@@ -313,7 +313,7 @@ class CourseController extends Controller
                     'course_begin_date' => $course->begin_date->format('d/m/Y'),
                 ];
                 $email_user = $user->email;
-                Mail::to($email_user)->send(new SendEmail());
+                // Mail::to($email_user)->send(new SendEmail());
                 $user->notify(new AssignCourse($assignNotification));
 
                 $msg = 'Học viên đã được chấp nhận vào khóa học';
