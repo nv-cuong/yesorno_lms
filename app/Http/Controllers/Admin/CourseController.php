@@ -311,6 +311,8 @@ class CourseController extends Controller
                     'course_name' => $course->title,
                     'course_slug' => $course->slug,
                     'course_begin_date' => $course->begin_date->format('d/m/Y'),
+                    'course_end_date' => $course->end_date->format('d/m/Y'),
+
                 ];
                 $email_user = $user->email;
                 Mail::to($email_user)->send(new SendEmailCourse($assignNotification,$user));
