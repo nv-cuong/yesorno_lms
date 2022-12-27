@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\User\UserRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -45,21 +46,21 @@ class StudentController extends Controller
             'first_name',
             'last_name'
         ])
-        ->leftJoin('role_users AS ru', 'user_id', 'users.id')
-        ->where('ru.role_id', 5)
-        ->with('roles', 'activations');
+            ->leftJoin('role_users AS ru', 'user_id', 'users.id')
+            ->where('ru.role_id', 5)
+            ->with('roles', 'activations');
 
         // @phpstan-ignore-next-line
         return DataTables::of($students)
-        ->filterColumn('fullname', function($query, $keyword) {
-            $sql = "CONCAT(last_name,' ',first_name)  like ?";
-            $query->whereRaw($sql, ["%{$keyword}%"]);
-        })
-        ->addColumn('actions', function ($student) {
-            return view('admin.students.actions', ['row' => $student])->render();
-        })
-        ->rawColumns(['name', 'actions'])
-        ->make(true);
+            ->filterColumn('fullname', function ($query, $keyword) {
+                $sql = "CONCAT(last_name,' ',first_name)  like ?";
+                $query->whereRaw($sql, ["%{$keyword}%"]);
+            })
+            ->addColumn('actions', function ($student) {
+                return view('admin.students.actions', ['row' => $student])->render();
+            })
+            ->rawColumns(['name', 'actions'])
+            ->make(true);
     }
 
     /**
@@ -102,10 +103,10 @@ class StudentController extends Controller
             DB::commit();
 
             return redirect()->route('students')
-            ->with('msg', 'Học sinh thêm thành công!');
+                ->with('msg', 'Học sinh thêm thành công!');
         } catch (\Exception $e) {
             DB::rollBack();
-            Log::info($e->getFile() . ':'. $e->getFile(). ' : ' . $e->getMessage());
+            Log::info($e->getFile() . ':' . $e->getFile() . ' : ' . $e->getMessage());
             Session::flash('failed', $e->getMessage() . ' ' . $e->getLine());
 
             return redirect()
@@ -198,27 +199,15 @@ class StudentController extends Controller
     {
         $student = User::find($id);
         if ($student) {
-            $courses = Course::select([
-                'courses.id',
-                'uc.user_id',
-                'courses.slug',
-                'title',
-            ])
-                ->leftJoin('user_courses AS uc', 'uc.course_id', 'courses.id')
-                ->where('uc.user_id', $id)
-                ->get();
-
-            $lessons = Lesson::select([
-                'lessons.id',
-                'ul.user_id',
-                'title',
-                'unit_id',
-                'status',
-            ])
-                ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
-                ->where('ul.user_id', $id)
-                ->get();
-            return view('admin.students.course', compact('student', 'courses', 'lessons'));
+            $courses = Course::with(['units', 'units.lessons'])->select('courses.id', 'courses.title', DB::raw('SUM(ul.status) AS numberOflessonFinished, count(*) AS numberOflesson'))
+                ->join('units AS u', 'u.course_id', 'courses.id')
+                ->join('lessons AS l', 'l.unit_id', 'u.id')
+                ->join('user_lessons AS ul', function ($join) use ($id) {
+                    $join->on('ul.lesson_id', '=', 'l.id')
+                        ->where('user_id', '=', $id);
+                })->groupBy('courses.id', 'courses.title')
+                ->paginate(10);
+            return view('admin.students.course', compact(['student', 'courses']));
         }
         return redirect(route('students'))
             ->with('msg', 'Học sinh chưa tồn tại!');
@@ -254,5 +243,4 @@ class StudentController extends Controller
         return redirect(route('students'))
             ->with('msg', 'Học sinh chưa tồn tại!');
     }
-
 }

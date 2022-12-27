@@ -61,4 +61,11 @@ class Lesson extends Model
             'user_id'
         )->withPivot('status');
     }
+
+    public function checkUserStudy($userId){
+        return $this->users()
+        ->where('user_lessons.user_id', $userId)
+        ->where('user_lessons.status', 1)
+        ->exists();
+    }
 }
