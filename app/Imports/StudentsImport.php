@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Mail\SendEmail;
+use App\Mail\SendEmailAccount;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Exception;
 use Illuminate\Support\Collection;
@@ -42,7 +42,7 @@ class StudentsImport implements ToModel , WithHeadingRow
                 $newUser = Sentinel::registerAndActivate($data);
                 $newUser->roles()->attach(5); 
                 
-                Mail::to($row['email'])->send(new SendEmail($data));
+                Mail::to($row['email'])->send(new SendEmailAccount($data));
 
              
             }
