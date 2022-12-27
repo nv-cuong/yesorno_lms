@@ -9,6 +9,7 @@ use App\Http\Requests\Auth\User\UserRequest;
 use App\Models\User;
 use App\Models\Course;
 use App\Models\Lesson;
+use App\Models\Unit;
 use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -198,40 +199,15 @@ class StudentController extends Controller
     {
         $student = User::find($id);
         if ($student) {
-            $courses = Course::select([
-                'courses.id',
-                'uc.user_id',
-                'courses.slug',
-                'title',
-            ])
-                ->leftJoin('user_courses AS uc', 'uc.course_id', 'courses.id')
-                ->where('uc.user_id', $id)
-                ->get();
-
-            $lessons = Lesson::select([
-                'lessons.id',
-                'ul.user_id',
-                'title',
-                'unit_id',
-                'status',
-            ])
-                ->leftJoin('user_lessons AS ul', 'ul.lesson_id', 'lessons.id')
-                ->where('ul.user_id', $id)
-                ->get();
-
-            $course = Course::where('id', $id)->with(['classStudies', 'units' => function ($q) {
-                return $q->withCount('lessons');
-            }])->first();
-            // dd($course->units);
-            $courseLesson = 0;
-            foreach ($course->units as $unit) {
-                $courseLesson += $unit->lessons_count;
-            }
-            $countLesson = $lessons->where('status', 1)->count();
-            if ($countLesson != 0) {
-                $progress = ceil(($countLesson * 100) / $courseLesson);
-            } else $progress = 0;
-            return view('admin.students.course', compact(['student', 'courses', 'lessons', 'progress']));
+            $courses = Course::with(['units', 'units.lessons'])->select('courses.id', 'courses.title', DB::raw('SUM(ul.status) AS numberOflessonFinished, count(*) AS numberOflesson'))
+                ->join('units AS u', 'u.course_id', 'courses.id')
+                ->join('lessons AS l', 'l.unit_id', 'u.id')
+                ->join('user_lessons AS ul', function ($join) use ($id) {
+                    $join->on('ul.lesson_id', '=', 'l.id')
+                        ->where('user_id', '=', $id);
+                })->groupBy('courses.id', 'courses.title')
+                ->paginate(10);
+            return view('admin.students.course', compact(['student', 'courses']));
         }
         return redirect(route('students'))
             ->with('msg', 'Học sinh chưa tồn tại!');
