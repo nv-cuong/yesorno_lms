@@ -5,23 +5,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\HomeController;
 use App\Http\Controllers\Client\CourseDetailController;
 use App\Http\Controllers\Client\SearchController;
-use App\Http\Controllers\Client\StudentCoursesController;
 use App\Http\Controllers\Client\UserTestController;
 use App\Http\Controllers\UserNotificationController;
 
 Route::get('/courses', [HomeController::class, 'courses'])
-    ->name('courses');
+    ->name('courses')->middleware('myweb.auth');
 Route::get('/courses-filter', [HomeController::class, 'courseFilter'])
-    ->name('courses.filter');
+    ->name('courses.filter')->middleware('myweb.auth');
 Route::get('/search', [SearchController::class, 'search'])
-    ->name('search');
+    ->name('search')->middleware('myweb.auth');
 Route::get('/courses/detail/{slug}', [CourseDetailController::class, 'courseDetail'])
-    ->name('detail');
+    ->name('detail')->middleware('myweb.auth');
 Route::get('/profile', [HomeController::class, 'profile'])
-    ->name('profile')
-    ->middleware('myweb.auth');
+    ->name('profile')->middleware('myweb.auth');
 Route::get('/contact', [HomeController::class, 'contact'])
-    ->name('contact');
+    ->name('contact')->middleware('myweb.auth');
 Route::get('/attach', [CourseDetailController::class, 'attach'])
     ->name('post.attach')->middleware('myweb.auth');
 Route::get('/detach', [CourseDetailController::class, 'detach'])
@@ -33,8 +31,6 @@ Route::get('/detach-class', [CourseDetailController::class, 'detachClass'])
 Route::get('/courses/lesson/{id}', [CourseDetailController::class, 'showLesson'])
     ->name('learning')->middleware('myweb.auth');
 
-Route::get('/personal/courses/{slug}', [CourseDetailController::class, 'personalCourse'])
-    ->name('personal.course')->middleware('myweb.auth');
 Route::get('/personal/lesson/{slug}', [CourseDetailController::class, 'personalLesson'])
     ->name('personal.lesson')->middleware('myweb.auth');
 Route::post('/personal/lessonprogress/{slug}', [CourseDetailController::class, 'lessonProgress'])

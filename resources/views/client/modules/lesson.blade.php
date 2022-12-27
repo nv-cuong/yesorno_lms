@@ -16,7 +16,7 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('personal.course', $course->slug) }}">
+                <a href="{{ route('personal.lesson', $course->slug) }}">
                     {!! $course->title !!}
                 </a>
             </li>
