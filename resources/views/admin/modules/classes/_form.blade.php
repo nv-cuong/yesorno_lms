@@ -1,25 +1,22 @@
 @csrf
 <div class="form-group">
-    {{-- <input type="hidden" name="id" value="{{$item->id}}"> --}}
-    <label for="">Tên lớp học</label>
+    <label for="">Tên lớp học <span style="color: red">*</span></label>
     <input type="text" class="form-control @error('name') is-invalid @enderror" name="name"
         value="{{ old('name', $class->name) }}">
     @error('name')
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>
-<div class="col-sm-6">
-    <!-- checkbox -->
-
+<div class="col-sm-12">
     <div class="form-group">
-        <label for="">Khóa học</label>
+        <label for="">Khóa học <span style="color: red">*</span></label>
         @foreach ($courses as $item1)
             <div class="form-check">
-                <input class="form-check-input @error('course_id') is-invalid @enderror" type="checkbox" id="vehicle1"
+                <input class="form-check-input @error('course_id') is-invalid @enderror" type="checkbox"
                     name="course_id[]" value="{{ $item1->id }}"
                     @foreach ($course as $item2) @if ($item1->id == $item2->id)
-                            checked
-                        @endif @endforeach>
+                        checked
+                    @endif @endforeach>
                 <label class="form-check-label">{{ $item1->title }}</label>
             </div>
         @endforeach
@@ -29,34 +26,34 @@
     </div>
 </div>
 <div class="form-group">
-    <label for="">Mô tả (Trên 20 ký tự)</label>
+    <label for="begin_date" class="form-label">
+        Ngày bắt đầu
+    </label>
+    <input type="date" name="begin_date" class="form-control @error('begin_date') is-invalid @enderror"
+        value="{{ old('begin_date', $class->begin_date) }}" id="begin_date">
+    @error('begin_date')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
+<div class="form-group">
+    <label for="end_date" class="form-label">
+        Ngày kết thúc
+    </label>
+    <input type="date" name="end_date" class="form-control @error('end_date') is-invalid @enderror" id="end_date"
+        value="{{ old('end_date', $class->end_date) }}">
+    @error('end_date')
+        <div class="invalid-feedback">
+            {{ $message }}
+        </div>
+    @enderror
+</div>
+<div class="form-group">
+    <label for="">Mô tả (nếu có)</label>
     <textarea name="description" class="form-control ckeditor @error('description') is-invalid @enderror" cols="5"
         rows="3" style="visibility: hidden; display: none;">{{ old('description', $class->description) }}</textarea>
     @error('description')
-        <div class="invalid-feedback">{{ $message }}</div>
-    @enderror
-</div>
-<div class="col-sm-6">
-    <!-- radio -->
-    <label>Thời gian học</label>
-    <div class="form-group" style="display: flex; justify-content: space-between">
-        <div class="form-check ">
-            <input class="form-check-input @error('schedule') is-invalid @enderror" type="radio" name="schedule"
-                value="0" @if ($class->schedule == 0) checked @endif>
-            <label class="form-check-label">Sáng</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input @error('schedule') is-invalid @enderror" type="radio" name="schedule"
-                value="1" @if ($class->schedule == 1) checked @endif>
-            <label class="form-check-label">Chiều</label>
-        </div>
-        <div class="form-check">
-            <input class="form-check-input @error('schedule') is-invalid @enderror" type="radio" name="schedule"
-                value="2" @if ($class->schedule == 2) checked @endif>
-            <label class="form-check-label">Cả ngày</label>
-        </div>
-    </div>
-    @error('schedule')
         <div class="invalid-feedback">{{ $message }}</div>
     @enderror
 </div>

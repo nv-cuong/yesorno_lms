@@ -218,18 +218,7 @@
                                                         @endif
                                                     @endforeach
                                                 @empty
-                                                    <div class="panel-heading" role="tab"
-                                                        id="heading{{ $unit->id }}" style="margin-bottom : 20px">
-                                                        <h4 class="panel-title">
-                                                            <a role="button" data-toggle="collapse"
-                                                                data-parent="#accordion"
-                                                                href="#collapse{{ $unit->id }}" aria-expanded="false"
-                                                                aria-controls="collapse{{ $unit->id }}"
-                                                                class="collapsed">
-                                                                Không có chương nào
-                                                            </a>
-                                                        </h4>
-                                                    </div>
+                                                    Chưa có chương học!
                                                 @endforelse
                                             </div>
                                             @if ($countLesson == $courseLesson)

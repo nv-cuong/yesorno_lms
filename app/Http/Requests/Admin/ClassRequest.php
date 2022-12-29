@@ -26,8 +26,6 @@ class ClassRequest extends FormRequest
         return [
             'name'          => "required| max:255| unique:class_studies,name," . $this->id,
             'course_id'     => ['required'],
-            'description'   => ['required', 'min:20'],
-            'schedule'      => ['required'],
         ];
     }
 }

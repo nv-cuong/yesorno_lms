@@ -15,9 +15,20 @@
                                     <div class="card-header" style="font-size:1.3em">
                                         <strong><span style="color: rgb(163, 0, 0)">Tên lớp:
                                             </span>{{ $class->name }}</strong><br><br>
-                                        <i class="fas fa-info" style="font-size:1.4em"></i>
-                                        <span style="color: rgb(0, 85, 196)">Mô tả lớp học: </span>
-                                        {!! $class->description !!}
+                                        <div class="card collapsed-card">
+                                            <div class="card-header" style="font-size:1.3em">
+                                                <i class="fas fa-info" style="font-size:1.3em"></i>
+                                                Mô tả lớp học
+                                                <div class="card-tools">
+                                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                                        <i class="fas fa-plus"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div class="card-body">
+                                                {!! $class->description !!}
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -30,7 +41,7 @@
                                         <div class="card collapsed-card">
                                             <div class="card-header" style="font-size:1.3em">
                                                 <i class="fas fa-book" style="font-size:1.4em"></i>
-                                                {{ $item['title'] }}
+                                                {{ $item->title }}
                                                 <div class="card-tools">
                                                     <button type="button" class="btn btn-tool" data-card-widget="collapse">
                                                         <i class="fas fa-plus"></i>
@@ -53,7 +64,6 @@
                                     @endforeach
                                 </div>
                             </div>
-                            <!-- /.col -->
                             <div class="col-sm-4 invoice-col">
                                 <div class="card collapsed-card">
                                     <div class="card-header" style="font-size:1.3em">
@@ -64,25 +74,22 @@
                                         {{ $class->users->count() }}
                                         <br><br>
                                         <i class="fas fa-clock" style="font-size:1.4em"></i>
-                                        <span style="color: rgb(0, 85, 196)">Thời gian học: </span>
-                                        @if ($class->amount == 0)
-                                            Sáng
-                                        @elseif($class->amount == 1)
-                                            Chiều
+                                        <span style="color: rgb(0, 85, 196)">Trạng thái: </span>
+                                        @if ($class->schedule == 0)
+                                            Chưa mở
+                                        @elseif($class->schedule == 1)
+                                            Đang học
                                         @else
-                                            Cả ngày
+                                            Hoàn thành
                                         @endif
                                     </div>
                                 </div>
                             </div>
-                            <!-- /.col -->
                         </div>
-                        <!-- /.row -->
 
-                        <!-- Table row -->
                         <div class="row">
                             <div class="col-12 table-responsive">
-                                <table class="table table-striped">
+                                <table class="table table-striped table-bordered table-hover table-condensed text-center">
                                     <label for="">Danh sách sinh viên trong lớp</label>
                                     <a href="{{ route('class.add', $class->slug) }}"
                                         class="btn btn-success float-right">Thêm học viên</a>
@@ -99,12 +106,12 @@
                                     <tbody>
                                         @forelse ($class->users as $key=>$item)
                                             <tr>
-                                                <td>{{ $key+1 }}</td>
+                                                <td>{{ $key + 1 }}</td>
                                                 <td>{{ $item->stu_id }}</td>
                                                 <td>{{ $item->last_name }} {{ $item->first_name }}</td>
                                                 <td>{{ $item->email }}</td>
                                                 <td>{{ $item->phone }}</td>
-                                                <td>{{__('userlabel.' . $item->gender) }}</td>
+                                                <td>{{ __('userlabel.' . $item->gender) }}</td>
                                             </tr>
                                         @empty
                                             <tr>

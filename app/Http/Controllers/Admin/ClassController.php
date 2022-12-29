@@ -38,6 +38,8 @@ class ClassController extends Controller
             'id',
             'name',
             'schedule',
+            'begin_date',
+            'end_date',
         ])->with(['courses'])
         ->withCount('users');
 
@@ -47,14 +49,14 @@ class ClassController extends Controller
             $courseName = '';
             foreach($class->courses as $course)
             {
-                $courseName .= $course->title . '<br/>';
+                $courseName .= '- ' .$course->title . '<br/>';
             }
             return $courseName;
         })
         ->editColumn('schedule', function ($class) {
-            if($class->schedule == 0) return 'Sáng';
-            if($class->schedule == 1) return 'Chiều';
-            return 'Cả ngày';
+            if($class->schedule == 0 ) return 'Chưa mở';
+            if($class->schedule == 2 ) return 'Hoàn thành';
+            return 'Đang học';
         })
         ->addColumn('actions', function ($class) {
             return view('admin.modules.classes.actions', ['row' => $class])->render();
@@ -96,7 +98,6 @@ class ClassController extends Controller
                 'name'          => $class_item['name'],
                 'slug'          => Str::slug($class_item['name']),
                 'description'   => $class_item['description'],
-                'schedule'    => $class_item['schedule'],
             ]);
 
             $courseIds = $request->input('course_id');
@@ -141,6 +142,8 @@ class ClassController extends Controller
         $courses = Course::select([
             'id',
             'title',
+            'begin_date',
+            'end_date'
         ])->where('status', 1)
         ->get();
 
@@ -175,9 +178,10 @@ class ClassController extends Controller
         if ($class) {
             $className = $request->input('name', '');
             $class->name        = $className;
-            $class->slug        = Str::slug($className); // @phpstan-ignore-line
+            $class->slug        = Str::slug($className);
             $class->description = $request->input('description');
-            $class->schedule    = $request->input('schedule');
+            $class->begin_date     = $request->input('begin_date');
+            $class->end_date       = $request->input('end_date');
             $class->save();
             $message            = 'Cập nhật lớp học thành công';
             $type               = 'success';
@@ -186,7 +190,7 @@ class ClassController extends Controller
         try {
             $courseIds = $request->input('course_id');
             if ($courseIds){
-                $class->courses()->sync($courseIds); // @phpstan-ignore-line
+                $class->courses()->sync($courseIds);
             }
 
         } catch (\Throwable $t) {
@@ -236,8 +240,9 @@ class ClassController extends Controller
     public function add($slug)
     {
         $class = ClassStudy::where('slug', $slug)->first();
-        $std = $class->users()->get();
-        $stds = User::select([
+        $students_in_class = $class->users()->get();
+        // dd($std);
+        $students = User::select([
             'users.id',
             'email',
             'birthday',
@@ -250,7 +255,7 @@ class ClassController extends Controller
             ->with('roles', 'activations')
             ->search()
             ->paginate(1000);
-        return view('admin.modules.classes.add_student', compact('class', 'std', 'stds'));
+        return view('admin.modules.classes.add_student', compact(['class', 'students_in_class', 'students']));
     }
 
     /**

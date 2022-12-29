@@ -17,7 +17,7 @@
                         @php
                             $progress = 100;
                             if ($course->numberOflesson > 0) {
-                                $progress = ($course->numberOflessonFinished / $course->numberOflesson) * 100;
+                                $progress = ceil(($course->numberOflessonFinished / $course->numberOflesson) * 100);
                             }
                         @endphp
                         <div class="card collapsed-card">

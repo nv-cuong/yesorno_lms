@@ -2,7 +2,6 @@
 @section('title', 'Cập nhật lớp học')
 
 @section('content')
-
 <br>
     <section class="content">
         <div class="container-fluid">
@@ -24,5 +23,4 @@
             </div>
         </div>
     </section>
-
 @endsection

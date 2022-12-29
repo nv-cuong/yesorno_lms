@@ -15,6 +15,8 @@ class ClassStudy extends Model
         'slug',
         'description',
         'schedule',
+        'begin_date',
+        'end_date',
     ];
 
     public function courses(): BelongsToMany
@@ -43,9 +45,10 @@ class ClassStudy extends Model
      * @param \Illuminate\Database\Eloquent\Builder $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeSearch($query){
-        if($key = request()->key){
-            $query = $query-> where('name', 'like', '%'.$key.'%');
+    public function scopeSearch($query)
+    {
+        if ($key = request()->key) {
+            $query = $query->where('name', 'like', '%' . $key . '%');
         }
         return $query;
     }

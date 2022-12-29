@@ -18,20 +18,21 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-
                         <div class="card-header">
                             <a href="{{ route('class.create') }}" class="btn btn-success float-right"
                                 title="Thêm một lớp học mới">Tạo lớp học mới</a>
                         </div>
                         <table class="table table-striped table-bordered table-hover table-condensed" id="class">
                             <thead>
-                                <tr>
+                                <tr class="text-center">
                                     <th>STT</th>
                                     <th>Tên lớp</th>
-                                    <th>Khóa học trong lớp</th>
-                                    <th>Thời gian học</th>
-                                    <th>Học viên trong lớp</th>
-                                    <th style="width: 20%;">Tùy chọn</th>
+                                    <th>Khóa học</th>
+                                    <th>Học viên</th>
+                                    <th>Bắt đầu</th>
+                                    <th>Kết thúc</th>
+                                    <th>Trạng thái</th>
+                                    <th style="width: 15%;">Tùy chọn</th>
                                 </tr>
                             </thead>
                             <tbody id="load">
@@ -69,13 +70,21 @@
                         name: 'course'
                     },
                     {
-                        data: 'schedule',
-                        name: 'schedule'
-                    },
-                    {
                         data: 'users_count',
                         name: 'users_count',
                         searchable: false
+                    },
+                    {
+                        data: 'begin_date',
+                        name: 'begin_date'
+                    },
+                    {
+                        data: 'end_date',
+                        name: 'end_date'
+                    },
+                    {
+                        data: 'schedule',
+                        name: 'schedule',
                     },
                     {
                         data: 'actions',
