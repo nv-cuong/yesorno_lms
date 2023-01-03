@@ -47,7 +47,7 @@
                             <a href="{{ route('unit.create', ['course_id' => $course->id]) }}"
                                 class="btn btn-success float-right">+ Thêm chương mới</a>
                         </div>
-                        <table class="table table-striped" id="unit_table">
+                        <table class="table table-striped table-bordered table-hover table-condensed" id="unit_table">
                             <thead>
                                 <tr>
                                     <th>STT</th>

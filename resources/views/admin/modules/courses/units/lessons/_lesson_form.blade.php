@@ -1,7 +1,20 @@
 @csrf
 <div class="form-group">
     <label for="unit_id" class="form-label">Tên chương học: </label>
-    <input type="text" name="unit_id" class="form-control" value="{{ $lesson->unit->title}}" readonly>
+    <select id="unit_id" name="unit_id" class="form-control @error('unit_id') is-invalid @enderror">
+        <option value="">-</option>
+        @forelse($unit as $id => $title)
+            @if ($id == old('unit_id', $lesson->unit_id))
+                <option selected="selected" value="{{ $id }}">{{ $title }}</option>
+            @else
+                <option value="{{ $id }}">{{ $title }}</option>
+            @endif
+        @empty
+        @endforelse
+    </select>
+    @error('unit_id')
+        <div class="invalid-feedback">{{ $message }}</div>
+    @enderror
 </div>
 <div class="form-group">
     <label for="lesson_tile" class="form-label">Tên bài học: <span style="color: red">*</span></label>

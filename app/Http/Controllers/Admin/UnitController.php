@@ -55,6 +55,7 @@ class UnitController extends Controller
     {
         $unit = new Unit();
         $course = Course::where('id', $course_id)->pluck('title', 'id');
+        // dd($unit);
         return view('admin.modules.courses.units.create', compact('unit', 'course'));
     }
 
@@ -108,7 +109,6 @@ class UnitController extends Controller
         $unit = Unit::find($id);
         if ($unit) {
             $unit->title = $request->input('title');
-            $unit->course_id = $request->input('course_id');
             $unit->slug = Str::slug($unit->title);
             $unit->save();
             $message = 'Cập nhật khóa học thành công';
