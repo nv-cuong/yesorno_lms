@@ -131,7 +131,6 @@ class LessonController extends Controller
         $lesson = Lesson::find($id);
         if ($lesson) {
             $lesson->title = $request->input('title');
-            $lesson->unit_id = $request->input('unit_id');
             $lesson->slug = Str::slug($lesson->title);
             $lesson->content = $request->input('content');
             $lesson->published = $request->input('published');

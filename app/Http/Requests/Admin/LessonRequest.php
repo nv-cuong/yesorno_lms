@@ -25,7 +25,6 @@ class LessonRequest extends FormRequest
     {
         return [
             'title' =>      ['required', 'max:255'],
-            'unit_id' =>    ['required', 'numeric'],
             'content' =>    ['required', 'min:20'],
             'published' =>  ['required', 'date'],
             'path_zip' =>   ['max:10000'],
