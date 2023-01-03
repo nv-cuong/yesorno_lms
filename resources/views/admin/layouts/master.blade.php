@@ -36,6 +36,8 @@
     <link rel="stylesheet" href="{{ asset('/admin/plugins/datatables-buttons/css/buttons.bootstrap4.min.css') }}">
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{ asset('admin/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+    <!-- select2 -->
+    <link rel="stylesheet" href="{{ asset('admin/css/select2.min.css') }}">
     @yield('style')
 </head>
 
@@ -119,6 +121,8 @@
     <!-- SweetAlert2 -->
     <script src="{{ asset('admin/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('/ckeditor/ckeditor.js') }}"></script>
+    <!-- select2 -->
+    <script src="{{ asset('admin/js/select2.min.js') }}"></script>
 
     @yield('scripts')
 </body>

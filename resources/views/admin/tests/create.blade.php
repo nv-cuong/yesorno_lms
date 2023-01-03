@@ -60,8 +60,7 @@
                                 Nhập mô tả:
                             </label>
                             <textarea class="form-control @error('description') is-invalid @enderror" value="{{ old('description') }}"
-                                name="description" id="exampleFormControlTextarea1" rows="3">
-                        </textarea>
+                                name="description" id="exampleFormControlTextarea1" rows="3"></textarea>
                             @error('description')
                                 <div class="invalid-feedback">
                                     {{ $message }}
@@ -73,12 +72,14 @@
                             <label for="confirmation_pwd">
                                 Chọn Khóa học:
                             </label>
-                            <select class="form-control @error('course') is-invalid @enderror course" id="course"
-                                name="course" data-dependent="question" data-placeholder="Chọn Khóa học:">
+                            <select class="js-example-placeholder-single js-states form-control"
+                            {{-- class="form-control @error('course') is-invalid @enderror course select2_select"  --}}
+                            id="course"
+                                name="course" data-dependent="question">
                                 <option value="">-</option>
-                                @forelse($course as $id => $title)
-                                    <option value="{{ $id }}">
-                                        {{ $title }}
+                                @forelse($course as $key => $item)
+                                    <option value="{{ $key }}">
+                                        {{ $item->title }}
                                     </option>
                                 @empty
                                 @endforelse
@@ -148,6 +149,12 @@
                 '</div>');
             var searchfield = $(this).parent().find('.select2-search__field');
             document.getElementById("count_question_id").value = counter;
+        });
+        $(document).ready(function() {
+            $('.js-example-placeholder-single').select2({
+                placeholder: "Chọn Khóa học:",
+                allowClear: true
+            });
         });
     </script>
 @endsection

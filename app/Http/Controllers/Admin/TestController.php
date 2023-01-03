@@ -7,12 +7,14 @@ use App\Models\Test;
 use App\Models\Course;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\Admin\Test\StoreRequest;
 use App\Http\Requests\Admin\Test\UpdateRequest;
+use Cartalyst\Sentinel\Laravel\Facades\Sentinel;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 /**
@@ -74,7 +76,13 @@ class TestController extends Controller
      */
     public function create()
     {
-        $course     = Course::pluck('title', 'id');
+        $user = Sentinel::getUser();
+        $course = Course::select(['title', 'teacher_id','id'])->get();
+        //dd($course);
+        if ($user->inRole('teacher')) {
+            $course = $course->where('teacher_id', $user->id);
+        }
+        // dd($course);
         $question   = Question::pluck('content', 'id');
         return view('admin.tests.create', compact('course', 'question'));
     }
